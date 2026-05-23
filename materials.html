@@ -1,10 +1,10 @@
-<!-- MATERIALS v3.0 CLEAN BUILD - NO TEMPLATE LITERALS - 2026-05-23 -->
+<!-- MATERIALS v3.3 CLEAN BUILD - NO TEMPLATE LITERALS - 2026-05-23 -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Material Master v3.0 — Gabe International Hub</title>
+<title>Material Master v3.3 — Gabe International Hub</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a1917;font-size:14px;line-height:1.5;}
@@ -618,6 +618,9 @@ const KELAS_LBL  = {1:'⭐⭐⭐ Kelas 1',2:'⭐⭐ Kelas 2',3:'⭐ Kelas 3',0:'
 
 let allMaterials = [];
 let currentFilter = 'ALL';
+let currentView = 'card';
+let sortKey = 'id';
+let sortAsc = true;
 let editId = null;
 let priceEditId = null;
 
@@ -666,6 +669,22 @@ function updateStats() {
   // We'll update this after loading price history
 }
 
+// ── DOM Helper Functions ────────────────────────────────────────────
+function mkEl(tag, cls, txt, style) {
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (txt !== undefined) e.textContent = txt;
+  if (style) e.style.cssText = style;
+  return e;
+}
+function mkBtn(cls, onclickFn, label) {
+  var b = document.createElement('button');
+  b.className = cls;
+  b.textContent = label;
+  b.onclick = onclickFn;
+  return b;
+}
+
 function renderMaterials() {
   const grid = document.getElementById('mat-grid');
   const q = document.getElementById('search-inp').value.toLowerCase();
@@ -700,64 +719,224 @@ function renderMaterials() {
     const harga = m.harga || 0;
     const updDate = m.harga_updated_at ? fts(m.harga_updated_at) : (m.createdAt ? fts(m.createdAt) : '—');
 
-    // Build card with string concat (avoid template literal issues)
-    var catLabelFull = {SW:'Solid Wood',PW:'Plywood',NW:'Non-Wood'};
-    var klsHtml = {1:'⭐⭐⭐ K1',2:'⭐⭐ K2',3:'⭐ K3',0:'—'};
-    var aktifBadge = m.aktif===false ? '<span style="font-size:10px;background:#fceaea;color:#8b2020;padding:2px 7px;border-radius:20px;font-weight:700;">Nonaktif</span>' : '';
-    var priceUpdateBtn = canEdit ? '<button onclick="openPriceModal(\''+mid+'\');" style="padding:6px 12px;background:#2d5a27;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">✏️ Update</button>' : '';
-    var editBtn = canEdit ? '<button class="card-btn" onclick="openEditModal(\''+mid+'\')">✏️ Edit</button>' : '';
-    var dupBtn = canEdit ? '<button class="card-btn" onclick="duplicateMaterial(\''+mid+'\')">⧉ Duplikat</button>' : '';
-    var histBtn = canEdit ? '<button class="action-item" onclick="showHistory(\''+mid+'\',\''+m.nama+'\');closeAllMenus()">📈 Historis Harga</button>' : '';
-    var delBtn = currentUser.role==='admin' ? '<button class="action-item danger" onclick="deleteMaterial(\''+mid+'\',\''+m.nama+'\');closeAllMenus()">🗑 Hapus</button><div class="action-sep"></div>' : '';
-    var togBtn = (canEdit && currentUser.role==='admin') ? '<button class="action-item" onclick="toggleAktif(\''+mid+'\','+aktif+');closeAllMenus()">'+(aktif?'🚫 Nonaktifkan':'✅ Aktifkan')+'</button>' : '';
-    var ketHtml = m.ket ? '<div style="margin-top:8px;font-size:11px;color:#8a8680;font-style:italic">'+m.ket+'</div>' : '';
+    // Build card using DOM methods - no string concat, no ternary issues
+    var mid = m.id || m._id;
+    var aktif = m.aktif !== false;
     
-    card.innerHTML =
-      '<div class="mat-card-hdr">' +
-        '<div class="mat-color-dot" style="background:'+dot+'"></div>' +
-        '<span class="mat-id">'+mid+'</span>' +
-        '<span class="mat-nama">'+(m.nama||'—')+'</span>' +
-        '<span class="mat-cat-badge" style="background:'+catBg+';color:'+catClr+'">'+(catLabelFull[m.cat]||m.cat)+'</span>' +
-        aktifBadge +
-      '</div>' +
-      '<div class="mat-card-body">' +
-        '<div class="mat-meta-grid">' +
-          '<div class="mat-meta-item">Nama Ilmiah<strong style="font-size:11px">'+(m.namaPanjang||m.nama||'—')+'</strong></div>' +
-          '<div class="mat-meta-item">Kelas<strong>'+(klsHtml[m.kelas]||'—')+'</strong></div>' +
-          '<div class="mat-meta-item">Rendemen Log<strong>'+(m.rendemen||'—')+'%</strong></div>' +
-          '<div class="mat-meta-item">Densitas<strong>'+(m.density||'—')+' kg/m³</strong></div>' +
-        '</div>' +
-        '<div class="price-section">' +
-          '<div class="price-row">' +
-            '<div>' +
-              '<div class="price-label">💰 Harga Aktif</div>' +
-              '<div class="price-value">'+fm(harga)+' <span style="font-size:11px;font-weight:400;color:#8a8680">/ '+(m.unit||'m³')+'</span></div>' +
-              '<div class="price-date">Update: '+updDate+'</div>' +
-            '</div>' +
-            priceUpdateBtn +
-          '</div>' +
-        '</div>' +
-        ketHtml +
-      '</div>' +
-      '<div class="mat-card-footer">' +
-        '<button class="card-btn info" onclick="viewMaterial(\''+mid+'\')">👁 View</button>' +
-        editBtn + dupBtn +
-        '<div class="action-menu">' +
-          '<button class="card-btn" onclick="toggleActionMenu(event,\'menu-'+mid+'\')">⋯ Lainnya</button>' +
-          '<div class="action-dropdown" id="menu-'+mid+'">' +
-            histBtn +
-            '<button class="action-item" onclick="exportSinglePDF(\''+mid+'\');closeAllMenus()">📕 Export PDF</button>' +
-            '<button class="action-item" onclick="exportSingleCSV(\''+mid+'\');closeAllMenus()">📊 Export CSV</button>' +
-            '<div class="action-sep"></div>' +
-            togBtn + delBtn +
-          '</div>' +
-        '</div>' +
-      '</div>';
+    // Helper: create element
+    function el(tag, cls, txt, style) {
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (txt !== undefined) e.textContent = txt;
+      if (style) e.style.cssText = style;
+      return e;
+    }
+    function btn(cls, onclick, label) {
+      var b = document.createElement('button');
+      b.className = cls;
+      b.textContent = label;
+      b.onclick = onclick;
+      return b;
+    }
+
+    // Card header
+    var hdr = document.createElement('div');
+    hdr.className = 'mat-card-hdr';
+    
+    var dotEl = document.createElement('div');
+    dotEl.className = 'mat-color-dot';
+    dotEl.style.background = dot;
+    
+    var idEl = mkEl('span','mat-id', mid);
+    var namaEl = mkEl('span','mat-nama', m.nama||'—');
+    
+    var catEl = mkEl('span','mat-cat-badge');
+    catEl.style.background = catBg;
+    catEl.style.color = catClr;
+    catEl.textContent = {SW:'Solid Wood',PW:'Plywood',NW:'Non-Wood'}[m.cat]||m.cat;
+    
+    hdr.append(dotEl, idEl, namaEl, catEl);
+    if (!aktif) {
+      var nonaktifEl = mkEl('span','','Nonaktif','font-size:10px;background:#fceaea;color:#8b2020;padding:2px 7px;border-radius:20px;font-weight:700;');
+      hdr.appendChild(nonaktifEl);
+    }
+    
+    // Card body
+    var body = document.createElement('div');
+    body.className = 'mat-card-body';
+    
+    var metaGrid = document.createElement('div');
+    metaGrid.className = 'mat-meta-grid';
+    [
+      ['Nama Ilmiah', m.namaPanjang||m.nama||'—'],
+      ['Kelas', {1:'⭐⭐⭐ K1',2:'⭐⭐ K2',3:'⭐ K3',0:'—'}[m.kelas]||'—'],
+      ['Rendemen Log', (m.rendemen||'—')+'%'],
+      ['Densitas', (m.density||'—')+' kg/m³'],
+    ].forEach(function(f) {
+      var item = document.createElement('div');
+      item.className = 'mat-meta-item';
+      item.innerHTML = f[0] + '<strong style="font-size:11px;">' + f[1] + '</strong>';
+      metaGrid.appendChild(item);
+    });
+    
+    // Price section
+    var priceSection = document.createElement('div');
+    priceSection.className = 'price-section';
+    var priceRow = document.createElement('div');
+    priceRow.className = 'price-row';
+    var priceLeft = document.createElement('div');
+    priceLeft.innerHTML = 
+      '<div class="price-label">💰 Harga Aktif</div>' +
+      '<div class="price-value">' + fm(harga) + ' <span style="font-size:11px;font-weight:400;color:#8a8680">/ ' + (m.unit||'m³') + '</span></div>' +
+      '<div class="price-date">Update: ' + updDate + '</div>';
+    priceRow.appendChild(priceLeft);
+    if (canEdit) {
+      var updBtn = document.createElement('button');
+      updBtn.style.cssText = 'padding:6px 12px;background:#2d5a27;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;';
+      updBtn.textContent = '✏️ Update';
+      updBtn.onclick = (function(id){ return function(){ openPriceModal(id); }; })(mid);
+      priceRow.appendChild(updBtn);
+    }
+    priceSection.appendChild(priceRow);
+    body.append(metaGrid, priceSection);
+    if (m.ket) {
+      var ketEl = mkEl('div','','', 'margin-top:8px;font-size:11px;color:#8a8680;font-style:italic;');
+      ketEl.textContent = m.ket;
+      body.appendChild(ketEl);
+    }
+
+    // Card footer
+    var footer = document.createElement('div');
+    footer.className = 'mat-card-footer';
+    
+    var viewBtn = mkBtn('card-btn info', (function(id){ return function(){ viewMaterial(id); }; })(mid), '👁 View');
+    footer.appendChild(viewBtn);
+    
+    if (canEdit) {
+      var editBtnEl = mkBtn('card-btn', (function(id){ return function(){ openEditModal(id); }; })(mid), '✏️ Edit');
+      var dupBtnEl  = mkBtn('card-btn', (function(id){ return function(){ duplicateMaterial(id); }; })(mid), '⧉ Duplikat');
+      footer.append(editBtnEl, dupBtnEl);
+    }
+    
+    // More menu
+    var menuWrap = document.createElement('div');
+    menuWrap.className = 'action-menu';
+    var menuTrigger = document.createElement('button');
+    menuTrigger.className = 'card-btn';
+    menuTrigger.textContent = '⋯ Lainnya';
+    menuTrigger.onclick = (function(menuId){ return function(e){ toggleActionMenu(e, menuId); }; })('menu-'+mid);
+    
+    var dropdown = document.createElement('div');
+    dropdown.className = 'action-dropdown';
+    dropdown.id = 'menu-'+mid;
+    
+    var histItem = mkBtn('action-item', (function(id,nm){ return function(){ showHistory(id,nm); closeAllMenus(); }; })(mid, m.nama), '📈 Historis Harga');
+    var pdfItem  = mkBtn('action-item', (function(id){ return function(){ exportSinglePDF(id); closeAllMenus(); }; })(mid), '📕 Export PDF');
+    var csvItem  = mkBtn('action-item', (function(id){ return function(){ exportSingleCSV(id); closeAllMenus(); }; })(mid), '📊 Export CSV');
+    var sep = document.createElement('div'); sep.className = 'action-sep';
+    dropdown.append(histItem, pdfItem, csvItem, sep);
+    
+    if (canEdit && currentUser.role==='admin') {
+      var togItem = mkBtn('action-item', (function(id,ak){ return function(){ toggleAktif(id,ak); closeAllMenus(); }; })(mid, aktif), aktif ? '🚫 Nonaktifkan' : '✅ Aktifkan');
+      dropdown.appendChild(togItem);
+    }
+    if (currentUser.role==='admin') {
+      var delItem = mkBtn('action-item danger', (function(id,nm){ return function(){ deleteMaterial(id,nm); closeAllMenus(); }; })(mid, m.nama), '🗑 Hapus');
+      dropdown.appendChild(delItem);
+    }
+    
+    menuWrap.append(menuTrigger, dropdown);
+    footer.appendChild(menuWrap);
+    
+    card.append(hdr, body, footer);
+    card.style.opacity = aktif ? '1' : '0.6';
+    card.onclick = null;
 
     grid.appendChild(card);
   });
   // If in list view, also update list
   if (currentView === 'list') renderListView();
+}
+
+// ── View Toggle ──────────────────────────────────────────────────────
+window.setView = function(view) {
+  currentView = view;
+  var btnCard = document.getElementById('btn-card');
+  var btnList = document.getElementById('btn-list');
+  var matGrid = document.getElementById('mat-grid');
+  var matList = document.getElementById('mat-list');
+  if (btnCard) btnCard.classList.toggle('active', view==='card');
+  if (btnList) btnList.classList.toggle('active', view==='list');
+  if (matGrid) matGrid.classList.toggle('hidden', view==='list');
+  if (matList) matList.classList.toggle('active', view==='list');
+  if (view === 'list') renderListView();
+  else renderMaterials();
+}
+
+window.sortList = function(key) {
+  if (sortKey === key) sortAsc = !sortAsc;
+  else { sortKey = key; sortAsc = true; }
+  renderListView();
+}
+
+function getFiltered() {
+  var q = document.getElementById('search-inp').value.toLowerCase();
+  return allMaterials.filter(function(m) {
+    if (currentFilter === 'SW') return m.cat === 'SW';
+    if (currentFilter === 'PW') return m.cat === 'PW';
+    if (currentFilter === 'NW') return m.cat === 'NW';
+    if (currentFilter === 'ACTIVE') return m.aktif !== false;
+    return true;
+  }).filter(function(m) {
+    if (!q) return true;
+    return (m.id||'').toLowerCase().includes(q) ||
+           (m.nama||'').toLowerCase().includes(q) ||
+           (m.namaPanjang||'').toLowerCase().includes(q);
+  });
+}
+
+function renderListView() {
+  var tbody = document.getElementById('list-tbody');
+  if (!tbody) return;
+  var filtered = getFiltered().sort(function(a,b) {
+    var av = a[sortKey]||'', bv = b[sortKey]||'';
+    if (typeof av === 'number') return sortAsc ? av-bv : bv-av;
+    return sortAsc ? String(av).localeCompare(String(bv)) : String(bv).localeCompare(String(av));
+  });
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:30px;color:#8a8680">Tidak ada material ditemukan</td></tr>';
+    return;
+  }
+  var CAT_LABEL = {SW:'Solid Wood',PW:'Plywood',NW:'Non-Wood'};
+  tbody.innerHTML = '';
+  filtered.forEach(function(m) {
+    var mid2 = m.id||m._id;
+    var aktif2 = m.aktif !== false;
+    var catBg2 = CAT_BG[m.cat]||'#f0f0f0';
+    var catClr2 = CAT_COLOR[m.cat]||'#555';
+    var harga2 = m.harga||0;
+    var updDate2 = m.harga_updated_at ? fts(m.harga_updated_at) : (m.createdAt ? fts(m.createdAt) : '—');
+    var editBtn2 = canEdit ? '<button class="list-btn primary" onclick="openPriceModal(''+mid2+'')" title="Update Harga">💰</button><button class="list-btn" onclick="openEditModal(''+mid2+'')" title="Edit">✏️</button>' : '';
+    var delBtn2 = currentUser.role==='admin' ? '<button class="list-btn" onclick="deleteMaterial(''+mid2+'',''+m.nama+'')" style="color:#8b2020;border-color:#f5c2c2;" title="Hapus">🗑</button>' : '';
+    var tr = document.createElement('tr');
+    tr.style.opacity = aktif2 ? '1' : '0.55';
+    tr.innerHTML =
+      '<td><span style="font-family:monospace;font-size:11px;background:#f0efe9;color:#5a5750;padding:2px 7px;border-radius:4px;">'+mid2+'</span></td>' +
+      '<td><div style="font-weight:600">'+m.nama+'</div><div style="font-size:11px;color:#8a8680">'+(m.namaPanjang||'')+'</div></td>' +
+      '<td><span class="mat-cat-badge" style="background:'+catBg2+';color:'+catClr2+';">'+(CAT_LABEL[m.cat]||m.cat)+'</span></td>' +
+      '<td style="text-align:center;font-size:12px">'+(m.kelas||'—')+'</td>' +
+      '<td><span class="rdm-badge">'+(m.rendemen||'—')+'%</span></td>' +
+      '<td><div style="font-weight:700;color:#2d5a27">'+fm(harga2)+'</div><div style="font-size:10px;color:#8a8680">/ '+(m.unit||'m³')+'</div></td>' +
+      '<td style="font-size:11px;color:#8a8680">'+updDate2+'</td>' +
+      '<td><span style="font-size:10px;padding:3px 8px;border-radius:20px;font-weight:700;background:'+(aktif2?'#eaf3e8':'#fceaea')+';color:'+(aktif2?'#2d5a27':'#8b2020')+';">'+(aktif2?'✅ Aktif':'🚫 Nonaktif')+'</span></td>' +
+      '<td><div style="display:flex;gap:4px;">' +
+        '<button class="list-btn" onclick="viewMaterial(''+mid2+'')" title="View">👁</button>' +
+        editBtn2 +
+        '<button class="list-btn info" onclick="showHistory(''+mid2+'',''+m.nama+'')" title="Historis">📈</button>' +
+        delBtn2 +
+      '</div></td>';
+    tbody.appendChild(tr);
+  });
 }
 
 // ── Filter & Search ───────────────────────────────────────────────────
