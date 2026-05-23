@@ -1,19 +1,394 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kalkulator Kayu — PT. Gabe International</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-      body { font-family: 'DM Sans', sans-serif; background: #fafaf9; }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wood Volume Calculator v2.0 — Jepara ERP Suite</title>
+<style>
+:root{--bg:#f5f4f0;--s:#fff;--s2:#f0efe9;--s3:#e8e6df;--b:#d8d5cb;--b2:#c4c0b2;--t:#1a1917;--t2:#5a5750;--t3:#8a8680;--ac:#2d5a27;--ac2:#3d7a35;--acb:#eaf3e8;--act:#1e4219;--am:#92580a;--amb:#fef3e0;--amt:#6b3e04;--bl:#1a4a7a;--blb:#e8f0fb;--blt:#102d4e;--rd:#8b2020;--rdb:#fceaea;--pu:#5c2d91;--pub:#f3eafb;--sh:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);--r:8px;--rl:12px;--rxl:16px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--t);font-size:14px;line-height:1.5;min-height:100vh;}
+.topbar{background:var(--ac);color:#fff;padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.topbar-brand{display:flex;align-items:center;gap:10px;}
+.tlogo{width:30px;height:30px;background:rgba(255,255,255,.2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.bname{font-size:15px;font-weight:600;}.bsub{font-size:11px;opacity:.7;}
+.topbar-right{display:flex;align-items:center;gap:8px;}
+.vbadge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:500;}
+.tsbadge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:3px 10px;font-size:10px;font-family:'Courier New',monospace;color:rgba(255,255,255,.85);}
+.app{max-width:1280px;margin:0 auto;padding:18px 14px 60px;}
+.mgrid{display:grid;grid-template-columns:310px 1fr;gap:16px;align-items:start;}
+@media(max-width:960px){.mgrid{grid-template-columns:1fr;}}
+.ftabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.ftab{display:flex;align-items:center;gap:7px;padding:8px 15px;border:1.5px solid var(--b);background:var(--s);border-radius:var(--rl);cursor:pointer;font-size:13px;font-weight:500;color:var(--t2);transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.06);}
+.ftab:hover{border-color:var(--b2);background:var(--s2);}
+.ftab.active{border-color:var(--ac);background:var(--acb);color:var(--act);box-shadow:0 0 0 3px rgba(45,90,39,.1);}
+.card{background:var(--s);border:1px solid var(--b);border-radius:var(--rxl);box-shadow:var(--sh);overflow:hidden;}
+.chdr{padding:11px 15px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;background:var(--s2);}
+.chdr h3{font-size:13px;font-weight:600;}
+.cbody{padding:15px;}
+.stitle{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:7px;display:flex;align-items:center;gap:5px;}
+.stitle::after{content:'';flex:1;height:1px;background:var(--b);}
+.csec{margin-bottom:14px;}
+.fg{margin-bottom:9px;}
+.fg label{display:block;font-size:11px;font-weight:600;color:var(--t2);margin-bottom:3px;}
+.fc{width:100%;padding:7px 9px;border:1px solid var(--b);border-radius:var(--r);background:var(--s);color:var(--t);font-size:13px;font-family:inherit;}
+.fc:focus{outline:none;border-color:var(--ac2);box-shadow:0 0 0 3px rgba(45,90,39,.12);}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.pgroup{background:var(--s2);border:1px solid var(--b);border-radius:var(--r);padding:9px 11px;}
+.prow{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.prow:last-child{margin-bottom:0;}
+.plbl{font-size:12px;color:var(--t2);}
+.pinp{width:70px;padding:4px 7px;border:1px solid var(--b);border-radius:var(--r);background:var(--s);color:var(--t);font-size:13px;font-weight:600;text-align:center;}
+.pinp:focus{outline:none;border-color:var(--ac2);}
+input[type=range]{accent-color:var(--ac);}
+.mgridm{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:9px;margin-bottom:14px;}
+.mc{background:var(--s);border:1px solid var(--b);border-radius:var(--rl);padding:11px 13px;}
+.mc.hi{background:var(--acb);border-color:var(--ac2);}
+.mc.warn{background:var(--amb);border-color:#d4900f;}
+.mc.info{background:var(--blb);border-color:#3a7abf;}
+.mc.pu{background:var(--pub);border-color:#8a55c5;}
+.mlbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--t3);margin-bottom:4px;}
+.mval{font-size:18px;font-weight:700;line-height:1;margin-bottom:2px;}
+.mc.hi .mval{color:var(--ac);}
+.mc.warn .mval{color:var(--am);}
+.mc.info .mval{color:var(--bl);}
+.mc.pu .mval{color:var(--pu);}
+.msub{font-size:10px;color:var(--t3);}
+.fstrip{background:var(--s2);border:1px solid var(--b);border-radius:var(--r);padding:9px 13px;display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:13px;margin-bottom:14px;}
+.fstep{color:var(--t2);}.fop{color:var(--t3);font-weight:700;}
+.fpct{color:var(--am);font-weight:700;background:var(--amb);padding:2px 7px;border-radius:20px;}
+.frdm{color:var(--rd);font-weight:700;background:var(--rdb);padding:2px 7px;border-radius:20px;}
+.fres{color:var(--ac);font-weight:700;background:var(--acb);padding:3px 11px;border-radius:20px;font-size:14px;}
+.tbtns{display:flex;gap:4px;flex-wrap:wrap;}
+.tbtn{padding:5px 12px;border:1px solid var(--b);border-radius:20px;background:var(--s);color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;}
+.tbtn.active{background:var(--ac);border-color:var(--ac);color:#fff;}
+.tbtn:hover:not(.active){background:var(--s2);}
+.tcont{display:none;}.tcont.active{display:block;}
+.twrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--b);margin-bottom:5px;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+thead tr{background:var(--s2);}
+thead th{padding:8px 6px;text-align:center;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--t2);border-bottom:1.5px solid var(--b);white-space:nowrap;}
+thead th:first-child{text-align:left;padding-left:11px;}
+tbody tr:nth-child(even){background:var(--s2);}
+tbody tr:hover{background:var(--acb);}
+tbody td{padding:6px 5px;border-bottom:1px solid var(--b);}
+tbody td:first-child{padding-left:11px;}
+.grph{background:var(--s3)!important;}
+.grph td{padding:5px 11px!important;font-size:10px!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.07em!important;}
+tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px solid var(--b2);font-size:12px;}
+.tcode{font-family:'Courier New',monospace;font-size:10px;color:var(--t3);text-align:center!important;}
+.tvol{font-family:'Courier New',monospace;font-size:10px;text-align:center!important;}
+.tvol.b{font-weight:700;color:var(--ac);}
+.tnum{text-align:center!important;}
+.msel{font-size:10px;padding:3px 4px;border:1px solid var(--b);border-radius:5px;background:var(--s);color:var(--t);cursor:pointer;width:100%;max-width:125px;}
+.msel:focus{outline:none;border-color:var(--ac2);}
+.pill{display:inline-block;padding:2px 6px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap;}
+.psw{background:var(--amb);color:var(--amt);border:1px solid #d4900f;}
+.pply{background:var(--blb);color:var(--blt);border:1px solid #3a7abf;}
+.pnw{background:var(--pub);color:var(--pu);border:1px solid #8a55c5;}
+.ptbd{background:var(--s3);color:var(--t3);border:1px solid var(--b);}
+/* Material Master */
+.mmgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:9px;margin-bottom:16px;}
+.mmcard{background:var(--s);border:1px solid var(--b);border-radius:var(--rl);padding:11px 13px;}
+.mmchdr{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
+.mmid{font-family:'Courier New',monospace;font-size:10px;color:var(--t3);background:var(--s2);padding:1px 5px;border-radius:4px;}
+.mmname{font-size:12px;font-weight:600;flex:1;}
+.mmmeta{display:grid;grid-template-columns:1fr 1fr;gap:3px;font-size:11px;color:var(--t2);margin-bottom:7px;}
+.mmpr{display:flex;align-items:center;gap:5px;padding-top:7px;border-top:1px solid var(--b);}
+.mmpinp{flex:1;padding:3px 7px;border:1px solid var(--b);border-radius:var(--r);font-size:12px;font-weight:600;background:var(--s);color:var(--t);}
+.mmpinp:focus{outline:none;border-color:var(--ac2);}
+.mmsave{padding:3px 9px;background:var(--ac);color:#fff;border:none;border-radius:var(--r);font-size:11px;font-weight:600;cursor:pointer;}
+.mmsave:hover{background:var(--ac2);}
+.phpill{display:inline-block;padding:1px 5px;border-radius:20px;font-size:9px;font-weight:700;background:var(--s3);color:var(--t3);}
+/* History */
+.htbl{width:100%;border-collapse:collapse;font-size:11px;}
+.htbl th{padding:6px 9px;background:var(--s2);border-bottom:1px solid var(--b);text-align:left;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--t3);}
+.htbl td{padding:6px 9px;border-bottom:1px solid var(--b);}
+.htbl tr:hover td{background:var(--acb);}
+.href{font-family:'Courier New',monospace;font-size:10px;color:var(--bl);}
+.hts{font-family:'Courier New',monospace;font-size:10px;color:var(--t3);}
+/* BOM */
+.bgrp{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px;}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border:1.5px solid var(--b);border-radius:var(--r);background:var(--s);color:var(--t);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;}
+.btn:hover{background:var(--s2);}
+.btn.pr{background:var(--ac);border-color:var(--ac);color:#fff;}
+.btn.pr:hover{background:var(--ac2);}
+.bombox{background:#1a1917;color:#a8e6a3;border-radius:var(--r);padding:13px;font-family:'Courier New',monospace;font-size:11px;line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:420px;overflow-y:auto;border:1px solid #333;}
+.bombox::-webkit-scrollbar{width:5px;}
+.bombox::-webkit-scrollbar-track{background:#2a2927;}
+.bombox::-webkit-scrollbar-thumb{background:#555;border-radius:3px;}
+/* Wood assign */
+.wawrap{background:var(--s2);border:1px solid var(--b);border-radius:var(--rl);overflow:hidden;margin-top:3px;}
+.wahdr{padding:6px 11px;background:var(--s3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t2);display:flex;align-items:center;justify-content:space-between;}
+.warow{display:flex;align-items:center;gap:6px;padding:5px 10px;border-bottom:1px solid var(--b);font-size:11px;}
+.warow:last-child{border-bottom:none;}
+.wacode{font-family:'Courier New',monospace;font-size:10px;color:var(--t3);min-width:44px;}
+.waname{flex:1;font-size:11px;}
+.wasel{font-size:11px;padding:3px 5px;border:1px solid var(--b);border-radius:5px;background:var(--s);color:var(--t);max-width:130px;}
+/* Audit */
+.astrip{background:var(--s2);border:1px solid var(--b);border-radius:var(--r);padding:7px 13px;display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+.ait{font-size:11px;color:var(--t2);display:flex;align-items:center;gap:4px;}
+.ait strong{color:var(--t);font-family:'Courier New',monospace;font-size:10px;}
+/* Footer */
+.footer{margin-top:32px;padding-top:16px;border-top:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.fleft{font-size:11px;color:var(--t3);line-height:1.8;}
+.fright{display:flex;gap:5px;flex-wrap:wrap;}
+.tag{background:var(--s2);border:1px solid var(--b);border-radius:20px;padding:3px 9px;font-size:10px;color:var(--t3);font-weight:600;}
+.tag.g{background:var(--acb);border-color:var(--ac2);color:var(--act);}
+#toast{position:fixed;bottom:20px;right:20px;background:var(--ac);color:#fff;padding:9px 16px;border-radius:var(--rl);font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:all .22s;pointer-events:none;z-index:999;}
+#toast.show{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="topbar-brand">
+    <div class="tlogo">🪵</div>
+    <div><div class="bname">Wood Volume Calculator</div><div class="bsub">Jepara ERP Suite — v2.0</div></div>
+  </div>
+  <div class="topbar-right">
+    <div class="tsbadge" id="ts-now">—</div>
+    <span class="vbadge">v2.0 · 2026</span>
+  </div>
+</nav>
+<div class="app">
+  <div class="ftabs" id="ftabs"></div>
+  <div class="mgrid">
+    <div class="card">
+      <div class="chdr"><h3>⚙️ Parameter &amp; Konfigurasi</h3></div>
+      <div class="cbody">
+        <div class="csec"><div class="stitle">Tipe &amp; Ukuran</div>
+          <div class="fg"><label>Pilih Tipe Standar</label><select class="fc" id="subtype-sel"></select></div>
+          <div id="dims-container"></div>
+        </div>
+        <div class="csec"><div class="stitle">Default Jenis Kayu</div>
+          <div class="fg"><label>Kayu Utama (default semua komponen SW)</label>
+            <select class="fc" id="sel-default-wood"></select></div>
+        </div>
+        <div class="csec"><div class="stitle">Parameter Log &amp; Waste</div>
+          <div class="pgroup">
+            <div class="prow"><span class="plbl">Rendemen Log</span>
+              <div style="display:flex;align-items:center;gap:5px">
+                <input type="range" min="20" max="70" value="35" id="rng-rendemen" style="width:75px">
+                <input type="number" class="pinp" min="20" max="70" value="35" id="inp-rendemen"><span style="font-size:11px;color:var(--t3)">%</span>
+              </div></div>
+            <div class="prow"><span class="plbl">Waste Factor</span>
+              <div style="display:flex;align-items:center;gap:5px">
+                <input type="range" min="5" max="40" value="15" id="rng-waste" style="width:75px">
+                <input type="number" class="pinp" min="5" max="40" value="15" id="inp-waste"><span style="font-size:11px;color:var(--t3)">%</span>
+              </div></div>
+            <div class="prow"><span class="plbl">Std batang</span>
+              <div style="display:flex;align-items:center;gap:3px;font-size:11px">
+                <input type="number" class="pinp" style="width:42px" value="4" id="inp-ba">×
+                <input type="number" class="pinp" style="width:42px" value="6" id="inp-bb">×
+                <input type="number" class="pinp" style="width:50px" value="400" id="inp-blen">cm
+              </div></div>
+          </div></div>
+        <div class="csec"><div class="stitle">Mixed Material per Komponen</div>
+          <div id="wood-assign-container"></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="astrip" id="audit-strip"></div>
+      <div class="mgridm" id="metrics"></div>
+      <div class="fstrip" id="formula"></div>
+      <div class="card">
+        <div class="chdr">
+          <div class="tbtns">
+            <button class="tbtn active" onclick="switchTab('cutting')">✂️ Cutting List</button>
+            <button class="tbtn" onclick="switchTab('volume')">📊 Volume Detail</button>
+            <button class="tbtn" onclick="switchTab('master')">📦 Material Master</button>
+            <button class="tbtn" onclick="switchTab('history')">🕐 History</button>
+            <button class="tbtn" onclick="switchTab('bom')">🔗 BOM JSON</button>
+          </div>
+          <span id="tbl-meta" style="font-size:11px;color:var(--t3)"></span>
+        </div>
+        <div class="cbody">
+          <div class="tcont active" id="tab-cutting">
+            <div class="twrap">
+              <table><thead><tr>
+                <th style="text-align:left;min-width:155px">Kode / Nama Komponen</th>
+                <th>Tipe</th><th style="min-width:118px">Jenis / Material</th>
+                <th>Qty</th><th>P cm</th><th>L cm</th><th>T cm</th>
+                <th>Vol/pcs m³</th><th>Vol Total m³</th><th>Vol Log m³</th>
+              </tr></thead>
+              <tbody id="cl-body"></tbody>
+              <tfoot id="cl-foot"></tfoot></table>
+            </div>
+          </div>
+          <div class="tcont" id="tab-volume"><div id="vol-detail"></div></div>
+          <div class="tcont" id="tab-master"><div id="mat-master-content"></div></div>
+          <div class="tcont" id="tab-history">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px">
+              <div style="font-size:12px;color:var(--t2)">Riwayat kalkulasi tersimpan lokal di browser ini</div>
+              <button class="btn" onclick="clearHistory()" style="font-size:11px;color:var(--rd)">🗑 Hapus Semua</button>
+            </div>
+            <div id="hist-content"></div>
+          </div>
+          <div class="tcont" id="tab-bom">
+            <div class="bgrp">
+              <button class="btn pr" onclick="copyBOM()">📋 Copy JSON</button>
+              <button class="btn" onclick="downloadBOM()">⬇️ Download .json</button>
+              <button class="btn" onclick="downloadCSV()">📄 Export CSV</button>
+              <button class="btn" onclick="saveToHistory()">💾 Simpan History</button>
+            </div>
+            <div id="bom-preview" class="bombox"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="fleft"><b>Wood Volume Calculator v2.0</b> — Jepara ERP Suite<br>Material Master · Price History · Audit Timestamp · BOM Export · © 2026</div>
+    <div class="fright">
+      <span class="tag g">✅ Offline Ready</span>
+      <span class="tag">Tempat Tidur</span><span class="tag">Lemari</span>
+      <span class="tag">Kursi</span><span class="tag">Sofa</span><span class="tag">Meja</span>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+<script>
+const MAT={};
+const MM=[
+  {id:'SW-001',n:'Jati',np:'Jati (Tectona grandis)',c:'SW',kl:1,rd:35,dn:720,p:18000000,u:'m³',v:1},
+  {id:'SW-002',n:'Sonokeling',np:'Sonokeling (Dalbergia)',c:'SW',kl:1,rd:32,dn:860,p:22000000,u:'m³',v:1},
+  {id:'SW-003',n:'Sono Kembang',np:'Sono Kembang (Pterocarpus)',c:'SW',kl:2,rd:33,dn:800,p:14000000,u:'m³',v:1},
+  {id:'SW-004',n:'Mahoni',np:'Mahoni (Swietenia)',c:'SW',kl:2,rd:38,dn:640,p:7500000,u:'m³',v:1},
+  {id:'SW-005',n:'Mindi',np:'Mindi (Melia azedarach)',c:'SW',kl:2,rd:40,dn:520,p:4500000,u:'m³',v:1},
+  {id:'SW-006',n:'Akasia',np:'Akasia (Acacia mangium)',c:'SW',kl:2,rd:38,dn:680,p:5500000,u:'m³',v:1},
+  {id:'SW-007',n:'Meranti',np:'Meranti (Shorea spp.)',c:'SW',kl:2,rd:40,dn:550,p:5000000,u:'m³',v:1},
+  {id:'SW-008',n:'Kamper',np:'Kamper (Dryobalanops)',c:'SW',kl:2,rd:38,dn:710,p:8000000,u:'m³',v:1},
+  {id:'SW-009',n:'Sengon',np:'Sengon (Paraserianthes)',c:'SW',kl:3,rd:45,dn:320,p:2800000,u:'m³',v:1},
+  {id:'SW-010',n:'Albasia',np:'Albasia / Falcata',c:'SW',kl:3,rd:45,dn:300,p:2500000,u:'m³',v:1},
+  {id:'SW-011',n:'Pinus',np:'Pinus (Pinus merkusii)',c:'SW',kl:3,rd:42,dn:480,p:3200000,u:'m³',v:1},
+  {id:'SW-012',n:'Trembesi',np:'Trembesi (Samanea saman)',c:'SW',kl:3,rd:40,dn:560,p:4000000,u:'m³',v:1},
+  {id:'PW-001',n:'Plywood 18mm',np:'Plywood 18mm (122x244cm)',c:'PW',kl:0,rd:100,dn:600,p:220000,u:'lembar',v:1},
+  {id:'PW-002',n:'Plywood 15mm',np:'Plywood 15mm (122x244cm)',c:'PW',kl:0,rd:100,dn:600,p:190000,u:'lembar',v:1},
+  {id:'PW-003',n:'Plywood 12mm',np:'Plywood 12mm (122x244cm)',c:'PW',kl:0,rd:100,dn:580,p:165000,u:'lembar',v:1},
+  {id:'PW-004',n:'Plywood 9mm',np:'Plywood 9mm (122x244cm)',c:'PW',kl:0,rd:100,dn:560,p:140000,u:'lembar',v:1},
+  {id:'PW-005',n:'MDF 18mm',np:'MDF 18mm (122x244cm)',c:'PW',kl:0,rd:100,dn:720,p:180000,u:'lembar',v:1},
+  {id:'PW-006',n:'HDF/Hardboard',np:'HDF / Hardboard 3mm',c:'PW',kl:0,rd:100,dn:800,p:65000,u:'lembar',v:1},
+  {id:'NW-001',n:'Kaca 5mm',np:'Kaca Bening 5mm',c:'NW',kl:0,rd:100,dn:2500,p:180000,u:'m²',v:0},
+  {id:'NW-002',n:'Kaca 8mm',np:'Kaca Bening 8mm',c:'NW',kl:0,rd:100,dn:2500,p:280000,u:'m²',v:0},
+  {id:'NW-003',n:'Rotan Anyaman',np:'Anyaman Rotan (per m²)',c:'NW',kl:0,rd:100,dn:200,p:145000,u:'m²',v:0},
+  {id:'NW-004',n:'Rotan Batang',np:'Rotan Batang (per meter)',c:'NW',kl:0,rd:100,dn:200,p:12000,u:'meter',v:0},
+  {id:'NW-005',n:'Kain/Fabric',np:'Kain Pelapis / Fabric',c:'NW',kl:0,rd:100,dn:0,p:95000,u:'meter',v:0},
+  {id:'NW-006',n:'Kulit Sintetis',np:'Kulit Sintetis / PU Leather',c:'NW',kl:0,rd:100,dn:0,p:120000,u:'meter',v:0},
+  {id:'NW-007',n:'Kulit Asli',np:'Kulit Asli / Genuine Leather',c:'NW',kl:0,rd:100,dn:0,p:350000,u:'meter',v:0},
+  {id:'NW-008',n:'Besi Hollow',np:'Besi Hollow 4x4cm',c:'NW',kl:0,rd:100,dn:7800,p:85000,u:'meter',v:0},
+  {id:'NW-009',n:'Besi Plat',np:'Besi Plat / Metal Sheet',c:'NW',kl:0,rd:100,dn:7800,p:320000,u:'m²',v:0},
+  {id:'NW-010',n:'Busa Foam',np:'Busa Foam (Seat/Back)',c:'NW',kl:0,rd:100,dn:30,p:85000,u:'lembar',v:0},
+  {id:'TBD',n:'-- Kosong/TBD --',np:'Kosong - Substitusi via BOM',c:'TBD',kl:0,rd:100,dn:0,p:0,u:'-',v:0},
+];
+const CLBL={SW:'Solid Wood',PW:'Plywood/Board',NW:'Non-Wood',TBD:'Kosong/TBD'};
+const CCLR={SW:'#92580a',PW:'#1a4a7a',NW:'#5c2d91',TBD:'#8a8680'};
+const CBG={SW:'#fef3e0',PW:'#e8f0fb',NW:'#f3eafb',TBD:'#f0efe9'};
+function loadPrices(){try{return JSON.parse(localStorage.getItem('wvc_p')||'{}')}catch(e){return{}}}
+function savePrices(o){localStorage.setItem('wvc_p',JSON.stringify(o))}
+function getMat(id){const m=MM.find(x=>x.id===id)||MM[MM.length-1];const p=loadPrices();return{...m,p:p[id]!==undefined?p[id]:m.p}}
+function updatePrice(id,price){const p=loadPrices();p[id]=+price;savePrices(p);const h=loadPH();h.unshift({id,p:+price,ts:new Date().toISOString()});localStorage.setItem('wvc_ph',JSON.stringify(h.slice(0,200)));showToast('💾 Harga tersimpan!');renderMM()}
+function loadPH(){try{return JSON.parse(localStorage.getItem('wvc_ph')||'[]')}catch(e){return[]}}
+function loadCH(){try{return JSON.parse(localStorage.getItem('wvc_ch')||'[]')}catch(e){return[]}}
+function saveCH(e){const h=loadCH();h.unshift(e);localStorage.setItem('wvc_ch',JSON.stringify(h.slice(0,100)))}
+function clearHistory(){if(!confirm('Hapus semua history?'))return;localStorage.removeItem('wvc_ch');renderHist();showToast('🗑 History dihapus')}
+function bedComps({length=197,width=95,h_hb=90,h_fb=60}){const p=4,iW=width-2*p,iL=length-2*p,n=Math.max(5,Math.round((iL-7)/7)+1);return[{id:'KK-01',g:'Kaki',name:'Kaki Headboard',c:'SW',qty:2,P:h_hb,L:p,T:p},{id:'KK-02',g:'Kaki',name:'Kaki Footboard',c:'SW',qty:2,P:h_fb,L:p,T:p},{id:'SR-01',g:'Side Rail',name:'Side Rail Kanan & Kiri',c:'SW',qty:2,P:iL,L:23,T:2.5},{id:'HB-01',g:'Headboard',name:'Top Rail Headboard',c:'SW',qty:1,P:iW,L:8,T:3},{id:'HB-02',g:'Headboard',name:'Mid Rail Headboard',c:'SW',qty:1,P:iW,L:8,T:3},{id:'HB-03',g:'Headboard',name:'Bottom Rail Headboard',c:'SW',qty:1,P:iW,L:8,T:3},{id:'HB-04',g:'Headboard',name:'Panel Atas Headboard',c:'PW',qty:1,P:iW,L:Math.max(12,h_hb-23-24-4),T:1.8},{id:'HB-05',g:'Headboard',name:'Panel Bawah Headboard',c:'PW',qty:1,P:iW,L:12,T:1.8},{id:'FB-01',g:'Footboard',name:'Top Rail Footboard',c:'SW',qty:1,P:iW,L:8,T:3},{id:'FB-02',g:'Footboard',name:'Bottom Rail Footboard',c:'SW',qty:1,P:iW,L:8,T:3},{id:'FB-03',g:'Footboard',name:'Panel Footboard',c:'PW',qty:1,P:iW,L:Math.max(8,h_fb-16-8),T:1.8},{id:'SL-00',g:'Slat System',name:'Slat Ledger Strip',c:'SW',qty:2,P:iL,L:3,T:2},{id:'SL-01',g:'Slat System',name:'Wood Slat (Palang Kasur)',c:'SW',qty:n,P:width-5,L:7,T:1.5}]}
+function lemariComps({width=120,height=200,depth=60,doors=2}){const pt=2.5,iW=Math.round(width-2*pt),sh=Math.max(1,Math.floor(height/70)-1),dW=Math.round(iW/doors)-3,dH=height-10;return[{id:'LM-01',g:'Carcass',name:'Panel Samping',c:'PW',qty:2,P:height,L:depth,T:pt},{id:'LM-02',g:'Carcass',name:'Panel Atas',c:'PW',qty:1,P:iW,L:depth,T:pt},{id:'LM-03',g:'Carcass',name:'Panel Bawah',c:'PW',qty:1,P:iW,L:depth,T:pt},{id:'LM-04',g:'Carcass',name:'Panel Belakang',c:'PW',qty:1,P:height,L:width,T:0.6},{id:'LM-05',g:'Carcass',name:'Rak Tengah (Shelf)',c:'PW',qty:sh,P:iW,L:depth-2,T:pt},{id:'LM-06',g:'Pintu',name:'Daun Pintu',c:'PW',qty:doors,P:dH,L:dW,T:1.8},{id:'LM-07',g:'Pintu',name:'Stile Pintu Vertikal',c:'SW',qty:doors*2,P:dH,L:6,T:3},{id:'LM-08',g:'Pintu',name:'Rail Pintu Atas & Bawah',c:'SW',qty:doors*2,P:dW-12,L:6,T:3},{id:'LM-09',g:'Base Frame',name:'Base Rail Depan & Belakang',c:'SW',qty:2,P:width,L:8,T:4},{id:'LM-10',g:'Base Frame',name:'Base Rail Samping',c:'SW',qty:2,P:depth-8,L:8,T:4},{id:'LM-11',g:'Internal',name:'Hanging Rail',c:'SW',qty:1,P:iW,L:4,T:4},{id:'LM-12',g:'Internal',name:'Laci Drawer (opsional)',c:'PW',qty:2,P:iW-4,L:depth-8,T:1.5}]}
+function kursiComps({width=45,depth=45,h_seat=45,h_back=90}){const sc=Math.max(2,Math.floor((width-8)/15)),slW=Math.round((width-10)/sc);return[{id:'KR-01',g:'Kaki',name:'Kaki Depan',c:'SW',qty:2,P:h_seat,L:4,T:4},{id:'KR-02',g:'Kaki',name:'Kaki Belakang',c:'SW',qty:2,P:h_back,L:4,T:4},{id:'KR-03',g:'Rangka Seat',name:'Front Rail',c:'SW',qty:1,P:width-8,L:6,T:3},{id:'KR-04',g:'Rangka Seat',name:'Back Rail',c:'SW',qty:1,P:width-8,L:6,T:3},{id:'KR-05',g:'Rangka Seat',name:'Side Rail',c:'SW',qty:2,P:depth-8,L:6,T:3},{id:'KR-06',g:'Sandaran',name:'Top Rail Sandaran',c:'SW',qty:1,P:width-8,L:6,T:3},{id:'KR-07',g:'Sandaran',name:'Slat Sandaran',c:'SW',qty:sc,P:Math.max(8,h_back-h_seat-14),L:slW,T:2},{id:'KR-08',g:'Dudukan',name:'Panel Dudukan',c:'PW',qty:1,P:width-6,L:depth-6,T:1.8},{id:'KR-09',g:'Dudukan',name:'Corner Block',c:'SW',qty:4,P:6,L:6,T:6}]}
+function sofaComps({width=90,depth=80,height=85,seats=1}){const aW=15,lH=15,sW=width-2*aW,sc=Math.max(3,Math.floor(sW/18));return[{id:'SF-01',g:'Kaki',name:'Kaki Sofa',c:'SW',qty:4+(seats-1)*2,P:lH,L:7,T:7},{id:'SF-02',g:'Arm Rest',name:'Panel Arm',c:'PW',qty:2,P:height-lH,L:depth,T:1.8},{id:'SF-03',g:'Arm Rest',name:'Top Arm Rest',c:'SW',qty:2,P:depth,L:aW,T:4},{id:'SF-04',g:'Rangka Dudukan',name:'Rail Dudukan Depan & Belakang',c:'SW',qty:2,P:sW-8,L:7,T:4},{id:'SF-05',g:'Rangka Dudukan',name:'Rail Dudukan Samping',c:'SW',qty:2,P:depth-8,L:7,T:4},{id:'SF-06',g:'Rangka Dudukan',name:'Spring Slat',c:'SW',qty:sc,P:depth-8,L:5,T:2},{id:'SF-07',g:'Sandaran',name:'Rail Sandaran Atas & Bawah',c:'SW',qty:2,P:sW-8,L:7,T:4},{id:'SF-08',g:'Sandaran',name:'Panel Sandaran',c:'PW',qty:1,P:sW-8,L:height-lH-18,T:1.8},{id:'SF-09',g:'Sandaran',name:'Slat Sandaran Vertikal',c:'SW',qty:Math.max(3,Math.floor(sW/25)),P:height-lH-18,L:5,T:2}]}
+function mejaComps({length=120,width=75,height=75,top_t=3,legs=4,drawers=0,shelf=0}){const lSz=height<=50?5:(height<=75?6:7),lH=height-top_t,iL=length-2*lSz,iW=width-2*lSz,aH=Math.round(lH*0.25),dW=drawers>0?Math.round((iL-4*(drawers-1))/drawers):0,dH=Math.min(aH-4,16),dD=width-lSz*2-6,r=[];if(top_t>=3){const b=Math.ceil(width/12);r.push({id:'MJ-01',g:'Table Top',name:'Top Panel Solid Glue-up',c:'SW',qty:b,P:length,L:Math.ceil(width/b)+1,T:top_t})}else{r.push({id:'MJ-01',g:'Table Top',name:'Top Panel (Plywood)',c:'PW',qty:1,P:length,L:width,T:top_t});r.push({id:'MJ-02',g:'Table Top',name:'Lipping Samping',c:'SW',qty:2,P:width,L:3,T:top_t});r.push({id:'MJ-03',g:'Table Top',name:'Lipping Depan & Belakang',c:'SW',qty:2,P:length+6,L:3,T:top_t})}r.push({id:'MJ-04',g:'Kaki',name:'Kaki Meja',c:'SW',qty:legs,P:lH,L:lSz,T:lSz});r.push({id:'MJ-05',g:'Apron',name:'Apron Depan & Belakang',c:'SW',qty:2,P:iL,L:aH,T:2.5});r.push({id:'MJ-06',g:'Apron',name:'Apron Samping',c:'SW',qty:2,P:iW,L:aH,T:2.5});r.push({id:'MJ-07',g:'Apron',name:'Corner Block',c:'SW',qty:4,P:6,L:6,T:6});if(height>=70&&legs===4){r.push({id:'MJ-08',g:'Stretcher',name:'H-Stretcher Tengah',c:'SW',qty:1,P:iL,L:5,T:3});r.push({id:'MJ-09',g:'Stretcher',name:'Stretcher Samping',c:'SW',qty:2,P:Math.max(10,iW-10),L:5,T:3})}if(shelf){r.push({id:'MJ-10',g:'Rak Bawah',name:'Panel Rak Bawah',c:'PW',qty:1,P:iL+lSz,L:iW+lSz,T:1.8});r.push({id:'MJ-11',g:'Rak Bawah',name:'Lipping Rak',c:'SW',qty:2,P:iL+lSz,L:3,T:1.8})}if(drawers>0){r.push({id:'MJ-12',g:'Laci',name:'Drawer Front',c:'SW',qty:drawers,P:dW,L:dH+2,T:1.8});r.push({id:'MJ-13',g:'Laci',name:'Drawer Box Kiri & Kanan',c:'PW',qty:drawers*2,P:dD,L:dH,T:1.2});r.push({id:'MJ-14',g:'Laci',name:'Drawer Box Depan & Belakang',c:'PW',qty:drawers*2,P:dW-4,L:dH,T:1.2});r.push({id:'MJ-15',g:'Laci',name:'Drawer Bottom',c:'PW',qty:drawers,P:dD-2,L:dW-4,T:0.6});r.push({id:'MJ-16',g:'Laci',name:'Drawer Rail/Slide Block',c:'SW',qty:drawers*2,P:dD,L:2,T:2})}return r}
+const TMPL={bed:{label:'Tempat Tidur',icon:'🛏️',sub:[{l:'Single 90x200',d:{length:197,width:95,h_hb:90,h_fb:60}},{l:'Double 120x200',d:{length:207,width:127,h_hb:90,h_fb:60}},{l:'Queen 160x200',d:{length:207,width:167,h_hb:90,h_fb:60}},{l:'King 180x200',d:{length:207,width:187,h_hb:100,h_fb:65}},{l:'Custom',d:null}],dims:[{k:'length',l:'Panjang Total (cm)',mn:160,mx:260,st:1},{k:'width',l:'Lebar Total (cm)',mn:80,mx:220,st:1},{k:'h_hb',l:'Tinggi Headboard',mn:60,mx:150,st:1},{k:'h_fb',l:'Tinggi Footboard',mn:40,mx:110,st:1}],gen:bedComps},lemari:{label:'Lemari',icon:'🗄️',sub:[{l:'2 Pintu 120cm',d:{width:120,height:200,depth:60,doors:2}},{l:'3 Pintu 180cm',d:{width:180,height:200,depth:60,doors:3}},{l:'4 Pintu 240cm',d:{width:240,height:200,depth:60,doors:4}},{l:'Custom',d:null}],dims:[{k:'width',l:'Lebar (cm)',mn:80,mx:320,st:1},{k:'height',l:'Tinggi (cm)',mn:150,mx:260,st:1},{k:'depth',l:'Kedalaman (cm)',mn:40,mx:90,st:1},{k:'doors',l:'Jumlah Pintu',mn:1,mx:6,st:1}],gen:lemariComps},kursi:{label:'Kursi',icon:'🪑',sub:[{l:'Kursi Makan 45x45',d:{width:45,depth:45,h_seat:45,h_back:90}},{l:'Arm Chair 60x55',d:{width:60,depth:55,h_seat:45,h_back:95}},{l:'Bar Stool',d:{width:40,depth:40,h_seat:72,h_back:108}},{l:'Bangku Panjang',d:{width:120,depth:35,h_seat:45,h_back:45}},{l:'Custom',d:null}],dims:[{k:'width',l:'Lebar (cm)',mn:30,mx:150,st:1},{k:'depth',l:'Kedalaman (cm)',mn:25,mx:70,st:1},{k:'h_seat',l:'Tinggi Dudukan',mn:35,mx:85,st:1},{k:'h_back',l:'Tinggi Total',mn:40,mx:130,st:1}],gen:kursiComps},sofa:{label:'Sofa',icon:'🛋️',sub:[{l:'1 Seater 90x80',d:{width:90,depth:80,height:85,seats:1}},{l:'2 Seater 160x80',d:{width:160,depth:80,height:85,seats:2}},{l:'3 Seater 220x85',d:{width:220,depth:85,height:90,seats:3}},{l:'L-Shape 300x200',d:{width:300,depth:90,height:90,seats:4}},{l:'Custom',d:null}],dims:[{k:'width',l:'Lebar (cm)',mn:80,mx:360,st:1},{k:'depth',l:'Kedalaman (cm)',mn:60,mx:130,st:1},{k:'height',l:'Tinggi (cm)',mn:60,mx:115,st:1},{k:'seats',l:'Jumlah Seat',mn:1,mx:6,st:1}],gen:sofaComps},meja:{label:'Meja',icon:'🪵',sub:[{l:'Meja Makan 120x75',d:{length:120,width:75,height:75,top_t:3,legs:4,drawers:0,shelf:0}},{l:'Meja Makan 160x80',d:{length:160,width:80,height:75,top_t:3,legs:4,drawers:0,shelf:0}},{l:'Meja Makan 200x90',d:{length:200,width:90,height:75,top_t:3,legs:4,drawers:0,shelf:0}},{l:'Meja Kantor 120x60',d:{length:120,width:60,height:75,top_t:2.5,legs:4,drawers:1,shelf:0}},{l:'Meja Kantor 160x70',d:{length:160,width:70,height:75,top_t:2.5,legs:4,drawers:2,shelf:0}},{l:'Meja Kopi 90x50',d:{length:90,width:50,height:45,top_t:3,legs:4,drawers:0,shelf:1}},{l:'Meja Nakas 50x40',d:{length:50,width:40,height:60,top_t:2,legs:4,drawers:1,shelf:1}},{l:'Custom',d:null}],dims:[{k:'length',l:'Panjang (cm)',mn:40,mx:300,st:1},{k:'width',l:'Lebar (cm)',mn:30,mx:120,st:1},{k:'height',l:'Tinggi (cm)',mn:35,mx:110,st:1},{k:'top_t',l:'Tebal Top (cm)',mn:1.5,mx:6,st:0.5},{k:'legs',l:'Jumlah Kaki',mn:4,mx:6,st:2},{k:'drawers',l:'Jumlah Laci',mn:0,mx:4,st:1},{k:'shelf',l:'Rak Bawah (0/1)',mn:0,mx:1,st:1}],gen:mejaComps}};
+const ST={ftype:'bed',sidx:0,dims:{...TMPL.bed.sub[0].d},rendemen:35,waste:15,ba:4,bb:6,blen:400,dw:'SW-005',mm:{},ref:genRef(),ts:new Date().toISOString(),tab:'cutting'};
+function genRef(){return 'CALC-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,5).toUpperCase()}
+function newRef(){ST.ref=genRef();ST.ts=new Date().toISOString()}
+function f(n,d=4){return(+n).toFixed(d)}
+function fm(n){return 'Rp '+Math.round(n).toLocaleString('id-ID')}
+function fts(iso){if(!iso)return'--';const d=new Date(iso);return d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'})+' '+d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+function calcVol(comps,waste,mm,dw){const bm={};let tot=0;comps.forEach(c=>{const v=c.qty*c.P*c.L*c.T/1e6;tot+=v;let mid=c.c==='SW'?(mm[c.id]||dw):(c.c==='PW'?'PW-001':'TBD');if(!bm[mid])bm[mid]=0;bm[mid]+=v});let tlog=0,tcost=0;const bd=[];Object.entries(bm).forEach(([mid,net])=>{const m=getMat(mid);const ww=net*(1+waste/100);const isSW=m.c==='SW',isPW=m.c==='PW';const log=isSW?ww/(m.rd/100):net;let cost=0;if(isSW)cost=log*m.p;else if(isPW){const sh=Math.ceil(net*(1+waste/100)/2.9768);cost=sh*m.p}tlog+=isSW?log:0;tcost+=cost;bd.push({mid,m,net,ww,log,cost,isSW,isPW})});const sw=comps.filter(c=>c.c==='SW').reduce((s,c)=>s+c.qty*c.P*c.L*c.T/1e6,0);const pw=comps.filter(c=>c.c==='PW').reduce((s,c)=>s+c.qty*c.P*c.L*c.T/1e6,0);return{sw,pw,net:tot,tlog,tcost,bd}}
+function render(){
+  document.getElementById('ts-now').textContent=fts(new Date().toISOString());
+  const tmpl=TMPL[ST.ftype];let comps=[];try{comps=tmpl.gen(ST.dims||{})}catch(e){}
+  const grp={};comps.forEach(c=>{(grp[c.g]=grp[c.g]||[]).push(c)});
+  const vol=calcVol(comps,ST.waste,ST.mm,ST.dw);
+  const tp=comps.reduce((s,c)=>s+c.qty,0);
+  const sb=ST.ba*ST.bb*ST.blen/1e6;
+  const bn=Math.ceil(vol.tlog/sb);
+  const pa=comps.filter(c=>c.c==='PW').reduce((s,c)=>s+c.qty*c.P*c.L/1e4,0);
+  const ps=Math.ceil(pa*(1+ST.waste/100)/2.9768);
+  const dw=getMat(ST.dw);
+  document.getElementById('audit-strip').innerHTML=`<div class="ait">🔖 Ref: <strong>${ST.ref}</strong></div><div class="ait">🕐 <strong>${fts(ST.ts)}</strong></div><div class="ait">🪵 <strong>${dw.n}</strong></div><div class="ait">📐 Rdm: <strong>${ST.rendemen}%</strong></div><div class="ait">♻️ Waste: <strong>${ST.waste}%</strong></div><button onclick="newRef();render();" style="margin-left:auto;padding:3px 10px;border:1px solid var(--b);border-radius:20px;background:var(--s);font-size:10px;cursor:pointer;color:var(--t2)">🔄 Baru</button>`;
+  const mg=document.getElementById('metrics');mg.innerHTML='';
+  [{l:'Volume Bersih',v:f(vol.net,4)+' m³',s:'Net finished size',cls:''},{l:'Solid Wood Net',v:f(vol.sw,4)+' m³',s:'Sebelum rendemen',cls:'warn'},{l:'Vol Log Dibutuhkan',v:f(vol.tlog,4)+' m³',s:'Setelah ÷ rendemen',cls:'hi'},{l:'Est. Batang SW',v:bn+' btg',s:ST.ba+'x'+ST.bb+'x'+ST.blen+'cm',cls:'info'},{l:'Plywood',v:ps+' lembar',s:'122x244cm',cls:'info'},{l:'Est. Biaya Material',v:fm(vol.tcost),s:'SW + Plywood',cls:'pu'}].forEach(m=>{const d=document.createElement('div');d.className='mc '+m.cls;d.innerHTML='<div class="mlbl">'+m.l+'</div><div class="mval">'+m.v+'</div><div class="msub">'+m.s+'</div>';mg.appendChild(d)});
+  document.getElementById('formula').innerHTML='<span class="fstep">Net SW <b>'+f(vol.sw,4)+' m³</b></span><span class="fop">×</span><span class="fpct">(1+'+ST.waste+'%)</span><span class="fop">÷</span><span class="frdm">Rdm '+ST.rendemen+'%</span><span class="fop">=</span><span class="fres">📦 '+f(vol.tlog,4)+' m³ log</span>';
+  document.getElementById('tbl-meta').textContent=comps.length+' komponen · '+tp+' pcs';
+  const tb=document.getElementById('cl-body');tb.innerHTML='';
+  const GC=['#e8f5e9','#fff8e1','#e3f2fd','#fce4ec','#f3e5f5','#e0f2f1'];let gi=0;
+  Object.entries(grp).forEach(([g,gc])=>{
+    const c=GC[gi++%GC.length];const gr=document.createElement('tr');gr.className='grph';
+    gr.innerHTML='<td colspan="10" style="background:'+c+'!important">▸ '+g.toUpperCase()+'</td>';tb.appendChild(gr);
+    gc.forEach(comp=>{
+      const vp=comp.P*comp.L*comp.T/1e6,vt=comp.qty*vp;
+      const isSW=comp.c==='SW',isPW=comp.c==='PW';
+      const mid=isSW?(ST.mm[comp.id]||ST.dw):(isPW?'PW-001':'TBD');
+      const m=getMat(mid);const rdm=isSW?m.rd/100:1;
+      const vl=isSW?vt*(1+ST.waste/100)/rdm:(isPW?vt*(1+ST.waste/100):0);
+      const pc=isSW?'psw':(isPW?'pply':(comp.c==='NW'?'pnw':'ptbd'));
+      const pt=isSW?'SW':(isPW?'PLY':(comp.c==='NW'?'NW':'TBD'));
+      const sel=buildSelHtml(comp.id,comp.c,mid);
+      const tr=document.createElement('tr');
+      tr.innerHTML='<td><span class="tcode">'+comp.id+'</span> <span style="font-size:12px">'+comp.name+'</span></td><td class="tnum"><span class="pill '+pc+'">'+pt+'</span></td><td>'+sel+'</td><td class="tnum"><b>'+comp.qty+'</b></td><td class="tnum">'+comp.P+'</td><td class="tnum">'+comp.L+'</td><td class="tnum">'+comp.T+'</td><td class="tvol">'+f(vp,6)+'</td><td class="tvol">'+f(vt,6)+'</td><td class="tvol b">'+(comp.c==='NW'||comp.c==='TBD'?'—':f(vl,6))+'</td>';
+      tb.appendChild(tr);
+    });
+  });
+  tb.querySelectorAll('.msel').forEach(s=>{s.addEventListener('change',e=>{ST.mm[e.target.dataset.c]=e.target.value;render()})});
+  const tf=document.getElementById('cl-foot');
+  tf.innerHTML='<tr><td colspan="7" style="text-align:right;color:var(--t2)">Total Volume Bersih (Net):</td><td></td><td style="text-align:center;font-family:Courier New;color:var(--ac)">'+f(vol.net,6)+' m³</td><td></td></tr><tr><td colspan="7" style="text-align:right;color:var(--t2)">Total Volume Log Dibutuhkan (SW):</td><td></td><td></td><td style="text-align:center;font-family:Courier New;color:var(--ac);font-size:13px">'+f(vol.tlog,4)+' m³</td></tr>';
+  // Volume Detail
+  const bdH=vol.bd.map(b=>{const bg=CBG[b.m.c]||'#f5f5f5',tc=CCLR[b.m.c]||'#555';return'<div style="background:var(--s);border:1px solid var(--b);border-left:4px solid '+tc+';border-radius:var(--r);padding:10px 12px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><div style="font-size:12px;font-weight:700">'+b.m.np+'</div><span style="font-size:9px;padding:2px 6px;border-radius:20px;font-weight:700;background:'+bg+';color:'+tc+'">'+b.m.id+'</span></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;font-size:11px"><div><div style="color:var(--t3)">Vol Bersih</div><div style="font-weight:700">'+f(b.net,4)+' m³</div></div><div><div style="color:var(--t3)">'+(b.isSW?'Vol Log':'Vol+Waste')+'</div><div style="font-weight:700;color:'+tc+'">'+f(b.isSW?b.log:b.ww,4)+' m³</div></div><div><div style="color:var(--t3)">Est. Biaya</div><div style="font-weight:700">'+(b.cost>0?fm(b.cost):'—')+'</div></div></div>'+(b.isSW?'<div style="font-size:10px;color:var(--t3);margin-top:5px">Rdm: '+b.m.rd+'% · '+fm(b.m.p)+'/m³ · Kls '+b.m.kl+'</div>':'')+'</div>'}).join('');
+  document.getElementById('vol-detail').innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:9px;margin-bottom:14px">'+bdH+'</div><div style="background:var(--acb);border:2px solid var(--ac2);border-radius:var(--rl);padding:13px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ac);margin-bottom:8px">📋 Langkah Perhitungan</div>'+[['1','Vol Bersih (Net)',f(vol.net,4)+' m³','Semua komponen P×L×T'],['2','SW × (1+Waste '+ST.waste+'%)',f(vol.sw*(1+ST.waste/100),4)+' m³','Solid Wood + waste'],['3','÷ Rendemen per Kayu','—','Tiap jenis kayu beda'],['4','= Vol Log Total',f(vol.tlog,4)+' m³','Total log dibeli'],['5','Est. Batang SW',bn+' btg','@ '+ST.ba+'x'+ST.bb+'x'+ST.blen+'cm'],['6','Est. Plywood',ps+' lembar','@ 122x244cm'],['7','Total Biaya',fm(vol.tcost),'Harga per master']].map(([n,l,v,s])=>'<div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;font-size:12px"><span style="min-width:17px;height:17px;background:var(--ac);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700">'+n+'</span><span style="flex:1;color:var(--t2)">'+l+'</span><span style="font-weight:700;color:var(--act)">'+v+'</span><span style="font-size:10px;color:var(--t3);min-width:150px;text-align:right">'+s+'</span></div>').join('')+'</div>';
+  // BOM
+  const bom=buildBOM(comps,vol,tp,bn,ps);
+  document.getElementById('bom-preview').textContent=JSON.stringify(bom,null,2);
+  window._bom=bom;
+  renderMM();renderHist();buildWA(comps);
+}
+function buildSelHtml(cid,cat,cur){
+  let o='';
+  if(cat==='SW'){
+    o+='<optgroup label="-- Solid Wood --">';
+    MM.filter(m=>m.c==='SW').forEach(m=>{o+='<option value="'+m.id+'"'+(m.id===cur?' selected':'')+'>'+m.n+' (K'+m.kl+')</option>'});
+    o+='</optgroup><optgroup label="-- Plywood/Board --">';
+    MM.filter(m=>m.c==='PW').forEach(m=>{o+='<option value="'+m.id+'"'+(m.id===cur?' selected':'')+'>'+m.n+'</option>'});
+    o+='</optgroup>';
+  } else if(cat==='PW'){
+    o+='<optgroup label="-- Plywood/Board --">';
+    MM.filter(m=>m.c==='PW').forEach(m=>{o+='<option value="'+m.id+'"'+(m.id===cur?' selected':'')+'>'+m.n+'</option>'});
+    o+='</optgroup>';
+  } else {
+    o+='<optgroup label="-- Non-Wood --">';
+    MM.filter(m=>m.c==='NW').forEach(m=>{o+='<option value="'+m.id+'"'+(m.id===cur?' selected':'')+'>'+m.n+'</option>'});
+    o+='</optgroup>';
+  }
+  o+='<option value="TBD"'+(cur==='TBD'?' selected':'')+'>-- Kosong/TBD --</option>';
+  return '<select class="msel" data-c="'+cid+'">'+o+'</select>';
+}
+function buildBOM(comps,vol,tp,bn,ps){const dw=getMat(ST.dw);return{module:'WOOD_CALC_PRO',version:'2.0',ref:ST.ref,timestamp:ST.ts,furniture_type:ST.ftype.toUpperCase(),subtype:TMPL[ST.ftype].sub[ST.sidx].l,params:{dims:ST.dims,waste_pct:ST.waste,rendemen_default_pct:ST.rendemen,default_wood:{id:dw.id,nama:dw.n},batang_std_cm:[ST.ba,ST.bb,ST.blen]},summary:{total_components:comps.length,total_pcs:tp,vol_net_m3:+f(vol.net,6),vol_log_required_m3:+f(vol.tlog,4),plywood_sheets:ps,batang_needed:bn,est_cost_idr:Math.round(vol.tcost)},material_breakdown:vol.bd.map(b=>({material_id:b.mid,material_nama:b.m.n,category:b.m.c,vol_net_m3:+f(b.net,6),vol_log_m3:b.isSW?+f(b.log,4):null,est_cost_idr:b.cost>0?Math.round(b.cost):null})),items:comps.map(c=>{const isSW=c.c==='SW',isPW=c.c==='PW';const mid=isSW?(ST.mm[c.id]||ST.dw):(isPW?'PW-001':'TBD');const m=getMat(mid);const vp=c.P*c.L*c.T/1e6,vt=c.qty*vp;const vl=isSW?vt*(1+ST.waste/100)/(m.rd/100):null;return{code:c.id,group:c.g,name:c.name,material_id:mid,material_nama:m.n,material_cat:m.c,qty:c.qty,P_cm:c.P,L_cm:c.L,T_cm:c.T,vol_per_pcs_m3:+f(vp,6),vol_total_m3:+f(vt,6),vol_log_m3:vl!=null?+f(vl,6):null}})}}
+function renderMM(){const el=document.getElementById('mat-master-content');if(!el)return;let h='';['SW','PW','NW'].forEach(cat=>{const ms=MM.filter(m=>m.c===cat);const clr=CCLR[cat],bg=CBG[cat];h+='<div style="margin-bottom:18px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:'+clr+';margin-bottom:9px;display:flex;align-items:center;gap:7px"><span style="width:10px;height:10px;border-radius:50%;background:'+clr+';display:inline-block"></span>'+CLBL[cat]+' <span style="font-weight:400;font-size:10px;color:var(--t3)">'+ms.length+' item</span></div><div class="mmgrid">';ms.forEach(m=>{const cur=getMat(m.id);const ph=loadPH().filter(p=>p.id===m.id).slice(0,3);h+='<div class="mmcard"><div class="mmchdr"><span class="mmid">'+m.id+'</span><span class="mmname">'+m.n+'</span>'+(m.kl?'<span style="font-size:9px;padding:1px 6px;border-radius:20px;background:'+bg+';color:'+clr+';font-weight:700">Kls '+m.kl+'</span>':'')+'</div><div class="mmmeta"><div>📦 Unit: <b>'+m.u+'</b></div>'+(m.rd<100?'<div>🪵 Rdm: <b>'+m.rd+'%</b></div>':'')+(m.dn?'<div>⚖️ '+m.dn+' kg/m³</div>':'')+'</div><div class="mmpr"><span style="font-size:10px;color:var(--t3)">Harga:</span><input class="mmpinp" type="number" id="pp-'+m.id+'" value="'+cur.p+'" placeholder="Rp"><span style="font-size:10px;color:var(--t3)">/'+m.u+'</span><button class="mmsave" onclick="updatePrice(\''+m.id+'\',document.getElementById(\'pp-'+m.id+'\').value)">💾</button></div>'+(ph.length?'<div style="margin-top:5px;font-size:10px;color:var(--t3)">Hist: '+ph.map(p=>'<span class="phpill">'+fts(p.ts).split(' ')[0]+': '+fm(p.p)+'</span>').join(' ')+'</div>':'')+'</div>'});h+='</div></div>'});el.innerHTML=h}
+function renderHist(){const el=document.getElementById('hist-content');if(!el)return;const h=loadCH();if(!h.length){el.innerHTML='<div style="text-align:center;padding:28px;color:var(--t3);font-size:13px">Belum ada history. Klik "💾 Simpan History" di tab BOM JSON.</div>';return}let html='<div style="overflow-x:auto"><table class="htbl"><thead><tr><th>Ref</th><th>Timestamp</th><th>Furniture</th><th>Subtype</th><th>Vol Log m³</th><th>Est. Biaya</th><th>Kayu Default</th></tr></thead><tbody>';h.forEach(e=>{html+='<tr><td><span class="href">'+e.ref+'</span></td><td><span class="hts">'+fts(e.timestamp)+'</span></td><td>'+e.furniture_type+'</td><td style="font-size:11px">'+(e.subtype||'—')+'</td><td style="font-weight:700;color:var(--ac)">'+(e.summary?.vol_log_required_m3||0).toFixed(4)+' m³</td><td style="font-size:11px">'+(e.summary?.est_cost_idr?fm(e.summary.est_cost_idr):'—')+'</td><td style="font-size:11px">'+(e.params?.default_wood?.nama||'—')+'</td></tr>'});html+='</tbody></table></div>';el.innerHTML=html}
+function saveToHistory(){if(!window._bom)return;saveCH(window._bom);renderHist();showToast('💾 Tersimpan ke History!')}
+function buildWA(comps){const el=document.getElementById('wood-assign-container');if(!el)return;const sw=comps.filter(c=>c.c==='SW');if(!sw.length){el.innerHTML='<div style="font-size:11px;color:var(--t3)">Tidak ada komponen SW.</div>';return}const w=document.createElement('div');w.className='wawrap';const h=document.createElement('div');h.className='wahdr';h.innerHTML='<span>Override per Komponen</span><span style="font-weight:400;font-size:9px">'+sw.length+' SW</span>';w.appendChild(h);sw.forEach(c=>{const row=document.createElement('div');row.className='warow';const cur=ST.mm[c.id]||ST.dw;const s=document.createElement('select');s.className='wasel';MM.filter(m=>m.c==='SW'||m.c==='TBD').forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.n+(m.kl?' K'+m.kl:'');if(m.id===cur)o.selected=true;s.appendChild(o)});s.addEventListener('change',e=>{ST.mm[c.id]=e.target.value;render()});row.innerHTML='<span class="wacode">'+c.id+'</span><span class="waname">'+c.name+'</span>';row.appendChild(s);w.appendChild(row)});el.innerHTML='';el.appendChild(w)}
+function buildDWS(){const s=document.getElementById('sel-default-wood');if(!s)return;s.innerHTML='';MM.filter(m=>m.c==='SW').forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.n+' — Kls '+m.kl+' (Rdm '+m.rd+'%)';if(m.id===ST.dw)o.selected=true;s.appendChild(o)});s.onchange=e=>{ST.dw=e.target.value;const w=getMat(ST.dw);ST.rendemen=w.rd;document.getElementById('rng-rendemen').value=w.rd;document.getElementById('inp-rendemen').value=w.rd;ST.mm={};newRef();render()}}
+function switchTab(t){ST.tab=t;const ns=['cutting','volume','master','history','bom'];document.querySelectorAll('.tbtn').forEach((b,i)=>b.classList.toggle('active',ns[i]===t));document.querySelectorAll('.tcont').forEach(c=>c.classList.remove('active'));document.getElementById('tab-'+t).classList.add('active')}
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+function copyBOM(){const txt=document.getElementById('bom-preview').textContent;navigator.clipboard.writeText(txt).then(()=>showToast('✅ BOM JSON tersalin!'))}
+function downloadBOM(){const txt=document.getElementById('bom-preview').textContent;const b=new Blob([txt],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='BOM_'+ST.ref+'.json';a.click();showToast('⬇️ File JSON diunduh!')}
+function downloadCSV(){if(!window._bom)return;const d=window._bom;let csv='No,Kode,Grup,Nama,Material ID,Nama Material,Kategori,Qty,P,L,T,Vol/pcs,Vol Total,Vol Log\n';d.items.forEach((c,i)=>{csv+=[i+1,c.code,c.group,'"'+c.name+'"',c.material_id,c.material_nama,c.material_cat,c.qty,c.P_cm,c.L_cm,c.T_cm,c.vol_per_pcs_m3,c.vol_total_m3,c.vol_log_m3??''].join(',')+'\n'});csv+='\n,,,,,,,,,,,,,Ref,'+d.ref+'\n,,,,,,,,,,,,,Timestamp,'+d.timestamp+'\n,,,,,,,,,,,,,Vol Log,'+d.summary.vol_log_required_m3+'\n';const b=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='CuttingList_'+ST.ref+'.csv';a.click();showToast('📄 CSV diunduh!')}
+function buildFTabs(){const c=document.getElementById('ftabs');c.innerHTML='';Object.entries(TMPL).forEach(([key,t])=>{const b=document.createElement('button');b.className='ftab'+(ST.ftype===key?' active':'');b.innerHTML='<span>'+t.icon+'</span>'+t.label;b.addEventListener('click',()=>{ST.ftype=key;ST.sidx=0;ST.dims={...(TMPL[key].sub[0].d||{})};ST.mm={};newRef();buildFTabs();buildCP();buildDWS();render()});c.appendChild(b)})}
+function buildCP(){const tmpl=TMPL[ST.ftype];const s=document.getElementById('subtype-sel');s.innerHTML='';tmpl.sub.forEach((sub,i)=>{const o=document.createElement('option');o.value=i;o.textContent=sub.l;s.appendChild(o)});s.value=ST.sidx;s.onchange=e=>{ST.sidx=+e.target.value;if(tmpl.sub[ST.sidx].d)ST.dims={...tmpl.sub[ST.sidx].d};ST.mm={};newRef();buildCP();render()};const dc=document.getElementById('dims-container');dc.innerHTML='';const g=document.createElement('div');g.className='dgrid';tmpl.dims.forEach(d=>{const fg=document.createElement('div');fg.className='fg';const l=document.createElement('label');l.textContent=d.l;const i=document.createElement('input');i.type='number';i.className='fc';i.min=d.mn;i.max=d.mx;i.step=d.st;i.value=ST.dims?.[d.k]??0;i.addEventListener('input',e=>{ST.dims={...ST.dims,[d.k]:+e.target.value};newRef();render()});fg.append(l,i);g.appendChild(fg)});dc.appendChild(g)}
+function syncP(rid,nid,sk){const r=document.getElementById(rid),n=document.getElementById(nid);r.addEventListener('input',e=>{n.value=e.target.value;ST[sk]=+e.target.value;render()});n.addEventListener('input',e=>{r.value=e.target.value;ST[sk]=+e.target.value;render()})}
+syncP('rng-rendemen','inp-rendemen','rendemen');syncP('rng-waste','inp-waste','waste');
+['inp-ba','inp-bb','inp-blen'].forEach((id,i)=>{document.getElementById(id).addEventListener('input',e=>{ST[['ba','bb','blen'][i]]=+e.target.value;render()})});
+buildFTabs();buildCP();buildDWS();render();
+setInterval(()=>{const e=document.getElementById('ts-now');if(e)e.textContent=fts(new Date().toISOString())},30000);
+</script>
+</body>
 </html>
