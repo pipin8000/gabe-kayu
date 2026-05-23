@@ -115,6 +115,71 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
 .no-hist{text-align:center;padding:20px;color:#8a8680;font-size:13px;}
 
 
+
+/* ═══ ACTION BUTTONS ═══ */
+.action-menu { position:relative; display:inline-block; }
+.action-dropdown {
+  position:absolute; right:0; top:100%; margin-top:4px;
+  background:#fff; border:1px solid #d8d5cb; border-radius:10px;
+  box-shadow:0 8px 24px rgba(0,0,0,.15); z-index:100;
+  min-width:160px; overflow:hidden; display:none;
+}
+.action-dropdown.show { display:block; }
+.action-item {
+  display:flex; align-items:center; gap:8px;
+  padding:9px 14px; font-size:13px; cursor:pointer;
+  transition:background .1s; color:#1a1917;
+  border:none; background:none; width:100%; text-align:left;
+  font-family:inherit;
+}
+.action-item:hover { background:#f5f4f0; }
+.action-item.danger { color:#8b2020; }
+.action-item.danger:hover { background:#fceaea; }
+.action-item + .action-item { border-top:1px solid #f0efe9; }
+.action-sep { height:1px; background:#e8e6df; margin:2px 0; }
+
+/* ═══ IMPORT/EXPORT TOOLBAR ═══ */
+.io-toolbar {
+  background:#fff; border:1px solid #d8d5cb; border-radius:12px;
+  padding:10px 16px; margin-bottom:16px;
+  display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+}
+.io-label { font-size:12px; font-weight:700; color:#8a8680; margin-right:4px; }
+.io-btn {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:6px 12px; border-radius:8px; font-size:12px; font-weight:600;
+  cursor:pointer; transition:all .15s; border:1.5px solid #d8d5cb;
+  background:#fff; color:#5a5750; font-family:inherit;
+}
+.io-btn:hover { background:#f0efe9; border-color:#b0ada0; }
+.io-btn.csv  { color:#1a5c1a; border-color:#a0d0a0; background:#f0faf0; }
+.io-btn.csv:hover { background:#e0f5e0; }
+.io-btn.excel{ color:#1a5a2a; border-color:#80c080; background:#e8f5e8; }
+.io-btn.excel:hover { background:#d0edd0; }
+.io-btn.pdf  { color:#8b1a1a; border-color:#e0a0a0; background:#fef0f0; }
+.io-btn.pdf:hover { background:#fde0e0; }
+.io-btn.import { color:#1a4a7a; border-color:#a0c0e0; background:#f0f4fb; }
+.io-btn.import:hover { background:#e0ecf8; }
+.io-sep { width:1px; height:24px; background:#d8d5cb; margin:0 4px; }
+
+/* VIEW MODAL */
+.view-modal-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+.view-field { background:#f5f4f0; border-radius:8px; padding:10px 12px; }
+.view-field-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#8a8680; margin-bottom:3px; }
+.view-field-value { font-size:14px; font-weight:600; color:#1a1917; }
+
+/* IMPORT MODAL */
+.import-zone {
+  border:2px dashed #d8d5cb; border-radius:12px; padding:30px;
+  text-align:center; cursor:pointer; transition:all .2s;
+  background:#fafaf8;
+}
+.import-zone:hover, .import-zone.drag { border-color:#2d5a27; background:#eaf3e8; }
+.import-zone .icon { font-size:36px; margin-bottom:8px; }
+.import-preview { margin-top:12px; background:#f5f4f0; border-radius:8px; padding:10px; font-size:12px; max-height:200px; overflow-y:auto; }
+.import-row { display:flex; gap:8px; padding:4px 0; border-bottom:1px solid #e8e6df; }
+.import-row:last-child { border-bottom:none; }
+
 /* ═══ LIST VIEW ═══ */
 .view-toggle { display:flex; gap:4px; }
 .view-btn { 
@@ -228,10 +293,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
       <div class="page-title">📦 Material Master</div>
       <div class="page-sub">Database jenis kayu & material · Update harga dengan historis otomatis</div>
     </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn btn-secondary" onclick="exportPriceList()">📄 Export Price List</button>
-      <button class="btn btn-primary" onclick="openAddModal()">➕ Tambah Material Baru</button>
-    </div>
+    <button class="btn btn-primary" onclick="openAddModal()">➕ Tambah Material Baru</button>
   </div>
 
   <!-- Stats -->
@@ -258,6 +320,18 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
         <button class="view-btn" id="btn-list" onclick="setView('list')">☰ List</button>
       </div>
     </div>
+  </div>
+
+  <!-- Import/Export Toolbar -->
+  <div class="io-toolbar">
+    <span class="io-label">📤 EXPORT:</span>
+    <button class="io-btn csv"   onclick="exportCSV()">📊 CSV</button>
+    <button class="io-btn excel" onclick="exportExcel()">📗 Excel</button>
+    <button class="io-btn pdf"   onclick="exportPDF()">📕 PDF</button>
+    <div class="io-sep"></div>
+    <span class="io-label">📥 IMPORT:</span>
+    <button class="io-btn import" onclick="openImportModal()">📂 Upload CSV/Excel</button>
+    <div style="margin-left:auto;font-size:11px;color:#8a8680;" id="io-status"></div>
   </div>
 
   <!-- Materials Grid — Card View -->
@@ -291,6 +365,59 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
   </div>
 
 </div><!-- end app -->
+
+
+<!-- VIEW MATERIAL MODAL -->
+<div class="modal-overlay" id="view-modal">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-hdr">
+      <h3 id="view-modal-title">👁 Detail Material</h3>
+      <button class="modal-close" onclick="closeModal('view-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="view-modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('view-modal')">Tutup</button>
+      <button class="btn btn-secondary" onclick="exportViewPDF()" style="color:#8b1a1a;border-color:#e0a0a0;">📕 PDF</button>
+      <button class="btn btn-primary" id="view-edit-btn" onclick="">✏️ Edit</button>
+    </div>
+  </div>
+</div>
+
+<!-- IMPORT MODAL -->
+<div class="modal-overlay" id="import-modal">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-hdr">
+      <h3>📥 Import Material dari File</h3>
+      <button class="modal-close" onclick="closeModal('import-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:#fff8e8;border:1px solid #f0c060;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#7a5a10;">
+        ⚠️ <b>Format CSV/Excel yang diterima:</b> ID, Nama, NamaPanjang, Kategori(SW/PW/NW), Kelas, Rendemen, Densitas, Harga, Satuan
+      </div>
+      <div class="import-zone" id="import-zone" onclick="document.getElementById('import-file').click()"
+           ondragover="event.preventDefault();this.classList.add('drag')"
+           ondragleave="this.classList.remove('drag')"
+           ondrop="handleImportDrop(event)">
+        <div class="icon">📂</div>
+        <div style="font-weight:600;margin-bottom:4px;">Klik atau drag & drop file</div>
+        <div style="font-size:12px;color:#8a8680;">CSV, Excel (.xlsx, .xls)</div>
+      </div>
+      <input type="file" id="import-file" accept=".csv,.xlsx,.xls" style="display:none" onchange="handleImportFile(event)">
+      <div id="import-preview-area" style="display:none;">
+        <div style="font-size:12px;font-weight:600;color:#2d5a27;margin:12px 0 6px;">✅ Preview Data (<span id="import-count">0</span> baris):</div>
+        <div class="import-preview" id="import-preview"></div>
+      </div>
+      <div id="import-template-link" style="margin-top:12px;font-size:12px;text-align:center;">
+        <span style="color:#8a8680;">Belum punya template? </span>
+        <button onclick="downloadImportTemplate()" style="background:none;border:none;color:#2d5a27;cursor:pointer;font-size:12px;font-weight:600;text-decoration:underline;">Download Template CSV</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('import-modal')">Batal</button>
+      <button class="btn btn-primary" id="import-save-btn" onclick="processImport()" disabled style="opacity:.5;">📥 Import Sekarang</button>
+    </div>
+  </div>
+</div>
 
 <!-- ADD/EDIT MODAL -->
 <div class="modal-overlay" id="mat-modal">
@@ -606,10 +733,21 @@ function renderMaterials() {
         ${m.ket?`<div style="margin-top:8px;font-size:11px;color:#8a8680;font-style:italic">${m.ket}</div>`:''}
       </div>
       <div class="mat-card-footer">
-        <button class="card-btn info" onclick="showHistory('${m.id||m._id}','${m.nama}')">📈 Historis Harga</button>
+        <button class="card-btn info" onclick="viewMaterial('${m.id||m._id}')">👁 View</button>
         ${canEdit ? `<button class="card-btn" onclick="openEditModal('${m.id||m._id}')">✏️ Edit</button>` : ''}
-        ${canEdit && currentUser.role==='admin' ? `<button class="card-btn danger" onclick="toggleAktif('${m.id||m._id}',${m.aktif!==false})">${m.aktif!==false?'🚫 Nonaktifkan':'✅ Aktifkan'}</button>` : ''}
-      </div>`;
+        ${canEdit ? `<button class="card-btn" onclick="duplicateMaterial('${m.id||m._id}')" title="Duplikat">⧉ Duplikat</button>` : ''}
+        <div class="action-menu">
+          <button class="card-btn" onclick="toggleActionMenu(event,'menu-${m.id||m._id}')">⋯ Lainnya</button>
+          <div class="action-dropdown" id="menu-${m.id||m._id}">
+            <button class="action-item" onclick="showHistory('${m.id||m._id}','${m.nama}');closeAllMenus()">📈 Historis Harga</button>
+            <button class="action-item" onclick="exportSinglePDF('${m.id||m._id}');closeAllMenus()">📕 Export PDF</button>
+            <button class="action-item" onclick="exportSingleCSV('${m.id||m._id}');closeAllMenus()">📊 Export CSV</button>
+            <div class="action-sep"></div>
+            ${canEdit && currentUser.role==='admin' ? `<button class="action-item" onclick="toggleAktif('${m.id||m._id}',${m.aktif!==false});closeAllMenus()">${m.aktif!==false?'🚫 Nonaktifkan':'✅ Aktifkan'}</button>` : ''}
+            ${currentUser.role==='admin' ? `<button class="action-item danger" onclick="deleteMaterial('${m.id||m._id}','${m.nama}');closeAllMenus()">🗑 Hapus</button>` : ''}
+          </div>
+        </div>
+      </div>\`;
     grid.appendChild(card);
   });
   // If in list view, also update list
