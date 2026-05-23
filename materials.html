@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <script src="lang.js"></script>
 <meta charset="UTF-8">
-<script src="lang.js"></script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Material Master v3.4 — Gabe International Hub</title>
 <style>
@@ -1345,8 +1345,7 @@ window.closeModal = function(id) {
 
 window.exportCSV = function() {
   if (!allMaterials.length) { showToast('⚠️ Tidak ada data!'); return; }
-  var csv = 'ID,Nama,Nama Panjang,Kategori,Kelas,Rendemen(%),Densitas(kg/m3),Harga Aktif,Satuan,Status,Keterangan
-';
+  var csv = 'ID,Nama,Nama Panjang,Kategori,Kelas,Rendemen(%),Densitas(kg/m3),Harga Aktif,Satuan,Status,Keterangan\n';
   allMaterials.forEach(function(m) {
     csv += [
       m.id||m._id, m.nama,

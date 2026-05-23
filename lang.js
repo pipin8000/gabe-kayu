@@ -1,9 +1,13 @@
+(function(){
+if(window._langLoaded) return;
+window._langLoaded = true;
+
 // ═══════════════════════════════════════════════════════════
 // GABE INTERNATIONAL HUB — Language System (i18n)
 // Languages: Indonesian (id) | English (en)
 // ═══════════════════════════════════════════════════════════
 
-const LANG = {
+var LANG = LANG || {
 
   // ── GENERAL ──────────────────────────────────────────────
   id: {
@@ -612,7 +616,7 @@ const LANG = {
 // i18n Engine
 // ═══════════════════════════════════════════════════════════
 
-var _currentLang = localStorage.getItem('gabe_lang') || 'id';
+var _currentLang = _currentLang || localStorage.getItem('gabe_lang') || 'id';
 
 function t(key) {
   var dict = LANG[_currentLang] || LANG['id'];
@@ -668,3 +672,5 @@ function buildLangToggle() {
 document.addEventListener('DOMContentLoaded', function() {
   applyLang();
 });
+
+})();
