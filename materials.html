@@ -1,10 +1,11 @@
-<!-- MATERIALS v3.3 CLEAN BUILD - NO TEMPLATE LITERALS - 2026-05-23 -->
+<!-- MATERIALS v3.4 CLEAN BUILD - NO TEMPLATE LITERALS - 2026-05-23 -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Material Master v3.3 — Gabe International Hub</title>
+<title>Material Master v3.4 — Gabe International Hub</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a1917;font-size:14px;line-height:1.5;}
@@ -559,6 +560,7 @@ import {
   serverTimestamp, Timestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+console.log('MATERIALS VERSION: 3.3 - BUILD 2026-05-23');
 const FC = {
   apiKey:"AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",
   authDomain:"gabe-international-hub.firebaseapp.com",
@@ -916,25 +918,99 @@ function renderListView() {
     var catClr2 = CAT_COLOR[m.cat]||'#555';
     var harga2 = m.harga||0;
     var updDate2 = m.harga_updated_at ? fts(m.harga_updated_at) : (m.createdAt ? fts(m.createdAt) : '—');
-    var editBtn2 = canEdit ? '<button class="list-btn primary" onclick="openPriceModal(''+mid2+'')" title="Update Harga">💰</button><button class="list-btn" onclick="openEditModal(''+mid2+'')" title="Edit">✏️</button>' : '';
-    var delBtn2 = currentUser.role==='admin' ? '<button class="list-btn" onclick="deleteMaterial(''+mid2+'',''+m.nama+'')" style="color:#8b2020;border-color:#f5c2c2;" title="Hapus">🗑</button>' : '';
     var tr = document.createElement('tr');
     tr.style.opacity = aktif2 ? '1' : '0.55';
-    tr.innerHTML =
-      '<td><span style="font-family:monospace;font-size:11px;background:#f0efe9;color:#5a5750;padding:2px 7px;border-radius:4px;">'+mid2+'</span></td>' +
-      '<td><div style="font-weight:600">'+m.nama+'</div><div style="font-size:11px;color:#8a8680">'+(m.namaPanjang||'')+'</div></td>' +
-      '<td><span class="mat-cat-badge" style="background:'+catBg2+';color:'+catClr2+';">'+(CAT_LABEL[m.cat]||m.cat)+'</span></td>' +
-      '<td style="text-align:center;font-size:12px">'+(m.kelas||'—')+'</td>' +
-      '<td><span class="rdm-badge">'+(m.rendemen||'—')+'%</span></td>' +
-      '<td><div style="font-weight:700;color:#2d5a27">'+fm(harga2)+'</div><div style="font-size:10px;color:#8a8680">/ '+(m.unit||'m³')+'</div></td>' +
-      '<td style="font-size:11px;color:#8a8680">'+updDate2+'</td>' +
-      '<td><span style="font-size:10px;padding:3px 8px;border-radius:20px;font-weight:700;background:'+(aktif2?'#eaf3e8':'#fceaea')+';color:'+(aktif2?'#2d5a27':'#8b2020')+';">'+(aktif2?'✅ Aktif':'🚫 Nonaktif')+'</span></td>' +
-      '<td><div style="display:flex;gap:4px;">' +
-        '<button class="list-btn" onclick="viewMaterial(''+mid2+'')" title="View">👁</button>' +
-        editBtn2 +
-        '<button class="list-btn info" onclick="showHistory(''+mid2+'',''+m.nama+'')" title="Historis">📈</button>' +
-        delBtn2 +
-      '</div></td>';
+
+    // Col 1: ID
+    var td1 = document.createElement('td');
+    var idSpan = document.createElement('span');
+    idSpan.style.cssText = 'font-family:monospace;font-size:11px;background:#f0efe9;color:#5a5750;padding:2px 7px;border-radius:4px;';
+    idSpan.textContent = mid2;
+    td1.appendChild(idSpan);
+
+    // Col 2: Name
+    var td2 = document.createElement('td');
+    var nameDiv = document.createElement('div');
+    nameDiv.style.fontWeight = '600';
+    nameDiv.textContent = m.nama;
+    var subDiv = document.createElement('div');
+    subDiv.style.cssText = 'font-size:11px;color:#8a8680;';
+    subDiv.textContent = m.namaPanjang||'';
+    td2.append(nameDiv, subDiv);
+
+    // Col 3: Category
+    var td3 = document.createElement('td');
+    var catSpan = document.createElement('span');
+    catSpan.className = 'mat-cat-badge';
+    catSpan.style.background = catBg2;
+    catSpan.style.color = catClr2;
+    catSpan.textContent = {SW:'Solid Wood',PW:'Plywood',NW:'Non-Wood'}[m.cat]||m.cat;
+    td3.appendChild(catSpan);
+
+    // Col 4: Kelas
+    var td4 = document.createElement('td');
+    td4.style.cssText = 'text-align:center;font-size:12px;';
+    td4.textContent = m.kelas||'—';
+
+    // Col 5: Rendemen
+    var td5 = document.createElement('td');
+    var rdmSpan = document.createElement('span');
+    rdmSpan.className = 'rdm-badge';
+    rdmSpan.textContent = (m.rendemen||'—') + '%';
+    td5.appendChild(rdmSpan);
+
+    // Col 6: Price
+    var td6 = document.createElement('td');
+    var priceDiv = document.createElement('div');
+    priceDiv.style.cssText = 'font-weight:700;color:#2d5a27;';
+    priceDiv.textContent = fm(harga2);
+    var unitDiv = document.createElement('div');
+    unitDiv.style.cssText = 'font-size:10px;color:#8a8680;';
+    unitDiv.textContent = '/ ' + (m.unit||'m³');
+    td6.append(priceDiv, unitDiv);
+
+    // Col 7: Update date
+    var td7 = document.createElement('td');
+    td7.style.cssText = 'font-size:11px;color:#8a8680;';
+    td7.textContent = updDate2;
+
+    // Col 8: Status
+    var td8 = document.createElement('td');
+    var statusSpan = document.createElement('span');
+    statusSpan.style.cssText = 'font-size:10px;padding:3px 8px;border-radius:20px;font-weight:700;background:' + (aktif2?'#eaf3e8':'#fceaea') + ';color:' + (aktif2?'#2d5a27':'#8b2020') + ';';
+    statusSpan.textContent = aktif2 ? '✅ Aktif' : '🚫 Nonaktif';
+    td8.appendChild(statusSpan);
+
+    // Col 9: Actions
+    var td9 = document.createElement('td');
+    var actDiv = document.createElement('div');
+    actDiv.style.cssText = 'display:flex;gap:4px;';
+
+    var vBtn = mkBtn('list-btn', (function(id){ return function(){ viewMaterial(id); }; })(mid2), '👁');
+    vBtn.title = 'View';
+    actDiv.appendChild(vBtn);
+
+    if (canEdit) {
+      var pBtn = mkBtn('list-btn primary', (function(id){ return function(){ openPriceModal(id); }; })(mid2), '💰');
+      pBtn.title = 'Update Harga';
+      var eBtn = mkBtn('list-btn', (function(id){ return function(){ openEditModal(id); }; })(mid2), '✏️');
+      eBtn.title = 'Edit';
+      actDiv.append(pBtn, eBtn);
+    }
+
+    var hBtn = mkBtn('list-btn info', (function(id,nm){ return function(){ showHistory(id,nm); }; })(mid2, m.nama), '📈');
+    hBtn.title = 'Historis';
+    actDiv.appendChild(hBtn);
+
+    if (currentUser.role==='admin') {
+      var dBtn = mkBtn('list-btn', (function(id,nm){ return function(){ deleteMaterial(id,nm); }; })(mid2, m.nama), '🗑');
+      dBtn.style.cssText = 'color:#8b2020;border-color:#f5c2c2;';
+      dBtn.title = 'Hapus';
+      actDiv.appendChild(dBtn);
+    }
+
+    td9.appendChild(actDiv);
+    tr.append(td1,td2,td3,td4,td5,td6,td7,td8,td9);
     tbody.appendChild(tr);
   });
 }
