@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
+<script src="lang.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>User Management — Gabe International Hub</title>
 <style>
@@ -82,17 +83,18 @@ tbody tr:last-child td{border-bottom:none;}
   <div class="user-info">
     <div class="user-avatar" id="ua">A</div>
     <span id="uname">Admin</span>
-    <button class="logout-btn" onclick="doLogout()">Logout</button>
+    <span id="lang-toggle-wrap"></span>
+    <button class="logout-btn" onclick="doLogout()" data-i18n="nav_logout">Logout</button>
   </div>
 </nav>
 
 <div class="app">
   <div class="page-hdr">
     <div>
-      <div class="page-title">Manajemen User</div>
-      <div class="page-sub">Kelola akun dan hak akses pengguna sistem</div>
+      <div class="page-title" data-i18n="adm_title">Manajemen User</div>
+      <div class="page-sub" data-i18n="adm_subtitle">Kelola akun dan hak akses pengguna sistem</div>
     </div>
-    <button class="btn btn-primary" onclick="openAddModal()">➕ Tambah User</button>
+    <button class="btn btn-primary" onclick="openAddModal()" data-i18n="adm_add_user">➕ Tambah User</button>
   </div>
 
   <!-- Role Info -->

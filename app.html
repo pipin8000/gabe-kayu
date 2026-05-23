@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="lang.js"></script>
 <title>Wood Volume Calculator — Gabe International Hub</title>
 <style>
 :root{--bg:#f5f4f0;--s:#fff;--s2:#f0efe9;--s3:#e8e6df;--b:#d8d5cb;--b2:#c4c0b2;--t:#1a1917;--t2:#5a5750;--t3:#8a8680;--ac:#2d5a27;--ac2:#3d7a35;--acb:#eaf3e8;--act:#1e4219;--am:#92580a;--amb:#fef3e0;--amt:#6b3e04;--bl:#1a4a7a;--blb:#e8f0fb;--blt:#102d4e;--rd:#8b2020;--rdb:#fceaea;--pu:#5c2d91;--pub:#f3eafb;--sh:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);--r:8px;--rl:12px;--rxl:16px;}
@@ -125,6 +126,8 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
 .wacode{font-family:'Courier New',monospace;font-size:10px;color:var(--t3);min-width:44px;}
 .waname{flex:1;font-size:11px;}
 .wasel{font-size:11px;padding:3px 5px;border:1px solid var(--b);border-radius:5px;background:var(--s);color:var(--t);max-width:130px;}
+.wahdr{padding:6px 11px;background:var(--s3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t2);display:flex;align-items:center;justify-content:space-between;}
+.wa-none-badge{font-size:9px;padding:1px 6px;border-radius:20px;background:#f3eafb;color:#5c2d91;font-weight:700;border:1px solid #d0a0e8;}
 /* Audit */
 .astrip{background:var(--s2);border:1px solid var(--b);border-radius:var(--r);padding:7px 13px;display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
 .ait{font-size:11px;color:var(--t2);display:flex;align-items:center;gap:4px;}
@@ -307,7 +310,8 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
     <button id="settings-btn" onclick="showSettingsModal()" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:#fff;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px;">⚙️ Pengaturan</button>
     <a href="materials.html" id="materials-link" style="display:none;background:rgba(255,255,255,.15);color:#fff;padding:3px 10px;border-radius:6px;text-decoration:none;font-size:11px;">🪵 Material</a>
     <a href="admin.html" id="admin-link" style="display:none;background:rgba(255,255,255,.15);color:#fff;padding:3px 10px;border-radius:6px;text-decoration:none;font-size:11px;">👥 Users</a>
-    <button onclick="doLogout()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px;">Logout</button>
+    <span id="lang-toggle-wrap"></span>
+    <button onclick="doLogout()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px;" data-i18n="nav_logout">Keluar</button>
   </div>
 </div>
 <nav class="topbar">
@@ -326,34 +330,34 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
     <div class="card">
       <div class="chdr"><h3>⚙️ Parameter &amp; Konfigurasi</h3></div>
       <div class="cbody">
-        <div class="csec"><div class="stitle">Tipe &amp; Ukuran</div>
-          <div class="fg"><label>Pilih Tipe Standar</label><select class="fc" id="subtype-sel"></select></div>
+        <div class="csec"><div class="stitle" data-i18n="cfg_type">Tipe & Ukuran</div>
+          <div class="fg"><label data-i18n="cfg_select_type">Pilih Tipe Standar</label><select class="fc" id="subtype-sel"></select></div>
           <div id="dims-container"></div>
         </div>
-        <div class="csec"><div class="stitle">Default Jenis Kayu</div>
-          <div class="fg"><label>Kayu Utama (default semua komponen SW)</label>
+        <div class="csec"><div class="stitle" data-i18n="cfg_wood">Default Jenis Kayu</div>
+          <div class="fg"><label data-i18n="cfg_wood_label">Kayu Utama (default semua komponen SW)</label>
             <select class="fc" id="sel-default-wood"></select></div>
         </div>
-        <div class="csec"><div class="stitle">Parameter Log &amp; Waste</div>
+        <div class="csec"><div class="stitle" data-i18n="cfg_params">Parameter Log & Waste</div>
           <div class="pgroup">
-            <div class="prow"><span class="plbl">Rendemen Log</span>
+            <div class="prow"><span class="plbl" data-i18n="cfg_rendemen">Rendemen Log</span>
               <div style="display:flex;align-items:center;gap:5px">
                 <input type="range" min="20" max="70" value="35" id="rng-rendemen" style="width:75px">
                 <input type="number" class="pinp" min="20" max="70" value="35" id="inp-rendemen"><span style="font-size:11px;color:var(--t3)">%</span>
               </div></div>
-            <div class="prow"><span class="plbl">Waste Factor</span>
+            <div class="prow"><span class="plbl" data-i18n="cfg_waste">Waste Factor</span>
               <div style="display:flex;align-items:center;gap:5px">
                 <input type="range" min="5" max="40" value="15" id="rng-waste" style="width:75px">
                 <input type="number" class="pinp" min="5" max="40" value="15" id="inp-waste"><span style="font-size:11px;color:var(--t3)">%</span>
               </div></div>
-            <div class="prow"><span class="plbl">Std batang</span>
+            <div class="prow"><span class="plbl" data-i18n="cfg_std_batang">Std batang</span>
               <div style="display:flex;align-items:center;gap:3px;font-size:11px">
                 <input type="number" class="pinp" style="width:42px" value="4" id="inp-ba">×
                 <input type="number" class="pinp" style="width:42px" value="6" id="inp-bb">×
                 <input type="number" class="pinp" style="width:50px" value="400" id="inp-blen">cm
               </div></div>
           </div></div>
-        <div class="csec"><div class="stitle">Mixed Material per Komponen</div>
+        <div class="csec"><div class="stitle" data-i18n="cfg_mixed">Mixed Material per Komponen</div>
           <div id="wood-assign-container"></div></div>
       </div>
     </div>
@@ -364,11 +368,11 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
       <div class="card">
         <div class="chdr">
           <div class="tbtns">
-            <button class="tbtn active" onclick="switchTab('cutting')">✂️ Cutting List</button>
-            <button class="tbtn" onclick="switchTab('volume')">📊 Volume Detail</button>
-            <button class="tbtn" onclick="switchTab('master')">📦 Material Master</button>
-            <button class="tbtn" onclick="switchTab('history')">🕐 History</button>
-            <button class="tbtn" onclick="switchTab('bom')">🔗 BOM JSON</button>
+            <button class="tbtn active" onclick="switchTab('cutting')" data-i18n="tab_cutting">✂️ Cutting List</button>
+            <button class="tbtn" onclick="switchTab('volume')" data-i18n="tab_volume">📊 Volume Detail</button>
+            <button class="tbtn" onclick="switchTab('master')" data-i18n="tab_master">📦 Material Master</button>
+            <button class="tbtn" onclick="switchTab('history')" data-i18n="tab_history">🕐 History</button>
+            <button class="tbtn" onclick="switchTab('bom')" data-i18n="tab_bom">🔗 BOM JSON</button>
           </div>
           <span id="tbl-meta" style="font-size:11px;color:var(--t3)"></span>
         </div>
@@ -376,8 +380,8 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
           <div class="tcont active" id="tab-cutting">
             <div class="twrap">
               <table><thead><tr>
-                <th style="text-align:left;min-width:155px">Kode / Nama Komponen</th>
-                <th>Tipe</th><th style="min-width:118px">Jenis / Material</th>
+                <th style="text-align:left;min-width:155px" data-i18n="tbl_code">Kode / Nama Komponen</th>
+                <th data-i18n="tbl_type">Tipe</th><th style="min-width:118px" data-i18n="tbl_material">Jenis / Material</th>
                 <th>Qty</th><th>P cm</th><th>L cm</th><th>T cm</th>
                 <th>Vol/pcs m³</th><th>Vol Total m³</th><th>Vol Log m³</th>
               </tr></thead>
@@ -396,10 +400,10 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
           </div>
           <div class="tcont" id="tab-bom">
             <div class="bgrp">
-              <button class="btn pr" onclick="copyBOM()">📋 Copy JSON</button>
-              <button class="btn" onclick="downloadBOM()">⬇️ Download .json</button>
-              <button class="btn" onclick="downloadCSV()">📄 Export CSV</button>
-              <button class="btn" onclick="saveToHistory()">💾 Simpan History</button>
+              <button class="btn pr" onclick="copyBOM()" data-i18n="act_copy_json">📋 Copy JSON</button>
+              <button class="btn" onclick="downloadBOM()" data-i18n="act_dl_json">⬇️ Download .json</button>
+              <button class="btn" onclick="downloadCSV()" data-i18n="act_dl_csv">📄 Export CSV</button>
+              <button class="btn" onclick="saveToHistory()" data-i18n="act_save_hist">💾 Simpan History</button>
             </div>
             <div id="bom-preview" class="bombox"></div>
           </div>
@@ -544,19 +548,179 @@ function buildSelHtml(cid,cat,cur){
 function buildBOM(comps,vol,tp,bn,ps){const dw=getMat(ST.dw);return{module:'WOOD_CALC_PRO',version:'2.0',ref:ST.ref,timestamp:ST.ts,furniture_type:ST.ftype.toUpperCase(),subtype:TMPL[ST.ftype].sub[ST.sidx].l,params:{dims:ST.dims,waste_pct:ST.waste,rendemen_default_pct:ST.rendemen,default_wood:{id:dw.id,nama:dw.n},batang_std_cm:[ST.ba,ST.bb,ST.blen]},summary:{total_components:comps.length,total_pcs:tp,vol_net_m3:+f(vol.net,6),vol_log_required_m3:+f(vol.tlog,4),plywood_sheets:ps,batang_needed:bn,est_cost_idr:Math.round(vol.tcost)},material_breakdown:vol.bd.map(b=>({material_id:b.mid,material_nama:b.m.n,category:b.m.c,vol_net_m3:+f(b.net,6),vol_log_m3:b.isSW?+f(b.log,4):null,est_cost_idr:b.cost>0?Math.round(b.cost):null})),items:comps.map(c=>{const isSW=c.c==='SW',isPW=c.c==='PW';const mid=isSW?(ST.mm[c.id]||ST.dw):(isPW?'PW-001':'TBD');const m=getMat(mid);const vp=c.P*c.L*c.T/1e6,vt=c.qty*vp;const vl=isSW?vt*(1+ST.waste/100)/(m.rd/100):null;return{code:c.id,group:c.g,name:c.name,material_id:mid,material_nama:m.n,material_cat:m.c,qty:c.qty,P_cm:c.P,L_cm:c.L,T_cm:c.T,vol_per_pcs_m3:+f(vp,6),vol_total_m3:+f(vt,6),vol_log_m3:vl!=null?+f(vl,6):null}})}}
 function renderMM(){const el=document.getElementById('mat-master-content');if(!el)return;let h='';['SW','PW','NW'].forEach(cat=>{const ms=MM.filter(m=>m.c===cat);const clr=CCLR[cat],bg=CBG[cat];h+='<div style="margin-bottom:18px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:'+clr+';margin-bottom:9px;display:flex;align-items:center;gap:7px"><span style="width:10px;height:10px;border-radius:50%;background:'+clr+';display:inline-block"></span>'+CLBL[cat]+' <span style="font-weight:400;font-size:10px;color:var(--t3)">'+ms.length+' item</span></div><div class="mmgrid">';ms.forEach(m=>{const cur=getMat(m.id);const ph=loadPH().filter(p=>p.id===m.id).slice(0,3);h+='<div class="mmcard"><div class="mmchdr"><span class="mmid">'+m.id+'</span><span class="mmname">'+m.n+'</span>'+(m.kl?'<span style="font-size:9px;padding:1px 6px;border-radius:20px;background:'+bg+';color:'+clr+';font-weight:700">Kls '+m.kl+'</span>':'')+'</div><div class="mmmeta"><div>📦 Unit: <b>'+m.u+'</b></div>'+(m.rd<100?'<div>🪵 Rdm: <b>'+m.rd+'%</b></div>':'')+(m.dn?'<div>⚖️ '+m.dn+' kg/m³</div>':'')+'</div><div class="mmpr"><span style="font-size:10px;color:var(--t3)">Harga:</span><input class="mmpinp" type="number" id="pp-'+m.id+'" value="'+cur.p+'" placeholder="Rp"><span style="font-size:10px;color:var(--t3)">/'+m.u+'</span><button class="mmsave" onclick="updatePrice(\''+m.id+'\',document.getElementById(\'pp-'+m.id+'\').value)">💾</button></div>'+(ph.length?'<div style="margin-top:5px;font-size:10px;color:var(--t3)">Hist: '+ph.map(p=>'<span class="phpill">'+fts(p.ts).split(' ')[0]+': '+fm(p.p)+'</span>').join(' ')+'</div>':'')+'</div>'});h+='</div></div>'});el.innerHTML=h}
 function renderHist(){const el=document.getElementById('hist-content');if(!el)return;const h=loadCH();if(!h.length){el.innerHTML='<div style="text-align:center;padding:28px;color:var(--t3);font-size:13px">Belum ada history. Klik "💾 Simpan History" di tab BOM JSON.</div>';return}let html='<div style="overflow-x:auto"><table class="htbl"><thead><tr><th>Ref</th><th>Timestamp</th><th>Furniture</th><th>Subtype</th><th>Vol Log m³</th><th>Est. Biaya</th><th>Kayu Default</th></tr></thead><tbody>';h.forEach(e=>{html+='<tr><td><span class="href">'+e.ref+'</span></td><td><span class="hts">'+fts(e.timestamp)+'</span></td><td>'+e.furniture_type+'</td><td style="font-size:11px">'+(e.subtype||'—')+'</td><td style="font-weight:700;color:var(--ac)">'+(e.summary?.vol_log_required_m3||0).toFixed(4)+' m³</td><td style="font-size:11px">'+(e.summary?.est_cost_idr?fm(e.summary.est_cost_idr):'—')+'</td><td style="font-size:11px">'+(e.params?.default_wood?.nama||'—')+'</td></tr>'});html+='</tbody></table></div>';el.innerHTML=html}
-function saveToHistory(){if(!window._bom)return;saveCH(window._bom);renderHist();showToast('💾 Tersimpan ke History!')}
-function buildWA(comps){const el=document.getElementById('wood-assign-container');if(!el)return;const sw=comps.filter(c=>c.c==='SW');if(!sw.length){el.innerHTML='<div style="font-size:11px;color:var(--t3)">Tidak ada komponen SW.</div>';return}const w=document.createElement('div');w.className='wawrap';const h=document.createElement('div');h.className='wahdr';h.innerHTML='<span>Override per Komponen</span><span style="font-weight:400;font-size:9px">'+sw.length+' SW</span>';w.appendChild(h);sw.forEach(c=>{const row=document.createElement('div');row.className='warow';const cur=ST.mm[c.id]||ST.dw;const s=document.createElement('select');s.className='wasel';MM.filter(m=>m.c==='SW'||m.c==='TBD').forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.n+(m.kl?' K'+m.kl:'');if(m.id===cur)o.selected=true;s.appendChild(o)});s.addEventListener('change',e=>{ST.mm[c.id]=e.target.value;render()});row.innerHTML='<span class="wacode">'+c.id+'</span><span class="waname">'+c.name+'</span>';row.appendChild(s);w.appendChild(row)});el.innerHTML='';el.appendChild(w)}
+window.saveToHistory = function(){if(!window._bom)return;saveCH(window._bom);renderHist();showToast('💾 Tersimpan ke History!')}
+function buildWA(comps){
+  var el=document.getElementById('wood-assign-container');
+  if(!el)return;
+  var swComps=comps.filter(function(c){return c.c==='SW';});
+  if(!swComps.length){el.innerHTML='<div style="font-size:11px;color:var(--t3)">Tidak ada komponen SW.</div>';return;}
+
+  // Detect which components have been overridden to non-SW or set to 'none'
+  // Split into: PURE SW group and MIXED group
+  var pureComps=[], mixedComps=[];
+  swComps.forEach(function(c){
+    var assigned = ST.mm[c.id];
+    // If assigned to 'none' or non-SW material -> mixed group
+    if(assigned && (assigned==='none' || MM.find(function(m){return m.id===assigned && m.c!=='SW';}))){
+      mixedComps.push(c);
+    } else {
+      pureComps.push(c);
+    }
+  });
+
+  el.innerHTML='';
+
+  // ── GROUP 1: PURE SOLID WOOD ──────────────────────────────
+  var wrap1=document.createElement('div');
+  wrap1.className='wawrap';
+  wrap1.style.marginBottom='10px';
+  var hdr1=document.createElement('div');
+  hdr1.className='wahdr';
+  hdr1.innerHTML='<span>🪵 Pure Solid Wood</span><span style="font-weight:400;font-size:9px">'+pureComps.length+' komponen</span>';
+  wrap1.appendChild(hdr1);
+
+  if(!pureComps.length){
+    var emptyEl=document.createElement('div');
+    emptyEl.style.cssText='padding:8px 12px;font-size:11px;color:var(--t3);font-style:italic;';
+    emptyEl.textContent='Semua komponen sudah di-mixed';
+    wrap1.appendChild(emptyEl);
+  }
+
+  pureComps.forEach(function(c){
+    var row=document.createElement('div');
+    row.className='warow';
+    var cur=ST.mm[c.id]||ST.dw;
+    
+    var codeEl=document.createElement('span');
+    codeEl.className='wacode';
+    codeEl.textContent=c.id;
+    
+    var nameEl=document.createElement('span');
+    nameEl.className='waname';
+    nameEl.textContent=c.name;
+    
+    var sel=document.createElement('select');
+    sel.className='wasel';
+    // SW options
+    var swGroup=document.createElement('optgroup');
+    swGroup.label='── Solid Wood ──';
+    MM.filter(function(m){return m.c==='SW';}).forEach(function(m){
+      var o=document.createElement('option');
+      o.value=m.id;
+      o.textContent=m.n+(m.kl?' K'+m.kl:'');
+      if(m.id===cur) o.selected=true;
+      swGroup.appendChild(o);
+    });
+    sel.appendChild(swGroup);
+    // None/BOM option
+    var noneOpt=document.createElement('option');
+    noneOpt.value='none';
+    noneOpt.textContent='── None (via BOM) ──';
+    if(cur==='none') noneOpt.selected=true;
+    sel.appendChild(noneOpt);
+    
+    sel.addEventListener('change',function(e){
+      ST.mm[c.id]=e.target.value;
+      render();
+    });
+    row.append(codeEl,nameEl,sel);
+    wrap1.appendChild(row);
+  });
+  el.appendChild(wrap1);
+
+  // ── GROUP 2: MIXED MATERIAL ───────────────────────────────
+  var wrap2=document.createElement('div');
+  wrap2.className='wawrap';
+  var hdr2=document.createElement('div');
+  hdr2.className='wahdr';
+  hdr2.style.background='#f3eafb';
+  hdr2.innerHTML='<span>🔀 Mixed Material</span><span style="font-weight:400;font-size:9px;color:var(--pu,#5c2d91)">'+mixedComps.length+' komponen · akan relate ke BOM</span>';
+  wrap2.appendChild(hdr2);
+
+  if(!mixedComps.length){
+    var emptyEl2=document.createElement('div');
+    emptyEl2.style.cssText='padding:8px 12px;font-size:11px;color:var(--t3);font-style:italic;';
+    emptyEl2.textContent='Belum ada komponen mixed — pilih "None (via BOM)" di atas untuk memindahkan';
+    wrap2.appendChild(emptyEl2);
+  }
+
+  mixedComps.forEach(function(c){
+    var row=document.createElement('div');
+    row.className='warow';
+    row.style.background='#fdf8ff';
+    var cur2=ST.mm[c.id]||'none';
+    
+    var codeEl2=document.createElement('span');
+    codeEl2.className='wacode';
+    codeEl2.style.color='#5c2d91';
+    codeEl2.textContent=c.id;
+    
+    var nameEl2=document.createElement('span');
+    nameEl2.className='waname';
+    nameEl2.textContent=c.name;
+    
+    // BOM badge
+    var bomBadge=document.createElement('span');
+    bomBadge.style.cssText='font-size:9px;padding:2px 6px;border-radius:20px;background:#f3eafb;color:#5c2d91;font-weight:700;white-space:nowrap;';
+    bomBadge.textContent=cur2==='none'?'→ BOM':'Mixed';
+    
+    var sel2=document.createElement('select');
+    sel2.className='wasel';
+    // SW options
+    var swGroup2=document.createElement('optgroup');
+    swGroup2.label='── Solid Wood ──';
+    MM.filter(function(m){return m.c==='SW';}).forEach(function(m){
+      var o=document.createElement('option');
+      o.value=m.id;
+      o.textContent=m.n+(m.kl?' K'+m.kl:'');
+      if(m.id===cur2) o.selected=true;
+      swGroup2.appendChild(o);
+    });
+    sel2.appendChild(swGroup2);
+    // PW options
+    var pwGroup=document.createElement('optgroup');
+    pwGroup.label='── Plywood ──';
+    MM.filter(function(m){return m.c==='PW';}).forEach(function(m){
+      var o=document.createElement('option');
+      o.value=m.id;
+      o.textContent=m.n;
+      if(m.id===cur2) o.selected=true;
+      pwGroup.appendChild(o);
+    });
+    sel2.appendChild(pwGroup);
+    // None option
+    var noneOpt2=document.createElement('option');
+    noneOpt2.value='none';
+    noneOpt2.textContent='── None (via BOM) ──';
+    if(cur2==='none') noneOpt2.selected=true;
+    sel2.appendChild(noneOpt2);
+    
+    sel2.addEventListener('change',function(e){
+      ST.mm[c.id]=e.target.value;
+      render();
+    });
+    row.append(codeEl2,nameEl2,bomBadge,sel2);
+    wrap2.appendChild(row);
+  });
+  el.appendChild(wrap2);
+}
 function buildDWS(){const s=document.getElementById('sel-default-wood');if(!s)return;s.innerHTML='';MM.filter(m=>m.c==='SW').forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.n+' — Kls '+m.kl+' (Rdm '+m.rd+'%)';if(m.id===ST.dw)o.selected=true;s.appendChild(o)});s.onchange=e=>{ST.dw=e.target.value;const w=getMat(ST.dw);ST.rendemen=w.rd;document.getElementById('rng-rendemen').value=w.rd;document.getElementById('inp-rendemen').value=w.rd;ST.mm={};newRef();render()}}
-function switchTab(t){ST.tab=t;const ns=['cutting','volume','master','history','bom'];document.querySelectorAll('.tbtn').forEach((b,i)=>b.classList.toggle('active',ns[i]===t));document.querySelectorAll('.tcont').forEach(c=>c.classList.remove('active'));document.getElementById('tab-'+t).classList.add('active')}
-function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
-function copyBOM(){const txt=document.getElementById('bom-preview').textContent;navigator.clipboard.writeText(txt).then(()=>showToast('✅ BOM JSON tersalin!'))}
-function downloadBOM(){const txt=document.getElementById('bom-preview').textContent;const b=new Blob([txt],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='BOM_'+ST.ref+'.json';a.click();showToast('⬇️ File JSON diunduh!')}
-function downloadCSV(){if(!window._bom)return;const d=window._bom;let csv='No,Kode,Grup,Nama,Material ID,Nama Material,Kategori,Qty,P,L,T,Vol/pcs,Vol Total,Vol Log\n';d.items.forEach((c,i)=>{csv+=[i+1,c.code,c.group,'"'+c.name+'"',c.material_id,c.material_nama,c.material_cat,c.qty,c.P_cm,c.L_cm,c.T_cm,c.vol_per_pcs_m3,c.vol_total_m3,c.vol_log_m3??''].join(',')+'\n'});csv+='\n,,,,,,,,,,,,,Ref,'+d.ref+'\n,,,,,,,,,,,,,Timestamp,'+d.timestamp+'\n,,,,,,,,,,,,,Vol Log,'+d.summary.vol_log_required_m3+'\n';const b=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='CuttingList_'+ST.ref+'.csv';a.click();showToast('📄 CSV diunduh!')}
-function buildFTabs(){const c=document.getElementById('ftabs');c.innerHTML='';Object.entries(TMPL).forEach(([key,t])=>{const b=document.createElement('button');b.className='ftab'+(ST.ftype===key?' active':'');b.innerHTML='<span>'+t.icon+'</span>'+t.label;b.addEventListener('click',()=>{ST.ftype=key;ST.sidx=0;ST.dims={...(TMPL[key].sub[0].d||{})};ST.mm={};newRef();buildFTabs();buildCP();buildDWS();render()});c.appendChild(b)})}
+window.switchTab = function(t){ST.tab=t;const ns=['cutting','volume','master','history','bom'];document.querySelectorAll('.tbtn').forEach((b,i)=>b.classList.toggle('active',ns[i]===t));document.querySelectorAll('.tcont').forEach(c=>c.classList.remove('active'));document.getElementById('tab-'+t).classList.add('active')}
+window.showToast = function(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+window.copyBOM = function(){const txt=document.getElementById('bom-preview').textContent;navigator.clipboard.writeText(txt).then(()=>showToast('✅ BOM JSON tersalin!'))}
+window.downloadBOM = function(){const txt=document.getElementById('bom-preview').textContent;const b=new Blob([txt],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='BOM_'+ST.ref+'.json';a.click();showToast('⬇️ File JSON diunduh!')}
+window.downloadCSV = function(){if(!window._bom)return;const d=window._bom;let csv='No,Kode,Grup,Nama,Material ID,Nama Material,Kategori,Qty,P,L,T,Vol/pcs,Vol Total,Vol Log\n';d.items.forEach((c,i)=>{csv+=[i+1,c.code,c.group,'"'+c.name+'"',c.material_id,c.material_nama,c.material_cat,c.qty,c.P_cm,c.L_cm,c.T_cm,c.vol_per_pcs_m3,c.vol_total_m3,c.vol_log_m3??''].join(',')+'\n'});csv+='\n,,,,,,,,,,,,,Ref,'+d.ref+'\n,,,,,,,,,,,,,Timestamp,'+d.timestamp+'\n,,,,,,,,,,,,,Vol Log,'+d.summary.vol_log_required_m3+'\n';const b=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='CuttingList_'+ST.ref+'.csv';a.click();showToast('📄 CSV diunduh!')}
+function buildFTabs(){const c=document.getElementById('ftabs');c.innerHTML='';Object.entries(TMPL).forEach(([key,t])=>{const b=document.createElement('button');b.className='ftab'+(ST.ftype===key?' active':'');var fkeys={'bed':'ft_bed','lemari':'ft_lemari','kursi':'ft_kursi','sofa':'ft_sofa','meja':'ft_meja'};b.innerHTML='<span>'+t.icon+'</span>'+(typeof window.t==='function'?window.t(fkeys[key]):t.label);b.addEventListener('click',()=>{ST.ftype=key;ST.sidx=0;ST.dims={...(TMPL[key].sub[0].d||{})};ST.mm={};newRef();buildFTabs();buildCP();buildDWS();render()});c.appendChild(b)})}
 function buildCP(){const tmpl=TMPL[ST.ftype];const s=document.getElementById('subtype-sel');s.innerHTML='';tmpl.sub.forEach((sub,i)=>{const o=document.createElement('option');o.value=i;o.textContent=sub.l;s.appendChild(o)});s.value=ST.sidx;s.onchange=e=>{ST.sidx=+e.target.value;if(tmpl.sub[ST.sidx].d)ST.dims={...tmpl.sub[ST.sidx].d};ST.mm={};newRef();buildCP();render()};const dc=document.getElementById('dims-container');dc.innerHTML='';const g=document.createElement('div');g.className='dgrid';tmpl.dims.forEach(d=>{const fg=document.createElement('div');fg.className='fg';const l=document.createElement('label');l.textContent=d.l;const i=document.createElement('input');i.type='number';i.className='fc';i.min=d.mn;i.max=d.mx;i.step=d.st;i.value=ST.dims?.[d.k]??0;i.addEventListener('input',e=>{ST.dims={...ST.dims,[d.k]:+e.target.value};newRef();render()});fg.append(l,i);g.appendChild(fg)});dc.appendChild(g)}
 function syncP(rid,nid,sk){const r=document.getElementById(rid),n=document.getElementById(nid);r.addEventListener('input',e=>{n.value=e.target.value;ST[sk]=+e.target.value;render()});n.addEventListener('input',e=>{r.value=e.target.value;ST[sk]=+e.target.value;render()})}
 syncP('rng-rendemen','inp-rendemen','rendemen');syncP('rng-waste','inp-waste','waste');
 ['inp-ba','inp-bb','inp-blen'].forEach((id,i)=>{document.getElementById(id).addEventListener('input',e=>{ST[['ba','bb','blen'][i]]=+e.target.value;render()})});
+// Init language toggle
+(function(){
+  var wrap = document.getElementById('lang-toggle-wrap');
+  if(wrap) wrap.outerHTML = buildLangToggle();
+  applyLang();
+})();
 buildFTabs();buildCP();buildDWS();render();
 setInterval(()=>{const e=document.getElementById('ts-now');if(e)e.textContent=fts(new Date().toISOString())},30000);
 </script>
@@ -850,7 +1014,7 @@ window.doLogout = async function() {
 
 <script>
 // ═══ SETTINGS MODAL — Bulletproof Version ═══
-function showSettingsModal() {
+window.showSettingsModal = function() {
   var o = document.getElementById('settings-overlay');
   if (!o) { alert('Settings tidak ditemukan!'); return; }
   o.style.position = 'fixed';

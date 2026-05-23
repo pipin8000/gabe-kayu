@@ -3,7 +3,9 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
+<script src="lang.js"></script>
 <meta charset="UTF-8">
+<script src="lang.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Material Master v3.4 — Gabe International Hub</title>
 <style>
@@ -276,14 +278,15 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
   <div class="topbar-left">
     <a href="app.html" class="back-btn">← Kembali</a>
     <div>
-      <div class="topbar-title">🪵 Material Master</div>
+      <div class="topbar-title" data-i18n="mat_title">🪵 Material Master</div>
       <div class="topbar-sub">Manajemen Harga & Jenis Kayu — PT. Gabe International</div>
     </div>
   </div>
   <div class="user-info">
     <span id="user-name" style="opacity:.8;font-size:12px;"></span>
     <span id="user-role" style="font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.15);"></span>
-    <button class="logout-btn" onclick="doLogout()">Logout</button>
+    <span id="lang-toggle-wrap"></span>
+  <button class="logout-btn" onclick="doLogout()" data-i18n="nav_logout">Logout</button>
   </div>
 </nav>
 
@@ -295,22 +298,22 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
       <div class="page-title">📦 Material Master</div>
       <div class="page-sub">Database jenis kayu & material · Update harga dengan historis otomatis</div>
     </div>
-    <button class="btn btn-primary" onclick="openAddModal()">➕ Tambah Material Baru</button>
+    <button class="btn btn-primary" onclick="openAddModal()" data-i18n="mat_add_btn">➕ Tambah Material Baru</button>
   </div>
 
   <!-- Stats -->
   <div class="stats-grid" id="stats-grid">
-    <div class="stat-card"><div class="stat-val" id="stat-total">—</div><div class="stat-lbl">Total Material</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:#e65100" id="stat-sw">—</div><div class="stat-lbl">Solid Wood</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:#1565c0" id="stat-pw">—</div><div class="stat-lbl">Plywood / Board</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:#6a1b9a" id="stat-nw">—</div><div class="stat-lbl">Non-Wood</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:#2d5a27" id="stat-updates">—</div><div class="stat-lbl">Update Harga Bulan Ini</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-total">—</div><div class="stat-lbl" data-i18n="mat_total">Total Material</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#e65100" id="stat-sw">—</div><div class="stat-lbl" data-i18n="mat_sw_count">Solid Wood</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#1565c0" id="stat-pw">—</div><div class="stat-lbl" data-i18n="mat_pw_count">Plywood / Board</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#6a1b9a" id="stat-nw">—</div><div class="stat-lbl" data-i18n="mat_nw_count">Non-Wood</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#2d5a27" id="stat-updates">—</div><div class="stat-lbl" data-i18n="mat_updates">Update Harga Bulan Ini</div></div>
   </div>
 
   <!-- Filter -->
   <div class="filter-bar">
-    <input type="text" class="search-inp" id="search-inp" placeholder="🔍 Cari nama material, ID..." oninput="filterMaterials()">
-    <button class="filter-btn active" onclick="setFilter('ALL',this)">Semua</button>
+    <input type="text" class="search-inp" id="search-inp" data-i18n-ph="mat_search" placeholder="Cari nama material, ID..." oninput="filterMaterials()">
+    <button class="filter-btn active" onclick="setFilter('ALL',this)" data-i18n="mat_filter_all">Semua</button>
     <button class="filter-btn" onclick="setFilter('SW',this)">🪵 Solid Wood</button>
     <button class="filter-btn" onclick="setFilter('PW',this)">📐 Plywood</button>
     <button class="filter-btn" onclick="setFilter('NW',this)">🔩 Non-Wood</button>
@@ -318,20 +321,20 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
     <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
       <span style="font-size:11px;color:#8a8680;">Tampilan:</span>
       <div class="view-toggle">
-        <button class="view-btn active" id="btn-card" onclick="setView('card')">⊞ Card</button>
-        <button class="view-btn" id="btn-list" onclick="setView('list')">☰ List</button>
+        <button class="view-btn active" id="btn-card" onclick="setView('card')" data-i18n="mat_view_card">⊞ Card</button>
+        <button class="view-btn" id="btn-list" onclick="setView('list')" data-i18n="mat_view_list">☰ List</button>
       </div>
     </div>
   </div>
 
   <!-- Import/Export Toolbar -->
   <div class="io-toolbar">
-    <span class="io-label">📤 EXPORT:</span>
+    <span class="io-label" data-i18n="mat_export">📤 EXPORT:</span>
     <button class="io-btn csv"   onclick="exportCSV()">📊 CSV</button>
     <button class="io-btn excel" onclick="exportExcel()">📗 Excel</button>
     <button class="io-btn pdf"   onclick="exportPDF()">📕 PDF</button>
     <div class="io-sep"></div>
-    <span class="io-label">📥 IMPORT:</span>
+    <span class="io-label" data-i18n="mat_import">📥 IMPORT:</span>
     <button class="io-btn import" onclick="openImportModal()">📂 Upload CSV/Excel</button>
     <div style="margin-left:auto;font-size:11px;color:#8a8680;" id="io-status"></div>
   </div>
@@ -425,7 +428,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
 <div class="modal-overlay" id="mat-modal">
   <div class="modal">
     <div class="modal-hdr">
-      <h3 id="modal-title">➕ Tambah Material Baru</h3>
+      <h3 id="modal-title" data-i18n="mat_add_btn">➕ Tambah Material Baru</h3>
       <button class="modal-close" onclick="closeModal('mat-modal')">✕</button>
     </div>
     <div class="modal-body">
@@ -788,14 +791,14 @@ function renderMaterials() {
     priceRow.className = 'price-row';
     var priceLeft = document.createElement('div');
     priceLeft.innerHTML = 
-      '<div class="price-label">💰 Harga Aktif</div>' +
+      '<div class="price-label">' + (typeof t==='function'?t('mat_price'):'💰 Harga Aktif') + '</div>' +
       '<div class="price-value">' + fm(harga) + ' <span style="font-size:11px;font-weight:400;color:#8a8680">/ ' + (m.unit||'m³') + '</span></div>' +
       '<div class="price-date">Update: ' + updDate + '</div>';
     priceRow.appendChild(priceLeft);
     if (canEdit) {
       var updBtn = document.createElement('button');
       updBtn.style.cssText = 'padding:6px 12px;background:#2d5a27;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;';
-      updBtn.textContent = '✏️ Update';
+      updBtn.textContent = typeof t==='function'?t('mat_update_price'):'✏️ Update';
       updBtn.onclick = (function(id){ return function(){ openPriceModal(id); }; })(mid);
       priceRow.appendChild(updBtn);
     }
@@ -811,12 +814,12 @@ function renderMaterials() {
     var footer = document.createElement('div');
     footer.className = 'mat-card-footer';
     
-    var viewBtn = mkBtn('card-btn info', (function(id){ return function(){ viewMaterial(id); }; })(mid), '👁 View');
+    var viewBtn = mkBtn('card-btn info', (function(id){ return function(){ viewMaterial(id); }; })(mid), typeof t==='function'?t('act_view'):'👁 View');
     footer.appendChild(viewBtn);
     
     if (canEdit) {
-      var editBtnEl = mkBtn('card-btn', (function(id){ return function(){ openEditModal(id); }; })(mid), '✏️ Edit');
-      var dupBtnEl  = mkBtn('card-btn', (function(id){ return function(){ duplicateMaterial(id); }; })(mid), '⧉ Duplikat');
+      var editBtnEl = mkBtn('card-btn', (function(id){ return function(){ openEditModal(id); }; })(mid), typeof t==='function'?t('act_edit'):'✏️ Edit');
+      var dupBtnEl  = mkBtn('card-btn', (function(id){ return function(){ duplicateMaterial(id); }; })(mid), typeof t==='function'?t('act_duplicate'):'⧉ Duplikat');
       footer.append(editBtnEl, dupBtnEl);
     }
     
@@ -1337,7 +1340,269 @@ window.closeModal = function(id) {
   document.getElementById(id).classList.remove('show');
 }
 
+
+// ── Export / Import Functions ─────────────────────────────────────────
+
+window.exportCSV = function() {
+  if (!allMaterials.length) { showToast('⚠️ Tidak ada data!'); return; }
+  var csv = 'ID,Nama,Nama Panjang,Kategori,Kelas,Rendemen(%),Densitas(kg/m3),Harga Aktif,Satuan,Status,Keterangan
+';
+  allMaterials.forEach(function(m) {
+    csv += [
+      m.id||m._id, m.nama,
+      '"' + (m.namaPanjang||'').replace(/"/g,'""') + '"',
+      m.cat, m.kelas||0, m.rendemen||0, m.density||0,
+      m.harga||0, m.unit||'m3',
+      m.aktif!==false ? 'Aktif' : 'Nonaktif',
+      '"' + (m.ket||'').replace(/"/g,'""') + '"'
+    ].join(',') + '
+';
+  });
+  dlBlob('﻿' + csv, 'MaterialMaster_' + todayStr() + '.csv', 'text/csv;charset=utf-8');
+  showToast('📊 CSV diexport! (' + allMaterials.length + ' item)');
+};
+
+window.exportExcel = function() {
+  if (!allMaterials.length) { showToast('⚠️ Tidak ada data!'); return; }
+  var tbl = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"></head><body><table>';
+  tbl += '<tr style="background:#2d5a27;color:#fff;font-weight:bold;">';
+  ['ID','Nama','Nama Panjang','Kategori','Kelas','Rendemen(%)','Densitas','Harga Aktif','Satuan','Status','Keterangan']
+    .forEach(function(h){ tbl += '<th>' + h + '</th>'; });
+  tbl += '</tr>';
+  allMaterials.forEach(function(m, i) {
+    var bg = i % 2 === 0 ? '#f5f4f0' : '#ffffff';
+    tbl += '<tr style="background:' + bg + ';">';
+    [m.id||m._id, m.nama, m.namaPanjang||'', m.cat, m.kelas||0,
+     m.rendemen||0, m.density||0, m.harga||0, m.unit||'m3',
+     m.aktif!==false?'Aktif':'Nonaktif', m.ket||'']
+      .forEach(function(v){ tbl += '<td>' + v + '</td>'; });
+    tbl += '</tr>';
+  });
+  tbl += '</table></body></html>';
+  dlBlob(tbl, 'MaterialMaster_' + todayStr() + '.xls', 'application/vnd.ms-excel');
+  showToast('📗 Excel diexport!');
+};
+
+window.exportPDF = function() {
+  if (!allMaterials.length) { showToast('⚠️ Tidak ada data!'); return; }
+  var w = window.open('', '_blank');
+  var rows = allMaterials.map(function(m, i) {
+    var bg = i % 2 === 0 ? '#f9f9f9' : '#fff';
+    var catBg = CAT_BG[m.cat]||'#f0f0f0';
+    var catClr = CAT_COLOR[m.cat]||'#555';
+    return '<tr style="background:' + bg + '">' +
+      '<td>' + (m.id||m._id) + '</td>' +
+      '<td>' + m.nama + '</td>' +
+      '<td><span style="background:' + catBg + ';color:' + catClr + ';padding:2px 7px;border-radius:10px;font-size:11px;">' + m.cat + '</span></td>' +
+      '<td style="text-align:center">' + (m.kelas||'—') + '</td>' +
+      '<td style="text-align:center">' + (m.rendemen||'—') + '%</td>' +
+      '<td style="text-align:right;font-weight:600;color:#2d5a27">' + fm(m.harga||0) + '</td>' +
+      '<td>' + (m.unit||'m³') + '</td>' +
+      '<td style="color:' + (m.aktif!==false?'#2d5a27':'#8b2020') + '">' + (m.aktif!==false?'Aktif':'Nonaktif') + '</td>' +
+      '</tr>';
+  }).join('');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8">' +
+    '<title>Material Master — PT. Gabe International</title>' +
+    '<style>body{font-family:Segoe UI,sans-serif;padding:20px;color:#1a1917;}' +
+    'h1{color:#2d5a27;font-size:20px;}' +
+    'table{width:100%;border-collapse:collapse;font-size:12px;}' +
+    'th{background:#2d5a27;color:#fff;padding:8px 10px;text-align:left;}' +
+    'td{padding:7px 10px;border-bottom:1px solid #e8e6df;}' +
+    '.footer{margin-top:16px;font-size:11px;color:#8a8680;text-align:center;}' +
+    '@media print{button{display:none}}</style></head><body>' +
+    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">' +
+    '<div style="width:40px;height:40px;background:#2d5a27;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;">🌿</div>' +
+    '<div><div style="font-size:20px;font-weight:700;color:#2d5a27">PT. Gabe International</div>' +
+    '<div style="color:#8a8680;font-size:12px;">Material Master — Price List · ' + new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'}) + '</div></div>' +
+    '<button onclick="window.print()" style="margin-left:auto;padding:8px 16px;background:#2d5a27;color:#fff;border:none;border-radius:8px;cursor:pointer;">🖨️ Print / PDF</button>' +
+    '</div>' +
+    '<table><thead><tr><th>ID</th><th>Nama</th><th>Kat.</th><th>Kls</th><th>Rendemen</th><th>Harga Aktif</th><th>Satuan</th><th>Status</th></tr></thead>' +
+    '<tbody>' + rows + '</tbody></table>' +
+    '<div class="footer">Total: ' + allMaterials.length + ' material · Dicetak: ' + new Date().toLocaleString('id-ID') + '</div>' +
+    '</body></html>');
+  w.document.close();
+  w.focus();
+  showToast('📕 PDF dibuka di tab baru — klik Print/Save!');
+};
+
+window.exportSinglePDF = function(id) {
+  var m = allMaterials.find(function(x){ return (x.id||x._id)===id; });
+  if (!m) return;
+  var w = window.open('', '_blank');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8">' +
+    '<title>' + m.nama + ' — Gabe International</title>' +
+    '<style>body{font-family:Segoe UI,sans-serif;padding:30px;color:#1a1917;}' +
+    '.field{margin-bottom:12px;}.lbl{font-size:11px;color:#8a8680;text-transform:uppercase;letter-spacing:.06em;}' +
+    '.val{font-size:15px;font-weight:600;}.price{font-size:24px;font-weight:700;color:#2d5a27;}' +
+    '@media print{button{display:none}}</style></head><body>' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:20px;">' +
+    '<div><div style="font-size:20px;font-weight:700;color:#2d5a27">🌿 PT. Gabe International</div>' +
+    '<div style="color:#8a8680;font-size:13px;">Material Detail Sheet</div></div>' +
+    '<button onclick="window.print()" style="padding:8px 16px;background:#2d5a27;color:#fff;border:none;border-radius:8px;cursor:pointer;">🖨️ Print</button>' +
+    '</div>' +
+    '<div style="border:1px solid #d8d5cb;border-radius:12px;padding:20px;">' +
+    '<div style="font-size:22px;font-weight:700;margin-bottom:4px;">' + m.nama + '</div>' +
+    '<div style="color:#8a8680;font-size:13px;margin-bottom:16px;">' + (m.namaPanjang||'') + '</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">' +
+    '<div class="field"><div class="lbl">ID Material</div><div class="val" style="font-family:monospace">' + (m.id||m._id) + '</div></div>' +
+    '<div class="field"><div class="lbl">Kategori</div><div class="val">' + m.cat + '</div></div>' +
+    '<div class="field"><div class="lbl">Kelas</div><div class="val">' + (m.kelas||'—') + '</div></div>' +
+    '<div class="field"><div class="lbl">Rendemen Log</div><div class="val">' + (m.rendemen||'—') + '%</div></div>' +
+    '<div class="field"><div class="lbl">Densitas</div><div class="val">' + (m.density||'—') + ' kg/m³</div></div>' +
+    '<div class="field"><div class="lbl">Satuan</div><div class="val">' + (m.unit||'m³') + '</div></div>' +
+    '<div class="field" style="grid-column:1/-1;background:#eaf3e8;padding:14px;border-radius:8px;">' +
+    '<div class="lbl">💰 Harga Aktif</div>' +
+    '<div class="price">' + fm(m.harga||0) + ' <span style="font-size:14px;font-weight:400;color:#5a5750;">/ ' + (m.unit||'m³') + '</span></div>' +
+    '</div></div>' +
+    (m.ket ? '<div style="margin-top:12px;padding:10px;background:#f5f4f0;border-radius:8px;font-size:13px;"><b>Keterangan:</b> ' + m.ket + '</div>' : '') +
+    '</div>' +
+    '<div style="margin-top:20px;font-size:11px;color:#8a8680;text-align:center;">Dicetak: ' + new Date().toLocaleString('id-ID') + ' · Gabe International Hub</div>' +
+    '</body></html>');
+  w.document.close(); w.focus();
+};
+
+window.exportSingleCSV = function(id) {
+  var m = allMaterials.find(function(x){ return (x.id||x._id)===id; });
+  if (!m) return;
+  var csv = 'ID,Nama,Nama Panjang,Kategori,Kelas,Rendemen,Densitas,Harga,Satuan,Status,Keterangan
+';
+  csv += [m.id||m._id, m.nama, '"'+(m.namaPanjang||'')+'"', m.cat, m.kelas||0,
+          m.rendemen||0, m.density||0, m.harga||0, m.unit||'m3',
+          m.aktif!==false?'Aktif':'Nonaktif', '"'+(m.ket||'')+'"'].join(',');
+  dlBlob('﻿' + csv, (m.id||m._id) + '_' + m.nama + '.csv', 'text/csv;charset=utf-8');
+  showToast('📊 CSV diexport!');
+};
+
+window.openImportModal = function() {
+  if (!canEdit) { showToast('⚠️ Hanya Admin/Manager!'); return; }
+  importData = [];
+  document.getElementById('import-preview-area').style.display = 'none';
+  var saveBtn = document.getElementById('import-save-btn');
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.style.opacity = '0.5'; }
+  var fileInp = document.getElementById('import-file');
+  if (fileInp) fileInp.value = '';
+  document.getElementById('import-modal').classList.add('show');
+};
+
+window.handleImportDrop = function(e) {
+  e.preventDefault();
+  document.getElementById('import-zone').classList.remove('drag');
+  var file = e.dataTransfer.files[0];
+  if (file) processImportFile(file);
+};
+
+window.handleImportFile = function(e) {
+  var file = e.target.files[0];
+  if (file) processImportFile(file);
+};
+
+window.downloadImportTemplate = function() {
+  var csv = 'ID,Nama,NamaPanjang,Kategori,Kelas,Rendemen,Densitas,Harga,Satuan,Status,Keterangan
+' +
+    'SW-013,Keruing,Keruing (Dipterocarpus spp.),SW,2,38,680,6000000,m3,Aktif,Contoh kayu keras
+' +
+    'PW-008,Plywood 6mm,Plywood 6mm (122x244cm),PW,0,100,520,110000,lembar,Aktif,
+';
+  dlBlob('﻿' + csv, 'Template_Import_Material.csv', 'text/csv;charset=utf-8');
+  showToast('📄 Template didownload!');
+};
+
+window.processImport = async function() {
+  if (!importData.length) { showToast('⚠️ Tidak ada data!'); return; }
+  var btn = document.getElementById('import-save-btn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Mengimport...'; }
+  var success = 0, failed = 0;
+  for (var i = 0; i < importData.length; i++) {
+    var item = importData[i];
+    try {
+      await setDoc(doc(db, 'materials', item.id), {
+        id: item.id, nama: item.nama, namaPanjang: item.namaPanjang||item.nama,
+        cat: item.cat, kelas: item.kelas, rendemen: item.rendemen,
+        density: item.density, harga: item.harga, unit: item.unit,
+        aktif: item.aktif, ket: item.ket||'',
+        updatedAt: serverTimestamp(), updatedBy: currentUser.email||'import'
+      });
+      success++;
+    } catch(e) { failed++; console.error('Import error:', e); }
+  }
+  closeModal('import-modal');
+  await loadMaterials();
+  showToast('✅ Import selesai: ' + success + ' berhasil' + (failed ? ', ' + failed + ' gagal' : ''));
+  if (btn) { btn.disabled = false; btn.textContent = '📥 Import Sekarang'; }
+};
+
+// ── Export/Import Helpers ─────────────────────────────────────────────
+var importData = [];
+
+function dlBlob(content, filename, type) {
+  var blob = new Blob([content], {type: type});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+}
+
+function todayStr() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function processImportFile(file) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var text = e.target.result;
+    var rows = text.split('
+').filter(function(r){ return r.trim(); });
+    if (rows.length < 2) { showToast('❌ File kosong atau format salah!'); return; }
+    importData = [];
+    var preview = document.getElementById('import-preview');
+    var html = '<div style="display:grid;grid-template-columns:70px 1fr 50px 100px;gap:4px;font-weight:700;margin-bottom:6px;font-size:11px;color:#8a8680;">ID | Nama | Kat | Harga</div>';
+    for (var i = 1; i < rows.length; i++) {
+      var cols = rows[i].split(',').map(function(c){ return c.replace(/^"|"$/g,'').trim(); });
+      if (cols.length < 4 || !cols[0]) continue;
+      var item = {
+        id: cols[0].toUpperCase(), nama: cols[1]||'',
+        namaPanjang: cols[2]||cols[1]||'',
+        cat: (cols[3]||'SW').toUpperCase(),
+        kelas: parseInt(cols[4])||2,
+        rendemen: parseFloat(cols[5])||35,
+        density: parseFloat(cols[6])||0,
+        harga: parseFloat(cols[7])||0,
+        unit: cols[8]||'m3',
+        aktif: (cols[9]||'').toLowerCase() !== 'nonaktif',
+        ket: cols[10]||''
+      };
+      importData.push(item);
+      var exists = allMaterials.find(function(m){ return (m.id||m._id)===item.id; });
+      var clr = exists ? '#e65100' : '#2d5a27';
+      html += '<div style="display:grid;grid-template-columns:70px 1fr 50px 100px;gap:4px;padding:4px 0;border-bottom:1px solid #e8e6df;font-size:11px;">' +
+        '<span style="font-family:monospace;color:'+clr+'">'+item.id+(exists?' ⚠️':' ✨')+'</span>' +
+        '<span>'+item.nama+'</span>' +
+        '<span style="color:'+((CAT_COLOR&&CAT_COLOR[item.cat])||'#555')+'">'+item.cat+'</span>' +
+        '<span style="font-weight:600;color:#2d5a27">'+fm(item.harga)+'</span>' +
+        '</div>';
+    }
+    if (preview) preview.innerHTML = html;
+    var countEl = document.getElementById('import-count');
+    if (countEl) countEl.textContent = importData.length;
+    var previewArea = document.getElementById('import-preview-area');
+    if (previewArea) previewArea.style.display = 'block';
+    var saveBtn = document.getElementById('import-save-btn');
+    if (saveBtn && importData.length) { saveBtn.disabled = false; saveBtn.style.opacity = '1'; }
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+
 // ── INIT ──────────────────────────────────────────────────────────────
+// Init language toggle
+(function(){
+  var wrap = document.getElementById('lang-toggle-wrap');
+  if(wrap) { var btn = document.createElement('span'); btn.innerHTML = buildLangToggle(); wrap.replaceWith(btn.firstChild); }
+  if(typeof applyLang==='function') applyLang();
+})();
 loadMaterials().catch(e=>{
   document.getElementById('mat-grid').innerHTML =
     '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#8b2020">❌ Gagal memuat: ' + e.message + '</div>';
