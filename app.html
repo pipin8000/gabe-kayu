@@ -727,272 +727,255 @@ window.doLogout = async function() {
 
 
 <script>
-// ═══ SETTINGS — non-module wrapper ═══
-window._settingsReady = false;
-
-const PRESETS = [
-  {name:'Jepara 🌿',primary:'#2d5a27',accent:'#3d7a35',bg:'#f5f4f0',navbar:'#1a3a1a'},
-  {name:'Ocean 🌊',primary:'#1a4a7a',accent:'#2060a0',bg:'#f0f4f8',navbar:'#0d2a4a'},
-  {name:'Sunset 🌅',primary:'#92580a',accent:'#b87020',bg:'#fdf5ec',navbar:'#5a3006'},
-  {name:'Royal 👑',primary:'#5c2d91',accent:'#7a40b0',bg:'#f5f0fb',navbar:'#3a1a60'},
-  {name:'Carbon ⚫',primary:'#2a2a2a',accent:'#444',bg:'#f0f0f0',navbar:'#111'},
-  {name:'Rose 🌹',primary:'#8b2020',accent:'#a83030',bg:'#fdf5f5',navbar:'#5a1010'},
-  {name:'Teal 🩵',primary:'#0f6e6e',accent:'#1a9090',bg:'#f0f8f8',navbar:'#084444'},
-  {name:'Gold ✨',primary:'#7a6010',accent:'#9a7e20',bg:'#fdf8ec',navbar:'#4a3a08'},
-  {name:'Sky 💙',primary:'#2060c0',accent:'#3070d0',bg:'#f0f5ff',navbar:'#102040'},
-  {name:'Olive 🫒',primary:'#5a6a20',accent:'#708030',bg:'#f5f5ec',navbar:'#323a10'},
+// ═══ SETTINGS MODAL — Bulletproof Version ═══
+var _logoData = null;
+var PRESETS=[
+  {n:'Jepara 🌿',p:'#2d5a27',a:'#3d7a35',b:'#f5f4f0',nb:'#1a3a1a'},
+  {n:'Ocean 🌊',p:'#1a4a7a',a:'#2060a0',b:'#f0f4f8',nb:'#0d2a4a'},
+  {n:'Sunset 🌅',p:'#92580a',a:'#b87020',b:'#fdf5ec',nb:'#5a3006'},
+  {n:'Royal 👑',p:'#5c2d91',a:'#7a40b0',b:'#f5f0fb',nb:'#3a1a60'},
+  {n:'Carbon ⚫',p:'#2a2a2a',a:'#444444',b:'#f0f0f0',nb:'#111111'},
+  {n:'Rose 🌹',p:'#8b2020',a:'#a83030',b:'#fdf5f5',nb:'#5a1010'},
+  {n:'Teal 🩵',p:'#0f6e6e',a:'#1a9090',b:'#f0f8f8',nb:'#084444'},
+  {n:'Gold ✨',p:'#7a6010',a:'#9a7e20',b:'#fdf8ec',nb:'#4a3a08'},
+  {n:'Sky 💙',p:'#2060c0',a:'#3070d0',b:'#f0f5ff',nb:'#102040'},
+  {n:'Olive 🫒',p:'#5a6a20',a:'#708030',b:'#f5f5ec',nb:'#323a10'},
 ];
 
-let _settingsDb = null;
-let _currentLogoData = null;
-
-// Init Firebase for settings (lazy)
-async function initSettingsFirebase() {
-  if (_settingsDb) return _settingsDb;
-  try {
-    const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
-    const { getFirestore } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-    const fc = {
-      apiKey:"AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",
-      authDomain:"gabe-international-hub.firebaseapp.com",
-      projectId:"gabe-international-hub",
-      storageBucket:"gabe-international-hub.firebasestorage.app",
-      messagingSenderId:"115783216069",
-      appId:"1:115783216069:web:62cfabf543b1fbb85bf9ac"
-    };
-    const apps = getApps();
-    const app = apps.find(a=>a.name==='settings') || initializeApp(fc,'settings');
-    _settingsDb = getFirestore(app);
-    return _settingsDb;
-  } catch(e) { console.error('Settings Firebase init:', e); return null; }
+function smToast(msg) {
+  try { showToast(msg); } catch(e) { alert(msg); }
 }
 
 window.openSettings = function() {
-  const user = JSON.parse(sessionStorage.getItem('gabe_user')||'{}');
-  if (user.role !== 'admin' && user.role !== 'manager') {
-    alert('⚠️ Hanya Admin & Manager yang bisa mengubah pengaturan!'); return;
-  }
-  buildPresetGrid();
-  loadSettingsForm();
-  document.getElementById('settings-overlay').classList.add('show');
-  document.getElementById('settings-overlay').style.display = 'flex';
+  try {
+    var user = JSON.parse(sessionStorage.getItem('gabe_user')||'{}');
+    if (user.role !== 'admin' && user.role !== 'manager') {
+      alert('Hanya Admin & Manager yang bisa mengubah pengaturan!');
+      return;
+    }
+    var overlay = document.getElementById('settings-overlay');
+    if (!overlay) { alert('Settings overlay tidak ditemukan!'); return; }
+    // Force show with inline style
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.right = '0';
+    overlay.style.bottom = '0';
+    overlay.style.background = 'rgba(0,0,0,0.6)';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.zIndex = '99999';
+    overlay.style.padding = '16px';
+    overlay.classList.add('show');
+    smBuildPresets();
+    smLoadFromStorage();
+  } catch(e) { alert('Error openSettings: ' + e.message); }
 }
 
 window.closeSettings = function() {
-  document.getElementById('settings-overlay').classList.remove('show');
-  document.getElementById('settings-overlay').style.display = 'none';
+  var overlay = document.getElementById('settings-overlay');
+  if (overlay) { overlay.style.display = 'none'; overlay.classList.remove('show'); }
 }
 
 window.switchSmTab = function(tab) {
-  const tabs = ['branding','theme','company','defaults'];
-  document.querySelectorAll('.sm-tab').forEach((b,i) => b.classList.toggle('active', tabs[i]===tab));
-  document.querySelectorAll('.sm-tcont').forEach(c => c.classList.remove('active'));
-  const el = document.getElementById('smt-'+tab);
-  if (el) el.classList.add('active');
+  var tabs = ['branding','theme','company','defaults'];
+  var btns = document.querySelectorAll('.sm-tab');
+  btns.forEach(function(b,i){ b.classList.toggle('active', tabs[i]===tab); });
+  var conts = document.querySelectorAll('.sm-tcont');
+  conts.forEach(function(c){ c.classList.remove('active'); c.style.display='none'; });
+  var el = document.getElementById('smt-'+tab);
+  if (el) { el.classList.add('active'); el.style.display='block'; }
 }
 
-function buildPresetGrid() {
-  const grid = document.getElementById('preset-grid');
+function smBuildPresets() {
+  var grid = document.getElementById('preset-grid');
   if (!grid || grid.children.length > 0) return;
-  PRESETS.forEach(p => {
-    const btn = document.createElement('button');
+  PRESETS.forEach(function(p) {
+    var btn = document.createElement('button');
     btn.className = 'preset-btn';
-    btn.style.background = p.primary;
-    btn.textContent = p.name;
-    btn.onclick = () => applyPreset(p);
+    btn.style.background = p.p;
+    btn.textContent = p.n;
+    btn.onclick = function(){ smApplyPreset(p); };
     grid.appendChild(btn);
   });
 }
 
-function applyPreset(p) {
-  ['primary','accent','bg','navbar'].forEach(k => {
-    const ci = document.getElementById('c-'+k);
-    const hi = document.getElementById('h-'+k);
-    if (ci) ci.value = p[k];
-    if (hi) hi.value = p[k];
+function smApplyPreset(p) {
+  var map = {primary:p.p, accent:p.a, bg:p.b, navbar:p.nb};
+  Object.keys(map).forEach(function(k) {
+    var ci = document.getElementById('c-'+k);
+    var hi = document.getElementById('h-'+k);
+    if (ci) ci.value = map[k];
+    if (hi) hi.value = map[k];
   });
-  updateNavbarPreview(p.navbar);
-}
-
-function updateNavbarPreview(color) {
-  const bar = document.getElementById('preview-bar');
-  if (bar) bar.style.background = color;
+  var bar = document.getElementById('preview-bar');
+  if (bar) bar.style.background = p.nb;
 }
 
 window.updateColorHex = function(key, val) {
-  const hi = document.getElementById('h-'+key);
+  var hi = document.getElementById('h-'+key);
   if (hi) hi.value = val;
-  if (key==='navbar') updateNavbarPreview(val);
+  if (key==='navbar') { var bar=document.getElementById('preview-bar'); if(bar) bar.style.background=val; }
 }
 window.updateColorPicker = function(key, val) {
   if (/^#[0-9a-fA-F]{6}$/.test(val)) {
-    const ci = document.getElementById('c-'+key);
+    var ci = document.getElementById('c-'+key);
     if (ci) ci.value = val;
-    if (key==='navbar') updateNavbarPreview(val);
+    if (key==='navbar') { var bar=document.getElementById('preview-bar'); if(bar) bar.style.background=val; }
   }
 }
 
 window.handleLogoUpload = function(e) {
-  const file = e.target.files[0];
+  var file = e.target.files[0];
   if (!file) return;
-  if (file.size > 200*1024) { showToast('⚠️ File terlalu besar! Maks 200KB'); return; }
-  const reader = new FileReader();
-  reader.onload = ev => {
-    const preview = document.getElementById('logo-preview');
-    if (preview) preview.innerHTML = '<img src="'+ev.target.result+'" alt="logo" style="width:100%;height:100%;object-fit:contain;">';
-    _currentLogoData = ev.target.result;
-    const urlEl = document.getElementById('logo-url');
+  if (file.size > 200*1024) { smToast('⚠️ File terlalu besar! Maks 200KB'); return; }
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    var preview = document.getElementById('logo-preview');
+    if (preview) preview.innerHTML = '<img src="'+ev.target.result+'" style="width:100%;height:100%;object-fit:contain;">';
+    _logoData = ev.target.result;
+    var urlEl = document.getElementById('logo-url');
     if (urlEl) urlEl.value = '';
   };
   reader.readAsDataURL(file);
 }
 
 window.previewLogoUrl = function(url) {
-  const preview = document.getElementById('logo-preview');
+  var preview = document.getElementById('logo-preview');
   if (!preview) return;
   if (!url) { preview.innerHTML = '🌿'; return; }
-  preview.innerHTML = '<img src="'+url+'" alt="logo" style="width:100%;height:100%;object-fit:contain;" onerror="this.parentElement.innerHTML='❌'">';
-  _currentLogoData = null;
+  preview.innerHTML = '<img src="'+url+'" style="width:100%;height:100%;object-fit:contain;" onerror="this.parentElement.innerHTML='❌'">';
+  _logoData = null;
 }
 
-async function loadSettingsForm() {
+function smLoadFromStorage() {
   try {
-    const db = await initSettingsFirebase();
-    if (!db) return;
-    const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-    const snap = await getDoc(doc(db,'settings','app'));
-    if (!snap.exists()) return;
-    const s = snap.data();
-    const fields = ['appname','tagline','version','year','company','address','website','adminemail','phone','city','rendemen','waste'];
-    fields.forEach(k => {
-      const el = document.getElementById('s-'+k);
-      if (el && s[k] !== undefined) el.value = s[k];
-    });
-    const selects = ['defwood','deffurniture','currency','unit'];
-    selects.forEach(k => {
-      const el = document.getElementById('s-'+k);
-      if (el && s[k]) el.value = s[k];
-    });
+    var saved = localStorage.getItem('gabe_settings');
+    if (!saved) return;
+    var s = JSON.parse(saved);
+    var fields = ['appname','tagline','version','year','company','address','website','adminemail','phone','city','rendemen','waste'];
+    fields.forEach(function(k){ var el=document.getElementById('s-'+k); if(el&&s[k]!==undefined) el.value=s[k]; });
+    var sels = ['defwood','deffurniture','currency'];
+    sels.forEach(function(k){ var el=document.getElementById('s-'+k); if(el&&s[k]) el.value=s[k]; });
     if (s.colors) {
-      ['primary','accent','bg','navbar'].forEach(k => {
-        if (!s.colors[k]) return;
-        const ci = document.getElementById('c-'+k);
-        const hi = document.getElementById('h-'+k);
-        if (ci) ci.value = s.colors[k];
-        if (hi) hi.value = s.colors[k];
+      ['primary','accent','bg','navbar'].forEach(function(k){
+        if(!s.colors[k]) return;
+        var ci=document.getElementById('c-'+k); var hi=document.getElementById('h-'+k);
+        if(ci) ci.value=s.colors[k]; if(hi) hi.value=s.colors[k];
       });
-      if (s.colors.navbar) updateNavbarPreview(s.colors.navbar);
+      var bar=document.getElementById('preview-bar');
+      if(bar&&s.colors.navbar) bar.style.background=s.colors.navbar;
     }
-    if (s.logoData || s.logoUrl) {
-      const src = s.logoData || s.logoUrl;
-      const preview = document.getElementById('logo-preview');
-      if (preview) preview.innerHTML = '<img src="'+src+'" alt="logo" style="width:100%;height:100%;object-fit:contain;">';
-      _currentLogoData = s.logoData || null;
-      const urlEl = document.getElementById('logo-url');
-      if (urlEl && s.logoUrl) urlEl.value = s.logoUrl;
+    if (s.logoData||s.logoUrl) {
+      var src=s.logoData||s.logoUrl;
+      var preview=document.getElementById('logo-preview');
+      if(preview) preview.innerHTML='<img src="'+src+'" style="width:100%;height:100%;object-fit:contain;">';
+      _logoData=s.logoData||null;
     }
-  } catch(e) { console.log('Load settings:', e); }
+  } catch(e) { console.log('smLoadFromStorage:', e); }
 }
 
-window.saveSettings = async function() {
-  const user = JSON.parse(sessionStorage.getItem('gabe_user')||'{}');
+window.saveSettings = function() {
   try {
-    const db = await initSettingsFirebase();
-    if (!db) { showToast('❌ Database tidak tersedia'); return; }
-    const { doc, setDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-
-    const g = id => { const el = document.getElementById(id); return el ? el.value : ''; };
-    const settings = {
-      appname: g('s-appname'), tagline: g('s-tagline'),
-      version: g('s-version'), year: g('s-year'),
-      company: g('s-company'), address: g('s-address'),
-      website: g('s-website'), adminemail: g('s-adminemail'),
-      phone: g('s-phone'), city: g('s-city'),
-      rendemen: +g('s-rendemen'), waste: +g('s-waste'),
-      defwood: g('s-defwood'), deffurniture: g('s-deffurniture'),
-      currency: g('s-currency'),
-      colors: {
-        primary: g('h-primary'), accent: g('h-accent'),
-        bg: g('h-bg'), navbar: g('h-navbar'),
-      },
-      logoUrl: g('logo-url') || null,
-      logoData: _currentLogoData || null,
-      updatedAt: serverTimestamp(),
-      updatedBy: user.email || 'unknown',
+    var g = function(id){ var el=document.getElementById(id); return el?el.value:''; };
+    var settings = {
+      appname:g('s-appname'), tagline:g('s-tagline'), version:g('s-version'), year:g('s-year'),
+      company:g('s-company'), address:g('s-address'), website:g('s-website'),
+      adminemail:g('s-adminemail'), phone:g('s-phone'), city:g('s-city'),
+      rendemen:+g('s-rendemen'), waste:+g('s-waste'),
+      defwood:g('s-defwood'), deffurniture:g('s-deffurniture'), currency:g('s-currency'),
+      colors:{primary:g('h-primary'),accent:g('h-accent'),bg:g('h-bg'),navbar:g('h-navbar')},
+      logoUrl:g('logo-url')||null, logoData:_logoData||null,
+      updatedAt:new Date().toISOString()
     };
-
-    await setDoc(doc(db,'settings','app'), settings);
-    applySettingsToUI(settings);
+    // Save to localStorage first (instant)
+    localStorage.setItem('gabe_settings', JSON.stringify(settings));
+    smApplyToUI(settings);
     closeSettings();
-    showToast('✅ Pengaturan berhasil disimpan!');
-  } catch(e) { showToast('❌ Gagal simpan: '+e.message); console.error(e); }
+    smToast('✅ Pengaturan berhasil disimpan!');
+    // Save to Firebase in background
+    smSaveToFirebase(settings);
+  } catch(e) { alert('Error saveSettings: '+e.message); }
 }
 
-function applySettingsToUI(s) {
+function smSaveToFirebase(settings) {
+  try {
+    import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js").then(function(m){
+      var apps = m.getApps();
+      var app = apps.find(function(a){return a.name==='settings2';});
+      if (!app) app = m.initializeApp({
+        apiKey:"AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",
+        authDomain:"gabe-international-hub.firebaseapp.com",
+        projectId:"gabe-international-hub",
+        storageBucket:"gabe-international-hub.firebasestorage.app",
+        messagingSenderId:"115783216069",
+        appId:"1:115783216069:web:62cfabf543b1fbb85bf9ac"
+      },'settings2');
+      return import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js").then(function(fs){
+        var db = fs.getFirestore(app);
+        return fs.setDoc(fs.doc(db,'settings','app'), settings);
+      });
+    }).then(function(){ console.log('Settings saved to Firebase'); })
+    .catch(function(e){ console.log('Firebase save (non-critical):', e.message); });
+  } catch(e) { console.log('smSaveToFirebase:', e); }
+}
+
+function smApplyToUI(s) {
   if (!s) return;
-  const root = document.documentElement;
   if (s.colors) {
-    if (s.colors.primary) { root.style.setProperty('--ac', s.colors.primary); root.style.setProperty('--accent', s.colors.primary); }
+    var root = document.documentElement;
+    if (s.colors.primary) root.style.setProperty('--ac', s.colors.primary);
     if (s.colors.accent)  root.style.setProperty('--ac2', s.colors.accent);
-    if (s.colors.bg)      { root.style.setProperty('--bg', s.colors.bg); document.body.style.background = s.colors.bg; }
-    if (s.colors.navbar)  { document.querySelectorAll('.topbar').forEach(el=>el.style.background=s.colors.navbar); document.getElementById('auth-bar').style.background=s.colors.navbar; }
+    if (s.colors.bg)      { root.style.setProperty('--bg', s.colors.bg); document.body.style.background=s.colors.bg; }
+    if (s.colors.navbar) {
+      document.querySelectorAll('.topbar').forEach(function(el){ el.style.background=s.colors.navbar; });
+      var ab=document.getElementById('auth-bar'); if(ab) ab.style.background=s.colors.navbar;
+    }
   }
-  const bname = document.querySelector('.bname');
-  if (bname && s.appname) bname.textContent = s.appname;
-  const bsub = document.querySelector('.bsub');
-  if (bsub && s.tagline) bsub.textContent = s.tagline + ' — ' + (s.version||'v2.0');
-  if (s.logoData || s.logoUrl) {
-    const src = s.logoData || s.logoUrl;
-    document.querySelectorAll('.tlogo').forEach(el => {
-      el.innerHTML = '<img src="'+src+'" style="width:26px;height:26px;object-fit:contain;border-radius:4px;" onerror="this.parentElement.textContent='🪵'">';
+  var bname=document.querySelector('.bname'); if(bname&&s.appname) bname.textContent=s.appname;
+  var bsub=document.querySelector('.bsub'); if(bsub&&s.tagline) bsub.textContent=s.tagline+' — '+(s.version||'v2.0');
+  if (s.logoData||s.logoUrl) {
+    var src=s.logoData||s.logoUrl;
+    document.querySelectorAll('.tlogo').forEach(function(el){
+      el.innerHTML='<img src="'+src+'" style="width:26px;height:26px;object-fit:contain;border-radius:4px;" onerror="this.parentElement.textContent='🪵'">';
     });
   }
-  if (s.rendemen && typeof ST !== 'undefined') {
-    ST.rendemen = s.rendemen;
-    const rng = document.getElementById('rng-rendemen');
-    const inp = document.getElementById('inp-rendemen');
-    if (rng) rng.value = s.rendemen;
-    if (inp) inp.value = s.rendemen;
+  if (s.rendemen && typeof ST!=='undefined') {
+    ST.rendemen=s.rendemen;
+    var r=document.getElementById('rng-rendemen'); if(r) r.value=s.rendemen;
+    var i=document.getElementById('inp-rendemen'); if(i) i.value=s.rendemen;
   }
-  if (s.waste && typeof ST !== 'undefined') {
-    ST.waste = s.waste;
-    const rng = document.getElementById('rng-waste');
-    const inp = document.getElementById('inp-waste');
-    if (rng) rng.value = s.waste;
-    if (inp) inp.value = s.waste;
+  if (s.waste && typeof ST!=='undefined') {
+    ST.waste=s.waste;
+    var r=document.getElementById('rng-waste'); if(r) r.value=s.waste;
+    var i=document.getElementById('inp-waste'); if(i) i.value=s.waste;
   }
-  if (typeof render === 'function') render();
+  if (typeof render==='function') render();
 }
 
 window.resetSettings = function() {
   if (!confirm('Reset semua pengaturan ke default Jepara?')) return;
-  applyPreset(PRESETS[0]);
-  document.getElementById('s-appname').value = 'Wood Volume Calculator';
-  document.getElementById('s-tagline').value = 'Jepara ERP Suite';
-  document.getElementById('s-version').value = 'v2.0';
-  document.getElementById('s-company').value = 'PT. Gabe International';
-  document.getElementById('s-address').value = 'Jepara, Jawa Tengah, Indonesia';
-  document.getElementById('s-website').value = 'www.gabeart.com';
-  document.getElementById('s-adminemail').value = 'admin@gabeart.com';
-  document.getElementById('s-rendemen').value = 35;
-  document.getElementById('s-waste').value = 15;
-  const preview = document.getElementById('logo-preview');
-  if (preview) preview.innerHTML = '🌿';
-  const urlEl = document.getElementById('logo-url');
-  if (urlEl) urlEl.value = '';
-  _currentLogoData = null;
+  smApplyPreset(PRESETS[0]);
+  var defaults = {appname:'Wood Volume Calculator',tagline:'Jepara ERP Suite',
+    version:'v2.0',company:'PT. Gabe International',
+    address:'Jepara, Jawa Tengah, Indonesia',
+    website:'www.gabeart.com',adminemail:'admin@gabeart.com',rendemen:35,waste:15};
+  Object.keys(defaults).forEach(function(k){
+    var el=document.getElementById('s-'+k); if(el) el.value=defaults[k];
+  });
+  var p=document.getElementById('logo-preview'); if(p) p.innerHTML='🌿';
+  var u=document.getElementById('logo-url'); if(u) u.value='';
+  _logoData=null;
 }
 
-// Auto-load settings on startup
-(async function() {
+// Auto-apply saved settings on page load
+window.addEventListener('load', function() {
   try {
-    const db = await initSettingsFirebase();
-    if (!db) return;
-    const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-    const snap = await getDoc(doc(db,'settings','app'));
-    if (snap.exists()) applySettingsToUI(snap.data());
-  } catch(e) { console.log('Auto-load settings:', e); }
-})();
+    var saved = localStorage.getItem('gabe_settings');
+    if (saved) smApplyToUI(JSON.parse(saved));
+  } catch(e) {}
+});
 </script>
 
 
