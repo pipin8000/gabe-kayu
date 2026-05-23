@@ -173,11 +173,130 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
 .preset-btn:hover{transform:scale(1.05);border-color:rgba(255,255,255,.5);}
 .sm-tcont{display:none;} .sm-tcont.active{display:block;}
 
+
+/* ═══════════════════════════════
+   RESPONSIVE — MOBILE FIRST
+   ═══════════════════════════════ */
+
+/* Tablet & below */
+@media (max-width: 960px) {
+  .mgrid { grid-template-columns: 1fr !important; }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  /* Auth bar */
+  #auth-bar { height: auto !important; padding: 6px 10px !important; flex-wrap: wrap; gap: 6px; }
+  #auth-bar > div:first-child { font-size: 10px !important; }
+
+  /* Topbar */
+  .topbar { padding: 0 12px !important; height: 48px !important; }
+  .bname { font-size: 13px !important; }
+  .bsub { display: none; }
+  .tsbadge { display: none; }
+  .vbadge { font-size: 10px !important; padding: 2px 7px !important; }
+
+  /* App container */
+  .app { padding: 10px 10px 40px !important; }
+
+  /* Furniture tabs */
+  .ftabs { gap: 4px !important; margin-bottom: 12px !important; }
+  .ftab { padding: 7px 10px !important; font-size: 12px !important; gap: 5px !important; }
+  .ftab .icon { font-size: 15px !important; }
+
+  /* Main grid — stack */
+  .mgrid { grid-template-columns: 1fr !important; gap: 12px !important; }
+
+  /* Left panel */
+  .card { border-radius: 12px !important; }
+  .cbody { padding: 12px !important; }
+  .dgrid { grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
+  .fc { font-size: 13px !important; padding: 7px 9px !important; }
+  .pgroup { padding: 8px 10px !important; }
+  .prow { flex-wrap: wrap; gap: 6px; }
+  .plbl { min-width: 100px; }
+  .pinp { width: 60px !important; }
+
+  /* Metrics grid */
+  .mgridm { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+  .mval { font-size: 15px !important; }
+  .mlbl { font-size: 9px !important; }
+
+  /* Formula strip */
+  .fstrip { padding: 8px 10px !important; gap: 5px !important; font-size: 12px !important; }
+  .fres { font-size: 12px !important; padding: 3px 9px !important; }
+
+  /* Tab buttons */
+  .tbtns { gap: 3px !important; }
+  .tbtn { padding: 5px 9px !important; font-size: 11px !important; }
+
+  /* Cutting list table */
+  .twrap { border-radius: 6px !important; }
+  table { font-size: 11px !important; min-width: 600px !important; }
+  thead th { padding: 7px 5px !important; font-size: 9px !important; }
+  tbody td { padding: 6px 4px !important; }
+  .msel { font-size: 10px !important; max-width: 95px !important; }
+
+  /* Audit strip */
+  .astrip { gap: 8px !important; padding: 6px 10px !important; flex-wrap: wrap; }
+  .ait { font-size: 10px !important; }
+  .ait strong { font-size: 9px !important; }
+  #audit-strip button { margin-left: 0 !important; font-size: 10px !important; padding: 2px 8px !important; }
+
+  /* Card header */
+  .chdr { padding: 10px 12px !important; flex-wrap: wrap; gap: 6px; }
+  .chdr h3 { font-size: 12px !important; }
+
+  /* BOM buttons */
+  .bgrp { gap: 6px !important; }
+  .btn { padding: 6px 10px !important; font-size: 11px !important; }
+  .bombox { font-size: 10px !important; max-height: 300px !important; }
+
+  /* Material Master */
+  .mmgrid { grid-template-columns: 1fr !important; }
+  .mmmeta { grid-template-columns: 1fr 1fr !important; }
+
+  /* History table */
+  .htbl { font-size: 11px !important; }
+  .htbl th, .htbl td { padding: 6px 8px !important; }
+
+  /* WArow */
+  .warow { flex-wrap: wrap; padding: 6px 8px !important; }
+  .wasel { max-width: 120px !important; }
+
+  /* Footer */
+  .footer { flex-direction: column; gap: 8px !important; padding-top: 12px !important; }
+  .fright { flex-wrap: wrap; }
+
+  /* Settings Modal */
+  .settings-modal { max-height: 95vh !important; border-radius: 14px !important; }
+  .sm-hdr { padding: 14px 16px !important; }
+  .sm-hdr h3 { font-size: 14px !important; }
+  .sm-body { padding: 14px !important; }
+  .sm-row { grid-template-columns: 1fr !important; gap: 0 !important; }
+  .preset-grid { grid-template-columns: repeat(5, 1fr) !important; gap: 5px !important; }
+  .preset-btn { font-size: 8px !important; height: 30px !important; }
+  .color-row { flex-wrap: wrap; gap: 6px; }
+  .color-label { min-width: 140px; }
+  .sm-footer { padding: 10px 14px !important; flex-wrap: wrap; gap: 8px; }
+  .logo-upload-wrap { flex-wrap: wrap; }
+  .sm-tabs { padding: 8px 10px !important; }
+  .sm-tab { padding: 5px 10px !important; font-size: 11px !important; }
+}
+
+/* Very small screens */
+@media (max-width: 380px) {
+  .ftab span:not(.icon) { display: none; }
+  .ftab { padding: 8px !important; }
+  .mgridm { grid-template-columns: 1fr 1fr !important; }
+  .tbtns .tbtn:nth-child(n+4) { display: none; }
+}
+
 </style>
 </head>
 <body>
 
-<div id="auth-bar" style="background:#1a3a1a;color:#fff;padding:0 16px;height:40px;display:flex;align-items:center;justify-content:space-between;font-size:12px;">
+<div id="auth-bar" style="background:#1a3a1a;color:#fff;padding:0 12px;min-height:36px;display:flex;align-items:center;justify-content:space-between;font-size:12px;flex-wrap:wrap;gap:4px;">
   <div style="display:flex;align-items:center;gap:10px;">
     <span style="opacity:.7">🌿 GABE INTERNATIONAL HUB</span>
     <span style="background:rgba(255,255,255,.15);padding:2px 8px;border-radius:20px;font-size:10px;">🪵 Wood Volume Calculator</span>

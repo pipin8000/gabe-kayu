@@ -34,6 +34,18 @@ h2{font-size:18px;font-weight:600;color:#1a1917;margin-bottom:6px;}
 .spinner{display:inline-block;width:16px;height:16px;border:2px solid #d8d5cb;border-top-color:#2d5a27;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .powered{text-align:center;margin-top:16px;font-size:10px;color:rgba(255,255,255,.5);}
+
+@media (max-width: 480px) {
+  .login-wrap { padding: 12px; }
+  .login-card { padding: 28px 20px; border-radius: 16px; }
+  .logo-circle { width: 60px; height: 60px; font-size: 26px; }
+  .brand-name { font-size: 17px; }
+  h2 { font-size: 16px; }
+  .sub { font-size: 12px; }
+  .fg input { font-size: 16px; } /* prevent zoom on iOS */
+  .btn-login { font-size: 14px; padding: 11px; }
+}
+
 </style>
 </head>
 <body>
