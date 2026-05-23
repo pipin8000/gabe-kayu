@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Material Master — Gabe International Hub</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a1917;font-size:14px;line-height:1.5;}
+
+/* TOPBAR */
+.topbar{background:#1a3a1a;color:#fff;padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.back-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:5px 12px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;text-decoration:none;}
+.back-btn:hover{background:rgba(255,255,255,.25);}
+.topbar-title{font-size:15px;font-weight:600;}
+.topbar-sub{font-size:11px;opacity:.7;}
+.user-info{display:flex;align-items:center;gap:8px;font-size:12px;}
+.logout-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px;}
+
+/* LAYOUT */
+.app{max-width:1200px;margin:0 auto;padding:20px 16px 60px;}
+
+/* PAGE HEADER */
+.page-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+.page-title{font-size:22px;font-weight:700;}
+.page-sub{font-size:13px;color:#8a8680;margin-top:3px;}
+
+/* STATS CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px;}
+.stat-card{background:#fff;border:1px solid #d8d5cb;border-radius:12px;padding:14px 16px;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.stat-val{font-size:24px;font-weight:700;margin-bottom:2px;}
+.stat-lbl{font-size:11px;color:#8a8680;font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
+
+/* FILTER BAR */
+.filter-bar{background:#fff;border:1px solid #d8d5cb;border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.search-inp{flex:1;min-width:200px;padding:8px 12px;border:1.5px solid #d8d5cb;border-radius:8px;font-size:13px;font-family:inherit;}
+.search-inp:focus{outline:none;border-color:#2d5a27;box-shadow:0 0 0 3px rgba(45,90,39,.1);}
+.filter-btn{padding:7px 14px;border:1.5px solid #d8d5cb;border-radius:8px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;color:#5a5750;}
+.filter-btn:hover{background:#f0efe9;}
+.filter-btn.active{background:#2d5a27;border-color:#2d5a27;color:#fff;}
+
+/* MATERIAL CARDS GRID */
+.mat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:20px;}
+
+/* MATERIAL CARD */
+.mat-card{background:#fff;border:1px solid #d8d5cb;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07);transition:all .2s;}
+.mat-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.12);transform:translateY(-1px);}
+.mat-card-hdr{padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #e8e6df;}
+.mat-color-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;}
+.mat-id{font-family:'Courier New',monospace;font-size:10px;background:#f0efe9;color:#8a8680;padding:2px 7px;border-radius:4px;}
+.mat-nama{font-size:14px;font-weight:700;flex:1;}
+.mat-cat-badge{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:700;}
+.mat-card-body{padding:12px 14px;}
+.mat-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;}
+.mat-meta-item{font-size:11px;color:#8a8680;}
+.mat-meta-item strong{display:block;font-size:12px;color:#1a1917;margin-top:1px;}
+
+/* PRICE SECTION */
+.price-section{background:#f5f4f0;border-radius:8px;padding:10px 12px;}
+.price-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.price-label{font-size:11px;color:#8a8680;font-weight:600;}
+.price-value{font-size:16px;font-weight:700;color:#2d5a27;}
+.price-date{font-size:10px;color:#8a8680;margin-top:2px;}
+.price-update-row{display:flex;gap:6px;align-items:center;}
+.price-inp{flex:1;padding:7px 10px;border:1.5px solid #d8d5cb;border-radius:7px;font-size:13px;font-weight:600;}
+.price-inp:focus{outline:none;border-color:#2d5a27;}
+.price-save-btn{padding:7px 12px;background:#2d5a27;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;}
+.price-save-btn:hover{background:#3d7a35;}
+.price-save-btn:disabled{opacity:.5;cursor:not-allowed;}
+
+/* CARD FOOTER */
+.mat-card-footer{padding:8px 14px;border-top:1px solid #e8e6df;display:flex;gap:6px;background:#fafaf8;}
+.card-btn{flex:1;padding:6px 10px;border:1px solid #d8d5cb;border-radius:7px;background:#fff;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;color:#5a5750;text-align:center;}
+.card-btn:hover{background:#f0efe9;}
+.card-btn.danger{color:#8b2020;border-color:#f5c2c2;}
+.card-btn.danger:hover{background:#fceaea;}
+.card-btn.info{color:#1a4a7a;border-color:#c0d8f5;}
+.card-btn.info:hover{background:#e8f0fb;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .15s;}
+.btn-primary{background:#2d5a27;color:#fff;} .btn-primary:hover{background:#3d7a35;}
+.btn-secondary{background:#f0efe9;color:#5a5750;border:1.5px solid #d8d5cb;} .btn-secondary:hover{background:#e8e6df;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:16px;}
+.modal-overlay.show{display:flex;}
+.modal{background:#fff;border-radius:18px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.3);}
+.modal-hdr{padding:18px 22px;border-bottom:1px solid #d8d5cb;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1;}
+.modal-hdr h3{font-size:16px;font-weight:700;}
+.modal-close{width:30px;height:30px;border:none;background:#e8e6df;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.modal-body{padding:20px 22px;}
+.modal-footer{padding:14px 22px;border-top:1px solid #d8d5cb;display:flex;gap:10px;justify-content:flex-end;}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:12px;font-weight:600;color:#5a5750;margin-bottom:4px;}
+.fc{width:100%;padding:9px 12px;border:1.5px solid #d8d5cb;border-radius:8px;font-size:13px;font-family:inherit;background:#fff;}
+.fc:focus{outline:none;border-color:#2d5a27;box-shadow:0 0 0 3px rgba(45,90,39,.1);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* HISTORY MODAL */
+.hist-list{margin-top:4px;}
+.hist-item{padding:12px;border:1px solid #e8e6df;border-radius:10px;margin-bottom:8px;background:#fff;}
+.hist-item:last-child{margin-bottom:0;}
+.hist-date{font-size:11px;color:#8a8680;font-family:'Courier New',monospace;}
+.hist-prices{display:flex;align-items:center;gap:8px;margin:6px 0;}
+.hist-old{font-size:13px;color:#8b2020;text-decoration:line-through;}
+.hist-arrow{color:#8a8680;}
+.hist-new{font-size:14px;font-weight:700;color:#2d5a27;}
+.hist-change{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:700;}
+.hist-change.up{background:#fceaea;color:#8b2020;}
+.hist-change.down{background:#eaf3e8;color:#2d5a27;}
+.hist-by{font-size:11px;color:#8a8680;}
+.hist-note{font-size:11px;color:#5a5750;margin-top:4px;font-style:italic;}
+.no-hist{text-align:center;padding:20px;color:#8a8680;font-size:13px;}
+
+/* CAT COLORS */
+.cat-SW{background:#fff3e0;color:#e65100;}
+.cat-PW{background:#e3f2fd;color:#1565c0;}
+.cat-NW{background:#f3e5f5;color:#6a1b9a;}
+
+/* TOAST */
+#toast{position:fixed;bottom:20px;right:20px;background:#2d5a27;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:all .22s;pointer-events:none;z-index:999;}
+#toast.show{opacity:1;transform:translateY(0);}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:40px 20px;color:#8a8680;}
+.empty-state .icon{font-size:48px;margin-bottom:12px;}
+
+/* PRICE TREND */
+.trend-up{color:#c0392b;}
+.trend-down{color:#27ae60;}
+.trend-same{color:#8a8680;}
+
+@media(max-width:640px){
+  .topbar{padding:0 12px;}
+  .app{padding:12px 10px 40px;}
+  .page-hdr{flex-direction:column;}
+  .mat-grid{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .filter-bar{gap:6px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-left">
+    <a href="app.html" class="back-btn">← Kembali</a>
+    <div>
+      <div class="topbar-title">🪵 Material Master</div>
+      <div class="topbar-sub">Manajemen Harga & Jenis Kayu — PT. Gabe International</div>
+    </div>
+  </div>
+  <div class="user-info">
+    <span id="user-name" style="opacity:.8;font-size:12px;"></span>
+    <span id="user-role" style="font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.15);"></span>
+    <button class="logout-btn" onclick="doLogout()">Logout</button>
+  </div>
+</nav>
+
+<div class="app">
+
+  <!-- Page Header -->
+  <div class="page-hdr">
+    <div>
+      <div class="page-title">📦 Material Master</div>
+      <div class="page-sub">Database jenis kayu & material · Update harga dengan historis otomatis</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-secondary" onclick="exportPriceList()">📄 Export Price List</button>
+      <button class="btn btn-primary" onclick="openAddModal()">➕ Tambah Material Baru</button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid" id="stats-grid">
+    <div class="stat-card"><div class="stat-val" id="stat-total">—</div><div class="stat-lbl">Total Material</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#e65100" id="stat-sw">—</div><div class="stat-lbl">Solid Wood</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#1565c0" id="stat-pw">—</div><div class="stat-lbl">Plywood / Board</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#6a1b9a" id="stat-nw">—</div><div class="stat-lbl">Non-Wood</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#2d5a27" id="stat-updates">—</div><div class="stat-lbl">Update Harga Bulan Ini</div></div>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter-bar">
+    <input type="text" class="search-inp" id="search-inp" placeholder="🔍 Cari nama material, ID..." oninput="filterMaterials()">
+    <button class="filter-btn active" onclick="setFilter('ALL',this)">Semua</button>
+    <button class="filter-btn" onclick="setFilter('SW',this)">🪵 Solid Wood</button>
+    <button class="filter-btn" onclick="setFilter('PW',this)">📐 Plywood</button>
+    <button class="filter-btn" onclick="setFilter('NW',this)">🔩 Non-Wood</button>
+    <button class="filter-btn" onclick="setFilter('ACTIVE',this)">✅ Aktif</button>
+  </div>
+
+  <!-- Materials Grid -->
+  <div class="mat-grid" id="mat-grid">
+    <div style="grid-column:1/-1;text-align:center;padding:40px;color:#8a8680;">
+      <div style="font-size:32px;margin-bottom:8px;">⏳</div>
+      Memuat data material...
+    </div>
+  </div>
+
+</div><!-- end app -->
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="mat-modal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h3 id="modal-title">➕ Tambah Material Baru</h3>
+      <button class="modal-close" onclick="closeModal('mat-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg">
+          <label>ID Material <span style="color:#8a8680;font-weight:400">(auto/manual)</span></label>
+          <input type="text" class="fc" id="m-id" placeholder="SW-013, PW-008..." maxlength="10">
+        </div>
+        <div class="fg">
+          <label>Kategori</label>
+          <select class="fc" id="m-cat" onchange="updateIdSuggestion()">
+            <option value="SW">Solid Wood (SW)</option>
+            <option value="PW">Plywood / Board (PW)</option>
+            <option value="NW">Non-Wood (NW)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="fg">
+          <label>Nama Singkat</label>
+          <input type="text" class="fc" id="m-nama" placeholder="Jati, Mindi, Akasia...">
+        </div>
+        <div class="fg">
+          <label>Nama Panjang / Ilmiah</label>
+          <input type="text" class="fc" id="m-nama-panjang" placeholder="Jati (Tectona grandis)">
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="fg">
+          <label>Kelas Kayu</label>
+          <select class="fc" id="m-kelas">
+            <option value="1">Kelas 1 (Premium)</option>
+            <option value="2">Kelas 2 (Standard)</option>
+            <option value="3">Kelas 3 (Economy)</option>
+            <option value="0">— Tidak Berlaku</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Rendemen dari Log (%)</label>
+          <input type="number" class="fc" id="m-rendemen" value="35" min="10" max="100" placeholder="35">
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="fg">
+          <label>Densitas (kg/m³)</label>
+          <input type="number" class="fc" id="m-density" placeholder="720" min="100" max="9000">
+        </div>
+        <div class="fg">
+          <label>Satuan Harga</label>
+          <select class="fc" id="m-unit">
+            <option value="m³">m³ (meter kubik)</option>
+            <option value="lembar">lembar (122×244cm)</option>
+            <option value="meter">meter (panjang)</option>
+            <option value="m²">m² (meter persegi)</option>
+            <option value="kg">kg (kilogram)</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Harga Awal (Rp)</label>
+        <input type="number" class="fc" id="m-harga" placeholder="18000000" min="0">
+      </div>
+      <div class="fg">
+        <label>Keterangan / Deskripsi</label>
+        <textarea class="fc" id="m-ket" rows="2" placeholder="Keterangan tambahan tentang material ini..."></textarea>
+      </div>
+      <div class="fg" style="display:flex;align-items:center;gap:10px;">
+        <input type="checkbox" id="m-aktif" checked style="width:16px;height:16px;">
+        <label for="m-aktif" style="margin-bottom:0;cursor:pointer;">Material Aktif (tersedia untuk digunakan)</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('mat-modal')">Batal</button>
+      <button class="btn btn-primary" id="modal-save-btn" onclick="saveMaterial()">💾 Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- UPDATE HARGA MODAL -->
+<div class="modal-overlay" id="price-modal">
+  <div class="modal" style="max-width:440px;">
+    <div class="modal-hdr">
+      <h3>💰 Update Harga Material</h3>
+      <button class="modal-close" onclick="closeModal('price-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="price-modal-info" style="background:#f5f4f0;border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:13px;"></div>
+      <div class="fg">
+        <label>Harga Baru (Rp)</label>
+        <input type="number" class="fc" id="pm-harga-baru" placeholder="0" min="0" style="font-size:18px;font-weight:700;">
+      </div>
+      <div class="fg">
+        <label>Tanggal Berlaku</label>
+        <input type="date" class="fc" id="pm-tanggal">
+      </div>
+      <div class="fg">
+        <label>Keterangan Perubahan <span style="color:#8a8680;font-weight:400">(opsional)</span></label>
+        <input type="text" class="fc" id="pm-ket" placeholder="Contoh: Naik karena kenaikan BBM, Harga pasar baru...">
+      </div>
+      <div id="pm-preview" style="background:#eaf3e8;border-radius:8px;padding:10px 12px;font-size:12px;color:#1e4219;display:none;margin-top:8px;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('price-modal')">Batal</button>
+      <button class="btn btn-primary" onclick="savePrice()">💾 Update Harga</button>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORY MODAL -->
+<div class="modal-overlay" id="hist-modal">
+  <div class="modal" style="max-width:500px;">
+    <div class="modal-hdr">
+      <h3 id="hist-modal-title">📈 Historis Harga</h3>
+      <button class="modal-close" onclick="closeModal('hist-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="hist-chart-area" style="margin-bottom:16px;"></div>
+      <div id="hist-list-area"></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  getFirestore, collection, doc,
+  getDocs, getDoc, setDoc, addDoc, updateDoc, deleteDoc,
+  query, where, orderBy, limit,
+  serverTimestamp, Timestamp
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const FC = {
+  apiKey:"AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",
+  authDomain:"gabe-international-hub.firebaseapp.com",
+  projectId:"gabe-international-hub",
+  storageBucket:"gabe-international-hub.firebasestorage.app",
+  messagingSenderId:"115783216069",
+  appId:"1:115783216069:web:62cfabf543b1fbb85bf9ac"
+};
+
+const fbApp = getApps().find(a=>a.name==='materials') || initializeApp(FC,'materials');
+const auth  = getAuth(fbApp);
+const db    = getFirestore(fbApp);
+
+// ── Auth ─────────────────────────────────────────────────────────────
+const stored = sessionStorage.getItem('gabe_user');
+if (!stored) { window.location.href='index.html'; }
+const currentUser = JSON.parse(stored||'{}');
+document.getElementById('user-name').textContent = '👤 ' + (currentUser.name||currentUser.email||'');
+document.getElementById('user-role').textContent = (currentUser.role||'').toUpperCase();
+
+const canEdit = ['admin','manager'].includes(currentUser.role);
+
+window.doLogout = async function() {
+  try { await signOut(auth); } catch(e){}
+  sessionStorage.removeItem('gabe_user');
+  window.location.href = 'index.html';
+}
+
+// ── Default material seeds ────────────────────────────────────────────
+const DEFAULT_MATERIALS = [
+  {id:'SW-001',nama:'Jati',namaPanjang:'Jati (Tectona grandis)',cat:'SW',kelas:1,rendemen:35,density:720,harga:18000000,unit:'m³',aktif:true,ket:'Kayu keras premium, kelas 1'},
+  {id:'SW-002',nama:'Sonokeling',namaPanjang:'Sonokeling (Dalbergia latifolia)',cat:'SW',kelas:1,rendemen:32,density:860,harga:22000000,unit:'m³',aktif:true,ket:''},
+  {id:'SW-003',nama:'Sono Kembang',namaPanjang:'Sono Kembang (Pterocarpus)',cat:'SW',kelas:2,rendemen:33,density:800,harga:14000000,unit:'m³',aktif:true,ket:''},
+  {id:'SW-004',nama:'Mahoni',namaPanjang:'Mahoni (Swietenia mahagoni)',cat:'SW',kelas:2,rendemen:38,density:640,harga:7500000,unit:'m³',aktif:true,ket:''},
+  {id:'SW-005',nama:'Mindi',namaPanjang:'Mindi (Melia azedarach)',cat:'SW',kelas:2,rendemen:40,density:520,harga:4500000,unit:'m³',aktif:true,ket:'Banyak dipakai furniture Jepara'},
+  {id:'SW-006',nama:'Akasia',namaPanjang:'Akasia (Acacia mangium)',cat:'SW',kelas:2,rendemen:38,density:680,harga:5500000,unit:'m³',aktif:true,ket:''},
+  {id:'SW-007',nama:'Meranti',namaPanjang:'Meranti (Shorea spp.)',cat:'SW',kelas:2,rendemen:40,density:550,harga:5000000,unit:'m³',aktif:true,ket:''},
+  {id:'SW-008',nama:'Kamper',namaPanjang:'Kamper (Dryobalanops)',cat:'SW',kelas:2,rendemen:38,density:710,harga:8000000,unit:'m³',aktif:true,ket:''},
+  {id:'SW-009',nama:'Sengon',namaPanjang:'Sengon (Paraserianthes falcataria)',cat:'SW',kelas:3,rendemen:45,density:320,harga:2800000,unit:'m³',aktif:true,ket:''},
+  {id:'SW-010',nama:'Albasia',namaPanjang:'Albasia / Falcata',cat:'SW',kelas:3,rendemen:45,density:300,harga:2500000,unit:'m³',aktif:true,ket:''},
+  {id:'SW-011',nama:'Pinus',namaPanjang:'Pinus (Pinus merkusii)',cat:'SW',kelas:3,rendemen:42,density:480,harga:3200000,unit:'m³',aktif:true,ket:''},
+  {id:'SW-012',nama:'Trembesi',namaPanjang:'Trembesi (Samanea saman)',cat:'SW',kelas:3,rendemen:40,density:560,harga:4000000,unit:'m³',aktif:true,ket:''},
+  {id:'PW-001',nama:'Plywood 18mm',namaPanjang:'Plywood 18mm (122×244cm)',cat:'PW',kelas:0,rendemen:100,density:600,harga:220000,unit:'lembar',aktif:true,ket:''},
+  {id:'PW-002',nama:'Plywood 15mm',namaPanjang:'Plywood 15mm (122×244cm)',cat:'PW',kelas:0,rendemen:100,density:600,harga:190000,unit:'lembar',aktif:true,ket:''},
+  {id:'PW-003',nama:'Plywood 12mm',namaPanjang:'Plywood 12mm (122×244cm)',cat:'PW',kelas:0,rendemen:100,density:580,harga:165000,unit:'lembar',aktif:true,ket:''},
+  {id:'PW-004',nama:'Plywood 9mm',namaPanjang:'Plywood 9mm (122×244cm)',cat:'PW',kelas:0,rendemen:100,density:560,harga:140000,unit:'lembar',aktif:true,ket:''},
+  {id:'PW-005',nama:'MDF 18mm',namaPanjang:'MDF 18mm (122×244cm)',cat:'PW',kelas:0,rendemen:100,density:720,harga:180000,unit:'lembar',aktif:true,ket:''},
+  {id:'NW-001',nama:'Kaca 5mm',namaPanjang:'Kaca Bening 5mm',cat:'NW',kelas:0,rendemen:100,density:2500,harga:180000,unit:'m²',aktif:true,ket:''},
+  {id:'NW-002',nama:'Rotan Anyaman',namaPanjang:'Anyaman Rotan (per m²)',cat:'NW',kelas:0,rendemen:100,density:200,harga:145000,unit:'m²',aktif:true,ket:''},
+  {id:'NW-003',nama:'Busa Foam',namaPanjang:'Busa Foam (Seat/Back)',cat:'NW',kelas:0,rendemen:100,density:30,harga:85000,unit:'lembar',aktif:true,ket:''},
+];
+
+const CAT_COLOR  = {SW:'#e65100',PW:'#1565c0',NW:'#6a1b9a'};
+const CAT_BG     = {SW:'#fff3e0',PW:'#e3f2fd',NW:'#f3e5f5'};
+const CAT_DOT    = {SW:'#ff7043',PW:'#1976d2',NW:'#8e24aa'};
+const KELAS_LBL  = {1:'⭐⭐⭐ Kelas 1',2:'⭐⭐ Kelas 2',3:'⭐ Kelas 3',0:'—'};
+
+let allMaterials = [];
+let currentFilter = 'ALL';
+let editId = null;
+let priceEditId = null;
+
+function fm(n){ return 'Rp '+Math.round(n).toLocaleString('id-ID'); }
+function fts(ts){
+  if(!ts) return '—';
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  return d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ── Seed default materials if empty ──────────────────────────────────
+async function seedIfEmpty() {
+  const snap = await getDocs(collection(db,'materials'));
+  if (!snap.empty) return;
+  showToast('⏳ Inisialisasi data material...');
+  for (const m of DEFAULT_MATERIALS) {
+    await setDoc(doc(db,'materials',m.id), {
+      ...m, createdAt: serverTimestamp(), createdBy: currentUser.email||'system'
+    });
+  }
+  showToast('✅ Data material berhasil diinisialisasi!');
+}
+
+// ── Load materials ────────────────────────────────────────────────────
+async function loadMaterials() {
+  await seedIfEmpty();
+  const snap = await getDocs(query(collection(db,'materials'), orderBy('id')));
+  allMaterials = [];
+  snap.forEach(d => allMaterials.push({...d.data(), _id:d.id}));
+  updateStats();
+  renderMaterials();
+}
+
+function updateStats() {
+  document.getElementById('stat-total').textContent = allMaterials.length;
+  document.getElementById('stat-sw').textContent = allMaterials.filter(m=>m.cat==='SW').length;
+  document.getElementById('stat-pw').textContent = allMaterials.filter(m=>m.cat==='PW').length;
+  document.getElementById('stat-nw').textContent = allMaterials.filter(m=>m.cat==='NW').length;
+  // Count this month's price updates
+  const now = new Date();
+  // We'll update this after loading price history
+}
+
+function renderMaterials() {
+  const grid = document.getElementById('mat-grid');
+  const q = document.getElementById('search-inp').value.toLowerCase();
+  let filtered = allMaterials.filter(m => {
+    if (currentFilter === 'SW') return m.cat === 'SW';
+    if (currentFilter === 'PW') return m.cat === 'PW';
+    if (currentFilter === 'NW') return m.cat === 'NW';
+    if (currentFilter === 'ACTIVE') return m.aktif !== false;
+    return true;
+  }).filter(m => {
+    if (!q) return true;
+    return (m.id||'').toLowerCase().includes(q) ||
+           (m.nama||'').toLowerCase().includes(q) ||
+           (m.namaPanjang||'').toLowerCase().includes(q);
+  });
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#8a8680"><div style="font-size:40px;margin-bottom:10px">🔍</div>Tidak ada material ditemukan</div>';
+    return;
+  }
+
+  grid.innerHTML = '';
+  filtered.forEach(m => {
+    const card = document.createElement('div');
+    card.className = 'mat-card';
+    card.style.opacity = m.aktif === false ? '0.6' : '1';
+
+    const dot = CAT_DOT[m.cat]||'#888';
+    const catBg = CAT_BG[m.cat]||'#f0f0f0';
+    const catClr = CAT_COLOR[m.cat]||'#555';
+    const klsLabel = KELAS_LBL[m.kelas]||'—';
+    const harga = m.harga || 0;
+    const updDate = m.harga_updated_at ? fts(m.harga_updated_at) : (m.createdAt ? fts(m.createdAt) : '—');
+
+    card.innerHTML = `
+      <div class="mat-card-hdr">
+        <div class="mat-color-dot" style="background:${dot}"></div>
+        <span class="mat-id">${m.id||m._id}</span>
+        <span class="mat-nama">${m.nama||'—'}</span>
+        <span class="mat-cat-badge" style="background:${catBg};color:${catClr}">${m.cat}</span>
+        ${m.aktif===false?'<span style="font-size:10px;background:#fceaea;color:#8b2020;padding:2px 7px;border-radius:20px;font-weight:700;">Nonaktif</span>':''}
+      </div>
+      <div class="mat-card-body">
+        <div class="mat-meta-grid">
+          <div class="mat-meta-item">Nama Ilmiah<strong style="font-size:11px">${m.namaPanjang||m.nama||'—'}</strong></div>
+          <div class="mat-meta-item">Kelas<strong>${klsLabel}</strong></div>
+          <div class="mat-meta-item">Rendemen Log<strong>${m.rendemen||'—'}%</strong></div>
+          <div class="mat-meta-item">Densitas<strong>${m.density||'—'} kg/m³</strong></div>
+        </div>
+        <div class="price-section">
+          <div class="price-row">
+            <div>
+              <div class="price-label">💰 Harga Aktif</div>
+              <div class="price-value">${fm(harga)} <span style="font-size:11px;font-weight:400;color:#8a8680">/ ${m.unit||'m³'}</span></div>
+              <div class="price-date">Update: ${updDate}</div>
+            </div>
+            ${canEdit ? `<button onclick="openPriceModal('${m.id||m._id}')" style="padding:6px 12px;background:#2d5a27;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">✏️ Update</button>` : ''}
+          </div>
+          ${canEdit ? `
+          <div class="price-update-row" style="display:none" id="inline-${m.id||m._id}">
+            <input type="number" class="price-inp" id="price-inp-${m.id||m._id}" placeholder="${harga}" value="${harga}">
+            <span style="font-size:11px;color:#8a8680">/${m.unit||'m³'}</span>
+            <button class="price-save-btn" onclick="quickUpdatePrice('${m.id||m._id}')">💾</button>
+          </div>` : ''}
+        </div>
+        ${m.ket?`<div style="margin-top:8px;font-size:11px;color:#8a8680;font-style:italic">${m.ket}</div>`:''}
+      </div>
+      <div class="mat-card-footer">
+        <button class="card-btn info" onclick="showHistory('${m.id||m._id}','${m.nama}')">📈 Historis Harga</button>
+        ${canEdit ? `<button class="card-btn" onclick="openEditModal('${m.id||m._id}')">✏️ Edit</button>` : ''}
+        ${canEdit && currentUser.role==='admin' ? `<button class="card-btn danger" onclick="toggleAktif('${m.id||m._id}',${m.aktif!==false})">${m.aktif!==false?'🚫 Nonaktifkan':'✅ Aktifkan'}</button>` : ''}
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ── Filter & Search ───────────────────────────────────────────────────
+window.setFilter = function(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMaterials();
+}
+window.filterMaterials = function() { renderMaterials(); }
+
+// ── Update Harga Modal ────────────────────────────────────────────────
+window.openPriceModal = function(id) {
+  const m = allMaterials.find(x=>(x.id||x._id)===id);
+  if (!m) return;
+  priceEditId = id;
+  const hargaLama = m.harga || 0;
+  document.getElementById('pm-harga-baru').value = hargaLama;
+  document.getElementById('pm-tanggal').value = new Date().toISOString().split('T')[0];
+  document.getElementById('pm-ket').value = '';
+  document.getElementById('pm-preview').style.display = 'none';
+  document.getElementById('price-modal-info').innerHTML = `
+    <div style="font-weight:700;font-size:14px;margin-bottom:6px">🪵 ${m.nama} <span style="font-size:11px;color:#8a8680">(${m.id||m._id})</span></div>
+    <div style="color:#8a8680;font-size:12px">Harga saat ini: <b style="color:#2d5a27;font-size:14px">${fm(hargaLama)}</b> / ${m.unit||'m³'}</div>
+  `;
+
+  // Preview on input
+  document.getElementById('pm-harga-baru').oninput = function() {
+    const baru = +this.value;
+    const prev = document.getElementById('pm-preview');
+    if (baru && baru !== hargaLama) {
+      const diff = baru - hargaLama;
+      const pct = ((diff/hargaLama)*100).toFixed(1);
+      const arah = diff>0?'📈 Naik':'📉 Turun';
+      const clr = diff>0?'#c0392b':'#27ae60';
+      prev.style.display = 'block';
+      prev.style.background = diff>0?'#fceaea':'#eaf3e8';
+      prev.style.color = clr;
+      prev.innerHTML = `${arah} ${Math.abs(diff).toLocaleString('id-ID')} (${Math.abs(pct)}%) dari harga sebelumnya`;
+    } else {
+      prev.style.display = 'none';
+    }
+  };
+
+  document.getElementById('price-modal').classList.add('show');
+}
+
+window.savePrice = async function() {
+  const id = priceEditId;
+  const m = allMaterials.find(x=>(x.id||x._id)===id);
+  if (!m) return;
+
+  const hargaBaru = +document.getElementById('pm-harga-baru').value;
+  const tanggal   = document.getElementById('pm-tanggal').value;
+  const ket       = document.getElementById('pm-ket').value;
+  const hargaLama = m.harga || 0;
+
+  if (!hargaBaru || hargaBaru <= 0) { showToast('⚠️ Harga tidak valid!'); return; }
+
+  try {
+    // 1. Save price history
+    await addDoc(collection(db,'price_history'), {
+      material_id:  id,
+      material_nama: m.nama,
+      harga_lama:   hargaLama,
+      harga_baru:   hargaBaru,
+      perubahan:    hargaBaru - hargaLama,
+      persen:       hargaLama ? +((((hargaBaru-hargaLama)/hargaLama)*100).toFixed(2)) : 0,
+      tanggal:      tanggal ? Timestamp.fromDate(new Date(tanggal)) : serverTimestamp(),
+      keterangan:   ket || '',
+      updated_by:   currentUser.email || 'unknown',
+      updated_at:   serverTimestamp(),
+    });
+
+    // 2. Update material harga
+    await updateDoc(doc(db,'materials',id), {
+      harga: hargaBaru,
+      harga_updated_at: serverTimestamp(),
+      harga_updated_by: currentUser.email||'unknown',
+    });
+
+    // Update local state
+    m.harga = hargaBaru;
+    m.harga_updated_at = { toDate: () => new Date() };
+
+    closeModal('price-modal');
+    renderMaterials();
+    showToast(`✅ Harga ${m.nama} diupdate → ${fm(hargaBaru)}`);
+  } catch(e) {
+    showToast('❌ Gagal update: ' + e.message);
+    console.error(e);
+  }
+}
+
+// ── Add / Edit Material ───────────────────────────────────────────────
+window.openAddModal = function() {
+  if (!canEdit) { showToast('⚠️ Hanya Admin/Manager!'); return; }
+  editId = null;
+  document.getElementById('modal-title').textContent = '➕ Tambah Material Baru';
+  document.getElementById('modal-save-btn').textContent = '💾 Simpan';
+  // Reset form
+  ['m-id','m-nama','m-nama-panjang','m-ket'].forEach(id=>{
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('m-cat').value = 'SW';
+  document.getElementById('m-kelas').value = '2';
+  document.getElementById('m-rendemen').value = '35';
+  document.getElementById('m-density').value = '';
+  document.getElementById('m-harga').value = '';
+  document.getElementById('m-unit').value = 'm³';
+  document.getElementById('m-aktif').checked = true;
+  document.getElementById('m-id').readOnly = false;
+  updateIdSuggestion();
+  document.getElementById('mat-modal').classList.add('show');
+}
+
+window.openEditModal = function(id) {
+  const m = allMaterials.find(x=>(x.id||x._id)===id);
+  if (!m) return;
+  editId = id;
+  document.getElementById('modal-title').textContent = '✏️ Edit Material';
+  document.getElementById('modal-save-btn').textContent = '💾 Update';
+  document.getElementById('m-id').value = m.id||m._id;
+  document.getElementById('m-id').readOnly = true;
+  document.getElementById('m-cat').value = m.cat||'SW';
+  document.getElementById('m-nama').value = m.nama||'';
+  document.getElementById('m-nama-panjang').value = m.namaPanjang||'';
+  document.getElementById('m-kelas').value = String(m.kelas||0);
+  document.getElementById('m-rendemen').value = m.rendemen||35;
+  document.getElementById('m-density').value = m.density||'';
+  document.getElementById('m-harga').value = m.harga||'';
+  document.getElementById('m-unit').value = m.unit||'m³';
+  document.getElementById('m-ket').value = m.ket||'';
+  document.getElementById('m-aktif').checked = m.aktif!==false;
+  document.getElementById('mat-modal').classList.add('show');
+}
+
+window.updateIdSuggestion = function() {
+  if (editId) return;
+  const cat = document.getElementById('m-cat').value;
+  const existing = allMaterials.filter(m=>m.cat===cat);
+  const nums = existing.map(m=>{
+    const parts = (m.id||m._id).split('-');
+    return parseInt(parts[1]||'0');
+  }).filter(n=>!isNaN(n));
+  const nextNum = nums.length ? Math.max(...nums)+1 : 1;
+  document.getElementById('m-id').value = `${cat}-${String(nextNum).padStart(3,'0')}`;
+}
+
+window.saveMaterial = async function() {
+  const id       = document.getElementById('m-id').value.trim().toUpperCase();
+  const cat      = document.getElementById('m-cat').value;
+  const nama     = document.getElementById('m-nama').value.trim();
+  const namaPanjang = document.getElementById('m-nama-panjang').value.trim();
+  const kelas    = +document.getElementById('m-kelas').value;
+  const rendemen = +document.getElementById('m-rendemen').value;
+  const density  = +document.getElementById('m-density').value || 0;
+  const harga    = +document.getElementById('m-harga').value || 0;
+  const unit     = document.getElementById('m-unit').value;
+  const ket      = document.getElementById('m-ket').value.trim();
+  const aktif    = document.getElementById('m-aktif').checked;
+  const btn      = document.getElementById('modal-save-btn');
+
+  if (!id || !nama) { showToast('⚠️ ID dan Nama wajib diisi!'); return; }
+
+  btn.disabled = true; btn.textContent = '⏳ Menyimpan...';
+
+  try {
+    const data = {
+      id, cat, nama, namaPanjang: namaPanjang||nama,
+      kelas, rendemen, density, harga, unit, ket, aktif,
+      updatedAt: serverTimestamp(), updatedBy: currentUser.email||'unknown'
+    };
+
+    if (editId) {
+      await updateDoc(doc(db,'materials',id), data);
+      showToast('✅ Material berhasil diupdate!');
+    } else {
+      const exists = allMaterials.find(m=>(m.id||m._id)===id);
+      if (exists) { showToast('❌ ID sudah ada! Gunakan ID lain.'); return; }
+      await setDoc(doc(db,'materials',id), {...data, createdAt:serverTimestamp(), createdBy:currentUser.email||'unknown'});
+      showToast('✅ Material baru berhasil ditambahkan!');
+    }
+    closeModal('mat-modal');
+    await loadMaterials();
+  } catch(e) {
+    showToast('❌ Error: ' + e.message);
+    console.error(e);
+  } finally {
+    btn.disabled = false; btn.textContent = editId ? '💾 Update' : '💾 Simpan';
+  }
+}
+
+window.toggleAktif = async function(id, currentAktif) {
+  const label = currentAktif ? 'nonaktifkan' : 'aktifkan';
+  if (!confirm(`${label.charAt(0).toUpperCase()+label.slice(1)} material ini?`)) return;
+  await updateDoc(doc(db,'materials',id), {aktif: !currentAktif});
+  const m = allMaterials.find(x=>(x.id||x._id)===id);
+  if (m) m.aktif = !currentAktif;
+  renderMaterials();
+  showToast(`${!currentAktif?'✅':'🚫'} Material ${!currentAktif?'diaktifkan':'dinonaktifkan'}`);
+}
+
+// ── Price History ─────────────────────────────────────────────────────
+window.showHistory = async function(id, nama) {
+  document.getElementById('hist-modal-title').textContent = `📈 Historis Harga — ${nama}`;
+  document.getElementById('hist-list-area').innerHTML = '<div style="text-align:center;padding:20px;color:#8a8680">⏳ Memuat historis...</div>';
+  document.getElementById('hist-modal').classList.add('show');
+
+  try {
+    const snap = await getDocs(
+      query(collection(db,'price_history'),
+        where('material_id','==',id),
+        orderBy('updated_at','desc'),
+        limit(20))
+    );
+
+    const items = [];
+    snap.forEach(d => items.push(d.data()));
+
+    // Current price
+    const m = allMaterials.find(x=>(x.id||x._id)===id);
+    const currentPrice = m?.harga || 0;
+
+    // Mini chart
+    const prices = [currentPrice, ...items.map(i=>i.harga_lama)].reverse();
+    const chartHtml = renderMiniChart(prices, nama);
+    document.getElementById('hist-chart-area').innerHTML = chartHtml;
+
+    if (!items.length) {
+      document.getElementById('hist-list-area').innerHTML = `
+        <div class="no-hist">
+          <div style="font-size:36px;margin-bottom:8px">📊</div>
+          Belum ada historis perubahan harga.<br>
+          <span style="font-size:12px;color:#aaa">Harga saat ini: <b style="color:#2d5a27">${fm(currentPrice)}</b></span>
+        </div>`;
+      return;
+    }
+
+    let html = '<div class="hist-list">';
+    // Current price as first item
+    html += `<div class="hist-item" style="background:#eaf3e8;border-color:#b8d9b4">
+      <div class="hist-date">🟢 HARGA AKTIF — ${m?.harga_updated_at ? fts(m.harga_updated_at) : 'Sekarang'}</div>
+      <div class="hist-prices"><span class="hist-new" style="font-size:18px">${fm(currentPrice)}</span></div>
+    </div>`;
+
+    items.forEach(item => {
+      const diff = item.perubahan || (item.harga_baru - item.harga_lama);
+      const isUp = diff > 0;
+      const pct = item.persen ? Math.abs(item.persen) : 0;
+      html += `<div class="hist-item">
+        <div class="hist-date">${fts(item.updated_at||item.tanggal)} · oleh ${item.updated_by||'—'}</div>
+        <div class="hist-prices">
+          <span class="hist-old">${fm(item.harga_lama||0)}</span>
+          <span class="hist-arrow">→</span>
+          <span class="hist-new">${fm(item.harga_baru||0)}</span>
+          <span class="hist-change ${isUp?'up':'down'}">${isUp?'▲':'▼'} ${pct}%</span>
+        </div>
+        ${item.keterangan?`<div class="hist-note">📝 ${item.keterangan}</div>`:''}
+      </div>`;
+    });
+    html += '</div>';
+    document.getElementById('hist-list-area').innerHTML = html;
+  } catch(e) {
+    document.getElementById('hist-list-area').innerHTML = `<div class="no-hist">❌ Gagal memuat: ${e.message}</div>`;
+  }
+}
+
+function renderMiniChart(prices, nama) {
+  if (prices.length < 2) return '';
+  const max = Math.max(...prices);
+  const min = Math.min(...prices);
+  const range = max - min || 1;
+  const W = 400, H = 80, PAD = 10;
+  const points = prices.map((p,i) => {
+    const x = PAD + (i/(prices.length-1)) * (W-PAD*2);
+    const y = PAD + (1 - (p-min)/range) * (H-PAD*2);
+    return `${x},${y}`;
+  }).join(' ');
+  const lastPrice = prices[prices.length-1];
+  const firstPrice = prices[0];
+  const trend = lastPrice > firstPrice ? '#27ae60' : lastPrice < firstPrice ? '#c0392b' : '#8a8680';
+  return `
+    <div style="background:#f8f8f8;border-radius:10px;padding:12px;margin-bottom:4px;">
+      <div style="font-size:11px;color:#8a8680;margin-bottom:6px;">Tren Harga (${prices.length} titik data)</div>
+      <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:60px;">
+        <polyline points="${points}" fill="none" stroke="${trend}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        ${prices.map((p,i)=>{
+          const x = PAD + (i/(prices.length-1)) * (W-PAD*2);
+          const y = PAD + (1 - (p-min)/range) * (H-PAD*2);
+          return `<circle cx="${x}" cy="${y}" r="3" fill="${trend}"/>`;
+        }).join('')}
+        <text x="${PAD}" y="${H-2}" font-size="9" fill="#8a8680">${fm(min)}</text>
+        <text x="${PAD}" y="12" font-size="9" fill="#8a8680">${fm(max)}</text>
+      </svg>
+    </div>`;
+}
+
+// ── Export Price List ─────────────────────────────────────────────────
+window.exportPriceList = function() {
+  let csv = 'ID,Nama,Nama Panjang,Kategori,Kelas,Rendemen(%),Densitas(kg/m3),Harga Aktif,Satuan,Status\n';
+  allMaterials.forEach(m => {
+    csv += [
+      m.id||m._id, m.nama, `"${m.namaPanjang||''}"`,
+      m.cat, m.kelas||0, m.rendemen||0, m.density||0,
+      m.harga||0, m.unit||'m³',
+      m.aktif!==false?'Aktif':'Nonaktif'
+    ].join(',') + '\n';
+  });
+  const blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `PriceList_GabeInternational_${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+  showToast('📄 Price list diexport!');
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────
+window.closeModal = function(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────
+loadMaterials().catch(e=>{
+  document.getElementById('mat-grid').innerHTML =
+    `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#8b2020">❌ Gagal memuat data: ${e.message}</div>`;
+});
+</script>
+</body>
+</html>
