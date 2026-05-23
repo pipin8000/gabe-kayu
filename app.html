@@ -725,77 +725,110 @@ window.doLogout = async function() {
 </div>
 
 
-<script type="module" id="settings-script">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",
-  authDomain: "gabe-international-hub.firebaseapp.com",
-  projectId: "gabe-international-hub",
-  storageBucket: "gabe-international-hub.firebasestorage.app",
-  messagingSenderId: "115783216069",
-  appId: "1:115783216069:web:62cfabf543b1fbb85bf9ac"
-};
-const fbApp = initializeApp(firebaseConfig,'settings');
-const db = getFirestore(fbApp);
+<script>
+// ═══ SETTINGS — non-module wrapper ═══
+window._settingsReady = false;
 
 const PRESETS = [
   {name:'Jepara 🌿',primary:'#2d5a27',accent:'#3d7a35',bg:'#f5f4f0',navbar:'#1a3a1a'},
   {name:'Ocean 🌊',primary:'#1a4a7a',accent:'#2060a0',bg:'#f0f4f8',navbar:'#0d2a4a'},
   {name:'Sunset 🌅',primary:'#92580a',accent:'#b87020',bg:'#fdf5ec',navbar:'#5a3006'},
   {name:'Royal 👑',primary:'#5c2d91',accent:'#7a40b0',bg:'#f5f0fb',navbar:'#3a1a60'},
-  {name:'Carbon ⚫',primary:'#2a2a2a',accent:'#444444',bg:'#f0f0f0',navbar:'#111111'},
+  {name:'Carbon ⚫',primary:'#2a2a2a',accent:'#444',bg:'#f0f0f0',navbar:'#111'},
   {name:'Rose 🌹',primary:'#8b2020',accent:'#a83030',bg:'#fdf5f5',navbar:'#5a1010'},
   {name:'Teal 🩵',primary:'#0f6e6e',accent:'#1a9090',bg:'#f0f8f8',navbar:'#084444'},
   {name:'Gold ✨',primary:'#7a6010',accent:'#9a7e20',bg:'#fdf8ec',navbar:'#4a3a08'},
-  {name:'Sky 🩵',primary:'#2060c0',accent:'#3070d0',bg:'#f0f5ff',navbar:'#102040'},
+  {name:'Sky 💙',primary:'#2060c0',accent:'#3070d0',bg:'#f0f5ff',navbar:'#102040'},
   {name:'Olive 🫒',primary:'#5a6a20',accent:'#708030',bg:'#f5f5ec',navbar:'#323a10'},
 ];
 
-let currentSettings = {};
+let _settingsDb = null;
+let _currentLogoData = null;
 
-// Build preset grid
-function buildPresets() {
+// Init Firebase for settings (lazy)
+async function initSettingsFirebase() {
+  if (_settingsDb) return _settingsDb;
+  try {
+    const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
+    const { getFirestore } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const fc = {
+      apiKey:"AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",
+      authDomain:"gabe-international-hub.firebaseapp.com",
+      projectId:"gabe-international-hub",
+      storageBucket:"gabe-international-hub.firebasestorage.app",
+      messagingSenderId:"115783216069",
+      appId:"1:115783216069:web:62cfabf543b1fbb85bf9ac"
+    };
+    const apps = getApps();
+    const app = apps.find(a=>a.name==='settings') || initializeApp(fc,'settings');
+    _settingsDb = getFirestore(app);
+    return _settingsDb;
+  } catch(e) { console.error('Settings Firebase init:', e); return null; }
+}
+
+window.openSettings = function() {
+  const user = JSON.parse(sessionStorage.getItem('gabe_user')||'{}');
+  if (user.role !== 'admin' && user.role !== 'manager') {
+    alert('⚠️ Hanya Admin & Manager yang bisa mengubah pengaturan!'); return;
+  }
+  buildPresetGrid();
+  loadSettingsForm();
+  document.getElementById('settings-overlay').classList.add('show');
+  document.getElementById('settings-overlay').style.display = 'flex';
+}
+
+window.closeSettings = function() {
+  document.getElementById('settings-overlay').classList.remove('show');
+  document.getElementById('settings-overlay').style.display = 'none';
+}
+
+window.switchSmTab = function(tab) {
+  const tabs = ['branding','theme','company','defaults'];
+  document.querySelectorAll('.sm-tab').forEach((b,i) => b.classList.toggle('active', tabs[i]===tab));
+  document.querySelectorAll('.sm-tcont').forEach(c => c.classList.remove('active'));
+  const el = document.getElementById('smt-'+tab);
+  if (el) el.classList.add('active');
+}
+
+function buildPresetGrid() {
   const grid = document.getElementById('preset-grid');
-  if (!grid) return;
-  grid.innerHTML = '';
-  PRESETS.forEach((p, i) => {
+  if (!grid || grid.children.length > 0) return;
+  PRESETS.forEach(p => {
     const btn = document.createElement('button');
     btn.className = 'preset-btn';
     btn.style.background = p.primary;
     btn.textContent = p.name;
-    btn.title = p.name;
     btn.onclick = () => applyPreset(p);
     grid.appendChild(btn);
   });
 }
 
 function applyPreset(p) {
-  document.getElementById('c-primary').value = p.primary;
-  document.getElementById('h-primary').value = p.primary;
-  document.getElementById('c-accent').value = p.accent;
-  document.getElementById('h-accent').value = p.accent;
-  document.getElementById('c-bg').value = p.bg;
-  document.getElementById('h-bg').value = p.bg;
-  document.getElementById('c-navbar').value = p.navbar;
-  document.getElementById('h-navbar').value = p.navbar;
-  updatePreview(p.navbar, p.primary);
+  ['primary','accent','bg','navbar'].forEach(k => {
+    const ci = document.getElementById('c-'+k);
+    const hi = document.getElementById('h-'+k);
+    if (ci) ci.value = p[k];
+    if (hi) hi.value = p[k];
+  });
+  updateNavbarPreview(p.navbar);
 }
 
-function updatePreview(navbar, primary) {
+function updateNavbarPreview(color) {
   const bar = document.getElementById('preview-bar');
-  if (bar) { bar.style.background = navbar; bar.style.cssText += ';background:'+navbar+'!important'; }
+  if (bar) bar.style.background = color;
 }
 
 window.updateColorHex = function(key, val) {
-  document.getElementById('h-'+key).value = val;
-  if (key === 'navbar') updatePreview(val, document.getElementById('c-primary').value);
+  const hi = document.getElementById('h-'+key);
+  if (hi) hi.value = val;
+  if (key==='navbar') updateNavbarPreview(val);
 }
 window.updateColorPicker = function(key, val) {
   if (/^#[0-9a-fA-F]{6}$/.test(val)) {
-    document.getElementById('c-'+key).value = val;
-    if (key === 'navbar') updatePreview(val, document.getElementById('c-primary').value);
+    const ci = document.getElementById('c-'+key);
+    if (ci) ci.value = val;
+    if (key==='navbar') updateNavbarPreview(val);
   }
 }
 
@@ -806,149 +839,114 @@ window.handleLogoUpload = function(e) {
   const reader = new FileReader();
   reader.onload = ev => {
     const preview = document.getElementById('logo-preview');
-    preview.innerHTML = '<img src="'+ev.target.result+'" alt="logo">';
-    currentSettings._logoData = ev.target.result;
-    document.getElementById('logo-url').value = '';
+    if (preview) preview.innerHTML = '<img src="'+ev.target.result+'" alt="logo" style="width:100%;height:100%;object-fit:contain;">';
+    _currentLogoData = ev.target.result;
+    const urlEl = document.getElementById('logo-url');
+    if (urlEl) urlEl.value = '';
   };
   reader.readAsDataURL(file);
 }
 
 window.previewLogoUrl = function(url) {
-  if (!url) { document.getElementById('logo-preview').innerHTML = '🌿'; return; }
   const preview = document.getElementById('logo-preview');
-  preview.innerHTML = '<img src="'+url+'" alt="logo" onerror="this.parentElement.innerHTML='❌'">';
-  currentSettings._logoData = null;
+  if (!preview) return;
+  if (!url) { preview.innerHTML = '🌿'; return; }
+  preview.innerHTML = '<img src="'+url+'" alt="logo" style="width:100%;height:100%;object-fit:contain;" onerror="this.parentElement.innerHTML='❌'">';
+  _currentLogoData = null;
 }
 
-window.switchSmTab = function(tab) {
-  document.querySelectorAll('.sm-tab').forEach((b,i) => {
-    b.classList.toggle('active', ['branding','theme','company','defaults'][i] === tab);
-  });
-  document.querySelectorAll('.sm-tcont').forEach(c => c.classList.remove('active'));
-  document.getElementById('smt-'+tab).classList.add('active');
-}
-
-window.openSettings = function() {
-  const user = JSON.parse(sessionStorage.getItem('gabe_user')||'{}');
-  if (user.role !== 'admin' && user.role !== 'manager') {
-    showToast('⚠️ Hanya Admin & Manager yang bisa mengubah pengaturan!'); return;
-  }
-  loadSettingsToForm();
-  document.getElementById('settings-overlay').classList.add('show');
-}
-
-window.closeSettings = function() {
-  document.getElementById('settings-overlay').classList.remove('show');
-}
-
-async function loadSettingsToForm() {
+async function loadSettingsForm() {
   try {
-    const snap = await getDoc(doc(db, 'settings', 'app'));
-    if (snap.exists()) {
-      const s = snap.data();
-      if (s.appname) document.getElementById('s-appname').value = s.appname;
-      if (s.tagline) document.getElementById('s-tagline').value = s.tagline;
-      if (s.version) document.getElementById('s-version').value = s.version;
-      if (s.year) document.getElementById('s-year').value = s.year;
-      if (s.company) document.getElementById('s-company').value = s.company;
-      if (s.address) document.getElementById('s-address').value = s.address;
-      if (s.website) document.getElementById('s-website').value = s.website;
-      if (s.adminemail) document.getElementById('s-adminemail').value = s.adminemail;
-      if (s.phone) document.getElementById('s-phone').value = s.phone;
-      if (s.city) document.getElementById('s-city').value = s.city;
-      if (s.rendemen) document.getElementById('s-rendemen').value = s.rendemen;
-      if (s.waste) document.getElementById('s-waste').value = s.waste;
-      if (s.defwood) document.getElementById('s-defwood').value = s.defwood;
-      if (s.deffurniture) document.getElementById('s-deffurniture').value = s.deffurniture;
-      if (s.currency) document.getElementById('s-currency').value = s.currency;
-      if (s.colors) {
-        ['primary','accent','bg','navbar'].forEach(k => {
-          if (s.colors[k]) {
-            document.getElementById('c-'+k).value = s.colors[k];
-            document.getElementById('h-'+k).value = s.colors[k];
-          }
-        });
-        updatePreview(s.colors.navbar||'#1a3a1a', s.colors.primary||'#2d5a27');
-      }
-      if (s.logoUrl) {
-        document.getElementById('logo-url').value = s.logoUrl;
-        document.getElementById('logo-preview').innerHTML = '<img src="'+s.logoUrl+'" alt="logo" onerror="this.parentElement.innerHTML='🌿'">';
-      } else if (s.logoData) {
-        document.getElementById('logo-preview').innerHTML = '<img src="'+s.logoData+'" alt="logo">';
-        currentSettings._logoData = s.logoData;
-      }
+    const db = await initSettingsFirebase();
+    if (!db) return;
+    const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const snap = await getDoc(doc(db,'settings','app'));
+    if (!snap.exists()) return;
+    const s = snap.data();
+    const fields = ['appname','tagline','version','year','company','address','website','adminemail','phone','city','rendemen','waste'];
+    fields.forEach(k => {
+      const el = document.getElementById('s-'+k);
+      if (el && s[k] !== undefined) el.value = s[k];
+    });
+    const selects = ['defwood','deffurniture','currency','unit'];
+    selects.forEach(k => {
+      const el = document.getElementById('s-'+k);
+      if (el && s[k]) el.value = s[k];
+    });
+    if (s.colors) {
+      ['primary','accent','bg','navbar'].forEach(k => {
+        if (!s.colors[k]) return;
+        const ci = document.getElementById('c-'+k);
+        const hi = document.getElementById('h-'+k);
+        if (ci) ci.value = s.colors[k];
+        if (hi) hi.value = s.colors[k];
+      });
+      if (s.colors.navbar) updateNavbarPreview(s.colors.navbar);
     }
-  } catch(e) { console.log('Settings load:', e.message); }
+    if (s.logoData || s.logoUrl) {
+      const src = s.logoData || s.logoUrl;
+      const preview = document.getElementById('logo-preview');
+      if (preview) preview.innerHTML = '<img src="'+src+'" alt="logo" style="width:100%;height:100%;object-fit:contain;">';
+      _currentLogoData = s.logoData || null;
+      const urlEl = document.getElementById('logo-url');
+      if (urlEl && s.logoUrl) urlEl.value = s.logoUrl;
+    }
+  } catch(e) { console.log('Load settings:', e); }
 }
 
 window.saveSettings = async function() {
   const user = JSON.parse(sessionStorage.getItem('gabe_user')||'{}');
-  const btn = document.querySelector('.sm-footer .btn-primary') || document.querySelectorAll('.sm-footer button')[2];
-
-  const settings = {
-    appname: document.getElementById('s-appname').value,
-    tagline: document.getElementById('s-tagline').value,
-    version: document.getElementById('s-version').value,
-    year: document.getElementById('s-year').value,
-    company: document.getElementById('s-company').value,
-    address: document.getElementById('s-address').value,
-    website: document.getElementById('s-website').value,
-    adminemail: document.getElementById('s-adminemail').value,
-    phone: document.getElementById('s-phone').value,
-    city: document.getElementById('s-city').value,
-    rendemen: +document.getElementById('s-rendemen').value,
-    waste: +document.getElementById('s-waste').value,
-    defwood: document.getElementById('s-defwood').value,
-    deffurniture: document.getElementById('s-deffurniture').value,
-    currency: document.getElementById('s-currency').value,
-    colors: {
-      primary: document.getElementById('h-primary').value,
-      accent: document.getElementById('h-accent').value,
-      bg: document.getElementById('h-bg').value,
-      navbar: document.getElementById('h-navbar').value,
-    },
-    logoUrl: document.getElementById('logo-url').value || null,
-    logoData: currentSettings._logoData || null,
-    updatedAt: serverTimestamp(),
-    updatedBy: user.email || 'unknown',
-  };
-
   try {
-    await setDoc(doc(db, 'settings', 'app'), settings);
-    applySettingsToApp(settings);
+    const db = await initSettingsFirebase();
+    if (!db) { showToast('❌ Database tidak tersedia'); return; }
+    const { doc, setDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+
+    const g = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+    const settings = {
+      appname: g('s-appname'), tagline: g('s-tagline'),
+      version: g('s-version'), year: g('s-year'),
+      company: g('s-company'), address: g('s-address'),
+      website: g('s-website'), adminemail: g('s-adminemail'),
+      phone: g('s-phone'), city: g('s-city'),
+      rendemen: +g('s-rendemen'), waste: +g('s-waste'),
+      defwood: g('s-defwood'), deffurniture: g('s-deffurniture'),
+      currency: g('s-currency'),
+      colors: {
+        primary: g('h-primary'), accent: g('h-accent'),
+        bg: g('h-bg'), navbar: g('h-navbar'),
+      },
+      logoUrl: g('logo-url') || null,
+      logoData: _currentLogoData || null,
+      updatedAt: serverTimestamp(),
+      updatedBy: user.email || 'unknown',
+    };
+
+    await setDoc(doc(db,'settings','app'), settings);
+    applySettingsToUI(settings);
     closeSettings();
     showToast('✅ Pengaturan berhasil disimpan!');
-  } catch(e) {
-    showToast('❌ Gagal simpan: ' + e.message);
-  }
+  } catch(e) { showToast('❌ Gagal simpan: '+e.message); console.error(e); }
 }
 
-function applySettingsToApp(s) {
+function applySettingsToUI(s) {
   if (!s) return;
   const root = document.documentElement;
   if (s.colors) {
-    if (s.colors.primary) root.style.setProperty('--ac', s.colors.primary);
+    if (s.colors.primary) { root.style.setProperty('--ac', s.colors.primary); root.style.setProperty('--accent', s.colors.primary); }
     if (s.colors.accent)  root.style.setProperty('--ac2', s.colors.accent);
-    if (s.colors.bg)      root.style.setProperty('--bg', s.colors.bg);
-    if (s.colors.navbar) {
-      document.querySelectorAll('.topbar, #auth-bar').forEach(el => {
-        el.style.background = s.colors.navbar;
-      });
-    }
+    if (s.colors.bg)      { root.style.setProperty('--bg', s.colors.bg); document.body.style.background = s.colors.bg; }
+    if (s.colors.navbar)  { document.querySelectorAll('.topbar').forEach(el=>el.style.background=s.colors.navbar); document.getElementById('auth-bar').style.background=s.colors.navbar; }
   }
-  // Update brand name
-  const brandEl = document.querySelector('.bname');
-  if (brandEl && s.appname) brandEl.textContent = s.appname;
-  const subEl = document.querySelector('.bsub');
-  if (subEl && s.tagline) subEl.textContent = s.tagline + ' — ' + (s.version||'v2.0');
-  // Update topbar logo
+  const bname = document.querySelector('.bname');
+  if (bname && s.appname) bname.textContent = s.appname;
+  const bsub = document.querySelector('.bsub');
+  if (bsub && s.tagline) bsub.textContent = s.tagline + ' — ' + (s.version||'v2.0');
   if (s.logoData || s.logoUrl) {
-    const logoSrc = s.logoData || s.logoUrl;
+    const src = s.logoData || s.logoUrl;
     document.querySelectorAll('.tlogo').forEach(el => {
-      el.innerHTML = '<img src="'+logoSrc+'" style="width:26px;height:26px;object-fit:contain;border-radius:4px;" onerror="this.parentElement.textContent='🪵'">';
+      el.innerHTML = '<img src="'+src+'" style="width:26px;height:26px;object-fit:contain;border-radius:4px;" onerror="this.parentElement.textContent='🪵'">';
     });
   }
-  // Apply rendemen & waste defaults
   if (s.rendemen && typeof ST !== 'undefined') {
     ST.rendemen = s.rendemen;
     const rng = document.getElementById('rng-rendemen');
@@ -967,7 +965,7 @@ function applySettingsToApp(s) {
 }
 
 window.resetSettings = function() {
-  if (!confirm('Reset semua pengaturan ke default?')) return;
+  if (!confirm('Reset semua pengaturan ke default Jepara?')) return;
   applyPreset(PRESETS[0]);
   document.getElementById('s-appname').value = 'Wood Volume Calculator';
   document.getElementById('s-tagline').value = 'Jepara ERP Suite';
@@ -978,21 +976,25 @@ window.resetSettings = function() {
   document.getElementById('s-adminemail').value = 'admin@gabeart.com';
   document.getElementById('s-rendemen').value = 35;
   document.getElementById('s-waste').value = 15;
-  document.getElementById('logo-preview').innerHTML = '🌿';
-  document.getElementById('logo-url').value = '';
-  currentSettings._logoData = null;
+  const preview = document.getElementById('logo-preview');
+  if (preview) preview.innerHTML = '🌿';
+  const urlEl = document.getElementById('logo-url');
+  if (urlEl) urlEl.value = '';
+  _currentLogoData = null;
 }
 
-// Load & apply settings on page load
-async function initSettings() {
-  buildPresets();
+// Auto-load settings on startup
+(async function() {
   try {
-    const snap = await getDoc(doc(db, 'settings', 'app'));
-    if (snap.exists()) applySettingsToApp(snap.data());
-  } catch(e) {}
-}
-initSettings();
+    const db = await initSettingsFirebase();
+    if (!db) return;
+    const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const snap = await getDoc(doc(db,'settings','app'));
+    if (snap.exists()) applySettingsToUI(snap.data());
+  } catch(e) { console.log('Auto-load settings:', e); }
+})();
 </script>
+
 
 </body>
 </html>
