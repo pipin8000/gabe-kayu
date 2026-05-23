@@ -1,9 +1,10 @@
+<!-- MATERIALS v3.0 CLEAN BUILD - NO TEMPLATE LITERALS - 2026-05-23 -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Material Master — Gabe International Hub</title>
+<title>Material Master v3.0 — Gabe International Hub</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a1917;font-size:14px;line-height:1.5;}
@@ -850,7 +851,7 @@ window.savePrice = async function() {
 
     closeModal('price-modal');
     renderMaterials();
-    showToast(`✅ Harga ${m.nama} diupdate → ${fm(hargaBaru)}`);
+    showToast('✅ Harga ' + m.nama + ' diupdate → ' + fm(hargaBaru));
   } catch(e) {
     showToast('❌ Gagal update: ' + e.message);
     console.error(e);
@@ -909,7 +910,7 @@ window.updateIdSuggestion = function() {
     return parseInt(parts[1]||'0');
   }).filter(n=>!isNaN(n));
   const nextNum = nums.length ? Math.max(...nums)+1 : 1;
-  document.getElementById('m-id').value = `${cat}-${String(nextNum).padStart(3,'0')}`;
+  document.getElementById('m-id').value = cat + '-' + String(nextNum).padStart(3,'0');
 }
 
 window.saveMaterial = async function() {
@@ -958,17 +959,17 @@ window.saveMaterial = async function() {
 
 window.toggleAktif = async function(id, currentAktif) {
   const label = currentAktif ? 'nonaktifkan' : 'aktifkan';
-  if (!confirm(`${label.charAt(0).toUpperCase()+label.slice(1)} material ini?`)) return;
+  if (!confirm(label.charAt(0).toUpperCase()+label.slice(1) + ' material ini?')) return;
   await updateDoc(doc(db,'materials',id), {aktif: !currentAktif});
   const m = allMaterials.find(x=>(x.id||x._id)===id);
   if (m) m.aktif = !currentAktif;
   renderMaterials();
-  showToast(`${!currentAktif?'✅':'🚫'} Material ${!currentAktif?'diaktifkan':'dinonaktifkan'}`);
+  showToast((!currentAktif?'✅':'🚫') + ' Material ' + (!currentAktif?'diaktifkan':'dinonaktifkan'));
 }
 
 // ── Price History ─────────────────────────────────────────────────────
 window.showHistory = async function(id, nama) {
-  document.getElementById('hist-modal-title').textContent = `📈 Historis Harga — ${nama}`;
+  document.getElementById('hist-modal-title').textContent = '📈 Historis Harga — ' + nama;
   document.getElementById('hist-list-area').innerHTML = '<div style="text-align:center;padding:20px;color:#8a8680">⏳ Memuat historis...</div>';
   document.getElementById('hist-modal').classList.add('show');
 
@@ -997,27 +998,29 @@ window.showHistory = async function(id, nama) {
       return;
     }
 
-    let html = '<div class="hist-list">';
+    var html = '<div class="hist-list">';
     // Current price as first item
-    html += `<div class="hist-item" style="background:#eaf3e8;border-color:#b8d9b4">
-      <div class="hist-date">🟢 HARGA AKTIF — ${m?.harga_updated_at ? fts(m.harga_updated_at) : 'Sekarang'}</div>
-      <div class="hist-prices"><span class="hist-new" style="font-size:18px">${fm(currentPrice)}</span></div>
-    </div>`;
+    var activeDate = m && m.harga_updated_at ? fts(m.harga_updated_at) : 'Sekarang';
+    html += '<div class="hist-item" style="background:#eaf3e8;border-color:#b8d9b4">' +
+      '<div class="hist-date">🟢 HARGA AKTIF — ' + activeDate + '</div>' +
+      '<div class="hist-prices"><span class="hist-new" style="font-size:18px">' + fm(currentPrice) + '</span></div>' +
+      '</div>';
 
-    items.forEach(item => {
-      const diff = item.perubahan || (item.harga_baru - item.harga_lama);
-      const isUp = diff > 0;
-      const pct = item.persen ? Math.abs(item.persen) : 0;
-      html += `<div class="hist-item">
-        <div class="hist-date">${fts(item.updated_at||item.tanggal)} · oleh ${item.updated_by||'—'}</div>
-        <div class="hist-prices">
-          <span class="hist-old">${fm(item.harga_lama||0)}</span>
-          <span class="hist-arrow">→</span>
-          <span class="hist-new">${fm(item.harga_baru||0)}</span>
-          <span class="hist-change ${isUp?'up':'down'}">${isUp?'▲':'▼'} ${pct}%</span>
-        </div>
-        ${item.keterangan?`<div class="hist-note">📝 ${item.keterangan}</div>`:''}
-      </div>`;
+    items.forEach(function(item) {
+      var diff = item.perubahan || (item.harga_baru - item.harga_lama);
+      var isUp = diff > 0;
+      var pct = item.persen ? Math.abs(item.persen) : 0;
+      var ketHtml = item.keterangan ? '<div class="hist-note">📝 ' + item.keterangan + '</div>' : '';
+      html += '<div class="hist-item">' +
+        '<div class="hist-date">' + fts(item.updated_at||item.tanggal) + ' · oleh ' + (item.updated_by||'—') + '</div>' +
+        '<div class="hist-prices">' +
+          '<span class="hist-old">' + fm(item.harga_lama||0) + '</span>' +
+          '<span class="hist-arrow">→</span>' +
+          '<span class="hist-new">' + fm(item.harga_baru||0) + '</span>' +
+          '<span class="hist-change ' + (isUp?'up':'down') + '">' + (isUp?'▲':'▼') + ' ' + pct + '%</span>' +
+        '</div>' +
+        ketHtml +
+        '</div>';
     });
     html += '</div>';
     document.getElementById('hist-list-area').innerHTML = html;
@@ -1035,25 +1038,24 @@ function renderMiniChart(prices, nama) {
   const points = prices.map((p,i) => {
     const x = PAD + (i/(prices.length-1)) * (W-PAD*2);
     const y = PAD + (1 - (p-min)/range) * (H-PAD*2);
-    return `${x},${y}`;
+    return x + ',' + y;
   }).join(' ');
   const lastPrice = prices[prices.length-1];
   const firstPrice = prices[0];
   const trend = lastPrice > firstPrice ? '#27ae60' : lastPrice < firstPrice ? '#c0392b' : '#8a8680';
-  return `
-    <div style="background:#f8f8f8;border-radius:10px;padding:12px;margin-bottom:4px;">
-      <div style="font-size:11px;color:#8a8680;margin-bottom:6px;">Tren Harga (${prices.length} titik data)</div>
-      <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:60px;">
-        <polyline points="${points}" fill="none" stroke="${trend}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        ${prices.map((p,i)=>{
-          const x = PAD + (i/(prices.length-1)) * (W-PAD*2);
-          const y = PAD + (1 - (p-min)/range) * (H-PAD*2);
-          return `<circle cx="${x}" cy="${y}" r="3" fill="${trend}"/>`;
-        }).join('')}
-        <text x="${PAD}" y="${H-2}" font-size="9" fill="#8a8680">${fm(min)}</text>
-        <text x="${PAD}" y="12" font-size="9" fill="#8a8680">${fm(max)}</text>
-      </svg>
-    </div>`;
+  var circles2 = prices.map(function(p,ix){
+    var cx2 = PAD + (ix/(prices.length-1)) * (W-PAD*2);
+    var cy2 = PAD + (1 - (p-min)/range) * (H-PAD*2);
+    return '<circle cx="'+cx2+'" cy="'+cy2+'" r="3" fill="'+trend+'"/>';
+  }).join('');
+  return '<div style="background:#f8f8f8;border-radius:10px;padding:12px;margin-bottom:4px;">' +
+    '<div style="font-size:11px;color:#8a8680;margin-bottom:6px;">Tren Harga (' + prices.length + ' titik data)</div>' +
+    '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:60px;">' +
+      '<polyline points="'+points+'" fill="none" stroke="'+trend+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+      circles2 +
+      '<text x="'+PAD+'" y="'+(H-2)+'" font-size="9" fill="#8a8680">'+fm(min)+'</text>' +
+      '<text x="'+PAD+'" y="12" font-size="9" fill="#8a8680">'+fm(max)+'</text>' +
+    '</svg></div>';
 }
 
 // ── Export Price List ─────────────────────────────────────────────────
@@ -1061,7 +1063,7 @@ window.exportPriceList = function() {
   let csv = 'ID,Nama,Nama Panjang,Kategori,Kelas,Rendemen(%),Densitas(kg/m3),Harga Aktif,Satuan,Status\n';
   allMaterials.forEach(m => {
     csv += [
-      m.id||m._id, m.nama, `"${m.namaPanjang||''}"`,
+      m.id||m._id, m.nama, '"'+(m.namaPanjang||'')+'",',
       m.cat, m.kelas||0, m.rendemen||0, m.density||0,
       m.harga||0, m.unit||'m³',
       m.aktif!==false?'Aktif':'Nonaktif'
@@ -1070,7 +1072,7 @@ window.exportPriceList = function() {
   const blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `PriceList_GabeInternational_${new Date().toISOString().split('T')[0]}.csv`;
+  a.download = 'PriceList_GabeInternational_' + new Date().toISOString().split('T')[0] + '.csv';
   a.click();
   showToast('📄 Price list diexport!');
 }
