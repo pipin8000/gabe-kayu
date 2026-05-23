@@ -304,7 +304,7 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
   <div style="display:flex;align-items:center;gap:10px;">
     <span id="user-role-badge" style="font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.15);"></span>
     <span id="user-name-bar" style="opacity:.8"></span>
-    <button id="settings-btn" onclick="openSettings()" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:#fff;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px;">⚙️ Pengaturan</button>
+    <button id="settings-btn" onclick="showSettingsModal()" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:#fff;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px;">⚙️ Pengaturan</button>
     <a href="admin.html" id="admin-link" style="display:none;background:rgba(255,255,255,.15);color:#fff;padding:3px 10px;border-radius:6px;text-decoration:none;font-size:11px;">👥 Users</a>
     <button onclick="doLogout()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px;">Logout</button>
   </div>
@@ -847,6 +847,24 @@ window.doLogout = async function() {
 
 <script>
 // ═══ SETTINGS MODAL — Bulletproof Version ═══
+function showSettingsModal() {
+  var o = document.getElementById('settings-overlay');
+  if (!o) { alert('Settings tidak ditemukan!'); return; }
+  o.style.position = 'fixed';
+  o.style.top = '0';
+  o.style.left = '0';
+  o.style.right = '0';
+  o.style.bottom = '0';
+  o.style.background = 'rgba(0,0,0,0.65)';
+  o.style.display = 'flex';
+  o.style.alignItems = 'center';
+  o.style.justifyContent = 'center';
+  o.style.zIndex = '99999';
+  o.style.padding = '16px';
+  if (typeof smBuildPresets === 'function') smBuildPresets();
+  if (typeof smLoadFromStorage === 'function') smLoadFromStorage();
+}
+
 var _logoData = null;
 var PRESETS=[
   {n:'Jepara 🌿',p:'#2d5a27',a:'#3d7a35',b:'#f5f4f0',nb:'#1a3a1a'},
@@ -867,34 +885,32 @@ function smToast(msg) {
 
 window.openSettings = function() {
   try {
-    var user = JSON.parse(sessionStorage.getItem('gabe_user')||'{}');
-    if (user.role !== 'admin' && user.role !== 'manager') {
-      alert('Hanya Admin & Manager yang bisa mengubah pengaturan!');
-      return;
-    }
     var overlay = document.getElementById('settings-overlay');
-    if (!overlay) { alert('Settings overlay tidak ditemukan!'); return; }
-    // Force show with inline style
-    overlay.style.position = 'fixed';
-    overlay.style.top = '0';
-    overlay.style.left = '0';
-    overlay.style.right = '0';
-    overlay.style.bottom = '0';
-    overlay.style.background = 'rgba(0,0,0,0.6)';
-    overlay.style.display = 'flex';
-    overlay.style.alignItems = 'center';
-    overlay.style.justifyContent = 'center';
-    overlay.style.zIndex = '99999';
-    overlay.style.padding = '16px';
+    if (!overlay) { 
+      document.body.insertAdjacentHTML('beforeend','<div id="settings-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:99999;padding:16px"><p style="background:#fff;padding:20px;border-radius:12px">Overlay tidak ditemukan - refresh halaman</p></div>');
+      return; 
+    }
+    overlay.setAttribute('style','position:fixed!important;top:0!important;left:0!important;right:0!important;bottom:0!important;background:rgba(0,0,0,0.65)!important;display:flex!important;align-items:center!important;justify-content:center!important;z-index:99999!important;padding:16px!important');
     overlay.classList.add('show');
     smBuildPresets();
     smLoadFromStorage();
+    // Role check for save only
+    var user = JSON.parse(sessionStorage.getItem('gabe_user')||'{}');
+    var saveBtn = overlay.querySelector('[onclick="saveSettings()"]');
+    if (saveBtn && user.role !== 'admin' && user.role !== 'manager') {
+      saveBtn.disabled = true;
+      saveBtn.textContent = '🔒 Hanya Admin/Manager';
+      saveBtn.style.opacity = '0.5';
+    }
   } catch(e) { alert('Error openSettings: ' + e.message); }
 }
 
 window.closeSettings = function() {
   var overlay = document.getElementById('settings-overlay');
-  if (overlay) { overlay.style.display = 'none'; overlay.classList.remove('show'); }
+  if (overlay) { 
+    overlay.style.cssText = 'display:none;';
+    overlay.classList.remove('show'); 
+  }
 }
 
 window.switchSmTab = function(tab) {
@@ -964,10 +980,14 @@ window.previewLogoUrl = function(url) {
   var preview = document.getElementById('logo-preview');
   if (!preview) return;
   if (!url) { preview.innerHTML = '🌿'; return; }
-  preview.innerHTML = '<img src="'+url+'" style="width:100%;height:100%;object-fit:contain;" onerror="this.parentElement.innerHTML='❌'">';
+  var img = document.createElement('img');
+  img.src = url;
+  img.style.cssText = 'width:100%;height:100%;object-fit:contain;';
+  img.onerror = function(){ preview.innerHTML = '❌'; };
+  preview.innerHTML = '';
+  preview.appendChild(img);
   _logoData = null;
 }
-
 function smLoadFromStorage() {
   try {
     var saved = localStorage.getItem('gabe_settings');
@@ -989,7 +1009,7 @@ function smLoadFromStorage() {
     if (s.logoData||s.logoUrl) {
       var src=s.logoData||s.logoUrl;
       var preview=document.getElementById('logo-preview');
-      if(preview) preview.innerHTML='<img src="'+src+'" style="width:100%;height:100%;object-fit:contain;">';
+      if(preview){var imgL=document.createElement('img');imgL.src=src;imgL.style.cssText='width:100%;height:100%;object-fit:contain;';preview.innerHTML='';preview.appendChild(imgL);}
       _logoData=s.logoData||null;
     }
   } catch(e) { console.log('smLoadFromStorage:', e); }
@@ -1057,8 +1077,13 @@ function smApplyToUI(s) {
   if (s.logoData||s.logoUrl) {
     var src=s.logoData||s.logoUrl;
     document.querySelectorAll('.tlogo').forEach(function(el){
-      el.innerHTML='<img src="'+src+'" style="width:26px;height:26px;object-fit:contain;border-radius:4px;" onerror="this.parentElement.textContent='🪵'">';
-    });
+    var imgT=document.createElement('img');
+    imgT.src=src;
+    imgT.style.cssText='width:26px;height:26px;object-fit:contain;border-radius:4px;';
+    imgT.onerror=function(){ el.textContent='🪵'; };
+    el.innerHTML='';
+    el.appendChild(imgT);
+  });
   }
   if (s.rendemen && typeof ST!=='undefined') {
     ST.rendemen=s.rendemen;
