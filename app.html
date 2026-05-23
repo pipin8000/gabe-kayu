@@ -305,6 +305,7 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
     <span id="user-role-badge" style="font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.15);"></span>
     <span id="user-name-bar" style="opacity:.8"></span>
     <button id="settings-btn" onclick="showSettingsModal()" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:#fff;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px;">⚙️ Pengaturan</button>
+    <a href="materials.html" id="materials-link" style="display:none;background:rgba(255,255,255,.15);color:#fff;padding:3px 10px;border-radius:6px;text-decoration:none;font-size:11px;">🪵 Material</a>
     <a href="admin.html" id="admin-link" style="display:none;background:rgba(255,255,255,.15);color:#fff;padding:3px 10px;border-radius:6px;text-decoration:none;font-size:11px;">👥 Users</a>
     <button onclick="doLogout()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px;">Logout</button>
   </div>
@@ -595,6 +596,8 @@ if (!stored) {
   }
   if (nameEl) nameEl.textContent = '👤 ' + (user.name || user.email);
   if (adminLink && user.role === 'admin') adminLink.style.display = 'inline';
+    const matLink = document.getElementById('materials-link');
+    if (matLink && (user.role === 'admin' || user.role === 'manager')) matLink.style.display = 'inline';
 
   // Role-based restrictions
   const role = user.role || 'viewer';
