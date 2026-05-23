@@ -114,6 +114,66 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
 .hist-note{font-size:11px;color:#5a5750;margin-top:4px;font-style:italic;}
 .no-hist{text-align:center;padding:20px;color:#8a8680;font-size:13px;}
 
+
+/* ═══ LIST VIEW ═══ */
+.view-toggle { display:flex; gap:4px; }
+.view-btn { 
+  padding:6px 12px; border:1.5px solid #d8d5cb; border-radius:8px;
+  background:#fff; font-size:13px; cursor:pointer; transition:all .15s;
+  display:flex; align-items:center; gap:5px; color:#5a5750; font-weight:600;
+}
+.view-btn:hover { background:#f0efe9; }
+.view-btn.active { background:#2d5a27; border-color:#2d5a27; color:#fff; }
+
+/* LIST VIEW TABLE */
+.mat-list { display:none; background:#fff; border:1px solid #d8d5cb; border-radius:14px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,.07); }
+.mat-list.active { display:block; }
+.mat-grid.hidden { display:none; }
+
+.list-table { width:100%; border-collapse:collapse; }
+.list-table thead tr { background:#f5f4f0; }
+.list-table thead th { 
+  padding:11px 14px; text-align:left; font-size:11px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.05em; color:#8a8680;
+  border-bottom:1.5px solid #d8d5cb; white-space:nowrap; cursor:pointer;
+}
+.list-table thead th:hover { color:#2d5a27; }
+.list-table thead th .sort-icon { margin-left:4px; opacity:.5; }
+.list-table tbody tr { transition:background .1s; }
+.list-table tbody tr:hover { background:#f5f4f0; }
+.list-table tbody tr:nth-child(even) { background:#fafaf8; }
+.list-table tbody tr:nth-child(even):hover { background:#f5f4f0; }
+.list-table tbody td { padding:10px 14px; border-bottom:1px solid #e8e6df; font-size:13px; }
+.list-table tbody tr:last-child td { border-bottom:none; }
+
+/* List row elements */
+.list-mat-name { font-weight:600; color:#1a1917; }
+.list-mat-sub { font-size:11px; color:#8a8680; margin-top:1px; }
+.list-price { font-weight:700; color:#2d5a27; }
+.list-price-date { font-size:10px; color:#8a8680; }
+.list-actions { display:flex; gap:5px; white-space:nowrap; }
+.list-btn { 
+  padding:4px 10px; border:1px solid #d8d5cb; border-radius:6px;
+  background:#fff; font-size:11px; font-weight:600; cursor:pointer;
+  transition:all .15s; color:#5a5750;
+}
+.list-btn:hover { background:#f0efe9; }
+.list-btn.primary { background:#2d5a27; border-color:#2d5a27; color:#fff; }
+.list-btn.primary:hover { background:#3d7a35; }
+.list-btn.info { color:#1a4a7a; border-color:#c0d8f5; }
+.list-btn.info:hover { background:#e8f0fb; }
+
+/* Rendemen badge */
+.rdm-badge { 
+  display:inline-block; padding:2px 7px; border-radius:20px;
+  font-size:10px; font-weight:700; background:#f0efe9; color:#5a5750;
+}
+
+@media(max-width:768px) {
+  .list-table { min-width:600px; }
+  .mat-list { overflow-x:auto; }
+}
+
 /* CAT COLORS */
 .cat-SW{background:#fff3e0;color:#e65100;}
 .cat-PW{background:#e3f2fd;color:#1565c0;}
@@ -191,14 +251,43 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
     <button class="filter-btn" onclick="setFilter('PW',this)">📐 Plywood</button>
     <button class="filter-btn" onclick="setFilter('NW',this)">🔩 Non-Wood</button>
     <button class="filter-btn" onclick="setFilter('ACTIVE',this)">✅ Aktif</button>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+      <span style="font-size:11px;color:#8a8680;">Tampilan:</span>
+      <div class="view-toggle">
+        <button class="view-btn active" id="btn-card" onclick="setView('card')">⊞ Card</button>
+        <button class="view-btn" id="btn-list" onclick="setView('list')">☰ List</button>
+      </div>
+    </div>
   </div>
 
-  <!-- Materials Grid -->
+  <!-- Materials Grid — Card View -->
   <div class="mat-grid" id="mat-grid">
     <div style="grid-column:1/-1;text-align:center;padding:40px;color:#8a8680;">
       <div style="font-size:32px;margin-bottom:8px;">⏳</div>
       Memuat data material...
     </div>
+  </div>
+
+  <!-- Materials List — List View -->
+  <div class="mat-list" id="mat-list">
+    <table class="list-table">
+      <thead>
+        <tr>
+          <th onclick="sortList('id')">ID <span class="sort-icon">↕</span></th>
+          <th onclick="sortList('nama')">Nama Material <span class="sort-icon">↕</span></th>
+          <th onclick="sortList('cat')">Kategori <span class="sort-icon">↕</span></th>
+          <th onclick="sortList('kelas')">Kelas <span class="sort-icon">↕</span></th>
+          <th onclick="sortList('rendemen')">Rendemen <span class="sort-icon">↕</span></th>
+          <th onclick="sortList('harga')">Harga Aktif <span class="sort-icon">↕</span></th>
+          <th>Update Terakhir</th>
+          <th>Status</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="list-tbody">
+        <tr><td colspan="9" style="text-align:center;padding:30px;color:#8a8680;">⏳ Memuat...</td></tr>
+      </tbody>
+    </table>
   </div>
 
 </div><!-- end app -->
@@ -523,6 +612,8 @@ function renderMaterials() {
       </div>`;
     grid.appendChild(card);
   });
+  // If in list view, also update list
+  if (currentView === 'list') renderListView();
 }
 
 // ── Filter & Search ───────────────────────────────────────────────────
