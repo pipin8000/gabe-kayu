@@ -149,6 +149,7 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
   <div style="display:flex;align-items:center;gap:10px;">
     <span id="user-role-badge" style="font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.15);"></span>
     <span id="user-name-bar" style="opacity:.8"></span>
+    <button id="settings-btn" onclick="openSettings()" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:#fff;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px;">⚙️ Pengaturan</button>
     <a href="admin.html" id="admin-link" style="display:none;background:rgba(255,255,255,.15);color:#fff;padding:3px 10px;border-radius:6px;text-decoration:none;font-size:11px;">👥 Users</a>
     <button onclick="doLogout()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px;">Logout</button>
   </div>
@@ -487,5 +488,475 @@ window.doLogout = async function() {
   window.location.href = 'index.html';
 }
 </script>
+
+<!-- ═══ SETTINGS MODAL ═══ -->
+<div class="settings-overlay" id="settings-overlay">
+  <div class="settings-modal">
+    <div class="sm-hdr">
+      <h3>⚙️ Pengaturan Aplikasi</h3>
+      <button class="sm-close" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="sm-tabs">
+      <button class="sm-tab active" onclick="switchSmTab('branding')">🏢 Branding</button>
+      <button class="sm-tab" onclick="switchSmTab('theme')">🎨 Tema & Warna</button>
+      <button class="sm-tab" onclick="switchSmTab('company')">📋 Perusahaan</button>
+      <button class="sm-tab" onclick="switchSmTab('defaults')">⚙️ Default Kalkulasi</button>
+    </div>
+    <div class="sm-body">
+
+      <!-- BRANDING TAB -->
+      <div class="sm-tcont active" id="smt-branding">
+        <div class="sm-section">
+          <div class="sm-section-title">Logo Aplikasi</div>
+          <div class="logo-upload-wrap">
+            <div class="logo-preview" id="logo-preview" onclick="document.getElementById('logo-file').click()">
+              🌿
+            </div>
+            <div>
+              <div class="logo-upload-info">
+                Klik logo untuk ganti gambar<br>
+                Format: PNG, JPG, SVG (maks 200KB)<br>
+                Atau masukkan URL gambar di bawah
+              </div>
+              <input type="file" id="logo-file" accept="image/*" style="display:none" onchange="handleLogoUpload(event)">
+              <input type="text" class="sm-fc" id="logo-url" placeholder="https://..." style="margin-top:6px;font-size:11px" oninput="previewLogoUrl(this.value)">
+            </div>
+          </div>
+        </div>
+        <div class="sm-section">
+          <div class="sm-section-title">Nama & Identitas</div>
+          <div class="sm-row">
+            <div class="sm-fg">
+              <label>Nama Aplikasi</label>
+              <input type="text" class="sm-fc" id="s-appname" value="Wood Volume Calculator" placeholder="Nama App">
+            </div>
+            <div class="sm-fg">
+              <label>Tagline / Subtitle</label>
+              <input type="text" class="sm-fc" id="s-tagline" value="Jepara ERP Suite" placeholder="Tagline">
+            </div>
+          </div>
+          <div class="sm-row">
+            <div class="sm-fg">
+              <label>Versi</label>
+              <input type="text" class="sm-fc" id="s-version" value="v2.0" placeholder="v2.0">
+            </div>
+            <div class="sm-fg">
+              <label>Tahun</label>
+              <input type="text" class="sm-fc" id="s-year" value="2026" placeholder="2026">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- THEME TAB -->
+      <div class="sm-tcont" id="smt-theme">
+        <div class="sm-section">
+          <div class="sm-section-title">Preset Tema</div>
+          <div class="preset-grid" id="preset-grid"></div>
+        </div>
+        <div class="sm-section">
+          <div class="sm-section-title">Preview Navbar</div>
+          <div class="preview-bar" id="preview-bar">🌿 GABE INTERNATIONAL HUB — Wood Volume Calculator</div>
+        </div>
+        <div class="sm-section">
+          <div class="sm-section-title">Warna Custom</div>
+          <div class="color-row">
+            <span class="color-label">🎨 Warna Utama (Primary)</span>
+            <input type="color" class="color-inp" id="c-primary" value="#2d5a27" oninput="updateColorHex('primary',this.value)">
+            <input type="text" class="color-hex" id="h-primary" value="#2d5a27" oninput="updateColorPicker('primary',this.value)">
+          </div>
+          <div class="color-row">
+            <span class="color-label">✨ Warna Aksen (Accent)</span>
+            <input type="color" class="color-inp" id="c-accent" value="#3d7a35" oninput="updateColorHex('accent',this.value)">
+            <input type="text" class="color-hex" id="h-accent" value="#3d7a35" oninput="updateColorPicker('accent',this.value)">
+          </div>
+          <div class="color-row">
+            <span class="color-label">📋 Warna Background</span>
+            <input type="color" class="color-inp" id="c-bg" value="#f5f4f0" oninput="updateColorHex('bg',this.value)">
+            <input type="text" class="color-hex" id="h-bg" value="#f5f4f0" oninput="updateColorPicker('bg',this.value)">
+          </div>
+          <div class="color-row">
+            <span class="color-label">🔝 Warna Navbar</span>
+            <input type="color" class="color-inp" id="c-navbar" value="#1a3a1a" oninput="updateColorHex('navbar',this.value)">
+            <input type="text" class="color-hex" id="h-navbar" value="#1a3a1a" oninput="updateColorPicker('navbar',this.value)">
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPANY TAB -->
+      <div class="sm-tcont" id="smt-company">
+        <div class="sm-section">
+          <div class="sm-section-title">Informasi Perusahaan</div>
+          <div class="sm-fg">
+            <label>Nama Perusahaan</label>
+            <input type="text" class="sm-fc" id="s-company" value="PT. Gabe International" placeholder="Nama PT">
+          </div>
+          <div class="sm-fg">
+            <label>Alamat</label>
+            <input type="text" class="sm-fc" id="s-address" value="Jepara, Jawa Tengah, Indonesia" placeholder="Alamat lengkap">
+          </div>
+          <div class="sm-row">
+            <div class="sm-fg">
+              <label>Website</label>
+              <input type="text" class="sm-fc" id="s-website" value="www.gabeart.com" placeholder="website.com">
+            </div>
+            <div class="sm-fg">
+              <label>Email Admin</label>
+              <input type="text" class="sm-fc" id="s-adminemail" value="admin@gabeart.com" placeholder="admin@...">
+            </div>
+          </div>
+          <div class="sm-row">
+            <div class="sm-fg">
+              <label>Telepon</label>
+              <input type="text" class="sm-fc" id="s-phone" value="" placeholder="+62...">
+            </div>
+            <div class="sm-fg">
+              <label>Kota</label>
+              <input type="text" class="sm-fc" id="s-city" value="Jepara" placeholder="Kota">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEFAULTS TAB -->
+      <div class="sm-tcont" id="smt-defaults">
+        <div class="sm-section">
+          <div class="sm-section-title">Default Kalkulasi Kayu</div>
+          <div class="sm-row">
+            <div class="sm-fg">
+              <label>Default Rendemen (%)</label>
+              <input type="number" class="sm-fc" id="s-rendemen" value="35" min="20" max="70">
+            </div>
+            <div class="sm-fg">
+              <label>Default Waste Factor (%)</label>
+              <input type="number" class="sm-fc" id="s-waste" value="15" min="5" max="40">
+            </div>
+          </div>
+          <div class="sm-row">
+            <div class="sm-fg">
+              <label>Default Kayu Utama</label>
+              <select class="sm-fc" id="s-defwood">
+                <option value="SW-005">Mindi — Kelas 2</option>
+                <option value="SW-001">Jati — Kelas 1</option>
+                <option value="SW-004">Mahoni — Kelas 2</option>
+                <option value="SW-006">Akasia — Kelas 2</option>
+                <option value="SW-009">Sengon — Kelas 3</option>
+              </select>
+            </div>
+            <div class="sm-fg">
+              <label>Default Furniture</label>
+              <select class="sm-fc" id="s-deffurniture">
+                <option value="bed">Tempat Tidur</option>
+                <option value="lemari">Lemari</option>
+                <option value="kursi">Kursi</option>
+                <option value="sofa">Sofa</option>
+                <option value="meja">Meja</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="sm-section">
+          <div class="sm-section-title">Format & Satuan</div>
+          <div class="sm-row">
+            <div class="sm-fg">
+              <label>Mata Uang</label>
+              <select class="sm-fc" id="s-currency">
+                <option value="IDR">IDR (Rp)</option>
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+              </select>
+            </div>
+            <div class="sm-fg">
+              <label>Satuan Dimensi</label>
+              <select class="sm-fc" id="s-unit">
+                <option value="cm">Centimeter (cm)</option>
+                <option value="mm">Milimeter (mm)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end sm-body -->
+    <div class="sm-footer">
+      <button onclick="resetSettings()" style="padding:7px 14px;border:1px solid #d8d5cb;border-radius:8px;background:#fff;font-size:12px;cursor:pointer;color:#8a8680;">↺ Reset Default</button>
+      <div style="display:flex;gap:8px;">
+        <button onclick="closeSettings()" style="padding:8px 16px;border:1px solid #d8d5cb;border-radius:8px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;">Batal</button>
+        <button onclick="saveSettings()" style="padding:8px 20px;background:#2d5a27;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;">💾 Simpan Pengaturan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="module" id="settings-script">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",
+  authDomain: "gabe-international-hub.firebaseapp.com",
+  projectId: "gabe-international-hub",
+  storageBucket: "gabe-international-hub.firebasestorage.app",
+  messagingSenderId: "115783216069",
+  appId: "1:115783216069:web:62cfabf543b1fbb85bf9ac"
+};
+const fbApp = initializeApp(firebaseConfig,'settings');
+const db = getFirestore(fbApp);
+
+const PRESETS = [
+  {name:'Jepara 🌿',primary:'#2d5a27',accent:'#3d7a35',bg:'#f5f4f0',navbar:'#1a3a1a'},
+  {name:'Ocean 🌊',primary:'#1a4a7a',accent:'#2060a0',bg:'#f0f4f8',navbar:'#0d2a4a'},
+  {name:'Sunset 🌅',primary:'#92580a',accent:'#b87020',bg:'#fdf5ec',navbar:'#5a3006'},
+  {name:'Royal 👑',primary:'#5c2d91',accent:'#7a40b0',bg:'#f5f0fb',navbar:'#3a1a60'},
+  {name:'Carbon ⚫',primary:'#2a2a2a',accent:'#444444',bg:'#f0f0f0',navbar:'#111111'},
+  {name:'Rose 🌹',primary:'#8b2020',accent:'#a83030',bg:'#fdf5f5',navbar:'#5a1010'},
+  {name:'Teal 🩵',primary:'#0f6e6e',accent:'#1a9090',bg:'#f0f8f8',navbar:'#084444'},
+  {name:'Gold ✨',primary:'#7a6010',accent:'#9a7e20',bg:'#fdf8ec',navbar:'#4a3a08'},
+  {name:'Sky 🩵',primary:'#2060c0',accent:'#3070d0',bg:'#f0f5ff',navbar:'#102040'},
+  {name:'Olive 🫒',primary:'#5a6a20',accent:'#708030',bg:'#f5f5ec',navbar:'#323a10'},
+];
+
+let currentSettings = {};
+
+// Build preset grid
+function buildPresets() {
+  const grid = document.getElementById('preset-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  PRESETS.forEach((p, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'preset-btn';
+    btn.style.background = p.primary;
+    btn.textContent = p.name;
+    btn.title = p.name;
+    btn.onclick = () => applyPreset(p);
+    grid.appendChild(btn);
+  });
+}
+
+function applyPreset(p) {
+  document.getElementById('c-primary').value = p.primary;
+  document.getElementById('h-primary').value = p.primary;
+  document.getElementById('c-accent').value = p.accent;
+  document.getElementById('h-accent').value = p.accent;
+  document.getElementById('c-bg').value = p.bg;
+  document.getElementById('h-bg').value = p.bg;
+  document.getElementById('c-navbar').value = p.navbar;
+  document.getElementById('h-navbar').value = p.navbar;
+  updatePreview(p.navbar, p.primary);
+}
+
+function updatePreview(navbar, primary) {
+  const bar = document.getElementById('preview-bar');
+  if (bar) { bar.style.background = navbar; bar.style.cssText += ';background:'+navbar+'!important'; }
+}
+
+window.updateColorHex = function(key, val) {
+  document.getElementById('h-'+key).value = val;
+  if (key === 'navbar') updatePreview(val, document.getElementById('c-primary').value);
+}
+window.updateColorPicker = function(key, val) {
+  if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+    document.getElementById('c-'+key).value = val;
+    if (key === 'navbar') updatePreview(val, document.getElementById('c-primary').value);
+  }
+}
+
+window.handleLogoUpload = function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 200*1024) { showToast('⚠️ File terlalu besar! Maks 200KB'); return; }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const preview = document.getElementById('logo-preview');
+    preview.innerHTML = '<img src="'+ev.target.result+'" alt="logo">';
+    currentSettings._logoData = ev.target.result;
+    document.getElementById('logo-url').value = '';
+  };
+  reader.readAsDataURL(file);
+}
+
+window.previewLogoUrl = function(url) {
+  if (!url) { document.getElementById('logo-preview').innerHTML = '🌿'; return; }
+  const preview = document.getElementById('logo-preview');
+  preview.innerHTML = '<img src="'+url+'" alt="logo" onerror="this.parentElement.innerHTML='❌'">';
+  currentSettings._logoData = null;
+}
+
+window.switchSmTab = function(tab) {
+  document.querySelectorAll('.sm-tab').forEach((b,i) => {
+    b.classList.toggle('active', ['branding','theme','company','defaults'][i] === tab);
+  });
+  document.querySelectorAll('.sm-tcont').forEach(c => c.classList.remove('active'));
+  document.getElementById('smt-'+tab).classList.add('active');
+}
+
+window.openSettings = function() {
+  const user = JSON.parse(sessionStorage.getItem('gabe_user')||'{}');
+  if (user.role !== 'admin' && user.role !== 'manager') {
+    showToast('⚠️ Hanya Admin & Manager yang bisa mengubah pengaturan!'); return;
+  }
+  loadSettingsToForm();
+  document.getElementById('settings-overlay').classList.add('show');
+}
+
+window.closeSettings = function() {
+  document.getElementById('settings-overlay').classList.remove('show');
+}
+
+async function loadSettingsToForm() {
+  try {
+    const snap = await getDoc(doc(db, 'settings', 'app'));
+    if (snap.exists()) {
+      const s = snap.data();
+      if (s.appname) document.getElementById('s-appname').value = s.appname;
+      if (s.tagline) document.getElementById('s-tagline').value = s.tagline;
+      if (s.version) document.getElementById('s-version').value = s.version;
+      if (s.year) document.getElementById('s-year').value = s.year;
+      if (s.company) document.getElementById('s-company').value = s.company;
+      if (s.address) document.getElementById('s-address').value = s.address;
+      if (s.website) document.getElementById('s-website').value = s.website;
+      if (s.adminemail) document.getElementById('s-adminemail').value = s.adminemail;
+      if (s.phone) document.getElementById('s-phone').value = s.phone;
+      if (s.city) document.getElementById('s-city').value = s.city;
+      if (s.rendemen) document.getElementById('s-rendemen').value = s.rendemen;
+      if (s.waste) document.getElementById('s-waste').value = s.waste;
+      if (s.defwood) document.getElementById('s-defwood').value = s.defwood;
+      if (s.deffurniture) document.getElementById('s-deffurniture').value = s.deffurniture;
+      if (s.currency) document.getElementById('s-currency').value = s.currency;
+      if (s.colors) {
+        ['primary','accent','bg','navbar'].forEach(k => {
+          if (s.colors[k]) {
+            document.getElementById('c-'+k).value = s.colors[k];
+            document.getElementById('h-'+k).value = s.colors[k];
+          }
+        });
+        updatePreview(s.colors.navbar||'#1a3a1a', s.colors.primary||'#2d5a27');
+      }
+      if (s.logoUrl) {
+        document.getElementById('logo-url').value = s.logoUrl;
+        document.getElementById('logo-preview').innerHTML = '<img src="'+s.logoUrl+'" alt="logo" onerror="this.parentElement.innerHTML='🌿'">';
+      } else if (s.logoData) {
+        document.getElementById('logo-preview').innerHTML = '<img src="'+s.logoData+'" alt="logo">';
+        currentSettings._logoData = s.logoData;
+      }
+    }
+  } catch(e) { console.log('Settings load:', e.message); }
+}
+
+window.saveSettings = async function() {
+  const user = JSON.parse(sessionStorage.getItem('gabe_user')||'{}');
+  const btn = document.querySelector('.sm-footer .btn-primary') || document.querySelectorAll('.sm-footer button')[2];
+
+  const settings = {
+    appname: document.getElementById('s-appname').value,
+    tagline: document.getElementById('s-tagline').value,
+    version: document.getElementById('s-version').value,
+    year: document.getElementById('s-year').value,
+    company: document.getElementById('s-company').value,
+    address: document.getElementById('s-address').value,
+    website: document.getElementById('s-website').value,
+    adminemail: document.getElementById('s-adminemail').value,
+    phone: document.getElementById('s-phone').value,
+    city: document.getElementById('s-city').value,
+    rendemen: +document.getElementById('s-rendemen').value,
+    waste: +document.getElementById('s-waste').value,
+    defwood: document.getElementById('s-defwood').value,
+    deffurniture: document.getElementById('s-deffurniture').value,
+    currency: document.getElementById('s-currency').value,
+    colors: {
+      primary: document.getElementById('h-primary').value,
+      accent: document.getElementById('h-accent').value,
+      bg: document.getElementById('h-bg').value,
+      navbar: document.getElementById('h-navbar').value,
+    },
+    logoUrl: document.getElementById('logo-url').value || null,
+    logoData: currentSettings._logoData || null,
+    updatedAt: serverTimestamp(),
+    updatedBy: user.email || 'unknown',
+  };
+
+  try {
+    await setDoc(doc(db, 'settings', 'app'), settings);
+    applySettingsToApp(settings);
+    closeSettings();
+    showToast('✅ Pengaturan berhasil disimpan!');
+  } catch(e) {
+    showToast('❌ Gagal simpan: ' + e.message);
+  }
+}
+
+function applySettingsToApp(s) {
+  if (!s) return;
+  const root = document.documentElement;
+  if (s.colors) {
+    if (s.colors.primary) root.style.setProperty('--ac', s.colors.primary);
+    if (s.colors.accent)  root.style.setProperty('--ac2', s.colors.accent);
+    if (s.colors.bg)      root.style.setProperty('--bg', s.colors.bg);
+    if (s.colors.navbar) {
+      document.querySelectorAll('.topbar, #auth-bar').forEach(el => {
+        el.style.background = s.colors.navbar;
+      });
+    }
+  }
+  // Update brand name
+  const brandEl = document.querySelector('.bname');
+  if (brandEl && s.appname) brandEl.textContent = s.appname;
+  const subEl = document.querySelector('.bsub');
+  if (subEl && s.tagline) subEl.textContent = s.tagline + ' — ' + (s.version||'v2.0');
+  // Update topbar logo
+  if (s.logoData || s.logoUrl) {
+    const logoSrc = s.logoData || s.logoUrl;
+    document.querySelectorAll('.tlogo').forEach(el => {
+      el.innerHTML = '<img src="'+logoSrc+'" style="width:26px;height:26px;object-fit:contain;border-radius:4px;" onerror="this.parentElement.textContent='🪵'">';
+    });
+  }
+  // Apply rendemen & waste defaults
+  if (s.rendemen && typeof ST !== 'undefined') {
+    ST.rendemen = s.rendemen;
+    const rng = document.getElementById('rng-rendemen');
+    const inp = document.getElementById('inp-rendemen');
+    if (rng) rng.value = s.rendemen;
+    if (inp) inp.value = s.rendemen;
+  }
+  if (s.waste && typeof ST !== 'undefined') {
+    ST.waste = s.waste;
+    const rng = document.getElementById('rng-waste');
+    const inp = document.getElementById('inp-waste');
+    if (rng) rng.value = s.waste;
+    if (inp) inp.value = s.waste;
+  }
+  if (typeof render === 'function') render();
+}
+
+window.resetSettings = function() {
+  if (!confirm('Reset semua pengaturan ke default?')) return;
+  applyPreset(PRESETS[0]);
+  document.getElementById('s-appname').value = 'Wood Volume Calculator';
+  document.getElementById('s-tagline').value = 'Jepara ERP Suite';
+  document.getElementById('s-version').value = 'v2.0';
+  document.getElementById('s-company').value = 'PT. Gabe International';
+  document.getElementById('s-address').value = 'Jepara, Jawa Tengah, Indonesia';
+  document.getElementById('s-website').value = 'www.gabeart.com';
+  document.getElementById('s-adminemail').value = 'admin@gabeart.com';
+  document.getElementById('s-rendemen').value = 35;
+  document.getElementById('s-waste').value = 15;
+  document.getElementById('logo-preview').innerHTML = '🌿';
+  document.getElementById('logo-url').value = '';
+  currentSettings._logoData = null;
+}
+
+// Load & apply settings on page load
+async function initSettings() {
+  buildPresets();
+  try {
+    const snap = await getDoc(doc(db, 'settings', 'app'));
+    if (snap.exists()) applySettingsToApp(snap.data());
+  } catch(e) {}
+}
+initSettings();
+</script>
+
 </body>
 </html>
