@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — Gabe International Hub</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#1a3a1a 0%,#2d5a27 50%,#1a3a1a 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+.login-wrap{width:100%;max-width:420px;padding:20px;}
+.login-card{background:#fff;border-radius:20px;padding:40px;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.logo-wrap{text-align:center;margin-bottom:28px;}
+.logo-circle{width:70px;height:70px;background:linear-gradient(135deg,#2d5a27,#3d7a35);border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:12px;box-shadow:0 4px 16px rgba(45,90,39,.3);}
+.brand-name{font-size:20px;font-weight:700;color:#1a3a1a;letter-spacing:.01em;}
+.brand-sub{font-size:12px;color:#8a8680;margin-top:2px;}
+.app-badge{display:inline-block;background:#eaf3e8;color:#2d5a27;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;margin-top:8px;border:1px solid #b8d9b4;}
+h2{font-size:18px;font-weight:600;color:#1a1917;margin-bottom:6px;}
+.sub{font-size:13px;color:#8a8680;margin-bottom:24px;}
+.fg{margin-bottom:16px;}
+.fg label{display:block;font-size:12px;font-weight:600;color:#5a5750;margin-bottom:5px;}
+.fg input{width:100%;padding:11px 14px;border:1.5px solid #d8d5cb;border-radius:10px;font-size:14px;font-family:inherit;transition:border-color .15s,box-shadow .15s;background:#fafaf8;}
+.fg input:focus{outline:none;border-color:#2d5a27;box-shadow:0 0 0 3px rgba(45,90,39,.12);background:#fff;}
+.btn-login{width:100%;padding:12px;background:linear-gradient(135deg,#2d5a27,#3d7a35);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;margin-top:4px;}
+.btn-login:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(45,90,39,.35);}
+.btn-login:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.error-msg{background:#fceaea;border:1px solid #f5c2c2;border-radius:8px;padding:10px 14px;font-size:13px;color:#8b2020;margin-bottom:16px;display:none;}
+.error-msg.show{display:block;}
+.divider{text-align:center;margin:20px 0;font-size:12px;color:#c4c0b2;position:relative;}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:#e8e6df;}
+.divider::before{left:0;}.divider::after{right:0;}
+.footer-note{text-align:center;font-size:11px;color:#c4c0b2;margin-top:20px;line-height:1.6;}
+.loading{display:none;text-align:center;padding:10px;font-size:13px;color:#2d5a27;}
+.loading.show{display:block;}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid #d8d5cb;border-top-color:#2d5a27;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.powered{text-align:center;margin-top:16px;font-size:10px;color:rgba(255,255,255,.5);}
+</style>
+</head>
+<body>
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="logo-wrap">
+      <div class="logo-circle">🌿</div>
+      <div class="brand-name">GABE INTERNATIONAL</div>
+      <div class="brand-sub">PT. Gabe International · Jepara</div>
+      <div class="app-badge">🪵 Wood Volume Calculator</div>
+    </div>
+    <h2>Selamat Datang</h2>
+    <p class="sub">Masuk dengan akun Gabe International Hub Anda</p>
+    <div class="error-msg" id="error-msg"></div>
+    <div class="fg">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="nama@gabeart.com" autocomplete="email">
+    </div>
+    <div class="fg">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <div class="loading" id="loading"><span class="spinner"></span>Memverifikasi akun...</div>
+    <button class="btn-login" id="btn-login" onclick="doLogin()">Masuk →</button>
+    <div class="footer-note">
+      Lupa password? Hubungi Admin Gabe International<br>
+      <b>admin@gabeart.com</b>
+    </div>
+  </div>
+  <div class="powered">Powered by Gabe International Hub · Firebase Auth</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",
+  authDomain: "gabe-international-hub.firebaseapp.com",
+  projectId: "gabe-international-hub",
+  storageBucket: "gabe-international-hub.firebasestorage.app",
+  messagingSenderId: "115783216069",
+  appId: "1:115783216069:web:62cfabf543b1fbb85bf9ac",
+  measurementId: "G-YMDFLC7LGG"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Check if already logged in
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    const userDoc = await getDoc(doc(db, 'users', user.uid));
+    if (userDoc.exists()) {
+      sessionStorage.setItem('gabe_user', JSON.stringify({
+        uid: user.uid, email: user.email,
+        ...userDoc.data()
+      }));
+      window.location.href = 'app.html';
+    }
+  }
+});
+
+// Enter key support
+document.getElementById('password').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+document.getElementById('email').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('password').focus();
+});
+
+window.doLogin = async function() {
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const errEl = document.getElementById('error-msg');
+  const loadEl = document.getElementById('loading');
+  const btnEl = document.getElementById('btn-login');
+
+  errEl.classList.remove('show');
+  if (!email || !password) {
+    errEl.textContent = '⚠️ Email dan password harus diisi!';
+    errEl.classList.add('show'); return;
+  }
+
+  btnEl.disabled = true;
+  loadEl.classList.add('show');
+
+  try {
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+    const userDoc = await getDoc(doc(db, 'users', cred.user.uid));
+
+    if (!userDoc.exists()) {
+      errEl.textContent = '⚠️ Akun belum terdaftar di sistem. Hubungi Admin.';
+      errEl.classList.add('show');
+      await auth.signOut(); return;
+    }
+
+    const userData = userDoc.data();
+    if (!userData.active) {
+      errEl.textContent = '🚫 Akun Anda dinonaktifkan. Hubungi Admin.';
+      errEl.classList.add('show');
+      await auth.signOut(); return;
+    }
+
+    sessionStorage.setItem('gabe_user', JSON.stringify({
+      uid: cred.user.uid, email: cred.user.email, ...userData
+    }));
+    window.location.href = 'app.html';
+
+  } catch (err) {
+    const msgs = {
+      'auth/invalid-credential': '❌ Email atau password salah!',
+      'auth/user-not-found': '❌ Akun tidak ditemukan!',
+      'auth/wrong-password': '❌ Password salah!',
+      'auth/too-many-requests': '⏳ Terlalu banyak percobaan. Coba lagi nanti.',
+      'auth/network-request-failed': '🌐 Koneksi internet bermasalah.',
+    };
+    errEl.textContent = msgs[err.code] || '❌ Login gagal: ' + err.message;
+    errEl.classList.add('show');
+  } finally {
+    btnEl.disabled = false;
+    loadEl.classList.remove('show');
+  }
+}
+</script>
+</body>
+</html>
