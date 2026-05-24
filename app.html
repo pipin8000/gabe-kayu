@@ -327,6 +327,126 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
 </nav>
 <div class="app">
   <div class="ftabs" id="ftabs"></div>
+  <!-- ══ AI VISION ANALYZER ══ -->
+  <div class="ai-panel" id="ai-panel">
+    <div class="ai-panel-hdr" onclick="toggleAiPanel()">
+      <div class="ai-panel-title">
+        🤖 Analisis Gambar dengan AI
+        <span class="ai-panel-badge">NEW</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:11px;opacity:.8;">Upload foto/sketsa → AI deteksi otomatis</span>
+        <span id="ai-panel-arrow" style="font-size:12px;transition:transform .2s;">▲</span>
+      </div>
+    </div>
+    <div class="ai-panel-body" id="ai-panel-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;">
+
+        <!-- Left: Upload -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#5a5750;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Upload Gambar / Foto</div>
+          <div class="img-drop-zone" id="ai-drop-zone"
+               onclick="document.getElementById('ai-img-input').click()"
+               ondragover="event.preventDefault();document.getElementById('ai-drop-zone').classList.add('drag')"
+               ondragleave="document.getElementById('ai-drop-zone').classList.remove('drag')"
+               ondrop="handleAiImgDrop(event)">
+            <div class="dz-icon">📸</div>
+            <div class="dz-title">Klik atau drag & drop gambar</div>
+            <div class="dz-sub">Foto produk · Sketsa tangan · Blueprint · Gambar teknik</div>
+            <div class="img-type-hint" style="justify-content:center;">
+              <span class="img-type-chip">📷 Foto</span>
+              <span class="img-type-chip">✏️ Sketsa</span>
+              <span class="img-type-chip">📐 Blueprint</span>
+              <span class="img-type-chip">🖼️ Katalog</span>
+            </div>
+          </div>
+          <input type="file" id="ai-img-input" accept="image/*" style="display:none" onchange="handleAiImgSelect(event)">
+          <!-- Preview -->
+          <div class="img-preview-wrap" id="ai-img-preview-wrap">
+            <img id="ai-img-preview" class="img-preview-img" alt="preview">
+            <button class="img-remove-btn" onclick="removeAiImg()">✕</button>
+          </div>
+          <!-- Analyze button -->
+          <button id="ai-analyze-btn" onclick="analyzeImage()" style="display:none;width:100%;margin-top:8px;padding:9px;background:#2d5a27;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">
+            🔍 Analisis dengan AI
+          </button>
+        </div>
+
+        <!-- Right: AI Result -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#5a5750;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Hasil Analisis AI</div>
+
+          <!-- Loading -->
+          <div class="ai-loading" id="ai-loading">
+            <div class="ai-spinner"></div>
+            <div class="ai-loading-text">🤖 AI sedang menganalisis gambar...</div>
+            <div class="ai-loading-sub">Mendeteksi tipe furniture, dimensi, dan komponen</div>
+          </div>
+
+          <!-- Error -->
+          <div class="ai-error" id="ai-error"></div>
+
+          <!-- Result -->
+          <div class="ai-result" id="ai-result">
+            <div class="ai-result-title">✅ Terdeteksi</div>
+            <div class="ai-field-grid">
+              <div class="ai-field">
+                <div class="ai-field-label">Tipe Furniture</div>
+                <div class="ai-field-val" id="ai-r-type">—</div>
+              </div>
+              <div class="ai-field">
+                <div class="ai-field-label">Ukuran Standar</div>
+                <div class="ai-field-val" id="ai-r-size">—</div>
+              </div>
+              <div class="ai-field">
+                <div class="ai-field-label">Est. Panjang (cm)</div>
+                <input class="ai-field-val editable" id="ai-r-p" type="number" value="0">
+              </div>
+              <div class="ai-field">
+                <div class="ai-field-label">Est. Lebar (cm)</div>
+                <input class="ai-field-val editable" id="ai-r-l" type="number" value="0">
+              </div>
+              <div class="ai-field">
+                <div class="ai-field-label">Est. Tinggi (cm)</div>
+                <input class="ai-field-val editable" id="ai-r-t" type="number" value="0">
+              </div>
+              <div class="ai-field">
+                <div class="ai-field-label">Kayu Rekomendasi</div>
+                <div class="ai-field-val" id="ai-r-wood">—</div>
+              </div>
+            </div>
+            <!-- Confidence -->
+            <div style="margin-bottom:8px;">
+              <div style="display:flex;justify-content:space-between;font-size:10px;color:#8a8680;margin-bottom:3px;">
+                <span>Tingkat Keyakinan AI</span>
+                <span id="ai-confidence-pct">0%</span>
+              </div>
+              <div class="confidence-bar"><div class="confidence-fill" id="ai-confidence-fill" style="width:0%"></div></div>
+            </div>
+            <!-- Notes -->
+            <div class="ai-notes" id="ai-notes"></div>
+            <!-- Komponen detected -->
+            <div id="ai-components" style="margin-bottom:8px;"></div>
+            <!-- Apply button -->
+            <button class="ai-apply-btn" onclick="applyAiResult()">
+              ✅ Terapkan ke Kalkulator
+            </button>
+            <div style="font-size:10px;color:#8a8680;text-align:center;margin-top:5px;">
+              Semua field tetap bisa diedit secara manual
+            </div>
+          </div>
+
+          <!-- Empty state -->
+          <div id="ai-empty" style="text-align:center;padding:30px;color:#8a8680;">
+            <div style="font-size:32px;margin-bottom:8px;">🖼️</div>
+            <div style="font-size:12px;">Upload gambar furniture untuk<br>deteksi otomatis oleh AI</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <div class="mgrid">
     <div class="card">
       <div class="chdr"><h3>⚙️ Parameter &amp; Konfigurasi</h3></div>
@@ -1298,6 +1418,257 @@ window.addEventListener('load', function() {
 });
 </script>
 
+
+
+<script>
+// ═══ AI VISION ANALYZER ═══════════════════════════════════════════════
+var _aiImgData = null;
+var _aiResult  = null;
+
+// Toggle panel
+window.toggleAiPanel = function() {
+  var body  = document.getElementById('ai-panel-body');
+  var arrow = document.getElementById('ai-panel-arrow');
+  var collapsed = body.classList.toggle('collapsed');
+  arrow.textContent = collapsed ? '▼' : '▲';
+};
+
+// Image handling
+window.handleAiImgDrop = function(e) {
+  e.preventDefault();
+  document.getElementById('ai-drop-zone').classList.remove('drag');
+  var file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) loadAiImage(file);
+};
+
+window.handleAiImgSelect = function(e) {
+  var file = e.target.files[0];
+  if (file) loadAiImage(file);
+};
+
+function loadAiImage(file) {
+  if (file.size > 5 * 1024 * 1024) {
+    showAiError('⚠️ Ukuran file maksimal 5MB!'); return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    _aiImgData = ev.target.result;
+    var prev = document.getElementById('ai-img-preview');
+    var wrap = document.getElementById('ai-img-preview-wrap');
+    var btn  = document.getElementById('ai-analyze-btn');
+    prev.src = _aiImgData;
+    wrap.classList.add('show');
+    btn.style.display = 'block';
+    document.getElementById('ai-empty').style.display  = 'none';
+    document.getElementById('ai-result').classList.remove('show');
+    document.getElementById('ai-error').classList.remove('show');
+  };
+  reader.readAsDataURL(file);
+}
+
+window.removeAiImg = function() {
+  _aiImgData = null;
+  document.getElementById('ai-img-preview-wrap').classList.remove('show');
+  document.getElementById('ai-analyze-btn').style.display = 'none';
+  document.getElementById('ai-img-input').value = '';
+  document.getElementById('ai-result').classList.remove('show');
+  document.getElementById('ai-empty').style.display = 'block';
+  document.getElementById('ai-error').classList.remove('show');
+};
+
+function showAiError(msg) {
+  var el = document.getElementById('ai-error');
+  el.textContent = msg;
+  el.classList.add('show');
+  document.getElementById('ai-loading').classList.remove('show');
+}
+
+// ── Main AI Analysis ───────────────────────────────────────────────────
+window.analyzeImage = async function() {
+  if (!_aiImgData) { showAiError('⚠️ Upload gambar dulu!'); return; }
+
+  var btn = document.getElementById('ai-analyze-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Menganalisis...';
+  document.getElementById('ai-loading').classList.add('show');
+  document.getElementById('ai-result').classList.remove('show');
+  document.getElementById('ai-error').classList.remove('show');
+
+  // Extract base64 data
+  var base64 = _aiImgData.split(',')[1];
+  var mimeType = _aiImgData.split(';')[0].split(':')[1] || 'image/jpeg';
+
+
+
+  try {
+    var response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{
+          role: 'user',
+          content: [
+            {
+              type: 'image',
+              source: { type: 'base64', media_type: mimeType, data: base64 }
+            },
+            { type: 'text', text: prompt }
+          ]
+        }]
+      })
+    });
+
+    if (!response.ok) {
+      var errData = await response.json();
+      throw new Error(errData.error ? errData.error.message : 'API error ' + response.status);
+    }
+
+    var data = await response.json();
+    var rawText = data.content[0].text;
+
+    // Parse JSON from response
+    var jsonMatch = rawText.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('Respons AI tidak valid');
+    var result = JSON.parse(jsonMatch[0]);
+    _aiResult = result;
+    showAiResult(result);
+
+  } catch(e) {
+    showAiError('❌ Gagal analisis: ' + e.message + '. Pastikan koneksi internet aktif.');
+    console.error('AI Error:', e);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔍 Analisis dengan AI';
+    document.getElementById('ai-loading').classList.remove('show');
+  }
+};
+
+function showAiResult(r) {
+  // Map furniture type
+  var typeMap = {
+    bed: '🛏️ Tempat Tidur',
+    lemari: '🗄️ Lemari',
+    kursi: '🪑 Kursi',
+    sofa: '🛋️ Sofa',
+    meja: '🪵 Meja'
+  };
+  var imgTypeMap = {
+    foto_produk: '📷 Foto Produk',
+    sketsa_tangan: '✏️ Sketsa Tangan',
+    blueprint: '📐 Blueprint',
+    gambar_teknik: '📏 Gambar Teknik',
+    katalog: '🖼️ Katalog'
+  };
+
+  document.getElementById('ai-r-type').textContent  = (typeMap[r.furniture_type] || r.furniture_name_id || '—') + (r.style ? ' · ' + r.style : '');
+  document.getElementById('ai-r-size').textContent  = r.size_standard || '—';
+  document.getElementById('ai-r-p').value           = r.dimensions ? (r.dimensions.panjang || 0) : 0;
+  document.getElementById('ai-r-l').value           = r.dimensions ? (r.dimensions.lebar || 0) : 0;
+  document.getElementById('ai-r-t').value           = r.dimensions ? (r.dimensions.tinggi || 0) : 0;
+  document.getElementById('ai-r-wood').textContent  = (r.wood_recommendation || '—') + (r.wood_reason ? ' — ' + r.wood_reason : '');
+
+  // Confidence bar
+  var conf = Math.min(100, Math.max(0, r.confidence || 0));
+  document.getElementById('ai-confidence-pct').textContent  = conf + '%';
+  document.getElementById('ai-confidence-fill').style.width = conf + '%';
+  document.getElementById('ai-confidence-fill').style.background = conf >= 70 ? '#639922' : conf >= 40 ? '#ef9f27' : '#e24b4a';
+
+  // Notes
+  var imgType = imgTypeMap[r.image_type] || '🖼️ Gambar';
+  document.getElementById('ai-notes').innerHTML =
+    '<b>📋 Catatan AI:</b> ' + (r.notes || '—') + '<br>' +
+    '<span style="font-size:10px;color:#8a8680;">Jenis gambar: ' + imgType + '</span>';
+
+  // Components
+  var compsEl = document.getElementById('ai-components');
+  if (r.components && r.components.length) {
+    var html = '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;margin-bottom:5px;">Komponen Terdeteksi (' + r.components.length + ')</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:3px;">';
+    r.components.forEach(function(c) {
+      html += '<span style="font-size:10px;background:#fff;border:1px solid #d8d5cb;border-radius:20px;padding:2px 8px;color:#5a5750;">' + (c.code ? c.code + ' · ' : '') + c.name + ' ×' + (c.qty || 1) + '</span>';
+    });
+    html += '</div>';
+    compsEl.innerHTML = html;
+    compsEl.style.display = 'block';
+  } else {
+    compsEl.style.display = 'none';
+  }
+
+  document.getElementById('ai-result').classList.add('show');
+  document.getElementById('ai-empty').style.display = 'none';
+}
+
+// ── Apply to Calculator ────────────────────────────────────────────────
+window.applyAiResult = function() {
+  if (!_aiResult) return;
+  var r = _aiResult;
+
+  // 1. Set furniture type tab
+  var typeMap = { bed:'bed', lemari:'lemari', kursi:'kursi', sofa:'sofa', meja:'meja' };
+  var ftype = typeMap[r.furniture_type];
+  if (ftype && typeof ST !== 'undefined') {
+    ST.ftype = ftype;
+    ST.sidx = 0;
+    if (typeof TMPL !== 'undefined' && TMPL[ftype]) {
+      ST.dims = Object.assign({}, TMPL[ftype].sub[0].d || {});
+    }
+    if (typeof buildFTabs === 'function') buildFTabs();
+    if (typeof buildCP === 'function') buildCP();
+
+    // 2. Apply dimensions
+    setTimeout(function() {
+      var dims = r.dimensions || {};
+      var fieldMap = {
+        panjang: ['inp-p','inp-P'],
+        lebar:   ['inp-l','inp-L'],
+        tinggi:  ['inp-t','inp-T','inp-h','inp-H'],
+        tinggi_headboard: ['inp-hh','inp-HH'],
+        tinggi_footboard: ['inp-hf','inp-HF'],
+      };
+      Object.keys(dims).forEach(function(key) {
+        var val = dims[key];
+        if (!val) return;
+        var ids = fieldMap[key] || [];
+        ids.forEach(function(id) {
+          var el = document.getElementById(id);
+          if (el) { el.value = val; ST.dims[key] = val; }
+        });
+        // Also update ST.dims directly
+        ST.dims[key] = val;
+      });
+
+      // 3. Set wood type
+      if (r.wood_recommendation && typeof MM !== 'undefined') {
+        var woodName = r.wood_recommendation.toLowerCase();
+        var found = MM.find(function(m) {
+          return m.n && m.n.toLowerCase().includes(woodName);
+        });
+        if (found && typeof ST !== 'undefined') {
+          ST.dw = found.id;
+          if (typeof buildDWS === 'function') buildDWS();
+        }
+      }
+
+      // 4. Re-render
+      if (typeof render === 'function') render();
+      if (typeof buildWA === 'function') {
+        var comps = typeof TMPL !== 'undefined' && TMPL[ST.ftype] ? TMPL[ST.ftype].comps : [];
+        buildWA(comps);
+      }
+
+      if (typeof showToast === 'function') {
+        showToast('✅ Data AI diterapkan! Cek & sesuaikan dimensi jika perlu.');
+      }
+    }, 200);
+  } else {
+    if (typeof showToast === 'function') {
+      showToast('⚠️ Tipe furniture tidak dikenali. Pilih manual di tab furnitur.');
+    }
+  }
+};
+</script>
 
 </body>
 </html>
