@@ -710,16 +710,22 @@ window.showToast = function(m){const t=document.getElementById('toast');t.textCo
 window.copyBOM = function(){const txt=document.getElementById('bom-preview').textContent;navigator.clipboard.writeText(txt).then(()=>showToast('✅ BOM JSON tersalin!'))}
 window.downloadBOM = function(){const txt=document.getElementById('bom-preview').textContent;const b=new Blob([txt],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='BOM_'+ST.ref+'.json';a.click();showToast('⬇️ File JSON diunduh!')}
 window.downloadCSV = function(){if(!window._bom)return;const d=window._bom;let csv='No,Kode,Grup,Nama,Material ID,Nama Material,Kategori,Qty,P,L,T,Vol/pcs,Vol Total,Vol Log\n';d.items.forEach((c,i)=>{csv+=[i+1,c.code,c.group,'"'+c.name+'"',c.material_id,c.material_nama,c.material_cat,c.qty,c.P_cm,c.L_cm,c.T_cm,c.vol_per_pcs_m3,c.vol_total_m3,c.vol_log_m3??''].join(',')+'\n'});csv+='\n,,,,,,,,,,,,,Ref,'+d.ref+'\n,,,,,,,,,,,,,Timestamp,'+d.timestamp+'\n,,,,,,,,,,,,,Vol Log,'+d.summary.vol_log_required_m3+'\n';const b=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='CuttingList_'+ST.ref+'.csv';a.click();showToast('📄 CSV diunduh!')}
-function buildFTabs(){const c=document.getElementById('ftabs');c.innerHTML='';Object.entries(TMPL).forEach(([key,t])=>{const b=document.createElement('button');b.className='ftab'+(ST.ftype===key?' active':'');var fkeys={'bed':'ft_bed','lemari':'ft_lemari','kursi':'ft_kursi','sofa':'ft_sofa','meja':'ft_meja'};b.innerHTML='<span>'+t.icon+'</span>'+(typeof window.t==='function'?window.t(fkeys[key]):t.label);b.addEventListener('click',()=>{ST.ftype=key;ST.sidx=0;ST.dims={...(TMPL[key].sub[0].d||{})};ST.mm={};newRef();buildFTabs();buildCP();buildDWS();render()});c.appendChild(b)})}
+function buildFTabs(){const c=document.getElementById('ftabs');c.innerHTML='';var FKEYS={'bed':'ft_bed','lemari':'ft_lemari','kursi':'ft_kursi','sofa':'ft_sofa','meja':'ft_meja'};Object.entries(TMPL).forEach(([key,tmpl])=>{const b=document.createElement('button');b.className='ftab'+(ST.ftype===key?' active':'');var label=typeof window._t==='function'?window._t(FKEYS[key]):tmpl.label;b.innerHTML='<span>'+tmpl.icon+'</span>'+label;b.addEventListener('click',()=>{ST.ftype=key;ST.sidx=0;ST.dims={...(TMPL[key].sub[0].d||{})};ST.mm={};newRef();buildFTabs();buildCP();buildDWS();render()});c.appendChild(b)})}
 function buildCP(){const tmpl=TMPL[ST.ftype];const s=document.getElementById('subtype-sel');s.innerHTML='';tmpl.sub.forEach((sub,i)=>{const o=document.createElement('option');o.value=i;o.textContent=sub.l;s.appendChild(o)});s.value=ST.sidx;s.onchange=e=>{ST.sidx=+e.target.value;if(tmpl.sub[ST.sidx].d)ST.dims={...tmpl.sub[ST.sidx].d};ST.mm={};newRef();buildCP();render()};const dc=document.getElementById('dims-container');dc.innerHTML='';const g=document.createElement('div');g.className='dgrid';tmpl.dims.forEach(d=>{const fg=document.createElement('div');fg.className='fg';const l=document.createElement('label');l.textContent=d.l;const i=document.createElement('input');i.type='number';i.className='fc';i.min=d.mn;i.max=d.mx;i.step=d.st;i.value=ST.dims?.[d.k]??0;i.addEventListener('input',e=>{ST.dims={...ST.dims,[d.k]:+e.target.value};newRef();render()});fg.append(l,i);g.appendChild(fg)});dc.appendChild(g)}
 function syncP(rid,nid,sk){const r=document.getElementById(rid),n=document.getElementById(nid);r.addEventListener('input',e=>{n.value=e.target.value;ST[sk]=+e.target.value;render()});n.addEventListener('input',e=>{r.value=e.target.value;ST[sk]=+e.target.value;render()})}
 syncP('rng-rendemen','inp-rendemen','rendemen');syncP('rng-waste','inp-waste','waste');
 ['inp-ba','inp-bb','inp-blen'].forEach((id,i)=>{document.getElementById(id).addEventListener('input',e=>{ST[['ba','bb','blen'][i]]=+e.target.value;render()})});
-// Init language toggle
+// Init language toggle - safe load
 (function(){
-  var wrap = document.getElementById('lang-toggle-wrap');
-  if(wrap) wrap.outerHTML = buildLangToggle();
-  applyLang();
+  function initLang(){
+    if(typeof buildLangToggle !== 'function') return;
+    var wrap = document.getElementById('lang-toggle-wrap');
+    if(wrap){ var s=document.createElement('span'); s.innerHTML=buildLangToggle(); wrap.replaceWith(s.firstChild); }
+    if(typeof applyLang==='function') applyLang();
+  }
+  // Try immediately, fallback to DOMContentLoaded
+  if(typeof buildLangToggle==='function'){ initLang(); }
+  else { document.addEventListener('DOMContentLoaded', initLang); }
 })();
 buildFTabs();buildCP();buildDWS();render();
 setInterval(()=>{const e=document.getElementById('ts-now');if(e)e.textContent=fts(new Date().toISOString())},30000);
