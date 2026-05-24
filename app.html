@@ -295,6 +295,57 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
   .tbtns .tbtn:nth-child(n+4) { display: none; }
 }
 
+
+/* ═══ AI ASISTEN PANEL ═══ */
+.ai-panel{background:#fff;border:1.5px solid #2d5a27;border-radius:14px;margin-bottom:14px;overflow:hidden;}
+.ai-panel-hdr{padding:10px 16px;background:linear-gradient(135deg,#1a3a1a,#2d5a27);color:#fff;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;}
+.ai-panel-title{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;}
+.ai-panel-badge{font-size:9px;background:rgba(255,255,255,.25);padding:2px 8px;border-radius:20px;font-weight:700;letter-spacing:.05em;}
+.ai-panel-body{padding:14px;}
+.ai-panel-body.collapsed{display:none;}
+.ai-two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.ai-col-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#5a5750;margin-bottom:8px;}
+.ai-drop{border:2px dashed #b8d9b4;border-radius:10px;padding:18px;text-align:center;cursor:pointer;background:#f5faf4;transition:all .2s;}
+.ai-drop:hover{border-color:#2d5a27;background:#eaf3e8;}
+.ai-drop .di{font-size:28px;margin-bottom:4px;}
+.ai-drop .dt{font-size:12px;font-weight:600;color:#2d5a27;margin-bottom:2px;}
+.ai-drop .ds{font-size:11px;color:#8a8680;}
+.ai-chips{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-top:8px;}
+.ai-chip{font-size:10px;padding:2px 8px;border-radius:20px;background:#f0efe9;color:#5a5750;border:1px solid #d8d5cb;}
+.ai-prev-wrap{position:relative;margin-top:8px;display:none;}
+.ai-prev-wrap.show{display:block;}
+.ai-prev-img{width:100%;max-height:180px;object-fit:contain;border-radius:8px;border:1px solid #d8d5cb;background:#f5f4f0;}
+.ai-rm-btn{position:absolute;top:4px;right:4px;width:22px;height:22px;background:rgba(139,32,32,.85);color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:12px;line-height:22px;text-align:center;}
+.ai-analyze-btn{width:100%;margin-top:8px;padding:9px;background:#2d5a27;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:none;}
+.ai-analyze-btn:hover{background:#3d7a35;}
+.ai-loading{text-align:center;padding:24px;display:none;}
+.ai-loading.show{display:block;}
+.ai-spinner{width:30px;height:30px;border:3px solid #d8d5cb;border-top-color:#2d5a27;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px;}
+.ai-empty{text-align:center;padding:24px;color:#8a8680;}
+.ai-result{display:none;}
+.ai-result.show{display:block;}
+.ai-result-hdr{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#2d5a27;margin-bottom:8px;}
+.ai-fgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;}
+.ai-f{background:#fff;border-radius:7px;padding:7px 9px;border:1px solid #e8e6df;}
+.ai-fl{font-size:10px;color:#8a8680;font-weight:600;text-transform:uppercase;margin-bottom:2px;}
+.ai-fv{font-size:12px;font-weight:600;color:#1a1917;}
+.ai-fv-inp{width:100%;border:none;border-bottom:1px dashed #d8d5cb;outline:none;font-size:12px;font-weight:600;font-family:inherit;background:transparent;color:#1a1917;padding:0;}
+.ai-fv-inp:focus{border-bottom-color:#2d5a27;}
+.ai-conf{margin-bottom:8px;}
+.ai-conf-row{display:flex;justify-content:space-between;font-size:10px;color:#8a8680;margin-bottom:3px;}
+.ai-conf-bar{height:4px;background:#e8e6df;border-radius:2px;}
+.ai-conf-fill{height:100%;border-radius:2px;background:#2d5a27;transition:width .5s;}
+.ai-notes{font-size:11px;color:#5a5750;background:#fff;border-radius:7px;padding:8px 10px;margin-bottom:8px;border:1px solid #e8e6df;line-height:1.6;}
+.ai-comps{margin-bottom:8px;}
+.ai-comp-label{font-size:10px;font-weight:700;text-transform:uppercase;color:#8a8680;margin-bottom:4px;}
+.ai-comp-tags{display:flex;flex-wrap:wrap;gap:3px;}
+.ai-comp-tag{font-size:10px;background:#fff;border:1px solid #d8d5cb;border-radius:20px;padding:2px 8px;color:#5a5750;}
+.ai-apply-btn{width:100%;padding:10px;background:linear-gradient(135deg,#2d5a27,#3d7a35);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+.ai-apply-btn:hover{opacity:.9;}
+.ai-error-box{background:#fceaea;border:1px solid #f5c2c2;border-radius:8px;padding:10px;font-size:12px;color:#8b2020;display:none;margin-top:6px;}
+.ai-error-box.show{display:block;}
+@media(max-width:640px){.ai-two-col{grid-template-columns:1fr;}}
+
 </style>
 </head>
 <body>
@@ -327,119 +378,84 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
 </nav>
 <div class="app">
   <div class="ftabs" id="ftabs"></div>
-  <!-- ══ AI VISION ANALYZER ══ -->
+  <!-- ══ AI ASISTEN ══ -->
   <div class="ai-panel" id="ai-panel">
     <div class="ai-panel-hdr" onclick="toggleAiPanel()">
       <div class="ai-panel-title">
-        🤖 Analisis Gambar dengan AI
-        <span class="ai-panel-badge">NEW</span>
+        🤖 AI Asisten — Analisis Gambar Furniture
+        <span class="ai-panel-badge">POWERED BY CLAUDE AI</span>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <span style="font-size:11px;opacity:.8;">Upload foto/sketsa → AI deteksi otomatis</span>
-        <span id="ai-panel-arrow" style="font-size:12px;transition:transform .2s;">▲</span>
-      </div>
+      <span id="ai-arrow" style="font-size:12px;transition:transform .3s;">▲</span>
     </div>
-    <div class="ai-panel-body" id="ai-panel-body">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;">
+    <div class="ai-panel-body" id="ai-body">
+      <div class="ai-two-col">
 
-        <!-- Left: Upload -->
+        <!-- Kolom Kiri: Upload -->
         <div>
-          <div style="font-size:11px;font-weight:700;color:#5a5750;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Upload Gambar / Foto</div>
-          <div class="img-drop-zone" id="ai-drop-zone"
-               onclick="document.getElementById('ai-img-input').click()"
-               ondragover="event.preventDefault();document.getElementById('ai-drop-zone').classList.add('drag')"
-               ondragleave="document.getElementById('ai-drop-zone').classList.remove('drag')"
-               ondrop="handleAiImgDrop(event)">
-            <div class="dz-icon">📸</div>
-            <div class="dz-title">Klik atau drag & drop gambar</div>
-            <div class="dz-sub">Foto produk · Sketsa tangan · Blueprint · Gambar teknik</div>
-            <div class="img-type-hint" style="justify-content:center;">
-              <span class="img-type-chip">📷 Foto</span>
-              <span class="img-type-chip">✏️ Sketsa</span>
-              <span class="img-type-chip">📐 Blueprint</span>
-              <span class="img-type-chip">🖼️ Katalog</span>
+          <div class="ai-col-title">📸 Upload Gambar / Foto</div>
+          <div class="ai-drop" id="ai-drop"
+            onclick="document.getElementById('ai-file').click()"
+            ondragover="event.preventDefault();this.style.borderColor='#2d5a27'"
+            ondragleave="this.style.borderColor='#b8d9b4'"
+            ondrop="handleAiDrop(event)">
+            <div class="di">📷</div>
+            <div class="dt">Klik atau drag & drop</div>
+            <div class="ds">Foto produk · Sketsa · Blueprint · Katalog</div>
+            <div class="ai-chips">
+              <span class="ai-chip">📷 Foto</span>
+              <span class="ai-chip">✏️ Sketsa</span>
+              <span class="ai-chip">📐 Blueprint</span>
+              <span class="ai-chip">🖼️ Katalog</span>
             </div>
           </div>
-          <input type="file" id="ai-img-input" accept="image/*" style="display:none" onchange="handleAiImgSelect(event)">
-          <!-- Preview -->
-          <div class="img-preview-wrap" id="ai-img-preview-wrap">
-            <img id="ai-img-preview" class="img-preview-img" alt="preview">
-            <button class="img-remove-btn" onclick="removeAiImg()">✕</button>
+          <input type="file" id="ai-file" accept="image/*" style="display:none" onchange="handleAiSelect(event)">
+          <div class="ai-prev-wrap" id="ai-prev-wrap">
+            <img id="ai-prev-img" class="ai-prev-img" alt="preview">
+            <button class="ai-rm-btn" onclick="removeAiImg()">✕</button>
           </div>
-          <!-- Analyze button -->
-          <button id="ai-analyze-btn" onclick="analyzeImage()" style="display:none;width:100%;margin-top:8px;padding:9px;background:#2d5a27;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">
+          <button class="ai-analyze-btn" id="ai-btn" onclick="analyzeImage()">
             🔍 Analisis dengan AI
           </button>
         </div>
 
-        <!-- Right: AI Result -->
+        <!-- Kolom Kanan: Hasil -->
         <div>
-          <div style="font-size:11px;font-weight:700;color:#5a5750;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Hasil Analisis AI</div>
+          <div class="ai-col-title">📊 Hasil Analisis AI</div>
 
-          <!-- Loading -->
           <div class="ai-loading" id="ai-loading">
             <div class="ai-spinner"></div>
-            <div class="ai-loading-text">🤖 AI sedang menganalisis gambar...</div>
-            <div class="ai-loading-sub">Mendeteksi tipe furniture, dimensi, dan komponen</div>
+            <div style="font-size:12px;color:#5a5750;">🤖 AI sedang menganalisis...</div>
+            <div style="font-size:11px;color:#8a8680;margin-top:4px;">Mendeteksi tipe, dimensi & komponen</div>
           </div>
 
-          <!-- Error -->
-          <div class="ai-error" id="ai-error"></div>
-
-          <!-- Result -->
-          <div class="ai-result" id="ai-result">
-            <div class="ai-result-title">✅ Terdeteksi</div>
-            <div class="ai-field-grid">
-              <div class="ai-field">
-                <div class="ai-field-label">Tipe Furniture</div>
-                <div class="ai-field-val" id="ai-r-type">—</div>
-              </div>
-              <div class="ai-field">
-                <div class="ai-field-label">Ukuran Standar</div>
-                <div class="ai-field-val" id="ai-r-size">—</div>
-              </div>
-              <div class="ai-field">
-                <div class="ai-field-label">Est. Panjang (cm)</div>
-                <input class="ai-field-val editable" id="ai-r-p" type="number" value="0">
-              </div>
-              <div class="ai-field">
-                <div class="ai-field-label">Est. Lebar (cm)</div>
-                <input class="ai-field-val editable" id="ai-r-l" type="number" value="0">
-              </div>
-              <div class="ai-field">
-                <div class="ai-field-label">Est. Tinggi (cm)</div>
-                <input class="ai-field-val editable" id="ai-r-t" type="number" value="0">
-              </div>
-              <div class="ai-field">
-                <div class="ai-field-label">Kayu Rekomendasi</div>
-                <div class="ai-field-val" id="ai-r-wood">—</div>
-              </div>
-            </div>
-            <!-- Confidence -->
-            <div style="margin-bottom:8px;">
-              <div style="display:flex;justify-content:space-between;font-size:10px;color:#8a8680;margin-bottom:3px;">
-                <span>Tingkat Keyakinan AI</span>
-                <span id="ai-confidence-pct">0%</span>
-              </div>
-              <div class="confidence-bar"><div class="confidence-fill" id="ai-confidence-fill" style="width:0%"></div></div>
-            </div>
-            <!-- Notes -->
-            <div class="ai-notes" id="ai-notes"></div>
-            <!-- Komponen detected -->
-            <div id="ai-components" style="margin-bottom:8px;"></div>
-            <!-- Apply button -->
-            <button class="ai-apply-btn" onclick="applyAiResult()">
-              ✅ Terapkan ke Kalkulator
-            </button>
-            <div style="font-size:10px;color:#8a8680;text-align:center;margin-top:5px;">
-              Semua field tetap bisa diedit secara manual
-            </div>
-          </div>
-
-          <!-- Empty state -->
-          <div id="ai-empty" style="text-align:center;padding:30px;color:#8a8680;">
-            <div style="font-size:32px;margin-bottom:8px;">🖼️</div>
+          <div class="ai-empty" id="ai-empty">
+            <div style="font-size:32px;margin-bottom:6px;">🖼️</div>
             <div style="font-size:12px;">Upload gambar furniture untuk<br>deteksi otomatis oleh AI</div>
+          </div>
+
+          <div class="ai-error-box" id="ai-error"></div>
+
+          <div class="ai-result" id="ai-result">
+            <div class="ai-result-hdr">✅ Terdeteksi</div>
+            <div class="ai-fgrid">
+              <div class="ai-f"><div class="ai-fl">Tipe Furniture</div><div class="ai-fv" id="ai-r-type">—</div></div>
+              <div class="ai-f"><div class="ai-fl">Ukuran Standar</div><div class="ai-fv" id="ai-r-size">—</div></div>
+              <div class="ai-f"><div class="ai-fl">Panjang (cm)</div><input class="ai-fv-inp" id="ai-r-p" type="number" value="0"></div>
+              <div class="ai-f"><div class="ai-fl">Lebar (cm)</div><input class="ai-fv-inp" id="ai-r-l" type="number" value="0"></div>
+              <div class="ai-f"><div class="ai-fl">Tinggi (cm)</div><input class="ai-fv-inp" id="ai-r-t" type="number" value="0"></div>
+              <div class="ai-f"><div class="ai-fl">Rekomendasi Kayu</div><div class="ai-fv" id="ai-r-wood" style="font-size:11px;">—</div></div>
+            </div>
+            <div class="ai-conf">
+              <div class="ai-conf-row"><span>Tingkat Keyakinan AI</span><span id="ai-pct">0%</span></div>
+              <div class="ai-conf-bar"><div class="ai-conf-fill" id="ai-fill" style="width:0%"></div></div>
+            </div>
+            <div class="ai-notes" id="ai-notes"></div>
+            <div class="ai-comps" id="ai-comps" style="display:none">
+              <div class="ai-comp-label">Komponen Terdeteksi</div>
+              <div class="ai-comp-tags" id="ai-comp-tags"></div>
+            </div>
+            <button class="ai-apply-btn" onclick="applyAiResult()">✅ Terapkan ke Kalkulator</button>
+            <div style="font-size:10px;color:#8a8680;text-align:center;margin-top:5px;">Semua field tetap bisa diedit manual</div>
           </div>
         </div>
 
@@ -1420,28 +1436,28 @@ window.addEventListener('load', function() {
 
 
 
-<script>
-// ═══ AI VISION ANALYZER ═══════════════════════════════════════════════
+<script id="ai-script">
+// ═══ AI ASISTEN ═══════════════════════════════════════════════
 var _aiImgData = null;
 var _aiResult  = null;
 
 // Toggle panel
 window.toggleAiPanel = function() {
-  var body  = document.getElementById('ai-panel-body');
-  var arrow = document.getElementById('ai-panel-arrow');
+  var body = document.getElementById('ai-body');
+  var arrow = document.getElementById('ai-arrow');
   var collapsed = body.classList.toggle('collapsed');
   arrow.textContent = collapsed ? '▼' : '▲';
 };
 
 // Image handling
-window.handleAiImgDrop = function(e) {
+window.handleAiDrop = function(e) {
   e.preventDefault();
-  document.getElementById('ai-drop-zone').classList.remove('drag');
+  document.getElementById('ai-drop').classList.remove('drag');
   var file = e.dataTransfer.files[0];
   if (file && file.type.startsWith('image/')) loadAiImage(file);
 };
 
-window.handleAiImgSelect = function(e) {
+window.handleAiSelect = function(e) {
   var file = e.target.files[0];
   if (file) loadAiImage(file);
 };
@@ -1453,9 +1469,9 @@ function loadAiImage(file) {
   var reader = new FileReader();
   reader.onload = function(ev) {
     _aiImgData = ev.target.result;
-    var prev = document.getElementById('ai-img-preview');
-    var wrap = document.getElementById('ai-img-preview-wrap');
-    var btn  = document.getElementById('ai-analyze-btn');
+    var prev = document.getElementById('ai-prev-img');
+    var wrap = document.getElementById('ai-prev-wrap');
+    var btn  = document.getElementById('ai-btn');
     prev.src = _aiImgData;
     wrap.classList.add('show');
     btn.style.display = 'block';
@@ -1468,9 +1484,9 @@ function loadAiImage(file) {
 
 window.removeAiImg = function() {
   _aiImgData = null;
-  document.getElementById('ai-img-preview-wrap').classList.remove('show');
-  document.getElementById('ai-analyze-btn').style.display = 'none';
-  document.getElementById('ai-img-input').value = '';
+  document.getElementById('ai-prev-wrap').classList.remove('show');
+  document.getElementById('ai-btn').style.display = 'none';
+  document.getElementById('ai-file').value = '';
   document.getElementById('ai-result').classList.remove('show');
   document.getElementById('ai-empty').style.display = 'block';
   document.getElementById('ai-error').classList.remove('show');
@@ -1487,7 +1503,7 @@ function showAiError(msg) {
 window.analyzeImage = async function() {
   if (!_aiImgData) { showAiError('⚠️ Upload gambar dulu!'); return; }
 
-  var btn = document.getElementById('ai-analyze-btn');
+  var btn = document.getElementById('ai-btn');
   btn.disabled = true;
   btn.textContent = '⏳ Menganalisis...';
   document.getElementById('ai-loading').classList.add('show');
@@ -1571,9 +1587,9 @@ function showAiResult(r) {
 
   // Confidence bar
   var conf = Math.min(100, Math.max(0, r.confidence || 0));
-  document.getElementById('ai-confidence-pct').textContent  = conf + '%';
-  document.getElementById('ai-confidence-fill').style.width = conf + '%';
-  document.getElementById('ai-confidence-fill').style.background = conf >= 70 ? '#639922' : conf >= 40 ? '#ef9f27' : '#e24b4a';
+  document.getElementById('ai-pct').textContent  = conf + '%';
+  document.getElementById('ai-fill').style.width = conf + '%';
+  document.getElementById('ai-fill').style.background = conf >= 70 ? '#639922' : conf >= 40 ? '#ef9f27' : '#e24b4a';
 
   // Notes
   var imgType = imgTypeMap[r.image_type] || '🖼️ Gambar';
