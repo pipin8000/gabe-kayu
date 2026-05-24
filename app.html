@@ -1517,37 +1517,25 @@ window.analyzeImage = async function() {
 
 
   try {
-    var response = await fetch('https://api.anthropic.com/v1/messages', {
+    // Call via Vercel serverless function (avoids CORS)
+    var response = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{
-          role: 'user',
-          content: [
-            {
-              type: 'image',
-              source: { type: 'base64', media_type: mimeType, data: base64 }
-            },
-            { type: 'text', text: prompt }
-          ]
-        }]
+        imageData: base64,
+        mimeType: mimeType
       })
     });
 
     if (!response.ok) {
       var errData = await response.json();
-      throw new Error(errData.error ? errData.error.message : 'API error ' + response.status);
+      throw new Error(errData.error || 'Server error ' + response.status);
     }
 
     var data = await response.json();
-    var rawText = data.content[0].text;
+    if (!data.success) throw new Error(data.error || 'Analisis gagal');
 
-    // Parse JSON from response
-    var jsonMatch = rawText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('Respons AI tidak valid');
-    var result = JSON.parse(jsonMatch[0]);
+    var result = data.result;
     _aiResult = result;
     showAiResult(result);
 
