@@ -226,9 +226,12 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
 
   <!-- IO Bar -->
   <!-- Link to Master Setup -->
-  <div style="background:#e8f0fb;border:1px solid #85b7eb;border-radius:10px;padding:8px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">
+  <div style="background:#e8f0fb;border:1px solid #85b7eb;border-radius:10px;padding:8px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
     <div style="font-size:12px;color:#0c447c;"><b>⚙️ Schema-First Design</b> · Group & Kategori dikelola dari database</div>
-    <a href="vendor_master.html" style="font-size:12px;font-weight:700;color:#0c447c;text-decoration:none;padding:4px 12px;background:#fff;border:1px solid #85b7eb;border-radius:6px;">🗂️ Kelola Group & Kategori</a>
+    <div style="display:flex;gap:6px;">
+      <button onclick="reseedVendors()" style="font-size:11px;font-weight:600;color:#8b2020;padding:4px 10px;background:#fceaea;border:1px solid #f5c2c2;border-radius:6px;cursor:pointer;">🔄 Reset Demo Data</button>
+      <a href="vendor_master.html" style="font-size:12px;font-weight:700;color:#0c447c;text-decoration:none;padding:4px 12px;background:#fff;border:1px solid #85b7eb;border-radius:6px;">🗂️ Kelola Group & Kategori</a>
+    </div>
   </div>
   <div class="io-bar">
     <span class="io-label">📤 EXPORT:</span>
@@ -487,12 +490,16 @@ window.doLogout = async function(){ try{await signOut(auth);}catch(e){} sessionS
 
 // Default vendors seed
 const SEEDS = [
-  {id:'VND-001',nama:'CV. Jati Jaya Makmur',pic:'Pak Hartono',jabatan:'Owner',kategori:'Kayu Log',wa:'081234567890',telp:'0291-123456',email:'jatijaya@email.com',web:'',alamat:'Jl. Raya Blora KM 5',kota:'Blora',provinsi:'Jawa Tengah',jarak:120,minOrder:'1 m³',leadTime:7,payment:'NET 14',rating:5,materials:['SW-001','SW-002'],ket:'Supplier utama kayu jati & sonokeling. Kualitas terjamin.',aktif:true},
-  {id:'VND-002',nama:'UD. Mindi Lestari',pic:'Bu Sari',jabatan:'Sales Manager',kategori:'Kayu Log',wa:'082345678901',telp:'0291-234567',email:'mindilestari@gmail.com',web:'',alamat:'Jl. Industri No. 23',kota:'Jepara',provinsi:'Jawa Tengah',jarak:5,minOrder:'2 m³',leadTime:3,payment:'Cash',rating:4,materials:['SW-005','SW-006','SW-007'],ket:'Stok mindi selalu tersedia. Harga bersaing.',aktif:true},
-  {id:'VND-003',nama:'PT. Kayu Nusantara',pic:'Pak Agus',jabatan:'Direktur',kategori:'Kayu Log',wa:'083456789012',telp:'024-3456789',email:'kayunusantara@co.id',web:'www.kayunusantara.co.id',alamat:'Jl. Gatot Subroto No. 88',kota:'Semarang',provinsi:'Jawa Tengah',jarak:85,minOrder:'5 m³',leadTime:10,payment:'NET 30',rating:4,materials:['SW-001','SW-004','SW-008'],ket:'Supplier besar - cocok untuk order volume besar.',aktif:true},
-  {id:'VND-004',nama:'Toko Plywood Jaya',pic:'Pak Dedi',jabatan:'Owner',kategori:'Plywood',wa:'084567890123',telp:'0291-345678',email:'plywoodjaya@gmail.com',web:'',alamat:'Jl. Pemuda No. 45',kota:'Jepara',provinsi:'Jawa Tengah',jarak:2,minOrder:'10 lembar',leadTime:1,payment:'Cash',rating:5,materials:['PW-001','PW-002','PW-003','PW-004','PW-005'],ket:'Lengkap semua ukuran plywood. Bayar cash dapat diskon.',aktif:true},
-  {id:'VND-005',nama:'CV. Sengon Mas',pic:'Pak Wahyu',jabatan:'Owner',kategori:'Kayu Log',wa:'085678901234',telp:'',email:'',web:'',alamat:'Desa Karanganyar',kota:'Demak',provinsi:'Jawa Tengah',jarak:45,minOrder:'3 m³',leadTime:5,payment:'50/50',rating:3,materials:['SW-009','SW-010','SW-011'],ket:'Khusus kayu ekonomis. Sengon dan albasia.',aktif:true},
-  {id:'VND-006',nama:'UD. Hardware Jepara',pic:'Bu Wati',jabatan:'Admin',kategori:'Hardware',wa:'086789012345',telp:'0291-456789',email:'hardwarejepara@gmail.com',web:'',alamat:'Pasar Kalinyamat Blok B12',kota:'Jepara',provinsi:'Jawa Tengah',jarak:3,minOrder:'—',leadTime:1,payment:'Cash',rating:4,materials:['NW-001','NW-002'],ket:'Aksesoris furniture lengkap. Engsel, rel laci, kaca.',aktif:true},
+  {id:'VND-001',nama:'CV. Jati Jaya Makmur',pic:'Pak Hartono',jabatan:'Owner',kategori:'Kayu Log',groupId:'GRP-001',catId:'CAT-001',wa:'081234567890',telp:'0291-123456',email:'jatijaya@email.com',web:'',alamat:'Jl. Raya Blora KM 5',kota:'Blora',provinsi:'Jawa Tengah',jarak:120,minOrder:'1 m³',leadTime:7,payment:'NET 14',rating:5,materials:['SW-001','SW-002'],ket:'Supplier utama kayu jati & sonokeling. Kualitas terjamin.',aktif:true},
+  {id:'VND-002',nama:'UD. Mindi Lestari',pic:'Bu Sari',jabatan:'Sales Manager',kategori:'Kayu Log',groupId:'GRP-001',catId:'CAT-001',wa:'082345678901',telp:'0291-234567',email:'mindilestari@gmail.com',web:'',alamat:'Jl. Industri No. 23',kota:'Jepara',provinsi:'Jawa Tengah',jarak:5,minOrder:'2 m³',leadTime:3,payment:'Cash',rating:4,materials:['SW-005','SW-006','SW-007'],ket:'Stok mindi selalu tersedia. Harga bersaing.',aktif:true},
+  {id:'VND-003',nama:'PT. Kayu Nusantara',pic:'Pak Agus',jabatan:'Direktur',kategori:'Kayu Log',groupId:'GRP-001',catId:'CAT-001',wa:'083456789012',telp:'024-3456789',email:'kayunusantara@co.id',web:'www.kayunusantara.co.id',alamat:'Jl. Gatot Subroto No. 88',kota:'Semarang',provinsi:'Jawa Tengah',jarak:85,minOrder:'5 m³',leadTime:10,payment:'NET 30',rating:4,materials:['SW-001','SW-004','SW-008'],ket:'Supplier besar - cocok untuk order volume besar.',aktif:true},
+  {id:'VND-004',nama:'Toko Plywood Jaya',pic:'Pak Dedi',jabatan:'Owner',kategori:'Plywood',groupId:'GRP-001',catId:'CAT-002',wa:'084567890123',telp:'0291-345678',email:'plywoodjaya@gmail.com',web:'',alamat:'Jl. Pemuda No. 45',kota:'Jepara',provinsi:'Jawa Tengah',jarak:2,minOrder:'10 lembar',leadTime:1,payment:'Cash',rating:5,materials:['PW-001','PW-002','PW-003','PW-004','PW-005'],ket:'Lengkap semua ukuran plywood. Bayar cash dapat diskon.',aktif:true},
+  {id:'VND-005',nama:'CV. Sengon Mas',pic:'Pak Wahyu',jabatan:'Owner',kategori:'Kayu Log',groupId:'GRP-001',catId:'CAT-001',wa:'085678901234',telp:'',email:'',web:'',alamat:'Desa Karanganyar',kota:'Demak',provinsi:'Jawa Tengah',jarak:45,minOrder:'3 m³',leadTime:5,payment:'50/50',rating:3,materials:['SW-009','SW-010','SW-011'],ket:'Khusus kayu ekonomis. Sengon dan albasia.',aktif:true},
+  {id:'VND-006',nama:'UD. Hardware Jepara',pic:'Bu Wati',jabatan:'Admin',kategori:'Hardware',groupId:'GRP-003',catId:'CAT-007',wa:'086789012345',telp:'0291-456789',email:'hardwarejepara@gmail.com',web:'',alamat:'Pasar Kalinyamat Blok B12',kota:'Jepara',provinsi:'Jawa Tengah',jarak:3,minOrder:'—',leadTime:1,payment:'Cash',rating:4,materials:['NW-001','NW-002'],ket:'Aksesoris furniture lengkap. Engsel, rel laci, kaca.',aktif:true},
+  {id:'VND-007',nama:'CV. Cat Wahana Indah',pic:'Pak Budi',jabatan:'Owner',kategori:'Finishing',groupId:'GRP-002',catId:'CAT-004',wa:'087890123456',telp:'0291-567890',email:'catwahana@gmail.com',web:'',alamat:'Jl. Raya Kudus No. 12',kota:'Kudus',provinsi:'Jawa Tengah',jarak:55,minOrder:'5 liter',leadTime:3,payment:'Cash',rating:4,materials:[],ket:'Supplier cat kayu & furniture. NC lacquer dan PU tersedia.',aktif:true},
+  {id:'VND-008',nama:'UD. Busa Sejahtera',pic:'Bu Rina',jabatan:'Owner',kategori:'Upholstery',groupId:'GRP-004',catId:'CAT-010',wa:'088901234567',telp:'024-6789012',email:'busasejahtera@gmail.com',web:'',alamat:'Jl. Siliwangi No. 34',kota:'Semarang',provinsi:'Jawa Tengah',jarak:88,minOrder:'10 lembar',leadTime:4,payment:'NET 7',rating:4,materials:['NW-003'],ket:'Busa sofa dan kursi. Density 30-40 kg/m³.',aktif:true},
+  {id:'VND-009',nama:'CV. Ekspedisi Maju',pic:'Pak Hendra',jabatan:'Manajer',kategori:'Ekspedisi',groupId:'GRP-005',catId:'CAT-015',wa:'089012345678',telp:'0291-678901',email:'ekspedisimaju@gmail.com',web:'www.ekspedisimaju.com',alamat:'Jl. Pelabuhan No. 5',kota:'Jepara',provinsi:'Jawa Tengah',jarak:1,minOrder:'1 kontainer',leadTime:2,payment:'Cash',rating:5,materials:[],ket:'Spesialis pengiriman furniture ke seluruh Indonesia & ekspor.',aktif:true},
+  {id:'VND-010',nama:'UD. Rotan Anyam',pic:'Bu Lastri',jabatan:'Owner',kategori:'Upholstery',groupId:'GRP-004',catId:'CAT-012',wa:'081023456789',telp:'',email:'',web:'',alamat:'Desa Telukwetan',kota:'Jepara',provinsi:'Jawa Tengah',jarak:8,minOrder:'5 m²',leadTime:7,payment:'Cash',rating:3,materials:['NW-002'],ket:'Anyaman rotan asli. Bisa custom pattern.',aktif:true},
 ];
 
 async function seedIfEmpty(){
@@ -886,7 +893,14 @@ window.viewVnd = function(id){
   var hdr = document.getElementById('view-header');
   var imgHtml = '';
   if (v.imgData || v.imgUrl) {
-    imgHtml = '<img src="'+(v.imgData||v.imgUrl)+'" style="width:100%;max-height:160px;object-fit:cover;border-radius:10px;margin-bottom:12px;" onerror="this.style.display='none'">';
+    var imgEl = document.createElement('img');
+    imgEl.src = v.imgData || v.imgUrl;
+    imgEl.style.cssText = 'width:100%;max-height:160px;object-fit:cover;border-radius:10px;margin-bottom:12px;';
+    imgEl.onerror = function(){ imgEl.style.display = 'none'; };
+    var imgWrap = document.createElement('div');
+    imgWrap.appendChild(imgEl);
+    imgHtml = imgWrap.outerHTML;
+  }
   }
   hdr.innerHTML = imgHtml +
     '<div style="display:flex;align-items:center;gap:12px;padding:12px;background:#f5f4f0;border-radius:10px;margin-bottom:14px;">'+
@@ -1074,6 +1088,18 @@ window.handleImgUpload = function(e) {
     showToast('✅ Foto berhasil diupload!');
   };
   reader.readAsDataURL(file);
+};
+
+window.reseedVendors = async function(){
+  if(!confirm('Reset semua data vendor ke demo data? Data yang ada akan ditimpa!')) return;
+  showToast('⏳ Mereset data vendor...');
+  try{
+    for(var i=0;i<SEEDS.length;i++){
+      await setDoc(doc(db,'vendors',SEEDS[i].id), Object.assign({},SEEDS[i],{createdAt:serverTimestamp(),createdBy:'reseed'}));
+    }
+    showToast('✅ Demo data berhasil direset! ('+SEEDS.length+' vendor)');
+    await loadVendors();
+  }catch(e){showToast('❌ Error: '+e.message);}
 };
 
 window.delVnd = async function(id,nama){
