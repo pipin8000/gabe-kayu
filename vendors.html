@@ -21,14 +21,10 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
 .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .15s;}
 .btn-primary{background:#2d5a27;color:#fff;}
 .btn-primary:hover{background:#3d7a35;}
-
-/* STATS */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px;}
 .stat-card{background:#fff;border:1px solid #d8d5cb;border-radius:12px;padding:14px 16px;}
 .stat-val{font-size:24px;font-weight:700;margin-bottom:2px;}
 .stat-lbl{font-size:11px;color:#8a8680;font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
-
-/* FILTER */
 .filter-bar{background:#fff;border:1px solid #d8d5cb;border-radius:12px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .search-inp{flex:1;min-width:180px;padding:7px 11px;border:1.5px solid #d8d5cb;border-radius:8px;font-size:13px;font-family:inherit;}
 .search-inp:focus{outline:none;border-color:#2d5a27;}
@@ -37,18 +33,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
 .view-toggle{display:flex;gap:4px;margin-left:auto;}
 .view-btn{padding:6px 12px;border:1.5px solid #d8d5cb;border-radius:8px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;color:#5a5750;}
 .view-btn.active{background:#2d5a27;border-color:#2d5a27;color:#fff;}
-
-/* IO BAR */
 .io-bar{background:#fff;border:1px solid #d8d5cb;border-radius:12px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .io-label{font-size:11px;font-weight:700;color:#8a8680;}
-.io-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid #d8d5cb;background:#fff;font-family:inherit;transition:all .15s;}
+.io-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid #d8d5cb;background:#fff;font-family:inherit;}
 .io-btn.csv{color:#1a5c1a;border-color:#a0d0a0;background:#f0faf0;}
 .io-btn.excel{color:#1a5a2a;border-color:#80c080;background:#e8f5e8;}
 .io-btn.pdf{color:#8b1a1a;border-color:#e0a0a0;background:#fef0f0;}
 .io-sep{width:1px;height:22px;background:#d8d5cb;}
-
-/* VENDOR CARDS */
-.vnd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;}
+.vnd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
 .vnd-grid.hidden{display:none;}
 .vnd-card{background:#fff;border:1px solid #d8d5cb;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07);transition:transform .2s,box-shadow .2s;}
 .vnd-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.12);}
@@ -69,25 +61,19 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
 .rating-stars{color:#ef9f27;font-size:14px;letter-spacing:1px;}
 .rating-val{font-size:12px;color:#8a8680;}
 .card-footer{padding:8px 14px;border-top:1px solid #e8e6df;display:flex;gap:5px;background:#fafaf8;}
-.foot-btn{flex:1;padding:5px 8px;border:1px solid #d8d5cb;border-radius:7px;background:#fff;font-size:11px;font-weight:600;cursor:pointer;color:#5a5750;text-align:center;transition:all .15s;}
+.foot-btn{flex:1;padding:5px 8px;border:1px solid #d8d5cb;border-radius:7px;background:#fff;font-size:11px;font-weight:600;cursor:pointer;color:#5a5750;text-align:center;}
 .foot-btn:hover{background:#f0efe9;}
 .foot-btn.danger{color:#8b2020;border-color:#f5c2c2;}
 .foot-btn.danger:hover{background:#fceaea;}
 .foot-btn.info{color:#1a4a7a;border-color:#c0d8f5;}
-.foot-btn.info:hover{background:#e8f0fb;}
 .status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-
-/* LIST VIEW */
 .vnd-list-wrap{display:none;}
 .vnd-list-wrap.active{display:block;background:#fff;border:1px solid #d8d5cb;border-radius:14px;overflow:hidden;}
 .list-tbl{width:100%;border-collapse:collapse;}
 .list-tbl thead th{padding:9px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#8a8680;border-bottom:1.5px solid #d8d5cb;background:#f5f4f0;cursor:pointer;white-space:nowrap;}
-.list-tbl thead th:hover{color:#2d5a27;}
 .list-tbl tbody td{padding:9px 12px;border-bottom:1px solid #e8e6df;font-size:13px;vertical-align:middle;}
 .list-tbl tbody tr:hover td{background:#f5f4f0;}
 .list-tbl tbody tr:last-child td{border-bottom:none;}
-
-/* MODALS */
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:16px;}
 .modal-ov.show{display:flex;}
 .modal{background:#fff;border-radius:18px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.3);}
@@ -103,66 +89,33 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
 .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .fgrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
 .section-hdr{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid #e8e6df;}
-
-/* Material checkboxes */
 .mat-check-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-height:160px;overflow-y:auto;padding:8px;background:#f5f4f0;border-radius:8px;border:1.5px solid #d8d5cb;}
 .mat-check-item{display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:3px 4px;border-radius:5px;}
 .mat-check-item:hover{background:#e8e6df;}
 .mat-check-item input{width:14px;height:14px;cursor:pointer;accent-color:#2d5a27;}
-
-/* Rating input */
 .rating-input{display:flex;gap:4px;}
 .rating-input button{background:none;border:none;font-size:22px;cursor:pointer;opacity:.3;transition:opacity .15s;padding:0;}
-.rating-input button.active,.rating-input button:hover{opacity:1;}
-
-/* Toast */
-#toast{position:fixed;bottom:20px;right:20px;background:#2d5a27;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:all .22s;pointer-events:none;z-index:999;}
-#toast.show{opacity:1;transform:translateY(0);}
-.empty{text-align:center;padding:40px;color:#8a8680;grid-column:1/-1;}
-
-/* IMAGE UPLOAD */
-.img-upload-zone{border:2px dashed #d8d5cb;border-radius:12px;padding:20px;text-align:center;cursor:pointer;background:#fafaf8;transition:all .2s;}
-.img-upload-zone:hover{border-color:#2d5a27;background:#eaf3e8;}
-.img-preview{width:100%;max-height:180px;object-fit:cover;border-radius:10px;margin-top:8px;display:none;}
-.img-preview.show{display:block;}
-
-/* GMAP */
-.gmap-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#e8f0fb;border:1px solid #85b7eb;border-radius:8px;color:#0c447c;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;}
-.gmap-btn:hover{background:#b5d4f4;}
-
-/* QR CODE */
-.qr-wrap{background:#fff;border:1px solid #d8d5cb;border-radius:12px;padding:16px;text-align:center;}
-.qr-box{display:inline-block;padding:12px;background:#fff;border:1px solid #e8e6df;border-radius:8px;}
-.qr-info{font-size:11px;color:#8a8680;margin-top:8px;line-height:1.6;}
-.qr-actions{display:flex;gap:8px;justify-content:center;margin-top:10px;}
-.qr-btn{padding:6px 14px;border:1px solid #d8d5cb;border-radius:8px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;}
-.qr-btn.primary{background:#2d5a27;color:#fff;border-color:#2d5a27;}
-
-/* HISTORY */
-.hist-empty{text-align:center;padding:24px;color:#8a8680;font-size:13px;}
-.hist-item-tx{padding:10px 12px;border:1px solid #e8e6df;border-radius:10px;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
-.hist-tx-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
-
-/* VIEW TABS */
+.rating-input button.active{opacity:1;}
 .view-tabs{display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid #e8e6df;padding-bottom:10px;}
 .view-tab{padding:6px 14px;border:none;background:none;font-size:13px;font-weight:600;cursor:pointer;color:#8a8680;border-radius:8px;}
 .view-tab.active{background:#2d5a27;color:#fff;}
-
-/* VENDOR CARD image */
-.vnd-img{width:100%;height:120px;object-fit:cover;border-bottom:1px solid #e8e6df;}
-.vtab.active{display:block!important;}
-
-
-/* Category colors */
+.vtab{display:none;}
+.vtab.active{display:block;}
+.qr-wrap{background:#fff;border:1px solid #d8d5cb;border-radius:12px;padding:16px;text-align:center;}
+.qr-box{display:inline-block;padding:12px;background:#fff;border:1px solid #e8e6df;border-radius:8px;}
+.hist-empty{text-align:center;padding:24px;color:#8a8680;font-size:13px;}
+.img-upload-zone{border:2px dashed #d8d5cb;border-radius:12px;padding:20px;text-align:center;cursor:pointer;background:#fafaf8;}
+.img-upload-zone:hover{border-color:#2d5a27;background:#eaf3e8;}
+#toast{position:fixed;bottom:20px;right:20px;background:#2d5a27;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:all .22s;pointer-events:none;z-index:999;}
+#toast.show{opacity:1;transform:translateY(0);}
+.empty{text-align:center;padding:40px;color:#8a8680;grid-column:1/-1;}
 .cat-kayu{background:#fff3e0;color:#633806;}
 .cat-plywood{background:#e3f2fd;color:#0c447c;}
 .cat-hardware{background:#f3e5f5;color:#3c3489;}
 .cat-finishing{background:#e8f5e8;color:#27500a;}
 .cat-upholstery{background:#fceaea;color:#791f1f;}
 .cat-general{background:#f1efe8;color:#444441;}
-
 @media(max-width:640px){
-  .topbar{padding:0 12px;}
   .app{padding:12px 10px 40px;}
   .page-hdr{flex-direction:column;}
   .vnd-grid{grid-template-columns:1fr;}
@@ -173,13 +126,12 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
 </style>
 </head>
 <body>
-
 <nav class="topbar">
   <div class="topbar-left">
     <a href="app.html" class="back-btn">← Kembali</a>
     <div>
       <div style="font-size:14px;font-weight:600;">🏪 Vendor Master</div>
-      <div style="font-size:10px;opacity:.7;">Manajemen Vendor & Supplier Kayu</div>
+      <div style="font-size:10px;opacity:.7;">Manajemen Vendor & Supplier — PT. Gabe International</div>
     </div>
   </div>
   <div class="topbar-right">
@@ -189,18 +141,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
     <button class="logout-btn" onclick="doLogout()">Keluar</button>
   </div>
 </nav>
-
 <div class="app">
-
   <div class="page-hdr">
     <div>
       <div class="page-title">🏪 Vendor / Supplier Master</div>
-      <div class="page-sub">Database supplier bahan baku kayu · PT. Gabe International</div>
+      <div class="page-sub">Database supplier bahan baku · PT. Gabe International</div>
     </div>
     <button class="btn btn-primary" onclick="openAddModal()">➕ Tambah Vendor Baru</button>
   </div>
-
-  <!-- Stats -->
   <div class="stats-grid">
     <div class="stat-card"><div class="stat-val" id="s-total">—</div><div class="stat-lbl">Total Vendor</div></div>
     <div class="stat-card"><div class="stat-val" id="s-kayu" style="color:#633806">—</div><div class="stat-lbl">Supplier Kayu</div></div>
@@ -208,8 +156,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
     <div class="stat-card"><div class="stat-val" id="s-aktif" style="color:#2d5a27">—</div><div class="stat-lbl">Vendor Aktif</div></div>
     <div class="stat-card"><div class="stat-val" id="s-rating" style="color:#ef9f27">—</div><div class="stat-lbl">Avg Rating</div></div>
   </div>
-
-  <!-- Filter -->
   <div class="filter-bar">
     <input type="text" class="search-inp" id="search-inp" placeholder="Cari nama vendor, kota, kontak..." oninput="doFilter()">
     <button class="filter-btn active" onclick="setFilter('ALL',this)">Semua</button>
@@ -223,9 +169,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
       <button class="view-btn" id="btn-list" onclick="setView('list')">☰ List</button>
     </div>
   </div>
-
-  <!-- IO Bar -->
-  <!-- Link to Master Setup -->
   <div style="background:#e8f0fb;border:1px solid #85b7eb;border-radius:10px;padding:8px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
     <div style="font-size:12px;color:#0c447c;"><b>⚙️ Schema-First Design</b> · Group & Kategori dikelola dari database</div>
     <div style="display:flex;gap:6px;">
@@ -239,156 +182,89 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
     <button class="io-btn excel" onclick="exportExcel()">📗 Excel</button>
     <button class="io-btn pdf" onclick="exportPDF()">📕 PDF</button>
   </div>
-
-  <!-- Card Grid -->
-  <div class="vnd-grid" id="vnd-grid">
-    <div class="empty">⏳ Memuat data vendor...</div>
-  </div>
-
-  <!-- List View -->
+  <div class="vnd-grid" id="vnd-grid"><div class="empty">⏳ Memuat data vendor...</div></div>
   <div class="vnd-list-wrap" id="vnd-list">
     <table class="list-tbl">
       <thead><tr>
-        <th onclick="sortBy('id')">ID ↕</th>
-        <th onclick="sortBy('nama')">Nama Vendor ↕</th>
-        <th onclick="sortBy('kategori')">Kategori ↕</th>
-        <th onclick="sortBy('kota')">Kota ↕</th>
-        <th>Kontak / WA</th>
-        <th>Material Supply</th>
-        <th onclick="sortBy('rating')">Rating ↕</th>
-        <th>Status</th>
-        <th>Aksi</th>
+        <th onclick="sortBy('id')">ID ↕</th><th onclick="sortBy('nama')">Nama Vendor ↕</th>
+        <th onclick="sortBy('kategori')">Kategori ↕</th><th onclick="sortBy('kota')">Kota ↕</th>
+        <th>WA</th><th>Material</th><th onclick="sortBy('rating')">Rating ↕</th>
+        <th>Status</th><th>Aksi</th>
       </tr></thead>
       <tbody id="list-body"></tbody>
     </table>
   </div>
-
 </div>
-
 <!-- ADD/EDIT MODAL -->
 <div class="modal-ov" id="modal-add">
   <div class="modal">
-    <div class="modal-hdr">
-      <h3 id="modal-title">➕ Tambah Vendor Baru</h3>
-      <button class="modal-x" onclick="closeModal('modal-add')">✕</button>
-    </div>
+    <div class="modal-hdr"><h3 id="modal-title">➕ Tambah Vendor</h3><button class="modal-x" onclick="closeModal('modal-add')">✕</button></div>
     <div class="modal-body">
-      <!-- Basic Info -->
       <div class="section-hdr">Informasi Dasar</div>
       <div class="fgrid">
-        <div class="fg"><label>ID Vendor <span style="color:#8a8680;font-weight:400">(auto)</span></label>
-          <input type="text" class="fc" id="m-id" placeholder="VND-001" maxlength="10"></div>
-        <div class="fg"><label>Kategori Utama</label>
+        <div class="fg"><label>ID Vendor</label><input type="text" class="fc" id="m-id" placeholder="VND-011" maxlength="10"></div>
+        <div class="fg"><label>Kategori</label>
           <select class="fc" id="m-kat" onchange="autoId()">
             <option value="Kayu Log">🪵 Supplier Kayu Log</option>
-            <option value="Plywood">📐 Supplier Plywood/Board</option>
+            <option value="Plywood">📐 Supplier Plywood</option>
             <option value="Hardware">🔩 Hardware & Aksesoris</option>
             <option value="Finishing">🎨 Finishing & Cat</option>
             <option value="Upholstery">🪑 Upholstery & Busa</option>
+            <option value="Ekspedisi">🚛 Ekspedisi & Kirim</option>
             <option value="General">📦 General Supplier</option>
           </select>
         </div>
       </div>
-      <div class="fg"><label>Nama Perusahaan / Vendor</label>
-        <input type="text" class="fc" id="m-nama" placeholder="CV. Jati Jaya Makmur, PT. Kayu Nusantara..."></div>
+      <div class="fg"><label>Nama Perusahaan / Vendor</label><input type="text" class="fc" id="m-nama" placeholder="CV. Nama Vendor..."></div>
       <div class="fgrid">
-        <div class="fg"><label>Nama PIC / Kontak Person</label>
-          <input type="text" class="fc" id="m-pic" placeholder="Pak Budi, Bu Sari..."></div>
-        <div class="fg"><label>Jabatan PIC</label>
-          <input type="text" class="fc" id="m-jabatan" placeholder="Owner, Sales Manager..."></div>
+        <div class="fg"><label>Nama PIC</label><input type="text" class="fc" id="m-pic" placeholder="Pak Budi..."></div>
+        <div class="fg"><label>Jabatan</label><input type="text" class="fc" id="m-jabatan" placeholder="Owner, Sales..."></div>
       </div>
-
-      <!-- Contact -->
       <div class="section-hdr">Kontak</div>
       <div class="fgrid">
-        <div class="fg"><label>No. WhatsApp</label>
-          <input type="text" class="fc" id="m-wa" placeholder="08123456789"></div>
-        <div class="fg"><label>No. Telepon</label>
-          <input type="text" class="fc" id="m-telp" placeholder="024-1234567"></div>
+        <div class="fg"><label>WhatsApp</label><input type="text" class="fc" id="m-wa" placeholder="08123456789"></div>
+        <div class="fg"><label>Telepon</label><input type="text" class="fc" id="m-telp" placeholder="0291-123456"></div>
       </div>
       <div class="fgrid">
-        <div class="fg"><label>Email</label>
-          <input type="email" class="fc" id="m-email" placeholder="vendor@email.com"></div>
-        <div class="fg"><label>Website / Toko Online</label>
-          <input type="text" class="fc" id="m-web" placeholder="www.vendor.com"></div>
+        <div class="fg"><label>Email</label><input type="email" class="fc" id="m-email" placeholder="vendor@email.com"></div>
+        <div class="fg"><label>Website</label><input type="text" class="fc" id="m-web" placeholder="www.vendor.com"></div>
       </div>
-
-      <!-- Address -->
       <div class="section-hdr">Alamat</div>
-      <div class="fg"><label>Alamat Lengkap</label>
-        <input type="text" class="fc" id="m-alamat" placeholder="Jl. Raya Jepara No. 123..."></div>
+      <div class="fg"><label>Alamat Lengkap</label><input type="text" class="fc" id="m-alamat" placeholder="Jl. Raya No. 1..."></div>
       <div class="fgrid3">
-        <div class="fg"><label>Kota</label>
-          <input type="text" class="fc" id="m-kota" placeholder="Jepara"></div>
-        <div class="fg"><label>Provinsi</label>
-          <input type="text" class="fc" id="m-prov" placeholder="Jawa Tengah"></div>
-        <div class="fg"><label>Jarak dari Jepara (km)</label>
-          <input type="number" class="fc" id="m-jarak" placeholder="0" min="0"></div>
+        <div class="fg"><label>Kota</label><input type="text" class="fc" id="m-kota" placeholder="Jepara"></div>
+        <div class="fg"><label>Provinsi</label><input type="text" class="fc" id="m-prov" placeholder="Jawa Tengah"></div>
+        <div class="fg"><label>Jarak (km)</label><input type="number" class="fc" id="m-jarak" placeholder="0" min="0"></div>
       </div>
-
-      <!-- Material Supply -->
+      <div class="fg"><label>Google Maps URL</label><input type="text" class="fc" id="m-gmap" placeholder="https://maps.google.com/..."></div>
       <div class="section-hdr">Material yang Di-supply</div>
-      <div class="fg">
-        <label style="margin-bottom:6px;display:block;">Pilih material yang tersedia dari vendor ini:</label>
-        <div class="mat-check-grid" id="mat-check-container">
-          <div style="color:#8a8680;font-size:12px;padding:8px;">⏳ Memuat material...</div>
-        </div>
-      </div>
-
-      <!-- Commercial -->
-      <div class="section-hdr">Informasi Komersial</div>
+      <div class="mat-check-grid" id="mat-check-container"><div style="color:#8a8680;font-size:12px;padding:8px;">⏳ Memuat...</div></div>
+      <div class="section-hdr">Komersial</div>
       <div class="fgrid">
-        <div class="fg"><label>Min. Order</label>
-          <input type="text" class="fc" id="m-minorder" placeholder="1 m³, 10 lembar..."></div>
-        <div class="fg"><label>Lead Time (hari)</label>
-          <input type="number" class="fc" id="m-leadtime" placeholder="7" min="0"></div>
+        <div class="fg"><label>Min. Order</label><input type="text" class="fc" id="m-minorder" placeholder="1 m³, 10 lembar..."></div>
+        <div class="fg"><label>Lead Time (hari)</label><input type="number" class="fc" id="m-leadtime" placeholder="7" min="0"></div>
       </div>
       <div class="fgrid">
         <div class="fg"><label>Term Pembayaran</label>
           <select class="fc" id="m-payment">
-            <option value="Cash">Cash / Tunai</option>
-            <option value="NET 7">NET 7 hari</option>
-            <option value="NET 14">NET 14 hari</option>
-            <option value="NET 30">NET 30 hari</option>
-            <option value="50/50">DP 50% + Pelunasan</option>
-            <option value="COD">COD</option>
+            <option value="Cash">Cash</option><option value="NET 7">NET 7</option>
+            <option value="NET 14">NET 14</option><option value="NET 30">NET 30</option>
+            <option value="50/50">DP 50%</option><option value="COD">COD</option>
           </select>
         </div>
-        <div class="fg"><label>Rating Vendor</label>
+        <div class="fg"><label>Rating</label>
           <div class="rating-input" id="rating-input">
-            <button type="button" data-val="1" onclick="setRating(1)">★</button>
-            <button type="button" data-val="2" onclick="setRating(2)">★</button>
-            <button type="button" data-val="3" onclick="setRating(3)">★</button>
-            <button type="button" data-val="4" onclick="setRating(4)">★</button>
-            <button type="button" data-val="5" onclick="setRating(5)">★</button>
+            <button type="button" onclick="setRating(1)">★</button>
+            <button type="button" onclick="setRating(2)">★</button>
+            <button type="button" onclick="setRating(3)">★</button>
+            <button type="button" onclick="setRating(4)">★</button>
+            <button type="button" onclick="setRating(5)">★</button>
           </div>
         </div>
       </div>
-      <div class="fg"><label>Keterangan / Catatan</label>
-        <textarea class="fc" id="m-ket" rows="2" placeholder="Catatan khusus tentang vendor ini..."></textarea></div>
-      <!-- Image -->
-      <div class="section-hdr">Foto / Gambar Vendor</div>
-      <div class="fg">
-        <label>URL Gambar <span style="color:#8a8680;font-weight:400">(atau upload di bawah)</span></label>
-        <input type="text" class="fc" id="m-imgurl" placeholder="https://..." oninput="previewImgUrl(this.value)">
-      </div>
-      <div class="img-upload-zone" onclick="document.getElementById('m-imgfile').click()">
-        <div style="font-size:24px;margin-bottom:4px;">📷</div>
-        <div style="font-size:12px;font-weight:600;">Klik untuk upload foto vendor</div>
-        <div style="font-size:11px;color:#8a8680;">JPG, PNG (maks 500KB)</div>
-        <img id="m-imgpreview" class="img-preview" alt="preview">
-      </div>
-      <input type="file" id="m-imgfile" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="handleImgUpload(event)">
-
-      <!-- Google Maps -->
-      <div class="section-hdr">Lokasi Google Maps</div>
-      <div class="fg">
-        <label>Link Google Maps</label>
-        <input type="text" class="fc" id="m-gmap" placeholder="https://maps.google.com/... atau https://goo.gl/maps/...">
-      </div>
-      <div style="font-size:11px;color:#8a8680;margin-top:-8px;margin-bottom:8px;">💡 Buka Google Maps → cari lokasi → klik Share → Copy Link</div>
-
-      <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+      <div class="fg"><label>Foto Vendor (URL)</label><input type="text" class="fc" id="m-imgurl" placeholder="https://..."></div>
+      <div class="fg"><label>Keterangan</label><textarea class="fc" id="m-ket" rows="2" placeholder="Catatan tentang vendor..."></textarea></div>
+      <div style="display:flex;align-items:center;gap:8px;">
         <input type="checkbox" id="m-aktif" checked style="width:15px;height:15px;accent-color:#2d5a27;">
         <label for="m-aktif" style="cursor:pointer;font-size:13px;">Vendor Aktif</label>
       </div>
@@ -399,140 +275,99 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
     </div>
   </div>
 </div>
-
 <!-- VIEW MODAL -->
 <div class="modal-ov" id="modal-view">
   <div class="modal" style="max-width:580px;">
-    <div class="modal-hdr">
-      <h3 id="view-title">👁 Detail Vendor</h3>
-      <button class="modal-x" onclick="closeModal('modal-view')">✕</button>
-    </div>
+    <div class="modal-hdr"><h3 id="view-title">👁 Detail Vendor</h3><button class="modal-x" onclick="closeModal('modal-view')">✕</button></div>
     <div class="modal-body">
-      <!-- Vendor header -->
       <div id="view-header"></div>
-      <!-- Tabs -->
       <div class="view-tabs">
         <button class="view-tab active" onclick="switchViewTab('info',this)">📋 Info</button>
         <button class="view-tab" onclick="switchViewTab('material',this)">🪵 Material</button>
         <button class="view-tab" onclick="switchViewTab('history',this)">📊 Historis</button>
         <button class="view-tab" onclick="switchViewTab('qr',this)">📱 QR Code</button>
       </div>
-      <!-- Tab contents -->
       <div id="vtab-info" class="vtab active"></div>
-      <div id="vtab-material" class="vtab" style="display:none"></div>
-      <div id="vtab-history" class="vtab" style="display:none"></div>
-      <div id="vtab-qr" class="vtab" style="display:none"></div>
+      <div id="vtab-material" class="vtab"></div>
+      <div id="vtab-history" class="vtab"></div>
+      <div id="vtab-qr" class="vtab"></div>
     </div>
     <div class="modal-footer">
       <button class="btn" style="background:#f0efe9;color:#5a5750;border:1.5px solid #d8d5cb;" onclick="closeModal('modal-view')">Tutup</button>
-      <button class="btn" style="background:#e8f0fb;color:#0c447c;border:1px solid #85b7eb;" id="view-gmap-btn" onclick="">🗺️ Buka Maps</button>
+      <button class="btn" style="background:#e8f0fb;color:#0c447c;border:1px solid #85b7eb;" id="view-gmap-btn" style="display:none;">🗺️ Maps</button>
       <button class="btn btn-primary" id="view-edit-btn">✏️ Edit</button>
     </div>
   </div>
 </div>
-
 <div id="toast"></div>
-
 <script type="module">
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, collection, doc, getDocs, setDoc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+console.log('VENDORS v2.1 - FIXED - 2026-05-24');
 const FC = {apiKey:"AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",authDomain:"gabe-international-hub.firebaseapp.com",projectId:"gabe-international-hub",storageBucket:"gabe-international-hub.firebasestorage.app",messagingSenderId:"115783216069",appId:"1:115783216069:web:62cfabf543b1fbb85bf9ac"};
 const fbApp = getApps().find(function(a){return a.name==='vnd';}) || initializeApp(FC,'vnd');
 const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
 
-// Auth check
 const stored = sessionStorage.getItem('gabe_user');
 if (!stored) { window.location.href = 'index.html'; }
 const CU = JSON.parse(stored||'{}');
-document.getElementById('user-name').textContent = '👤 ' + (CU.name||CU.email||'');
+document.getElementById('user-name').textContent = '👤 '+(CU.name||CU.email||'');
 document.getElementById('user-role').textContent = (CU.role||'').toUpperCase();
 const canEdit = ['admin','manager'].includes(CU.role);
 
-// Lang toggle
 (function(){
   function initLang(){
-    var wrap = document.getElementById('lang-wrap');
-    if (wrap && typeof buildLangToggle==='function') {
-      var s = document.createElement('span'); s.innerHTML = buildLangToggle(); wrap.replaceWith(s.firstChild);
-    }
-    if (typeof applyLang==='function') applyLang();
+    var w = document.getElementById('lang-wrap');
+    if (w && typeof buildLangToggle === 'function') { var s = document.createElement('span'); s.innerHTML = buildLangToggle(); w.replaceWith(s.firstChild); }
+    if (typeof applyLang === 'function') applyLang();
   }
-  if (typeof buildLangToggle==='function') initLang();
+  if (typeof buildLangToggle === 'function') initLang();
   else document.addEventListener('DOMContentLoaded', initLang);
 })();
 
-// Constants
-const CAT_CLR = {'Kayu Log':'cat-kayu','Plywood':'cat-plywood','Hardware':'cat-hardware','Finishing':'cat-finishing','Upholstery':'cat-upholstery','General':'cat-general'};
-const CAT_ICON = {'Kayu Log':'🪵','Plywood':'📐','Hardware':'🔩','Finishing':'🎨','Upholstery':'🪑','General':'📦'};
-const CAT_AVT  = {'Kayu Log':'#fff3e0','Plywood':'#e3f2fd','Hardware':'#f3e5f5','Finishing':'#e8f5e8','Upholstery':'#fceaea','General':'#f1efe8'};
+const CAT_CLR = {'Kayu Log':'#633806','Plywood':'#0c447c','Hardware':'#3c3489','Finishing':'#27500a','Upholstery':'#791f1f','Ekspedisi':'#0c447c','General':'#444441'};
+const CAT_BG  = {'Kayu Log':'#fff3e0','Plywood':'#e3f2fd','Hardware':'#f3e5f5','Finishing':'#e8f5e8','Upholstery':'#fceaea','Ekspedisi':'#e3f2fd','General':'#f1efe8'};
+const CAT_ICON= {'Kayu Log':'🪵','Plywood':'📐','Hardware':'🔩','Finishing':'🎨','Upholstery':'🪑','Ekspedisi':'🚛','General':'📦'};
 
-// State
-let VND = [];
-let MATS = [];
-let curFilter = 'ALL';
-let curView = 'card';
-let sortKey = 'id';
-let sortAsc = true;
-let editId = null;
-let curRating = 3;
+let VND = [], MATS = [], curFilter = 'ALL', curView = 'card', sortKey = 'id', sortAsc = true, editId = null, curRating = 3;
 
-// Helpers
-function showToast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(function(){t.classList.remove('show');},2500); }
+function showToast(msg){ var t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 2500); }
+function stars(n){ var s = ''; for (var i = 1; i <= 5; i++) s += (i <= n ? '★' : '☆'); return s; }
+function fm(n){ return 'Rp ' + Math.round(n||0).toLocaleString('id-ID'); }
+function dlBlob(data, name, mime){ var b = new Blob([data],{type:mime}); var a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); document.body.removeChild(a); }
 function today(){ return new Date().toISOString().split('T')[0]; }
-function dlBlob(data,name,mime){ var b=new Blob([data],{type:mime}); var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name; document.body.appendChild(a); a.click(); document.body.removeChild(a); }
-function fdt(ts){ if(!ts) return '—'; var d=ts.toDate?ts.toDate():new Date(ts); return d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}); }
-function stars(n){ var s=''; for(var i=1;i<=5;i++) s+=(i<=n?'★':'☆'); return s; }
 
-window.doLogout = async function(){ try{await signOut(auth);}catch(e){} sessionStorage.removeItem('gabe_user'); window.location.href='index.html'; };
+window.showToast = showToast;
+window.doLogout = async function(){ try{await signOut(auth);}catch(e){} sessionStorage.removeItem('gabe_user'); window.location.href = 'index.html'; };
 
-// Default vendors seed
 const SEEDS = [
   {id:'VND-001',nama:'CV. Jati Jaya Makmur',pic:'Pak Hartono',jabatan:'Owner',kategori:'Kayu Log',groupId:'GRP-001',catId:'CAT-001',wa:'081234567890',telp:'0291-123456',email:'jatijaya@email.com',web:'',alamat:'Jl. Raya Blora KM 5',kota:'Blora',provinsi:'Jawa Tengah',jarak:120,minOrder:'1 m³',leadTime:7,payment:'NET 14',rating:5,materials:['SW-001','SW-002'],ket:'Supplier utama kayu jati & sonokeling. Kualitas terjamin.',aktif:true},
   {id:'VND-002',nama:'UD. Mindi Lestari',pic:'Bu Sari',jabatan:'Sales Manager',kategori:'Kayu Log',groupId:'GRP-001',catId:'CAT-001',wa:'082345678901',telp:'0291-234567',email:'mindilestari@gmail.com',web:'',alamat:'Jl. Industri No. 23',kota:'Jepara',provinsi:'Jawa Tengah',jarak:5,minOrder:'2 m³',leadTime:3,payment:'Cash',rating:4,materials:['SW-005','SW-006','SW-007'],ket:'Stok mindi selalu tersedia. Harga bersaing.',aktif:true},
-  {id:'VND-003',nama:'PT. Kayu Nusantara',pic:'Pak Agus',jabatan:'Direktur',kategori:'Kayu Log',groupId:'GRP-001',catId:'CAT-001',wa:'083456789012',telp:'024-3456789',email:'kayunusantara@co.id',web:'www.kayunusantara.co.id',alamat:'Jl. Gatot Subroto No. 88',kota:'Semarang',provinsi:'Jawa Tengah',jarak:85,minOrder:'5 m³',leadTime:10,payment:'NET 30',rating:4,materials:['SW-001','SW-004','SW-008'],ket:'Supplier besar - cocok untuk order volume besar.',aktif:true},
-  {id:'VND-004',nama:'Toko Plywood Jaya',pic:'Pak Dedi',jabatan:'Owner',kategori:'Plywood',groupId:'GRP-001',catId:'CAT-002',wa:'084567890123',telp:'0291-345678',email:'plywoodjaya@gmail.com',web:'',alamat:'Jl. Pemuda No. 45',kota:'Jepara',provinsi:'Jawa Tengah',jarak:2,minOrder:'10 lembar',leadTime:1,payment:'Cash',rating:5,materials:['PW-001','PW-002','PW-003','PW-004','PW-005'],ket:'Lengkap semua ukuran plywood. Bayar cash dapat diskon.',aktif:true},
+  {id:'VND-003',nama:'PT. Kayu Nusantara',pic:'Pak Agus',jabatan:'Direktur',kategori:'Kayu Log',groupId:'GRP-001',catId:'CAT-001',wa:'083456789012',telp:'024-3456789',email:'kayunusantara@co.id',web:'www.kayunusantara.co.id',alamat:'Jl. Gatot Subroto No. 88',kota:'Semarang',provinsi:'Jawa Tengah',jarak:85,minOrder:'5 m³',leadTime:10,payment:'NET 30',rating:4,materials:['SW-001','SW-004','SW-008'],ket:'Supplier besar. Cocok untuk order volume besar.',aktif:true},
+  {id:'VND-004',nama:'Toko Plywood Jaya',pic:'Pak Dedi',jabatan:'Owner',kategori:'Plywood',groupId:'GRP-001',catId:'CAT-002',wa:'084567890123',telp:'0291-345678',email:'plywoodjaya@gmail.com',web:'',alamat:'Jl. Pemuda No. 45',kota:'Jepara',provinsi:'Jawa Tengah',jarak:2,minOrder:'10 lembar',leadTime:1,payment:'Cash',rating:5,materials:['PW-001','PW-002','PW-003','PW-004','PW-005'],ket:'Lengkap semua ukuran plywood. Cash dapat diskon.',aktif:true},
   {id:'VND-005',nama:'CV. Sengon Mas',pic:'Pak Wahyu',jabatan:'Owner',kategori:'Kayu Log',groupId:'GRP-001',catId:'CAT-001',wa:'085678901234',telp:'',email:'',web:'',alamat:'Desa Karanganyar',kota:'Demak',provinsi:'Jawa Tengah',jarak:45,minOrder:'3 m³',leadTime:5,payment:'50/50',rating:3,materials:['SW-009','SW-010','SW-011'],ket:'Khusus kayu ekonomis. Sengon dan albasia.',aktif:true},
-  {id:'VND-006',nama:'UD. Hardware Jepara',pic:'Bu Wati',jabatan:'Admin',kategori:'Hardware',groupId:'GRP-003',catId:'CAT-007',wa:'086789012345',telp:'0291-456789',email:'hardwarejepara@gmail.com',web:'',alamat:'Pasar Kalinyamat Blok B12',kota:'Jepara',provinsi:'Jawa Tengah',jarak:3,minOrder:'—',leadTime:1,payment:'Cash',rating:4,materials:['NW-001','NW-002'],ket:'Aksesoris furniture lengkap. Engsel, rel laci, kaca.',aktif:true},
-  {id:'VND-007',nama:'CV. Cat Wahana Indah',pic:'Pak Budi',jabatan:'Owner',kategori:'Finishing',groupId:'GRP-002',catId:'CAT-004',wa:'087890123456',telp:'0291-567890',email:'catwahana@gmail.com',web:'',alamat:'Jl. Raya Kudus No. 12',kota:'Kudus',provinsi:'Jawa Tengah',jarak:55,minOrder:'5 liter',leadTime:3,payment:'Cash',rating:4,materials:[],ket:'Supplier cat kayu & furniture. NC lacquer dan PU tersedia.',aktif:true},
-  {id:'VND-008',nama:'UD. Busa Sejahtera',pic:'Bu Rina',jabatan:'Owner',kategori:'Upholstery',groupId:'GRP-004',catId:'CAT-010',wa:'088901234567',telp:'024-6789012',email:'busasejahtera@gmail.com',web:'',alamat:'Jl. Siliwangi No. 34',kota:'Semarang',provinsi:'Jawa Tengah',jarak:88,minOrder:'10 lembar',leadTime:4,payment:'NET 7',rating:4,materials:['NW-003'],ket:'Busa sofa dan kursi. Density 30-40 kg/m³.',aktif:true},
-  {id:'VND-009',nama:'CV. Ekspedisi Maju',pic:'Pak Hendra',jabatan:'Manajer',kategori:'Ekspedisi',groupId:'GRP-005',catId:'CAT-015',wa:'089012345678',telp:'0291-678901',email:'ekspedisimaju@gmail.com',web:'www.ekspedisimaju.com',alamat:'Jl. Pelabuhan No. 5',kota:'Jepara',provinsi:'Jawa Tengah',jarak:1,minOrder:'1 kontainer',leadTime:2,payment:'Cash',rating:5,materials:[],ket:'Spesialis pengiriman furniture ke seluruh Indonesia & ekspor.',aktif:true},
-  {id:'VND-010',nama:'UD. Rotan Anyam',pic:'Bu Lastri',jabatan:'Owner',kategori:'Upholstery',groupId:'GRP-004',catId:'CAT-012',wa:'081023456789',telp:'',email:'',web:'',alamat:'Desa Telukwetan',kota:'Jepara',provinsi:'Jawa Tengah',jarak:8,minOrder:'5 m²',leadTime:7,payment:'Cash',rating:3,materials:['NW-002'],ket:'Anyaman rotan asli. Bisa custom pattern.',aktif:true},
+  {id:'VND-006',nama:'UD. Hardware Jepara',pic:'Bu Wati',jabatan:'Admin',kategori:'Hardware',groupId:'GRP-003',catId:'CAT-007',wa:'086789012345',telp:'0291-456789',email:'hardwarejepara@gmail.com',web:'',alamat:'Pasar Kalinyamat Blok B12',kota:'Jepara',provinsi:'Jawa Tengah',jarak:3,minOrder:'—',leadTime:1,payment:'Cash',rating:4,materials:['NW-001','NW-002'],ket:'Aksesoris furniture lengkap. Engsel, rel, kaca.',aktif:true},
+  {id:'VND-007',nama:'CV. Cat Wahana Indah',pic:'Pak Budi',jabatan:'Owner',kategori:'Finishing',groupId:'GRP-002',catId:'CAT-004',wa:'087890123456',telp:'0291-567890',email:'catwahana@gmail.com',web:'',alamat:'Jl. Raya Kudus No. 12',kota:'Kudus',provinsi:'Jawa Tengah',jarak:55,minOrder:'5 liter',leadTime:3,payment:'Cash',rating:4,materials:[],ket:'NC lacquer dan PU tersedia. Kualitas ekspor.',aktif:true},
+  {id:'VND-008',nama:'UD. Busa Sejahtera',pic:'Bu Rina',jabatan:'Owner',kategori:'Upholstery',groupId:'GRP-004',catId:'CAT-010',wa:'088901234567',telp:'024-6789012',email:'busasejahtera@gmail.com',web:'',alamat:'Jl. Siliwangi No. 34',kota:'Semarang',provinsi:'Jawa Tengah',jarak:88,minOrder:'10 lembar',leadTime:4,payment:'NET 7',rating:4,materials:['NW-003'],ket:'Busa sofa dan kursi. Density 30-40 kg/m3.',aktif:true},
+  {id:'VND-009',nama:'CV. Ekspedisi Maju',pic:'Pak Hendra',jabatan:'Manajer',kategori:'Ekspedisi',groupId:'GRP-005',catId:'CAT-015',wa:'089012345678',telp:'0291-678901',email:'ekspedisimaju@gmail.com',web:'www.ekspedisimaju.com',alamat:'Jl. Pelabuhan No. 5',kota:'Jepara',provinsi:'Jawa Tengah',jarak:1,minOrder:'1 kontainer',leadTime:2,payment:'Cash',rating:5,materials:[],ket:'Spesialis pengiriman furniture Indonesia & ekspor.',aktif:true},
+  {id:'VND-010',nama:'UD. Rotan Anyam',pic:'Bu Lastri',jabatan:'Owner',kategori:'Upholstery',groupId:'GRP-004',catId:'CAT-012',wa:'081023456789',telp:'',email:'',web:'',alamat:'Desa Telukwetan',kota:'Jepara',provinsi:'Jawa Tengah',jarak:8,minOrder:'5 m2',leadTime:7,payment:'Cash',rating:3,materials:['NW-002'],ket:'Anyaman rotan asli. Bisa custom pattern.',aktif:true},
 ];
 
-async function seedIfEmpty(){
-  var snap = await getDocs(collection(db,'vendors'));
-  if (!snap.empty) return;
-  showToast('Inisialisasi data vendor...');
-  for (var i=0;i<SEEDS.length;i++){
-    await setDoc(doc(db,'vendors',SEEDS[i].id), Object.assign({},SEEDS[i],{createdAt:serverTimestamp(),createdBy:CU.email||'system'}));
-  }
-  showToast('Data vendor berhasil diinisialisasi!');
-}
-
 async function loadMaterials(){
-  try{
-    var snap = await getDocs(query(collection(db,'materials'),orderBy('id')));
-    MATS = [];
-    snap.forEach(function(d){ MATS.push(Object.assign({},d.data(),{_id:d.id})); });
-  } catch(e){ console.log('Load materials:', e.message); }
+  try{ var snap = await getDocs(query(collection(db,'materials'),orderBy('id'))); MATS = []; snap.forEach(function(d){ MATS.push(Object.assign({},d.data(),{_id:d.id})); }); }
+  catch(e){ console.log('materials:', e.message); }
 }
-
 async function loadVendors(){
   try{
-    await seedIfEmpty();
     var snap = await getDocs(query(collection(db,'vendors'),orderBy('id')));
-    VND = [];
-    snap.forEach(function(d){ VND.push(Object.assign({},d.data(),{_id:d.id})); });
-    updateStats();
-    render();
-  } catch(e){
-    document.getElementById('vnd-grid').innerHTML = '<div class="empty">❌ Gagal memuat: '+e.message+'</div>';
-  }
+    VND = []; snap.forEach(function(d){ VND.push(Object.assign({},d.data(),{_id:d.id})); });
+    if (!VND.length) { await reseedVendors(); return; }
+    updateStats(); render();
+  } catch(e){ document.getElementById('vnd-grid').innerHTML = '<div class="empty">❌ ' + e.message + '</div>'; }
 }
-
 function updateStats(){
   document.getElementById('s-total').textContent = VND.length;
   document.getElementById('s-kayu').textContent = VND.filter(function(v){return v.kategori==='Kayu Log';}).length;
@@ -540,128 +375,71 @@ function updateStats(){
   document.getElementById('s-aktif').textContent = VND.filter(function(v){return v.aktif!==false;}).length;
   var ratings = VND.filter(function(v){return v.rating>0;}).map(function(v){return v.rating;});
   var avg = ratings.length ? (ratings.reduce(function(a,b){return a+b;},0)/ratings.length).toFixed(1) : '—';
-  document.getElementById('s-rating').textContent = avg + (avg!=='—'?'★':'');
+  document.getElementById('s-rating').textContent = avg + (avg !== '—' ? '★' : '');
 }
-
 function getFiltered(){
   var q = (document.getElementById('search-inp').value||'').toLowerCase();
   return VND.filter(function(v){
-    if (curFilter==='ACT') return v.aktif!==false;
-    if (curFilter!=='ALL') return v.kategori===curFilter;
+    if (curFilter === 'ACT') return v.aktif !== false;
+    if (curFilter !== 'ALL') return v.kategori === curFilter;
     return true;
   }).filter(function(v){
     if (!q) return true;
-    return (v.id||'').toLowerCase().includes(q)||
-           (v.nama||'').toLowerCase().includes(q)||
-           (v.kota||'').toLowerCase().includes(q)||
-           (v.pic||'').toLowerCase().includes(q)||
-           (v.kategori||'').toLowerCase().includes(q);
+    return (v.id||'').toLowerCase().includes(q)||(v.nama||'').toLowerCase().includes(q)||(v.kota||'').toLowerCase().includes(q)||(v.pic||'').toLowerCase().includes(q)||(v.kategori||'').toLowerCase().includes(q);
   });
 }
-
-function render(){ if (curView==='list') renderList(); else renderCards(); }
-
-function getMaterialName(id){
-  var m = MATS.find(function(x){return (x.id||x._id)===id;});
-  return m ? m.nama : id;
-}
-
-function getMaterialCat(id){
-  var m = MATS.find(function(x){return (x.id||x._id)===id;});
-  return m ? m.cat : 'SW';
-}
+function render(){ if (curView === 'list') renderList(); else renderCards(); }
+function getMatName(id){ var m = MATS.find(function(x){return (x.id||x._id)===id;}); return m ? m.nama : id; }
+function getMatCat(id){ var m = MATS.find(function(x){return (x.id||x._id)===id;}); return m ? m.cat : 'SW'; }
 
 function renderCards(){
   var grid = document.getElementById('vnd-grid');
   var data = getFiltered();
   grid.innerHTML = '';
-  if (!data.length){ grid.innerHTML='<div class="empty">🔍 Tidak ada vendor ditemukan</div>'; return; }
+  if (!data.length){ grid.innerHTML = '<div class="empty">🔍 Tidak ada vendor ditemukan</div>'; return; }
   data.forEach(function(v){
     var vid = v.id||v._id;
-    var aktif = v.aktif!==false;
-    var catCls = CAT_CLR[v.kategori]||'cat-general';
-    var catIcon = CAT_ICON[v.kategori]||'📦';
-    var catAvt = CAT_AVT[v.kategori]||'#f1efe8';
+    var aktif = v.aktif !== false;
+    var catClr = CAT_CLR[v.kategori]||'#444441';
+    var catBg  = CAT_BG[v.kategori]||'#f1efe8';
+    var catIcon= CAT_ICON[v.kategori]||'📦';
     var mats = v.materials||[];
-
-    var card = document.createElement('div');
-    card.className = 'vnd-card';
+    var card = document.createElement('div'); card.className = 'vnd-card';
     if (!aktif) card.style.opacity = '0.6';
-
     // Header
     var hdr = document.createElement('div'); hdr.className = 'card-hdr';
-    var avt = document.createElement('div'); avt.className = 'avatar'; avt.style.background = catAvt; avt.textContent = catIcon;
-    var info = document.createElement('div'); info.style.flex = '1';
+    var avt = document.createElement('div'); avt.className = 'avatar'; avt.style.background = catBg; avt.textContent = catIcon;
+    var inf = document.createElement('div'); inf.style.flex = '1';
     var idEl = document.createElement('span'); idEl.className = 'card-id'; idEl.textContent = vid;
-    var nameEl = document.createElement('div'); nameEl.className = 'card-name'; nameEl.textContent = v.nama||'—';
-    info.append(idEl, nameEl);
-    var catEl = document.createElement('span'); catEl.className = 'cat-badge '+catCls; catEl.textContent = v.kategori||'General';
-    var statusDot = document.createElement('div');
-    statusDot.className = 'status-dot';
-    statusDot.style.background = aktif ? '#639922' : '#e24b4a';
-    statusDot.title = aktif ? 'Aktif' : 'Nonaktif';
-    hdr.append(avt, info, catEl, statusDot);
-
+    var nmEl = document.createElement('div'); nmEl.className = 'card-name'; nmEl.textContent = v.nama||'—';
+    inf.append(idEl, nmEl);
+    var catEl = document.createElement('span'); catEl.className = 'cat-badge'; catEl.style.background = catBg; catEl.style.color = catClr; catEl.textContent = v.kategori||'General';
+    var dot = document.createElement('div'); dot.className = 'status-dot'; dot.style.background = aktif ? '#639922' : '#e24b4a';
+    hdr.append(avt, inf, catEl, dot);
     // Body
     var body = document.createElement('div'); body.className = 'card-body';
-
-    // Contact grid
     var cg = document.createElement('div'); cg.className = 'contact-grid';
-    [
-      ['PIC / Kontak', (v.pic||'—')+(v.jabatan?' · '+v.jabatan:'')],
-      ['Kota', (v.kota||'—')+(v.jarak?' ('+v.jarak+' km)':'')],
-      ['WhatsApp', v.wa||'—'],
-      ['Lead Time', v.leadTime ? v.leadTime+' hari' : '—'],
-      ['Min. Order', v.minOrder||'—'],
-      ['Payment', v.payment||'—'],
-    ].forEach(function(f){
-      var ci = document.createElement('div'); ci.className = 'contact-item';
-      ci.innerHTML = f[0]+'<strong>'+f[1]+'</strong>';
-      cg.appendChild(ci);
-    });
+    [['PIC',(v.pic||'—')+(v.jabatan?' · '+v.jabatan:'')],['Kota',(v.kota||'—')+(v.jarak?' ('+v.jarak+' km)':'')],['WhatsApp',v.wa||'—'],['Lead Time',v.leadTime?v.leadTime+' hari':'—'],['Min. Order',v.minOrder||'—'],['Payment',v.payment||'—']]
+    .forEach(function(f){ var ci = document.createElement('div'); ci.className = 'contact-item'; ci.innerHTML = f[0]+'<strong>'+f[1]+'</strong>'; cg.appendChild(ci); });
     body.appendChild(cg);
-
-    // Material tags
     if (mats.length) {
       var mt = document.createElement('div'); mt.className = 'mat-tags';
-      mats.slice(0,6).forEach(function(mid){
-        var tag = document.createElement('span');
-        var cat = getMaterialCat(mid);
-        tag.className = 'mat-tag'+(cat==='PW'?' pw':cat==='NW'?' nw':'');
-        tag.textContent = getMaterialName(mid);
-        mt.appendChild(tag);
-      });
-      if (mats.length > 6) {
-        var more = document.createElement('span'); more.className='mat-tag'; more.style.background='#f0efe9'; more.style.color='#5a5750'; more.textContent='+'+' +'+(mats.length-6); mt.appendChild(more);
-      }
+      mats.slice(0,5).forEach(function(mid){ var tag = document.createElement('span'); var cat = getMatCat(mid); tag.className = 'mat-tag'+(cat==='PW'?' pw':cat==='NW'?' nw':''); tag.textContent = getMatName(mid); mt.appendChild(tag); });
+      if (mats.length > 5) { var more = document.createElement('span'); more.className = 'mat-tag'; more.style.background = '#f0efe9'; more.style.color = '#5a5750'; more.textContent = '+'+(mats.length-5)+' lagi'; mt.appendChild(more); }
       body.appendChild(mt);
     }
-
-    // Rating
     var rr = document.createElement('div'); rr.className = 'rating-row';
     var rs = document.createElement('span'); rs.className = 'rating-stars'; rs.textContent = stars(v.rating||0);
     var rv = document.createElement('span'); rv.className = 'rating-val'; rv.textContent = (v.rating||0)+'/5';
-    rr.append(rs, rv);
-    body.appendChild(rr);
-
-    if (v.ket){ var ke=document.createElement('div'); ke.style.cssText='margin-top:7px;font-size:11px;color:#8a8680;font-style:italic;'; ke.textContent=v.ket; body.appendChild(ke); }
-
+    rr.append(rs, rv); body.appendChild(rr);
+    if (v.ket) { var ke = document.createElement('div'); ke.style.cssText = 'margin-top:7px;font-size:11px;color:#8a8680;font-style:italic;'; ke.textContent = v.ket; body.appendChild(ke); }
     // Footer
     var ft = document.createElement('div'); ft.className = 'card-footer';
-    var vb = document.createElement('button'); vb.className='foot-btn info'; vb.textContent='👁 View'; vb.onclick=(function(id){return function(){viewVnd(id);};})(vid);
+    var vb = document.createElement('button'); vb.className = 'foot-btn info'; vb.textContent = '👁 View'; vb.onclick = (function(id){ return function(){ viewVnd(id); }; })(vid);
     ft.appendChild(vb);
-    if (canEdit){
-      var eb = document.createElement('button'); eb.className='foot-btn'; eb.textContent='✏️ Edit'; eb.onclick=(function(id){return function(){openEditModal(id);};})(vid);
-      ft.appendChild(eb);
-    }
-    if (v.wa){
-      var wb = document.createElement('button'); wb.className='foot-btn'; wb.textContent='💬 WA'; wb.onclick=function(){ window.open('https://wa.me/62'+v.wa.replace(/^0/,'').replace(/\D/g,''),'_blank'); };
-      ft.appendChild(wb);
-    }
-    if (canEdit && CU.role==='admin'){
-      var db2 = document.createElement('button'); db2.className='foot-btn danger'; db2.textContent='🗑'; db2.onclick=(function(id,nm){return function(){delVnd(id,nm);};})(vid,v.nama);
-      ft.appendChild(db2);
-    }
+    if (canEdit) { var eb = document.createElement('button'); eb.className = 'foot-btn'; eb.textContent = '✏️ Edit'; eb.onclick = (function(id){ return function(){ openEditModal(id); }; })(vid); ft.appendChild(eb); }
+    if (v.wa) { var wb = document.createElement('button'); wb.className = 'foot-btn'; wb.textContent = '💬 WA'; wb.onclick = function(){ window.open('https://wa.me/62'+v.wa.replace(/^0/,'').replace(/\D/g,''),'_blank'); }; ft.appendChild(wb); }
+    if (canEdit && CU.role==='admin') { var db2 = document.createElement('button'); db2.className = 'foot-btn danger'; db2.textContent = '🗑'; db2.onclick = (function(id,nm){ return function(){ delVnd(id,nm); }; })(vid,v.nama); ft.appendChild(db2); }
     card.append(hdr, body, ft);
     grid.appendChild(card);
   });
@@ -669,503 +447,140 @@ function renderCards(){
 
 function renderList(){
   var tbody = document.getElementById('list-body');
-  var data = getFiltered().slice().sort(function(a,b){
-    var av=a[sortKey]||'', bv=b[sortKey]||'';
-    if (typeof av==='number'&&typeof bv==='number') return sortAsc?av-bv:bv-av;
-    return sortAsc?String(av).localeCompare(String(bv)):String(bv).localeCompare(String(av));
-  });
+  var data = getFiltered().slice().sort(function(a,b){ var av=a[sortKey]||'',bv=b[sortKey]||''; if(typeof av==='number'&&typeof bv==='number') return sortAsc?av-bv:bv-av; return sortAsc?String(av).localeCompare(String(bv)):String(bv).localeCompare(String(av)); });
   tbody.innerHTML = '';
-  if (!data.length){ tbody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:20px;color:#8a8680;">Tidak ada data</td></tr>'; return; }
+  if (!data.length){ tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:20px;color:#8a8680;">Tidak ada data</td></tr>'; return; }
   data.forEach(function(v){
-    var vid=v.id||v._id; var aktif=v.aktif!==false;
-    var catCls=CAT_CLR[v.kategori]||'cat-general';
-    var catIcon=CAT_ICON[v.kategori]||'📦';
-    var mats=(v.materials||[]).slice(0,3).map(getMaterialName).join(', ')+(v.materials&&v.materials.length>3?' +'+' +'+(v.materials.length-3):'');
-    var tr=document.createElement('tr'); if(!aktif) tr.style.opacity='0.6';
-    var cells=[
+    var vid = v.id||v._id; var aktif = v.aktif!==false;
+    var cbg = CAT_BG[v.kategori]||'#f1efe8'; var cclr = CAT_CLR[v.kategori]||'#444441';
+    var mats = (v.materials||[]).slice(0,3).map(getMatName).join(', ')+(v.materials&&v.materials.length>3?' +'+(v.materials.length-3):'');
+    var tr = document.createElement('tr'); if(!aktif) tr.style.opacity='0.6';
+    var cells = [
       '<span style="font-family:monospace;font-size:11px;background:#f0efe9;padding:2px 6px;border-radius:4px;">'+vid+'</span>',
-      '<div style="font-weight:600">'+catIcon+' '+(v.nama||'—')+'</div><div style="font-size:11px;color:#8a8680">'+(v.pic||'')+(v.jabatan?' · '+v.jabatan:'')+'</div>',
-      '<span class="cat-badge '+catCls+'" style="font-size:10px;padding:2px 8px;">'+( v.kategori||'—')+'</span>',
-      '<div style="font-size:12px">'+(v.kota||'—')+'</div><div style="font-size:10px;color:#8a8680">'+(v.jarak?v.jarak+' km':'')+'</div>',
-      '<div style="font-size:12px">'+(v.wa||'—')+'</div>',
-      '<div style="font-size:11px;color:#5a5750">'+(mats||'—')+'</div>',
-      '<span style="color:#ef9f27;font-size:13px">'+stars(v.rating||0)+'</span>',
+      '<div style="font-weight:600">'+(CAT_ICON[v.kategori]||'')+'  '+(v.nama||'—')+'</div><div style="font-size:11px;color:#8a8680;">'+(v.pic||'')+'</div>',
+      '<span style="font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;background:'+cbg+';color:'+cclr+';">'+(v.kategori||'—')+'</span>',
+      '<div style="font-size:12px;">'+(v.kota||'—')+'</div>',
+      '<div style="font-size:12px;">'+(v.wa||'—')+'</div>',
+      '<div style="font-size:11px;color:#5a5750;">'+(mats||'—')+'</div>',
+      '<span style="color:#ef9f27;font-size:13px;">'+stars(v.rating||0)+'</span>',
       '<span style="font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;background:'+(aktif?'#eaf3de':'#fceaea')+';color:'+(aktif?'#27500a':'#791f1f')+'">'+(aktif?'✅ Aktif':'🚫 Nonaktif')+'</span>',
       ''
     ];
-    cells.forEach(function(c,i){ var td=document.createElement('td'); td.innerHTML=c; tr.appendChild(td); });
-    // Actions
-    var atd=tr.lastChild; var ab=document.createElement('div'); ab.style.cssText='display:flex;gap:4px;';
-    var vb2=document.createElement('button'); vb2.style.cssText='padding:3px 8px;border:1px solid #d8d5cb;border-radius:5px;background:#fff;font-size:11px;cursor:pointer;'; vb2.textContent='👁'; vb2.onclick=(function(id){return function(){viewVnd(id);};})(vid);
+    cells.forEach(function(c){ var td = document.createElement('td'); td.innerHTML = c; tr.appendChild(td); });
+    var atd = tr.lastChild; var ab = document.createElement('div'); ab.style.cssText = 'display:flex;gap:4px;';
+    var vb2 = document.createElement('button'); vb2.style.cssText = 'padding:3px 8px;border:1px solid #d8d5cb;border-radius:5px;background:#fff;font-size:11px;cursor:pointer;'; vb2.textContent = '👁'; vb2.onclick = (function(id){ return function(){ viewVnd(id); }; })(vid);
     ab.appendChild(vb2);
-    if (canEdit){
-      var eb2=document.createElement('button'); eb2.style.cssText='padding:3px 8px;border:1px solid #d8d5cb;border-radius:5px;background:#fff;font-size:11px;cursor:pointer;'; eb2.textContent='✏️'; eb2.onclick=(function(id){return function(){openEditModal(id);};})(vid);
-      ab.appendChild(eb2);
-    }
-    if (v.wa){
-      var wb2=document.createElement('button'); wb2.style.cssText='padding:3px 8px;border:1px solid #80c080;border-radius:5px;background:#e8f5e8;color:#27500a;font-size:11px;cursor:pointer;'; wb2.textContent='💬'; wb2.onclick=function(){window.open('https://wa.me/62'+v.wa.replace(/^0/,'').replace(/\D/g,''),'_blank');};
-      ab.appendChild(wb2);
-    }
-    atd.appendChild(ab);
-    tbody.appendChild(tr);
+    if (canEdit) { var eb2 = document.createElement('button'); eb2.style.cssText = 'padding:3px 8px;border:1px solid #d8d5cb;border-radius:5px;background:#2d5a27;color:#fff;font-size:11px;cursor:pointer;'; eb2.textContent = '✏️'; eb2.onclick = (function(id){ return function(){ openEditModal(id); }; })(vid); ab.appendChild(eb2); }
+    if (v.wa) { var wb2 = document.createElement('button'); wb2.style.cssText = 'padding:3px 8px;border:1px solid #80c080;border-radius:5px;background:#e8f5e8;color:#27500a;font-size:11px;cursor:pointer;'; wb2.textContent = '💬'; wb2.onclick = function(){ window.open('https://wa.me/62'+v.wa.replace(/^0/,'').replace(/\D/g,''),'_blank'); }; ab.appendChild(wb2); }
+    atd.appendChild(ab); tbody.appendChild(tr);
   });
 }
-
-// ── Window functions ──────────────────────────────────────────────────
 
 window.setFilter = function(f,btn){ curFilter=f; document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');}); btn.classList.add('active'); render(); };
 window.doFilter = function(){ render(); };
-window.setView = function(view){
-  curView=view;
-  document.getElementById('btn-card').classList.toggle('active',view==='card');
-  document.getElementById('btn-list').classList.toggle('active',view==='list');
-  document.getElementById('vnd-grid').classList.toggle('hidden',view==='list');
-  var ml=document.getElementById('vnd-list'); if(view==='list') ml.classList.add('active'); else ml.classList.remove('active');
-  render();
-};
+window.setView = function(view){ curView=view; document.getElementById('btn-card').classList.toggle('active',view==='card'); document.getElementById('btn-list').classList.toggle('active',view==='list'); document.getElementById('vnd-grid').classList.toggle('hidden',view==='list'); var ml=document.getElementById('vnd-list'); if(view==='list') ml.classList.add('active'); else ml.classList.remove('active'); render(); };
 window.sortBy = function(key){ if(sortKey===key) sortAsc=!sortAsc; else{sortKey=key;sortAsc=true;} renderList(); };
 window.closeModal = function(id){ document.getElementById(id).classList.remove('show'); };
-
-window.setRating = function(val){
-  curRating = val;
-  document.querySelectorAll('#rating-input button').forEach(function(btn,i){
-    btn.classList.toggle('active', i<val);
-  });
-};
+window.setRating = function(val){ curRating=val; document.querySelectorAll('#rating-input button').forEach(function(btn,i){ btn.classList.toggle('active',i<val); }); };
+window.switchViewTab = function(tab,btn){ document.querySelectorAll('.view-tab').forEach(function(b){b.classList.remove('active');}); btn.classList.add('active'); document.querySelectorAll('.vtab').forEach(function(t){t.classList.remove('active');}); document.getElementById('vtab-'+tab).classList.add('active'); };
+window.autoId = function(){ if(editId) return; var nums=VND.map(function(v){var p=(v.id||v._id).split('-');return parseInt(p[1]||0);}).filter(function(n){return !isNaN(n);}); var next=nums.length?Math.max.apply(null,nums)+1:1; document.getElementById('m-id').value='VND-'+String(next).padStart(3,'0'); };
 
 function buildMatCheckboxes(selected){
-  var container = document.getElementById('mat-check-container');
-  container.innerHTML = '';
-  if (!MATS.length){ container.innerHTML='<div style="color:#8a8680;font-size:12px;padding:8px;">Tidak ada material tersedia</div>'; return; }
+  var c = document.getElementById('mat-check-container'); c.innerHTML = '';
+  if (!MATS.length){ c.innerHTML='<div style="color:#8a8680;font-size:12px;padding:8px;">Tidak ada material</div>'; return; }
   MATS.forEach(function(m){
-    var mid = m.id||m._id;
-    var label = document.createElement('label'); label.className='mat-check-item';
-    var cb = document.createElement('input'); cb.type='checkbox'; cb.value=mid; cb.name='mat-cb';
-    if (selected && selected.includes(mid)) cb.checked=true;
-    var catColor = m.cat==='SW'?'#27500a':m.cat==='PW'?'#0c447c':'#3c3489';
-    var txt = document.createElement('span'); txt.style.color=catColor; txt.textContent=m.cat+' · '+m.nama;
-    label.append(cb, txt);
-    container.appendChild(label);
+    var mid = m.id||m._id; var label = document.createElement('label'); label.className = 'mat-check-item';
+    var cb = document.createElement('input'); cb.type = 'checkbox'; cb.value = mid; cb.name = 'mat-cb';
+    if (selected && selected.includes(mid)) cb.checked = true;
+    var clr = m.cat==='SW'?'#27500a':m.cat==='PW'?'#0c447c':'#3c3489';
+    var txt = document.createElement('span'); txt.style.color = clr; txt.textContent = m.cat+' · '+m.nama;
+    label.append(cb, txt); c.appendChild(label);
   });
 }
 
-window.autoId = function(){
-  if (editId) return;
-  var existing = VND;
-  var nums = existing.map(function(v){
-    var parts=(v.id||v._id).split('-'); return parseInt(parts[1]||0);
-  }).filter(function(n){return !isNaN(n);});
-  var next = nums.length ? Math.max.apply(null,nums)+1 : 1;
-  document.getElementById('m-id').value = 'VND-'+String(next).padStart(3,'0');
-};
+window.openAddModal = function(){ if(!canEdit){showToast('⚠️ Hanya Admin/Manager!');return;} editId=null; document.getElementById('modal-title').textContent='➕ Tambah Vendor Baru'; document.getElementById('save-btn').textContent='💾 Simpan'; ['m-id','m-nama','m-pic','m-jabatan','m-wa','m-telp','m-email','m-web','m-alamat','m-kota','m-prov','m-ket','m-gmap','m-imgurl'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; }); document.getElementById('m-id').readOnly=false; document.getElementById('m-kat').value='Kayu Log'; document.getElementById('m-jarak').value='0'; document.getElementById('m-leadtime').value='7'; document.getElementById('m-payment').value='Cash'; document.getElementById('m-aktif').checked=true; curRating=3; setRating(3); autoId(); buildMatCheckboxes([]); document.getElementById('modal-add').classList.add('show'); };
 
-window.openAddModal = function(){
-  if (!canEdit){showToast('⚠️ Hanya Admin/Manager!');return;}
-  editId=null;
-  document.getElementById('modal-title').textContent='➕ Tambah Vendor Baru';
-  document.getElementById('save-btn').textContent='💾 Simpan';
-  ['m-id','m-nama','m-pic','m-jabatan','m-wa','m-telp','m-email','m-web','m-alamat','m-kota','m-prov','m-ket','m-gmap','m-imgurl'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
-  window._vendorImgData = null;
-  var prev=document.getElementById('m-imgpreview'); if(prev){prev.src='';prev.classList.remove('show');}
-  document.getElementById('m-id').readOnly=false;
-  document.getElementById('m-kat').value='Kayu Log';
-  document.getElementById('m-jarak').value='0';
-  document.getElementById('m-minorder').value='';
-  document.getElementById('m-leadtime').value='7';
-  document.getElementById('m-payment').value='Cash';
-  document.getElementById('m-aktif').checked=true;
-  curRating=3; setRating(3);
-  autoId();
-  buildMatCheckboxes([]);
-  document.getElementById('modal-add').classList.add('show');
-};
+window.openEditModal = function(id){ var v=VND.find(function(x){return (x.id||x._id)===id;}); if(!v) return; editId=id; document.getElementById('modal-title').textContent='✏️ Edit Vendor'; document.getElementById('save-btn').textContent='💾 Update'; document.getElementById('m-id').value=v.id||v._id; document.getElementById('m-id').readOnly=true; document.getElementById('m-kat').value=v.kategori||'Kayu Log'; document.getElementById('m-nama').value=v.nama||''; document.getElementById('m-pic').value=v.pic||''; document.getElementById('m-jabatan').value=v.jabatan||''; document.getElementById('m-wa').value=v.wa||''; document.getElementById('m-telp').value=v.telp||''; document.getElementById('m-email').value=v.email||''; document.getElementById('m-web').value=v.web||''; document.getElementById('m-alamat').value=v.alamat||''; document.getElementById('m-kota').value=v.kota||''; document.getElementById('m-prov').value=v.provinsi||''; document.getElementById('m-jarak').value=v.jarak||0; document.getElementById('m-minorder').value=v.minOrder||''; document.getElementById('m-leadtime').value=v.leadTime||7; document.getElementById('m-payment').value=v.payment||'Cash'; document.getElementById('m-ket').value=v.ket||''; document.getElementById('m-gmap').value=v.gmap||''; document.getElementById('m-imgurl').value=v.imgUrl||''; document.getElementById('m-aktif').checked=v.aktif!==false; curRating=v.rating||3; setRating(curRating); buildMatCheckboxes(v.materials||[]); document.getElementById('modal-add').classList.add('show'); };
 
-window.openEditModal = function(id){
-  var v=VND.find(function(x){return (x.id||x._id)===id;});
-  if(!v) return;
-  editId=id;
-  document.getElementById('modal-title').textContent='✏️ Edit Vendor';
-  document.getElementById('save-btn').textContent='💾 Update';
-  document.getElementById('m-id').value=v.id||v._id;
-  document.getElementById('m-id').readOnly=true;
-  document.getElementById('m-kat').value=v.kategori||'Kayu Log';
-  document.getElementById('m-nama').value=v.nama||'';
-  document.getElementById('m-pic').value=v.pic||'';
-  document.getElementById('m-jabatan').value=v.jabatan||'';
-  document.getElementById('m-wa').value=v.wa||'';
-  document.getElementById('m-telp').value=v.telp||'';
-  document.getElementById('m-email').value=v.email||'';
-  document.getElementById('m-web').value=v.web||'';
-  document.getElementById('m-alamat').value=v.alamat||'';
-  document.getElementById('m-kota').value=v.kota||'';
-  document.getElementById('m-prov').value=v.provinsi||'';
-  document.getElementById('m-jarak').value=v.jarak||0;
-  document.getElementById('m-minorder').value=v.minOrder||'';
-  document.getElementById('m-leadtime').value=v.leadTime||7;
-  document.getElementById('m-payment').value=v.payment||'Cash';
-  document.getElementById('m-ket').value=v.ket||'';
-  document.getElementById('m-aktif').checked=v.aktif!==false;
-  var gmapEl=document.getElementById('m-gmap'); if(gmapEl) gmapEl.value=v.gmap||'';
-  var imgurlEl=document.getElementById('m-imgurl'); if(imgurlEl) imgurlEl.value=v.imgUrl||'';
-  window._vendorImgData = v.imgData||null;
-  var prev=document.getElementById('m-imgpreview');
-  if(prev){
-    var imgSrc=v.imgData||v.imgUrl||'';
-    if(imgSrc){prev.src=imgSrc;prev.classList.add('show');}
-    else{prev.src='';prev.classList.remove('show');}
-  }
-  curRating=v.rating||3; setRating(curRating);
-  buildMatCheckboxes(v.materials||[]);
-  document.getElementById('modal-add').classList.add('show');
-};
-
-window.saveVendor = async function(){
-  var id=document.getElementById('m-id').value.trim().toUpperCase();
-  var nama=document.getElementById('m-nama').value.trim();
-  if(!id||!nama){showToast('⚠️ ID dan Nama wajib diisi!');return;}
-  var btn=document.getElementById('save-btn');
-  btn.disabled=true; btn.textContent='⏳ Menyimpan...';
-  // Get selected materials
-  var selMats=[];
-  document.querySelectorAll('input[name="mat-cb"]:checked').forEach(function(cb){selMats.push(cb.value);});
-  window._vendorImgData = window._vendorImgData || null;
-  var data={
-    id:id,nama:nama,
-    kategori:document.getElementById('m-kat').value,
-    pic:document.getElementById('m-pic').value,
-    jabatan:document.getElementById('m-jabatan').value,
-    wa:document.getElementById('m-wa').value,
-    telp:document.getElementById('m-telp').value,
-    email:document.getElementById('m-email').value,
-    web:document.getElementById('m-web').value,
-    alamat:document.getElementById('m-alamat').value,
-    kota:document.getElementById('m-kota').value,
-    provinsi:document.getElementById('m-prov').value,
-    jarak:+document.getElementById('m-jarak').value||0,
-    minOrder:document.getElementById('m-minorder').value,
-    leadTime:+document.getElementById('m-leadtime').value||7,
-    payment:document.getElementById('m-payment').value,
-    rating:curRating,
-    materials:selMats,
-    ket:document.getElementById('m-ket').value,
-    aktif:document.getElementById('m-aktif').checked,
-    gmap:document.getElementById('m-gmap').value||'',
-    imgUrl:document.getElementById('m-imgurl').value||'',
-    imgData:window._vendorImgData||null,
-    updatedAt:serverTimestamp(),updatedBy:CU.email||'unknown'
-  };
-  try{
-    if(editId){ await updateDoc(doc(db,'vendors',id),data); showToast('✅ Vendor diupdate!'); }
-    else{
-      if(VND.find(function(v){return (v.id||v._id)===id;})){showToast('❌ ID sudah ada!');return;}
-      await setDoc(doc(db,'vendors',id),Object.assign({},data,{createdAt:serverTimestamp(),createdBy:CU.email||'unknown'}));
-      showToast('✅ Vendor baru ditambahkan!');
-    }
-    closeModal('modal-add');
-    await loadVendors();
-  }catch(e){showToast('❌ Error: '+e.message);}
-  finally{btn.disabled=false; btn.textContent=editId?'💾 Update':'💾 Simpan';}
-};
-
-
-window.switchViewTab = function(tab, btn) {
-  document.querySelectorAll('.view-tab').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  document.querySelectorAll('.vtab').forEach(function(t){t.style.display='none';});
-  document.getElementById('vtab-'+tab).style.display='block';
-};
+window.saveVendor = async function(){ var id=document.getElementById('m-id').value.trim().toUpperCase(); var nama=document.getElementById('m-nama').value.trim(); if(!id||!nama){showToast('⚠️ ID dan Nama wajib!');return;} var btn=document.getElementById('save-btn'); btn.disabled=true; btn.textContent='⏳ Menyimpan...'; var selMats=[]; document.querySelectorAll('input[name="mat-cb"]:checked').forEach(function(cb){selMats.push(cb.value);}); var data={id:id,nama:nama,kategori:document.getElementById('m-kat').value,pic:document.getElementById('m-pic').value,jabatan:document.getElementById('m-jabatan').value,wa:document.getElementById('m-wa').value,telp:document.getElementById('m-telp').value,email:document.getElementById('m-email').value,web:document.getElementById('m-web').value,alamat:document.getElementById('m-alamat').value,kota:document.getElementById('m-kota').value,provinsi:document.getElementById('m-prov').value,jarak:+document.getElementById('m-jarak').value||0,minOrder:document.getElementById('m-minorder').value,leadTime:+document.getElementById('m-leadtime').value||7,payment:document.getElementById('m-payment').value,rating:curRating,materials:selMats,ket:document.getElementById('m-ket').value,gmap:document.getElementById('m-gmap').value||'',imgUrl:document.getElementById('m-imgurl').value||'',aktif:document.getElementById('m-aktif').checked,updatedAt:serverTimestamp(),updatedBy:CU.email||'unknown'}; try{ if(editId){await updateDoc(doc(db,'vendors',id),data);showToast('✅ Vendor diupdate!');}else{if(VND.find(function(v){return (v.id||v._id)===id;})){showToast('❌ ID sudah ada!');return;} await setDoc(doc(db,'vendors',id),Object.assign({},data,{createdAt:serverTimestamp(),createdBy:CU.email||'unknown'}));showToast('✅ Vendor ditambahkan!');} closeModal('modal-add'); await loadVendors();}catch(e){showToast('❌ '+e.message);}finally{btn.disabled=false;btn.textContent=editId?'💾 Update':'💾 Simpan';} };
 
 window.viewVnd = function(id){
-  var v=VND.find(function(x){return (x.id||x._id)===id;});
-  if(!v) return;
-  document.getElementById('view-title').textContent='👁 '+v.nama+' ('+id+')';
-  document.getElementById('view-edit-btn').onclick=function(){closeModal('modal-view');openEditModal(id);};
-
-  // GMap button
+  var v = VND.find(function(x){return (x.id||x._id)===id;}); if(!v) return;
+  document.getElementById('view-title').textContent = '👁 '+v.nama+' ('+id+')';
+  document.getElementById('view-edit-btn').onclick = function(){ closeModal('modal-view'); openEditModal(id); };
   var gmapBtn = document.getElementById('view-gmap-btn');
-  if (v.gmap) { gmapBtn.style.display='inline-flex'; gmapBtn.onclick=function(){window.open(v.gmap,'_blank');}; }
-  else { gmapBtn.style.display='none'; }
-
-  var catCls=CAT_CLR[v.kategori]||'cat-general';
-  var catIcon=CAT_ICON[v.kategori]||'📦';
-
-  // Header with image
-  var hdr = document.getElementById('view-header');
-  var imgHtml = '';
-  if (v.imgData || v.imgUrl) {
-    var imgEl = document.createElement('img');
-    imgEl.src = v.imgData || v.imgUrl;
-    imgEl.style.cssText = 'width:100%;max-height:160px;object-fit:cover;border-radius:10px;margin-bottom:12px;';
-    imgEl.onerror = function(){ imgEl.style.display = 'none'; };
-    var imgWrap = document.createElement('div');
-    imgWrap.appendChild(imgEl);
-    imgHtml = imgWrap.outerHTML;
-  }
-  }
-  hdr.innerHTML = imgHtml +
-    '<div style="display:flex;align-items:center;gap:12px;padding:12px;background:#f5f4f0;border-radius:10px;margin-bottom:14px;">'+
-    '<div class="avatar" style="background:'+CAT_AVT[v.kategori]+';width:48px;height:48px;font-size:20px;">'+catIcon+'</div>'+
-    '<div style="flex:1;"><div style="font-size:18px;font-weight:700;">'+v.nama+'</div>'+
-    '<span class="cat-badge '+catCls+'">'+v.kategori+'</span>'+
-    (v.alamat?'<div style="font-size:11px;color:#8a8680;margin-top:3px;">'+v.alamat+', '+( v.kota||'')+'</div>':'')+'</div>'+
-    '<div style="font-size:22px;color:#ef9f27;text-align:right"><div>'+stars(v.rating||0)+'</div><div style="font-size:11px;color:#8a8680">'+(v.rating||0)+'/5</div></div></div>';
-
-  // TAB: INFO
-  var infoTab = document.getElementById('vtab-info');
-  infoTab.innerHTML =
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">'+
-    [['ID Vendor',id],['PIC / Kontak',v.pic||'—'],['Jabatan',v.jabatan||'—'],
-     ['Kota / Jarak',(v.kota||'—')+(v.jarak?' ('+v.jarak+' km)':'')],
-     ['WhatsApp',v.wa||'—'],['Telepon',v.telp||'—'],
-     ['Email',v.email||'—'],['Website',v.web||'—'],
-     ['Min. Order',v.minOrder||'—'],['Lead Time',(v.leadTime||'—')+' hari'],
-     ['Term Payment',v.payment||'—'],['Provinsi',v.provinsi||'—']]
-    .map(function(f){
-      return '<div style="background:#f5f4f0;border-radius:8px;padding:9px 12px;">'+
-        '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;margin-bottom:2px;">'+f[0]+'</div>'+
-        '<div style="font-size:13px;font-weight:600;">'+f[1]+'</div></div>';
-    }).join('')+'</div>'+
-    (v.gmap?'<a href="'+v.gmap+'" target="_blank" class="gmap-btn" style="margin-bottom:10px;">🗺️ Buka di Google Maps</a><br>':'') +
-    (v.ket?'<div style="background:#f5f4f0;border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;"><b>Keterangan:</b> '+v.ket+'</div>':'');
-
-  // TAB: MATERIAL
-  var matTab = document.getElementById('vtab-material');
+  if (v.gmap){ gmapBtn.style.display='inline-flex'; gmapBtn.onclick=function(){window.open(v.gmap,'_blank');}; } else { gmapBtn.style.display='none'; }
+  var catBg = CAT_BG[v.kategori]||'#f1efe8'; var catClr = CAT_CLR[v.kategori]||'#444441'; var catIcon = CAT_ICON[v.kategori]||'📦';
+  // Header
+  var hdr = document.getElementById('view-header'); hdr.innerHTML = '';
+  if (v.imgUrl) { var img = document.createElement('img'); img.src = v.imgUrl; img.style.cssText='width:100%;max-height:160px;object-fit:cover;border-radius:10px;margin-bottom:12px;'; img.onerror=function(){img.style.display='none';}; hdr.appendChild(img); }
+  var hdrBox = document.createElement('div'); hdrBox.style.cssText='display:flex;align-items:center;gap:12px;padding:12px;background:#f5f4f0;border-radius:10px;margin-bottom:14px;';
+  var avt = document.createElement('div'); avt.className='avatar'; avt.style.cssText='width:48px;height:48px;font-size:20px;background:'+catBg+';'; avt.textContent=catIcon;
+  var inf = document.createElement('div'); inf.style.flex='1';
+  var nm = document.createElement('div'); nm.style.cssText='font-size:18px;font-weight:700;'; nm.textContent=v.nama;
+  var cat = document.createElement('span'); cat.className='cat-badge'; cat.style.background=catBg; cat.style.color=catClr; cat.textContent=v.kategori;
+  var addr = document.createElement('div'); addr.style.cssText='font-size:11px;color:#8a8680;margin-top:3px;'; addr.textContent=(v.alamat?v.alamat+', ':'')+( v.kota||'');
+  inf.append(nm, cat, addr);
+  var rat = document.createElement('div'); rat.style.cssText='font-size:22px;color:#ef9f27;text-align:right;'; rat.innerHTML=stars(v.rating||0)+'<div style="font-size:11px;color:#8a8680">'+(v.rating||0)+'/5</div>';
+  hdrBox.append(avt,inf,rat); hdr.appendChild(hdrBox);
+  // Info tab
+  var infoTab = document.getElementById('vtab-info'); infoTab.innerHTML='';
+  var grid = document.createElement('div'); grid.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;';
+  [['ID Vendor',id],['PIC',v.pic||'—'],['Jabatan',v.jabatan||'—'],['Kota / Jarak',(v.kota||'—')+(v.jarak?' ('+v.jarak+' km)':'')],['WhatsApp',v.wa||'—'],['Telepon',v.telp||'—'],['Email',v.email||'—'],['Min. Order',v.minOrder||'—'],['Lead Time',(v.leadTime||'—')+' hari'],['Payment',v.payment||'—']]
+  .forEach(function(f){ var fd=document.createElement('div'); fd.style.cssText='background:#f5f4f0;border-radius:8px;padding:9px 12px;'; fd.innerHTML='<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;margin-bottom:2px;">'+f[0]+'</div><div style="font-size:13px;font-weight:600;">'+f[1]+'</div>'; grid.appendChild(fd); });
+  infoTab.appendChild(grid);
+  if (v.gmap){ var gm=document.createElement('a'); gm.href=v.gmap; gm.target='_blank'; gm.style.cssText='display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#e8f0fb;border:1px solid #85b7eb;border-radius:8px;color:#0c447c;font-size:12px;font-weight:600;text-decoration:none;margin-bottom:10px;'; gm.textContent='🗺️ Buka di Google Maps'; infoTab.appendChild(gm); }
+  if (v.ket){ var kt=document.createElement('div'); kt.style.cssText='background:#f5f4f0;border-radius:8px;padding:10px 12px;font-size:13px;'; kt.innerHTML='<b>Keterangan:</b> '+v.ket; infoTab.appendChild(kt); }
+  // Material tab
+  var matTab = document.getElementById('vtab-material'); matTab.innerHTML='';
+  var mhdr=document.createElement('div'); mhdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;';
+  var mtitle=document.createElement('div'); mtitle.style.cssText='font-size:13px;font-weight:600;'; mtitle.textContent='Material yang Di-supply ('+( v.materials||[]).length+')';
+  mhdr.appendChild(mtitle);
+  if (canEdit){ var addBtn=document.createElement('button'); addBtn.style.cssText='padding:5px 12px;background:#2d5a27;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;'; addBtn.textContent='➕ Tambah Material Baru'; addBtn.onclick=function(){window.open('materials.html','_blank');}; mhdr.appendChild(addBtn); }
+  matTab.appendChild(mhdr);
   var mats = v.materials||[];
-  var matHtml = '<div style="margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">'+
-    '<div style="font-size:13px;font-weight:600;">Material yang Di-supply ('+mats.length+')</div>';
-  if (canEdit) {
-    matHtml += '<button onclick="openAddMatFromVendor(''+id+'')" style="padding:5px 12px;background:#2d5a27;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">➕ Tambah Material Baru</button>';
-  }
-  matHtml += '</div>';
-  if (!mats.length) {
-    matHtml += '<div class="hist-empty">Belum ada material terdaftar untuk vendor ini.</div>';
-  } else {
-    mats.forEach(function(mid){
-      var m = MATS.find(function(x){return (x.id||x._id)===mid;});
-      var catClr = m ? (m.cat==='SW'?'#27500a':m.cat==='PW'?'#0c447c':'#3c3489') : '#5a5750';
-      var catBg  = m ? (m.cat==='SW'?'#eaf3de':m.cat==='PW'?'#e3f2fd':'#f3e5f5') : '#f0efe9';
-      matHtml += '<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid #e8e6df;border-radius:10px;margin-bottom:6px;">'+
-        '<span style="font-family:monospace;font-size:10px;background:#f0efe9;padding:2px 6px;border-radius:4px;color:#8a8680;">'+mid+'</span>'+
-        '<span style="flex:1;font-weight:600;font-size:13px;">'+(m?m.nama:mid)+'</span>'+
-        (m?'<span style="font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;background:'+catBg+';color:'+catClr+'">'+m.cat+'</span>':'')+
-        (m?'<span style="font-size:11px;color:#8a8680;margin-left:4px;">'+(m.harga?('Rp '+Math.round(m.harga).toLocaleString('id-ID')):'—')+'</span>':'')+
-        '</div>';
-    });
-  }
-  matTab.innerHTML = matHtml;
-
-  // TAB: HISTORY
-  var histTab = document.getElementById('vtab-history');
-  histTab.innerHTML =
-    '<div style="text-align:center;padding:20px;background:#f5f4f0;border-radius:10px;margin-bottom:12px;">'+
-    '<div style="font-size:32px;margin-bottom:8px;">📊</div>'+
-    '<div style="font-weight:600;font-size:14px;color:#1a1917;margin-bottom:4px;">Historis Transaksi</div>'+
-    '<div style="font-size:12px;color:#8a8680;">Modul ini akan aktif saat Purchase Order dikembangkan.</div>'+
-    '<div style="margin-top:12px;font-size:11px;color:#8a8680;background:#fff;border-radius:8px;padding:10px;">'+
-    '🔜 <b>Akan Terhubung Ke:</b><br>'+
-    '• Purchase Order (PO)<br>'+
-    '• Goods Receipt (GR)<br>'+
-    '• Invoice Vendor<br>'+
-    '• Retur Material<br>'+
-    '• Laporan Pembelian per Vendor'+
-    '</div></div>'+
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;">'+
-    ['📦 Total PO: —','💰 Total Pembelian: —','📅 Terakhir Order: —','⭐ On-Time Delivery: —']
-    .map(function(s){return '<div style="flex:1;min-width:120px;background:#f5f4f0;border-radius:8px;padding:10px;text-align:center;font-size:12px;color:#8a8680;">'+s+'</div>';}).join('')+'</div>';
-
-  // TAB: QR CODE
-  var qrTab = document.getElementById('vtab-qr');
-  var qrData = JSON.stringify({
-    type:'GABE_VENDOR',
-    id: id,
-    nama: v.nama,
-    kategori: v.kategori,
-    wa: v.wa||'',
-    kota: v.kota||'',
-    materials: v.materials||[],
-    url: 'https://gabe-kayu.vercel.app/vendors.html'
-  });
-  qrTab.innerHTML =
-    '<div class="qr-wrap">'+
-    '<div style="font-size:13px;font-weight:600;margin-bottom:12px;">QR Code Vendor — '+v.nama+'</div>'+
-    '<div class="qr-box"><div id="qr-canvas"></div></div>'+
-    '<div class="qr-info">'+
-    'Scan QR ini untuk akses data vendor langsung<br>'+
-    '<b>'+id+'</b> · '+v.kategori+' · '+( v.kota||'Jepara')+'<br>'+
-    '<span style="font-size:10px;color:#c4c0b2;">QR berisi: ID, Nama, Kontak, Material Supply</span>'+
-    '</div>'+
-    '<div class="qr-actions">'+
-    '<button class="qr-btn" onclick="printQR(''+id+'',''+v.nama+'')">🖨️ Print QR</button>'+
-    '<button class="qr-btn primary" onclick="dlQR(''+id+'')">⬇️ Download QR</button>'+
-    '</div></div>'+
-    '<div style="margin-top:10px;font-size:11px;color:#8a8680;background:#f5f4f0;border-radius:8px;padding:10px;">'+
-    '🔗 <b>Integrasi QR ke Depan:</b><br>'+
-    '• Scan saat terima material (Goods Receipt)<br>'+
-    '• Tempel di kartu vendor / dokumen PO<br>'+
-    '• Link otomatis ke riwayat transaksi vendor<br>'+
-    '• Integrasi dengan sistem WMS / gudang'+
-    '</div>';
-
+  if (!mats.length){ var em=document.createElement('div'); em.className='hist-empty'; em.textContent='Belum ada material terdaftar.'; matTab.appendChild(em); }
+  else { mats.forEach(function(mid){ var m=MATS.find(function(x){return (x.id||x._id)===mid;}); var catClr2=m?(m.cat==='SW'?'#27500a':m.cat==='PW'?'#0c447c':'#3c3489'):'#5a5750'; var catBg2=m?(m.cat==='SW'?'#eaf3de':m.cat==='PW'?'#e3f2fd':'#f3e5f5'):'#f0efe9'; var mr=document.createElement('div'); mr.style.cssText='display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid #e8e6df;border-radius:10px;margin-bottom:6px;'; var mi=document.createElement('span'); mi.style.cssText='font-family:monospace;font-size:10px;background:#f0efe9;padding:2px 6px;border-radius:4px;color:#8a8680;'; mi.textContent=mid; var mn=document.createElement('span'); mn.style.cssText='flex:1;font-weight:600;font-size:13px;'; mn.textContent=m?m.nama:mid; mr.append(mi,mn); if(m){var mc=document.createElement('span');mc.style.cssText='font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;background:'+catBg2+';color:'+catClr2+';';mc.textContent=m.cat;var mp=document.createElement('span');mp.style.cssText='font-size:11px;color:#8a8680;';mp.textContent=m.harga?fm(m.harga):'—';mr.append(mc,mp);} matTab.appendChild(mr); }); }
+  // History tab
+  var histTab=document.getElementById('vtab-history'); histTab.innerHTML='<div style="text-align:center;padding:20px;background:#f5f4f0;border-radius:10px;"><div style="font-size:32px;margin-bottom:8px;">📊</div><div style="font-weight:600;font-size:14px;margin-bottom:4px;">Historis Transaksi</div><div style="font-size:12px;color:#8a8680;">Aktif saat modul Purchase Order dikembangkan (Fase 3)</div><div style="margin-top:12px;font-size:11px;color:#8a8680;background:#fff;border-radius:8px;padding:10px;text-align:left;">🔜 <b>Akan Terhubung Ke:</b><br>• Purchase Order (PO)<br>• Goods Receipt (GR)<br>• Invoice Vendor<br>• Laporan Pembelian per Vendor</div></div>';
+  // QR tab
+  var qrTab=document.getElementById('vtab-qr'); qrTab.innerHTML='';
+  var qrWrap=document.createElement('div'); qrWrap.className='qr-wrap';
+  var qrTitle=document.createElement('div'); qrTitle.style.cssText='font-size:13px;font-weight:600;margin-bottom:12px;'; qrTitle.textContent='QR Code Vendor — '+v.nama;
+  var qrBox=document.createElement('div'); qrBox.className='qr-box'; qrBox.id='qr-canvas';
+  var qrInfo=document.createElement('div'); qrInfo.style.cssText='font-size:11px;color:#8a8680;margin-top:8px;line-height:1.6;'; qrInfo.innerHTML='Scan QR untuk akses data vendor<br><b>'+id+'</b> · '+(v.kategori||'')+'<br><span style="font-size:10px;">Berisi: ID, Nama, Kontak, Material</span>';
+  var qrActs=document.createElement('div'); qrActs.style.cssText='display:flex;gap:8px;justify-content:center;margin-top:10px;';
+  var printBtn=document.createElement('button'); printBtn.style.cssText='padding:6px 14px;border:1px solid #d8d5cb;border-radius:8px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;'; printBtn.textContent='🖨️ Print QR'; printBtn.onclick=function(){printQR(id,v.nama);};
+  var dlBtn=document.createElement('button'); dlBtn.style.cssText='padding:6px 14px;border:none;border-radius:8px;background:#2d5a27;color:#fff;font-size:12px;font-weight:600;cursor:pointer;'; dlBtn.textContent='⬇️ Download'; dlBtn.onclick=function(){dlQR(id);};
+  qrActs.append(printBtn,dlBtn);
+  var qrNote=document.createElement('div'); qrNote.style.cssText='margin-top:10px;font-size:11px;color:#8a8680;background:#f5f4f0;border-radius:8px;padding:10px;text-align:left;'; qrNote.innerHTML='🔗 <b>Integrasi QR ke Depan:</b><br>• Scan saat terima material<br>• Tempel di dokumen PO<br>• Link ke riwayat transaksi';
+  qrWrap.append(qrTitle,qrBox,qrInfo,qrActs); qrTab.append(qrWrap,qrNote);
   document.getElementById('modal-view').classList.add('show');
-
-  // Generate QR
-  setTimeout(function(){
-    var qrEl = document.getElementById('qr-canvas');
-    if (qrEl && typeof QRCode !== 'undefined') {
-      qrEl.innerHTML = '';
-      new QRCode(qrEl, {
-        text: qrData,
-        width: 180,
-        height: 180,
-        correctLevel: QRCode.CorrectLevel.M
-      });
-    }
-  }, 100);
+  setTimeout(function(){ var qrEl=document.getElementById('qr-canvas'); if(qrEl&&typeof QRCode!=='undefined'){ qrEl.innerHTML=''; new QRCode(qrEl,{text:JSON.stringify({type:'GABE_VENDOR',id:id,nama:v.nama,wa:v.wa||'',kota:v.kota||'',kategori:v.kategori||''}),width:180,height:180,correctLevel:QRCode.CorrectLevel.M}); } },150);
 };
 
-window.printQR = function(id, nama) {
-  var canvas = document.querySelector('#qr-canvas canvas') || document.querySelector('#qr-canvas img');
-  if (!canvas) { showToast('❌ QR belum ter-generate!'); return; }
-  var dataUrl = canvas.tagName==='CANVAS' ? canvas.toDataURL() : canvas.src;
-  var w = window.open('','_blank');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>QR Vendor - '+nama+'</title>'+
-    '<style>body{font-family:Segoe UI,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:20px;}'+
-    '.card{border:2px solid #1a3a1a;border-radius:16px;padding:24px;text-align:center;max-width:280px;}'+
-    'h2{color:#1a3a1a;font-size:16px;margin:0 0 4px;}'+
-    '.sub{color:#8a8680;font-size:12px;margin-bottom:16px;}'+
-    'img{width:180px;height:180px;}'+
-    '.id{font-family:monospace;font-size:12px;background:#f0efe9;padding:4px 10px;border-radius:6px;margin-top:12px;display:inline-block;}'+
-    '.foot{font-size:10px;color:#8a8680;margin-top:8px;}'+
-    '@media print{button{display:none}}</style></head><body>'+
-    '<div class="card">'+
-    '<h2>🌿 PT. Gabe International</h2>'+
-    '<div class="sub">Vendor Master</div>'+
-    '<img src="'+dataUrl+'" alt="QR">'+
-    '<div class="id">'+id+'</div>'+
-    '<div style="font-weight:700;margin-top:6px;font-size:13px;">'+nama+'</div>'+
-    '<div class="foot">gabe-kayu.vercel.app</div>'+
-    '</div>'+
-    '<button onclick="window.print()" style="margin-top:16px;padding:10px 24px;background:#2d5a27;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;">🖨️ Print</button>'+
-    '</body></html>');
-  w.document.close(); w.focus();
-};
+window.printQR = function(id,nama){ var canvas=document.querySelector('#qr-canvas canvas'); if(!canvas){showToast('❌ QR belum ter-generate!');return;} var w=window.open('','_blank'); w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>QR '+nama+'</title><style>body{font-family:sans-serif;display:flex;flex-direction:column;align-items:center;padding:20px;}.card{border:2px solid #1a3a1a;border-radius:16px;padding:24px;text-align:center;}@media print{button{display:none}}</style></head><body><div class="card"><h2 style="color:#1a3a1a;font-size:16px;margin:0 0 4px;">PT. Gabe International</h2><div style="color:#8a8680;font-size:12px;margin-bottom:16px;">Vendor Master</div><img src="'+canvas.toDataURL()+'" style="width:180px;height:180px;"><div style="font-family:monospace;font-size:12px;background:#f0efe9;padding:4px 10px;border-radius:6px;margin-top:12px;display:inline-block;">'+id+'</div><div style="font-weight:700;margin-top:6px;">'+nama+'</div></div><button onclick="window.print()" style="margin-top:16px;padding:10px 24px;background:#2d5a27;color:#fff;border:none;border-radius:8px;cursor:pointer;">🖨️ Print</button></body></html>'); w.document.close(); w.focus(); };
+window.dlQR = function(id){ var canvas=document.querySelector('#qr-canvas canvas'); if(!canvas){showToast('❌ QR belum ter-generate!');return;} var a=document.createElement('a'); a.href=canvas.toDataURL('image/png'); a.download='QR_Vendor_'+id+'.png'; a.click(); showToast('✅ QR didownload!'); };
 
-window.dlQR = function(id) {
-  var canvas = document.querySelector('#qr-canvas canvas');
-  if (!canvas) { showToast('❌ QR belum ter-generate!'); return; }
-  var a = document.createElement('a');
-  a.href = canvas.toDataURL('image/png');
-  a.download = 'QR_Vendor_'+id+'.png';
-  a.click();
-  showToast('✅ QR Code didownload!');
-};
-
-window.openAddMatFromVendor = function(vendorId) {
-  showToast('➕ Fitur tambah material baru akan membuka Material Master. Tambahkan material baru di sana lalu refresh vendor ini.');
-  setTimeout(function(){ window.open('materials.html','_blank'); }, 500);
-};
-
-window.previewImgUrl = function(url) {
-  var prev = document.getElementById('m-imgpreview');
-  if (!prev) return;
-  if (!url) { prev.classList.remove('show'); return; }
-  prev.src = url;
-  prev.classList.add('show');
-  prev.onerror = function(){ prev.classList.remove('show'); };
-};
-
-window.handleImgUpload = function(e) {
-  var file = e.target.files[0];
-  if (!file) return;
-  if (file.size > 500*1024) { showToast('⚠️ File terlalu besar! Maks 500KB'); return; }
-  var reader = new FileReader();
-  reader.onload = function(ev) {
-    var prev = document.getElementById('m-imgpreview');
-    if (prev) { prev.src = ev.target.result; prev.classList.add('show'); }
-    window._vendorImgData = ev.target.result;
-    var urlInp = document.getElementById('m-imgurl');
-    if (urlInp) urlInp.value = '';
-    showToast('✅ Foto berhasil diupload!');
-  };
-  reader.readAsDataURL(file);
-};
+window.delVnd = async function(id,nama){ if(!confirm('Hapus "'+nama+'" ('+id+')?')) return; if(!confirm('Konfirmasi hapus "'+nama+'"?')) return; try{ await deleteDoc(doc(db,'vendors',id)); VND=VND.filter(function(x){return (x.id||x._id)!==id;}); updateStats(); render(); showToast('🗑 "'+nama+'" dihapus!'); }catch(e){showToast('❌ '+e.message);} };
 
 window.reseedVendors = async function(){
-  if(!confirm('Reset semua data vendor ke demo data? Data yang ada akan ditimpa!')) return;
+  if (!confirm('Reset semua vendor ke 10 demo data? Data yang ada akan ditimpa!')) return;
   showToast('⏳ Mereset data vendor...');
   try{
-    for(var i=0;i<SEEDS.length;i++){
+    for (var i = 0; i < SEEDS.length; i++) {
       await setDoc(doc(db,'vendors',SEEDS[i].id), Object.assign({},SEEDS[i],{createdAt:serverTimestamp(),createdBy:'reseed'}));
     }
-    showToast('✅ Demo data berhasil direset! ('+SEEDS.length+' vendor)');
+    showToast('✅ Demo data direset! ('+SEEDS.length+' vendor)');
     await loadVendors();
-  }catch(e){showToast('❌ Error: '+e.message);}
+  } catch(e){ showToast('❌ Error: '+e.message); }
 };
 
-window.delVnd = async function(id,nama){
-  if(!confirm('⚠️ Hapus vendor "'+nama+'" ('+id+') secara permanen?')) return;
-  if(!confirm('Konfirmasi: Hapus "'+nama+'"?')) return;
-  try{
-    await deleteDoc(doc(db,'vendors',id));
-    VND=VND.filter(function(x){return (x.id||x._id)!==id;});
-    updateStats(); render();
-    showToast('🗑 "'+nama+'" dihapus!');
-  }catch(e){showToast('❌ Gagal: '+e.message);}
-};
+window.exportCSV = function(){ if(!VND.length){showToast('⚠️ Tidak ada data!');return;} var rows=['ID,Nama,Kategori,PIC,WA,Kota,MinOrder,LeadTime,Payment,Rating,Status']; VND.forEach(function(v){ rows.push([v.id||v._id,'"'+(v.nama||'')+'"',v.kategori||'',v.pic||'',v.wa||'',v.kota||'','"'+(v.minOrder||'')+'"',v.leadTime||0,v.payment||'',v.rating||0,v.aktif!==false?'Aktif':'Nonaktif'].join(',')); }); dlBlob('\uFEFF'+rows.join('\n'),'VendorMaster_'+today()+'.csv','text/csv;charset=utf-8'); showToast('📊 CSV diexport!'); };
+window.exportExcel = function(){ if(!VND.length){showToast('⚠️ Tidak ada data!');return;} var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"></head><body><table><tr style="background:#2d5a27;color:#fff;font-weight:bold;"><th>ID</th><th>Nama</th><th>Kategori</th><th>PIC</th><th>WA</th><th>Kota</th><th>Min Order</th><th>Lead Time</th><th>Payment</th><th>Rating</th><th>Status</th></tr>'; VND.forEach(function(v,i){ var bg=i%2===0?'#f5f4f0':'#fff'; html+='<tr style="background:'+bg+'"><td>'+(v.id||v._id)+'</td><td>'+v.nama+'</td><td>'+v.kategori+'</td><td>'+(v.pic||'')+'</td><td>'+(v.wa||'')+'</td><td>'+(v.kota||'')+'</td><td>'+(v.minOrder||'')+'</td><td>'+(v.leadTime||0)+' hari</td><td>'+(v.payment||'')+'</td><td>'+(v.rating||0)+'</td><td>'+(v.aktif!==false?'Aktif':'Nonaktif')+'</td></tr>'; }); html+='</table></body></html>'; dlBlob(html,'VendorMaster_'+today()+'.xls','application/vnd.ms-excel'); showToast('📗 Excel diexport!'); };
+window.exportPDF = function(){ if(!VND.length){showToast('⚠️ Tidak ada data!');return;} var w=window.open('','_blank'); var rows=VND.map(function(v,i){var bg=i%2===0?'#f9f9f9':'#fff';var cbg=CAT_BG[v.kategori]||'#f0f0f0';var cclr=CAT_CLR[v.kategori]||'#555';return '<tr style="background:'+bg+'"><td>'+( v.id||v._id)+'</td><td style="font-weight:600">'+(CAT_ICON[v.kategori]||'')+' '+v.nama+'</td><td><span style="background:'+cbg+';color:'+cclr+';padding:2px 7px;border-radius:10px;font-size:10px;">'+v.kategori+'</span></td><td>'+(v.pic||'—')+'</td><td>'+(v.wa||'—')+'</td><td>'+(v.kota||'—')+'</td><td style="color:#ef9f27;">'+stars(v.rating||0)+'</td><td style="color:'+(v.aktif!==false?'#2d5a27':'#8b2020')+'">'+(v.aktif!==false?'Aktif':'Nonaktif')+'</td></tr>';}).join(''); w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Vendor Master</title><style>body{font-family:Segoe UI,sans-serif;padding:20px;}table{width:100%;border-collapse:collapse;font-size:12px;}th{background:#2d5a27;color:#fff;padding:7px 8px;text-align:left;}td{padding:6px 8px;border-bottom:1px solid #e8e6df;}@media print{button{display:none}}</style></head><body><div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><div style="width:40px;height:40px;background:#2d5a27;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;">🌿</div><div><h2 style="color:#2d5a27;font-size:18px;margin:0;">PT. Gabe International</h2><div style="color:#8a8680;font-size:12px;">Vendor Master · '+new Date().toLocaleDateString('id-ID')+'</div></div><button onclick="window.print()" style="margin-left:auto;padding:8px 16px;background:#2d5a27;color:#fff;border:none;border-radius:8px;cursor:pointer;">🖨️ Print</button></div><table><thead><tr><th>ID</th><th>Nama</th><th>Kategori</th><th>PIC</th><th>WA</th><th>Kota</th><th>Rating</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table><div style="margin-top:14px;font-size:11px;color:#8a8680;text-align:center;">Total: '+VND.length+' vendor</div></body></html>'); w.document.close(); w.focus(); showToast('📕 PDF dibuka!'); };
 
-// ── Export ────────────────────────────────────────────────────────────
-
-window.exportCSV = function(){
-  if(!VND.length){showToast('⚠️ Tidak ada data!');return;}
-  var rows=['ID,Nama Vendor,Kategori,PIC,Jabatan,WhatsApp,Telepon,Email,Kota,Provinsi,Jarak(km),MinOrder,LeadTime,Payment,Rating,Material Supply,Status,Keterangan'];
-  VND.forEach(function(v){
-    var mats=(v.materials||[]).map(getMaterialName).join(' | ');
-    rows.push([v.id||v._id,'"'+(v.nama||'')+'"',v.kategori||'',v.pic||'',v.jabatan||'',v.wa||'',v.telp||'',v.email||'',v.kota||'',v.provinsi||'',v.jarak||0,'"'+(v.minOrder||'')+'"',v.leadTime||0,v.payment||'',v.rating||0,'"'+mats+'"',v.aktif!==false?'Aktif':'Nonaktif','"'+(v.ket||'')+'"'].join(','));
-  });
-  dlBlob('\uFEFF'+rows.join('\n'),'VendorMaster_'+today()+'.csv','text/csv;charset=utf-8');
-  showToast('📊 CSV diexport!');
-};
-
-window.exportExcel = function(){
-  if(!VND.length){showToast('⚠️ Tidak ada data!');return;}
-  var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"></head><body><table>';
-  html+='<tr style="background:#2d5a27;color:#fff;font-weight:bold;"><th>ID</th><th>Nama Vendor</th><th>Kategori</th><th>PIC</th><th>WhatsApp</th><th>Kota</th><th>Min Order</th><th>Lead Time</th><th>Payment</th><th>Rating</th><th>Material Supply</th><th>Status</th></tr>';
-  VND.forEach(function(v,i){
-    var bg=i%2===0?'#f5f4f0':'#ffffff';
-    var mats=(v.materials||[]).map(getMaterialName).join(', ');
-    html+='<tr style="background:'+bg+'"><td>'+(v.id||v._id)+'</td><td>'+v.nama+'</td><td>'+v.kategori+'</td><td>'+(v.pic||'—')+'</td><td>'+(v.wa||'—')+'</td><td>'+(v.kota||'—')+'</td><td>'+(v.minOrder||'—')+'</td><td>'+(v.leadTime||0)+' hari</td><td>'+(v.payment||'—')+'</td><td>'+(v.rating||0)+'★</td><td>'+mats+'</td><td>'+(v.aktif!==false?'Aktif':'Nonaktif')+'</td></tr>';
-  });
-  html+='</table></body></html>';
-  dlBlob(html,'VendorMaster_'+today()+'.xls','application/vnd.ms-excel');
-  showToast('📗 Excel diexport!');
-};
-
-window.exportPDF = function(){
-  if(!VND.length){showToast('⚠️ Tidak ada data!');return;}
-  var w=window.open('','_blank');
-  var rows=VND.map(function(v,i){
-    var bg=i%2===0?'#f9f9f9':'#fff';
-    var mats=(v.materials||[]).map(getMaterialName).join(', ')||'—';
-    var catCls=CAT_CLR[v.kategori]||'cat-general';
-    return '<tr style="background:'+bg+'"><td>'+( v.id||v._id)+'</td><td style="font-weight:600">'+(CAT_ICON[v.kategori]||'')+'  '+v.nama+'</td><td>'+v.kategori+'</td><td>'+(v.pic||'—')+'</td><td>'+(v.wa||'—')+'</td><td>'+(v.kota||'—')+'</td><td style="color:#ef9f27">'+stars(v.rating||0)+'</td><td style="font-size:11px">'+mats+'</td><td style="color:'+(v.aktif!==false?'#2d5a27':'#8b2020')+'">'+(v.aktif!==false?'Aktif':'Nonaktif')+'</td></tr>';
-  }).join('');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Vendor Master — PT. Gabe International</title>'+
-    '<style>body{font-family:Segoe UI,sans-serif;padding:20px;}h1{color:#2d5a27;font-size:18px;}table{width:100%;border-collapse:collapse;font-size:11px;}th{background:#2d5a27;color:#fff;padding:7px 8px;text-align:left;}td{padding:6px 8px;border-bottom:1px solid #e8e6df;}@media print{button{display:none}}</style></head><body>'+
-    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><div style="width:40px;height:40px;background:#2d5a27;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;">🌿</div>'+
-    '<div><h1>PT. Gabe International — Vendor Master</h1><div style="color:#8a8680;font-size:12px;">'+new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'})+'</div></div>'+
-    '<button onclick="window.print()" style="margin-left:auto;padding:8px 16px;background:#2d5a27;color:#fff;border:none;border-radius:8px;cursor:pointer;">🖨️ Print</button></div>'+
-    '<table><thead><tr><th>ID</th><th>Nama Vendor</th><th>Kategori</th><th>PIC</th><th>WA</th><th>Kota</th><th>Rating</th><th>Material</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table>'+
-    '<div style="margin-top:14px;font-size:11px;color:#8a8680;text-align:center;">Total: '+VND.length+' vendor · '+new Date().toLocaleString('id-ID')+'</div></body></html>');
-  w.document.close(); w.focus();
-  showToast('📕 PDF dibuka di tab baru!');
-};
-
-// ── INIT ─────────────────────────────────────────────────────────────
-window.showToast = showToast;
-(async function(){
-  await loadMaterials();
-  await loadVendors();
-})();
+(async function(){ await loadMaterials(); await loadVendors(); })();
 </script>
 </body>
 </html>
