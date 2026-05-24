@@ -1,274 +1,114 @@
-<!-- MATERIALS v3.4 CLEAN BUILD - NO TEMPLATE LITERALS - 2026-05-23 -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<script src="lang.js"></script>
-<meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Material Master v3.4 — Gabe International Hub</title>
+<title>Material Master — Gabe International Hub</title>
+<script src="lang.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a1917;font-size:14px;line-height:1.5;}
-
-/* TOPBAR */
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a1917;font-size:14px;}
 .topbar{background:#1a3a1a;color:#fff;padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2);}
-.topbar-left{display:flex;align-items:center;gap:12px;}
+.topbar-left{display:flex;align-items:center;gap:10px;}
 .back-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:5px 12px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;text-decoration:none;}
-.back-btn:hover{background:rgba(255,255,255,.25);}
-.topbar-title{font-size:15px;font-weight:600;}
-.topbar-sub{font-size:11px;opacity:.7;}
-.user-info{display:flex;align-items:center;gap:8px;font-size:12px;}
+.topbar-right{display:flex;align-items:center;gap:8px;}
 .logout-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px;}
-
-/* LAYOUT */
 .app{max-width:1200px;margin:0 auto;padding:20px 16px 60px;}
-
-/* PAGE HEADER */
 .page-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
 .page-title{font-size:22px;font-weight:700;}
 .page-sub{font-size:13px;color:#8a8680;margin-top:3px;}
-
-/* STATS CARDS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .15s;}
+.btn-primary{background:#2d5a27;color:#fff;}
+.btn-primary:hover{background:#3d7a35;}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px;}
-.stat-card{background:#fff;border:1px solid #d8d5cb;border-radius:12px;padding:14px 16px;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.stat-card{background:#fff;border:1px solid #d8d5cb;border-radius:12px;padding:14px 16px;}
 .stat-val{font-size:24px;font-weight:700;margin-bottom:2px;}
 .stat-lbl{font-size:11px;color:#8a8680;font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
-
-/* FILTER BAR */
-.filter-bar{background:#fff;border:1px solid #d8d5cb;border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.search-inp{flex:1;min-width:200px;padding:8px 12px;border:1.5px solid #d8d5cb;border-radius:8px;font-size:13px;font-family:inherit;}
-.search-inp:focus{outline:none;border-color:#2d5a27;box-shadow:0 0 0 3px rgba(45,90,39,.1);}
-.filter-btn{padding:7px 14px;border:1.5px solid #d8d5cb;border-radius:8px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;color:#5a5750;}
-.filter-btn:hover{background:#f0efe9;}
+.filter-bar{background:#fff;border:1px solid #d8d5cb;border-radius:12px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.search-inp{flex:1;min-width:180px;padding:7px 11px;border:1.5px solid #d8d5cb;border-radius:8px;font-size:13px;font-family:inherit;}
+.search-inp:focus{outline:none;border-color:#2d5a27;}
+.filter-btn{padding:6px 13px;border:1.5px solid #d8d5cb;border-radius:20px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;color:#5a5750;}
 .filter-btn.active{background:#2d5a27;border-color:#2d5a27;color:#fff;}
-
-/* MATERIAL CARDS GRID */
-.mat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:20px;}
-
-/* MATERIAL CARD */
-.mat-card{background:#fff;border:1px solid #d8d5cb;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07);transition:all .2s;}
-.mat-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.12);transform:translateY(-1px);}
-.mat-card-hdr{padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #e8e6df;}
-.mat-color-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;}
-.mat-id{font-family:'Courier New',monospace;font-size:10px;background:#f0efe9;color:#8a8680;padding:2px 7px;border-radius:4px;}
-.mat-nama{font-size:14px;font-weight:700;flex:1;}
-.mat-cat-badge{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:700;}
-.mat-card-body{padding:12px 14px;}
-.mat-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;}
-.mat-meta-item{font-size:11px;color:#8a8680;}
-.mat-meta-item strong{display:block;font-size:12px;color:#1a1917;margin-top:1px;}
-
-/* PRICE SECTION */
-.price-section{background:#f5f4f0;border-radius:8px;padding:10px 12px;}
-.price-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.price-label{font-size:11px;color:#8a8680;font-weight:600;}
-.price-value{font-size:16px;font-weight:700;color:#2d5a27;}
+.view-toggle{display:flex;gap:4px;margin-left:auto;}
+.view-btn{padding:6px 12px;border:1.5px solid #d8d5cb;border-radius:8px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;color:#5a5750;}
+.view-btn.active{background:#2d5a27;border-color:#2d5a27;color:#fff;}
+.io-bar{background:#fff;border:1px solid #d8d5cb;border-radius:12px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.io-label{font-size:11px;font-weight:700;color:#8a8680;}
+.io-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid #d8d5cb;background:#fff;font-family:inherit;transition:all .15s;}
+.io-btn.csv{color:#1a5c1a;border-color:#a0d0a0;background:#f0faf0;}
+.io-btn.excel{color:#1a5a2a;border-color:#80c080;background:#e8f5e8;}
+.io-btn.pdf{color:#8b1a1a;border-color:#e0a0a0;background:#fef0f0;}
+.io-btn.imp{color:#1a4a7a;border-color:#a0c0e0;background:#f0f4fb;}
+.io-sep{width:1px;height:22px;background:#d8d5cb;}
+.mat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.mat-grid.hidden{display:none;}
+.mat-card{background:#fff;border:1px solid #d8d5cb;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07);transition:transform .2s,box-shadow .2s;}
+.mat-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.12);}
+.card-hdr{padding:11px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #e8e6df;}
+.card-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+.card-id{font-family:monospace;font-size:10px;background:#f0efe9;color:#8a8680;padding:2px 6px;border-radius:4px;}
+.card-name{font-size:14px;font-weight:700;flex:1;}
+.cat-badge{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;}
+.card-body{padding:12px 14px;}
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;}
+.meta-item{font-size:11px;color:#8a8680;}
+.meta-item strong{display:block;font-size:12px;color:#1a1917;margin-top:1px;}
+.price-box{background:#f5f4f0;border-radius:8px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;}
+.price-val{font-size:16px;font-weight:700;color:#2d5a27;}
+.price-unit{font-size:11px;color:#8a8680;font-weight:400;}
 .price-date{font-size:10px;color:#8a8680;margin-top:2px;}
-.price-update-row{display:flex;gap:6px;align-items:center;}
-.price-inp{flex:1;padding:7px 10px;border:1.5px solid #d8d5cb;border-radius:7px;font-size:13px;font-weight:600;}
-.price-inp:focus{outline:none;border-color:#2d5a27;}
-.price-save-btn{padding:7px 12px;background:#2d5a27;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;}
-.price-save-btn:hover{background:#3d7a35;}
-.price-save-btn:disabled{opacity:.5;cursor:not-allowed;}
-
-/* CARD FOOTER */
-.mat-card-footer{padding:8px 14px;border-top:1px solid #e8e6df;display:flex;gap:6px;background:#fafaf8;}
-.card-btn{flex:1;padding:6px 10px;border:1px solid #d8d5cb;border-radius:7px;background:#fff;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;color:#5a5750;text-align:center;}
-.card-btn:hover{background:#f0efe9;}
-.card-btn.danger{color:#8b2020;border-color:#f5c2c2;}
-.card-btn.danger:hover{background:#fceaea;}
-.card-btn.info{color:#1a4a7a;border-color:#c0d8f5;}
-.card-btn.info:hover{background:#e8f0fb;}
-
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .15s;}
-.btn-primary{background:#2d5a27;color:#fff;} .btn-primary:hover{background:#3d7a35;}
-.btn-secondary{background:#f0efe9;color:#5a5750;border:1.5px solid #d8d5cb;} .btn-secondary:hover{background:#e8e6df;}
-
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:16px;}
-.modal-overlay.show{display:flex;}
+.upd-btn{padding:5px 11px;background:#2d5a27;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;}
+.card-footer{padding:8px 14px;border-top:1px solid #e8e6df;display:flex;gap:5px;background:#fafaf8;}
+.foot-btn{flex:1;padding:5px 8px;border:1px solid #d8d5cb;border-radius:7px;background:#fff;font-size:11px;font-weight:600;cursor:pointer;color:#5a5750;text-align:center;}
+.foot-btn:hover{background:#f0efe9;}
+.foot-btn.danger{color:#8b2020;border-color:#f5c2c2;}
+.foot-btn.danger:hover{background:#fceaea;}
+.foot-btn.info{color:#1a4a7a;border-color:#c0d8f5;}
+.foot-btn.info:hover{background:#e8f0fb;}
+.mat-list-wrap{display:none;}
+.mat-list-wrap.active{display:block;background:#fff;border:1px solid #d8d5cb;border-radius:14px;overflow:hidden;}
+.list-tbl{width:100%;border-collapse:collapse;}
+.list-tbl thead th{padding:9px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#8a8680;border-bottom:1.5px solid #d8d5cb;background:#f5f4f0;cursor:pointer;white-space:nowrap;}
+.list-tbl thead th:hover{color:#2d5a27;}
+.list-tbl tbody td{padding:9px 12px;border-bottom:1px solid #e8e6df;font-size:13px;}
+.list-tbl tbody tr:hover td{background:#f5f4f0;}
+.list-tbl tbody tr:last-child td{border-bottom:none;}
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:16px;}
+.modal-ov.show{display:flex;}
 .modal{background:#fff;border-radius:18px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.3);}
-.modal-hdr{padding:18px 22px;border-bottom:1px solid #d8d5cb;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1;}
-.modal-hdr h3{font-size:16px;font-weight:700;}
-.modal-close{width:30px;height:30px;border:none;background:#e8e6df;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
-.modal-body{padding:20px 22px;}
-.modal-footer{padding:14px 22px;border-top:1px solid #d8d5cb;display:flex;gap:10px;justify-content:flex-end;}
-.fg{margin-bottom:14px;}
-.fg label{display:block;font-size:12px;font-weight:600;color:#5a5750;margin-bottom:4px;}
-.fc{width:100%;padding:9px 12px;border:1.5px solid #d8d5cb;border-radius:8px;font-size:13px;font-family:inherit;background:#fff;}
+.modal-hdr{padding:16px 20px;border-bottom:1px solid #d8d5cb;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1;}
+.modal-hdr h3{font-size:15px;font-weight:700;}
+.modal-x{width:28px;height:28px;border:none;background:#e8e6df;border-radius:50%;cursor:pointer;font-size:15px;}
+.modal-body{padding:18px 20px;}
+.modal-footer{padding:12px 20px;border-top:1px solid #d8d5cb;display:flex;gap:8px;justify-content:flex-end;}
+.fg{margin-bottom:12px;}
+.fg label{display:block;font-size:12px;font-weight:600;color:#5a5750;margin-bottom:3px;}
+.fc{width:100%;padding:8px 11px;border:1.5px solid #d8d5cb;border-radius:8px;font-size:13px;font-family:inherit;}
 .fc:focus{outline:none;border-color:#2d5a27;box-shadow:0 0 0 3px rgba(45,90,39,.1);}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-
-/* HISTORY MODAL */
-.hist-list{margin-top:4px;}
-.hist-item{padding:12px;border:1px solid #e8e6df;border-radius:10px;margin-bottom:8px;background:#fff;}
-.hist-item:last-child{margin-bottom:0;}
-.hist-date{font-size:11px;color:#8a8680;font-family:'Courier New',monospace;}
-.hist-prices{display:flex;align-items:center;gap:8px;margin:6px 0;}
-.hist-old{font-size:13px;color:#8b2020;text-decoration:line-through;}
-.hist-arrow{color:#8a8680;}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.hist-item{padding:10px 12px;border:1px solid #e8e6df;border-radius:10px;margin-bottom:8px;}
+.hist-item.active{background:#eaf3e8;border-color:#b8d9b4;}
+.hist-date{font-size:10px;color:#8a8680;margin-bottom:4px;}
+.hist-prices{display:flex;align-items:center;gap:8px;}
+.hist-old{font-size:12px;color:#8b2020;text-decoration:line-through;}
 .hist-new{font-size:14px;font-weight:700;color:#2d5a27;}
-.hist-change{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:700;}
-.hist-change.up{background:#fceaea;color:#8b2020;}
-.hist-change.down{background:#eaf3e8;color:#2d5a27;}
-.hist-by{font-size:11px;color:#8a8680;}
+.hist-pct{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:700;}
+.hist-pct.up{background:#fceaea;color:#8b2020;}
+.hist-pct.dn{background:#eaf3e8;color:#2d5a27;}
 .hist-note{font-size:11px;color:#5a5750;margin-top:4px;font-style:italic;}
-.no-hist{text-align:center;padding:20px;color:#8a8680;font-size:13px;}
-
-
-
-/* ═══ ACTION BUTTONS ═══ */
-.action-menu { position:relative; display:inline-block; }
-.action-dropdown {
-  position:absolute; right:0; top:100%; margin-top:4px;
-  background:#fff; border:1px solid #d8d5cb; border-radius:10px;
-  box-shadow:0 8px 24px rgba(0,0,0,.15); z-index:100;
-  min-width:160px; overflow:hidden; display:none;
-}
-.action-dropdown.show { display:block; }
-.action-item {
-  display:flex; align-items:center; gap:8px;
-  padding:9px 14px; font-size:13px; cursor:pointer;
-  transition:background .1s; color:#1a1917;
-  border:none; background:none; width:100%; text-align:left;
-  font-family:inherit;
-}
-.action-item:hover { background:#f5f4f0; }
-.action-item.danger { color:#8b2020; }
-.action-item.danger:hover { background:#fceaea; }
-.action-item + .action-item { border-top:1px solid #f0efe9; }
-.action-sep { height:1px; background:#e8e6df; margin:2px 0; }
-
-/* ═══ IMPORT/EXPORT TOOLBAR ═══ */
-.io-toolbar {
-  background:#fff; border:1px solid #d8d5cb; border-radius:12px;
-  padding:10px 16px; margin-bottom:16px;
-  display:flex; align-items:center; gap:8px; flex-wrap:wrap;
-}
-.io-label { font-size:12px; font-weight:700; color:#8a8680; margin-right:4px; }
-.io-btn {
-  display:inline-flex; align-items:center; gap:5px;
-  padding:6px 12px; border-radius:8px; font-size:12px; font-weight:600;
-  cursor:pointer; transition:all .15s; border:1.5px solid #d8d5cb;
-  background:#fff; color:#5a5750; font-family:inherit;
-}
-.io-btn:hover { background:#f0efe9; border-color:#b0ada0; }
-.io-btn.csv  { color:#1a5c1a; border-color:#a0d0a0; background:#f0faf0; }
-.io-btn.csv:hover { background:#e0f5e0; }
-.io-btn.excel{ color:#1a5a2a; border-color:#80c080; background:#e8f5e8; }
-.io-btn.excel:hover { background:#d0edd0; }
-.io-btn.pdf  { color:#8b1a1a; border-color:#e0a0a0; background:#fef0f0; }
-.io-btn.pdf:hover { background:#fde0e0; }
-.io-btn.import { color:#1a4a7a; border-color:#a0c0e0; background:#f0f4fb; }
-.io-btn.import:hover { background:#e0ecf8; }
-.io-sep { width:1px; height:24px; background:#d8d5cb; margin:0 4px; }
-
-/* VIEW MODAL */
-.view-modal-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
-.view-field { background:#f5f4f0; border-radius:8px; padding:10px 12px; }
-.view-field-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#8a8680; margin-bottom:3px; }
-.view-field-value { font-size:14px; font-weight:600; color:#1a1917; }
-
-/* IMPORT MODAL */
-.import-zone {
-  border:2px dashed #d8d5cb; border-radius:12px; padding:30px;
-  text-align:center; cursor:pointer; transition:all .2s;
-  background:#fafaf8;
-}
-.import-zone:hover, .import-zone.drag { border-color:#2d5a27; background:#eaf3e8; }
-.import-zone .icon { font-size:36px; margin-bottom:8px; }
-.import-preview { margin-top:12px; background:#f5f4f0; border-radius:8px; padding:10px; font-size:12px; max-height:200px; overflow-y:auto; }
-.import-row { display:flex; gap:8px; padding:4px 0; border-bottom:1px solid #e8e6df; }
-.import-row:last-child { border-bottom:none; }
-
-/* ═══ LIST VIEW ═══ */
-.view-toggle { display:flex; gap:4px; }
-.view-btn { 
-  padding:6px 12px; border:1.5px solid #d8d5cb; border-radius:8px;
-  background:#fff; font-size:13px; cursor:pointer; transition:all .15s;
-  display:flex; align-items:center; gap:5px; color:#5a5750; font-weight:600;
-}
-.view-btn:hover { background:#f0efe9; }
-.view-btn.active { background:#2d5a27; border-color:#2d5a27; color:#fff; }
-
-/* LIST VIEW TABLE */
-.mat-list { display:none; background:#fff; border:1px solid #d8d5cb; border-radius:14px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,.07); }
-.mat-list.active { display:block; }
-.mat-grid.hidden { display:none; }
-
-.list-table { width:100%; border-collapse:collapse; }
-.list-table thead tr { background:#f5f4f0; }
-.list-table thead th { 
-  padding:11px 14px; text-align:left; font-size:11px; font-weight:700;
-  text-transform:uppercase; letter-spacing:.05em; color:#8a8680;
-  border-bottom:1.5px solid #d8d5cb; white-space:nowrap; cursor:pointer;
-}
-.list-table thead th:hover { color:#2d5a27; }
-.list-table thead th .sort-icon { margin-left:4px; opacity:.5; }
-.list-table tbody tr { transition:background .1s; }
-.list-table tbody tr:hover { background:#f5f4f0; }
-.list-table tbody tr:nth-child(even) { background:#fafaf8; }
-.list-table tbody tr:nth-child(even):hover { background:#f5f4f0; }
-.list-table tbody td { padding:10px 14px; border-bottom:1px solid #e8e6df; font-size:13px; }
-.list-table tbody tr:last-child td { border-bottom:none; }
-
-/* List row elements */
-.list-mat-name { font-weight:600; color:#1a1917; }
-.list-mat-sub { font-size:11px; color:#8a8680; margin-top:1px; }
-.list-price { font-weight:700; color:#2d5a27; }
-.list-price-date { font-size:10px; color:#8a8680; }
-.list-actions { display:flex; gap:5px; white-space:nowrap; }
-.list-btn { 
-  padding:4px 10px; border:1px solid #d8d5cb; border-radius:6px;
-  background:#fff; font-size:11px; font-weight:600; cursor:pointer;
-  transition:all .15s; color:#5a5750;
-}
-.list-btn:hover { background:#f0efe9; }
-.list-btn.primary { background:#2d5a27; border-color:#2d5a27; color:#fff; }
-.list-btn.primary:hover { background:#3d7a35; }
-.list-btn.info { color:#1a4a7a; border-color:#c0d8f5; }
-.list-btn.info:hover { background:#e8f0fb; }
-
-/* Rendemen badge */
-.rdm-badge { 
-  display:inline-block; padding:2px 7px; border-radius:20px;
-  font-size:10px; font-weight:700; background:#f0efe9; color:#5a5750;
-}
-
-@media(max-width:768px) {
-  .list-table { min-width:600px; }
-  .mat-list { overflow-x:auto; }
-}
-
-/* CAT COLORS */
-.cat-SW{background:#fff3e0;color:#e65100;}
-.cat-PW{background:#e3f2fd;color:#1565c0;}
-.cat-NW{background:#f3e5f5;color:#6a1b9a;}
-
-/* TOAST */
+.import-zone{border:2px dashed #d8d5cb;border-radius:12px;padding:28px;text-align:center;cursor:pointer;background:#fafaf8;}
+.import-zone:hover{border-color:#2d5a27;background:#eaf3e8;}
+.import-preview{margin-top:10px;background:#f5f4f0;border-radius:8px;padding:10px;font-size:11px;max-height:180px;overflow-y:auto;}
 #toast{position:fixed;bottom:20px;right:20px;background:#2d5a27;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:all .22s;pointer-events:none;z-index:999;}
 #toast.show{opacity:1;transform:translateY(0);}
-
-/* EMPTY STATE */
-.empty-state{text-align:center;padding:40px 20px;color:#8a8680;}
-.empty-state .icon{font-size:48px;margin-bottom:12px;}
-
-/* PRICE TREND */
-.trend-up{color:#c0392b;}
-.trend-down{color:#27ae60;}
-.trend-same{color:#8a8680;}
-
+.empty{text-align:center;padding:40px;color:#8a8680;grid-column:1/-1;}
 @media(max-width:640px){
   .topbar{padding:0 12px;}
   .app{padding:12px 10px 40px;}
   .page-hdr{flex-direction:column;}
   .mat-grid{grid-template-columns:1fr;}
-  .form-grid{grid-template-columns:1fr;}
+  .fgrid{grid-template-columns:1fr;}
   .stats-grid{grid-template-columns:repeat(2,1fr);}
-  .filter-bar{gap:6px;}
 }
 </style>
 </head>
@@ -276,277 +116,202 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
 
 <nav class="topbar">
   <div class="topbar-left">
-    <a href="app.html" class="back-btn">← Kembali</a>
+    <a href="app.html" class="back-btn">← <span data-i18n="nav_back">Kembali</span></a>
     <div>
-      <div class="topbar-title" data-i18n="mat_title">🪵 Material Master</div>
-      <div class="topbar-sub">Manajemen Harga & Jenis Kayu — PT. Gabe International</div>
+      <div style="font-size:14px;font-weight:600;">🪵 <span data-i18n="mat_title">Material Master</span></div>
+      <div style="font-size:10px;opacity:.7;" data-i18n="mat_subtitle">Manajemen Harga & Jenis Kayu</div>
     </div>
   </div>
-  <div class="user-info">
-    <span id="user-name" style="opacity:.8;font-size:12px;"></span>
+  <div class="topbar-right">
+    <span id="lang-wrap"></span>
+    <span id="user-name" style="font-size:11px;opacity:.8;"></span>
     <span id="user-role" style="font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.15);"></span>
-    <span id="lang-toggle-wrap"></span>
-  <button class="logout-btn" onclick="doLogout()" data-i18n="nav_logout">Logout</button>
+    <button class="logout-btn" onclick="doLogout()" data-i18n="nav_logout">Keluar</button>
   </div>
 </nav>
 
 <div class="app">
 
-  <!-- Page Header -->
   <div class="page-hdr">
     <div>
-      <div class="page-title">📦 Material Master</div>
-      <div class="page-sub">Database jenis kayu & material · Update harga dengan historis otomatis</div>
+      <div class="page-title">📦 <span data-i18n="mat_title">Material Master</span></div>
+      <div class="page-sub" data-i18n="mat_subtitle">Database jenis kayu & material · Update harga dengan historis otomatis</div>
     </div>
-    <button class="btn btn-primary" onclick="openAddModal()" data-i18n="mat_add_btn">➕ Tambah Material Baru</button>
+    <button class="btn btn-primary" onclick="openAddModal()">➕ <span data-i18n="mat_add_btn">Tambah Material Baru</span></button>
   </div>
 
-  <!-- Stats -->
-  <div class="stats-grid" id="stats-grid">
-    <div class="stat-card"><div class="stat-val" id="stat-total">—</div><div class="stat-lbl" data-i18n="mat_total">Total Material</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:#e65100" id="stat-sw">—</div><div class="stat-lbl" data-i18n="mat_sw_count">Solid Wood</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:#1565c0" id="stat-pw">—</div><div class="stat-lbl" data-i18n="mat_pw_count">Plywood / Board</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:#6a1b9a" id="stat-nw">—</div><div class="stat-lbl" data-i18n="mat_nw_count">Non-Wood</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:#2d5a27" id="stat-updates">—</div><div class="stat-lbl" data-i18n="mat_updates">Update Harga Bulan Ini</div></div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-val" id="s-total">—</div><div class="stat-lbl" data-i18n="mat_total">Total Material</div></div>
+    <div class="stat-card"><div class="stat-val" id="s-sw" style="color:#e65100">—</div><div class="stat-lbl" data-i18n="mat_sw_count">Solid Wood</div></div>
+    <div class="stat-card"><div class="stat-val" id="s-pw" style="color:#1565c0">—</div><div class="stat-lbl" data-i18n="mat_pw_count">Plywood / Board</div></div>
+    <div class="stat-card"><div class="stat-val" id="s-nw" style="color:#6a1b9a">—</div><div class="stat-lbl" data-i18n="mat_nw_count">Non-Wood</div></div>
+    <div class="stat-card"><div class="stat-val" id="s-upd" style="color:#2d5a27">—</div><div class="stat-lbl" data-i18n="mat_updates">Update Bulan Ini</div></div>
   </div>
 
-  <!-- Filter -->
   <div class="filter-bar">
-    <input type="text" class="search-inp" id="search-inp" data-i18n-ph="mat_search" placeholder="Cari nama material, ID..." oninput="filterMaterials()">
+    <input type="text" class="search-inp" id="search-inp" placeholder="Cari nama material, ID..." data-i18n-ph="mat_search" oninput="doFilter()">
     <button class="filter-btn active" onclick="setFilter('ALL',this)" data-i18n="mat_filter_all">Semua</button>
     <button class="filter-btn" onclick="setFilter('SW',this)">🪵 Solid Wood</button>
     <button class="filter-btn" onclick="setFilter('PW',this)">📐 Plywood</button>
     <button class="filter-btn" onclick="setFilter('NW',this)">🔩 Non-Wood</button>
-    <button class="filter-btn" onclick="setFilter('ACTIVE',this)">✅ Aktif</button>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
-      <span style="font-size:11px;color:#8a8680;">Tampilan:</span>
-      <div class="view-toggle">
-        <button class="view-btn active" id="btn-card" onclick="setView('card')" data-i18n="mat_view_card">⊞ Card</button>
-        <button class="view-btn" id="btn-list" onclick="setView('list')" data-i18n="mat_view_list">☰ List</button>
-      </div>
+    <button class="filter-btn" onclick="setFilter('ACT',this)" data-i18n="mat_filter_act">✅ Aktif</button>
+    <div class="view-toggle">
+      <button class="view-btn active" id="btn-card" onclick="setView('card')" data-i18n="mat_view_card">⊞ Card</button>
+      <button class="view-btn" id="btn-list" onclick="setView('list')" data-i18n="mat_view_list">☰ List</button>
     </div>
   </div>
 
-  <!-- Import/Export Toolbar -->
-  <div class="io-toolbar">
+  <div class="io-bar">
     <span class="io-label" data-i18n="mat_export">📤 EXPORT:</span>
-    <button class="io-btn csv"   onclick="exportCSV()">📊 CSV</button>
+    <button class="io-btn csv" onclick="exportCSV()">📊 CSV</button>
     <button class="io-btn excel" onclick="exportExcel()">📗 Excel</button>
-    <button class="io-btn pdf"   onclick="exportPDF()">📕 PDF</button>
+    <button class="io-btn pdf" onclick="exportPDF()">📕 PDF</button>
     <div class="io-sep"></div>
     <span class="io-label" data-i18n="mat_import">📥 IMPORT:</span>
-    <button class="io-btn import" onclick="openImportModal()">📂 Upload CSV/Excel</button>
-    <div style="margin-left:auto;font-size:11px;color:#8a8680;" id="io-status"></div>
+    <button class="io-btn imp" onclick="openImportModal()">📂 Upload CSV/Excel</button>
   </div>
 
-  <!-- Materials Grid — Card View -->
   <div class="mat-grid" id="mat-grid">
-    <div style="grid-column:1/-1;text-align:center;padding:40px;color:#8a8680;">
-      <div style="font-size:32px;margin-bottom:8px;">⏳</div>
-      Memuat data material...
-    </div>
+    <div class="empty">⏳ Memuat data material...</div>
   </div>
-
-  <!-- Materials List — List View -->
-  <div class="mat-list" id="mat-list">
-    <table class="list-table">
-      <thead>
-        <tr>
-          <th onclick="sortList('id')">ID <span class="sort-icon">↕</span></th>
-          <th onclick="sortList('nama')">Nama Material <span class="sort-icon">↕</span></th>
-          <th onclick="sortList('cat')">Kategori <span class="sort-icon">↕</span></th>
-          <th onclick="sortList('kelas')">Kelas <span class="sort-icon">↕</span></th>
-          <th onclick="sortList('rendemen')">Rendemen <span class="sort-icon">↕</span></th>
-          <th onclick="sortList('harga')">Harga Aktif <span class="sort-icon">↕</span></th>
-          <th>Update Terakhir</th>
-          <th>Status</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody id="list-tbody">
-        <tr><td colspan="9" style="text-align:center;padding:30px;color:#8a8680;">⏳ Memuat...</td></tr>
-      </tbody>
+  <div class="mat-list-wrap" id="mat-list">
+    <table class="list-tbl">
+      <thead><tr>
+        <th onclick="sortBy('id')">ID ↕</th>
+        <th onclick="sortBy('nama')">Nama ↕</th>
+        <th onclick="sortBy('cat')">Kategori ↕</th>
+        <th onclick="sortBy('kelas')">Kelas ↕</th>
+        <th onclick="sortBy('rendemen')">Rendemen ↕</th>
+        <th onclick="sortBy('harga')">Harga Aktif ↕</th>
+        <th>Update</th>
+        <th>Status</th>
+        <th>Aksi</th>
+      </tr></thead>
+      <tbody id="list-body"></tbody>
     </table>
   </div>
 
-</div><!-- end app -->
-
-
-<!-- VIEW MATERIAL MODAL -->
-<div class="modal-overlay" id="view-modal">
-  <div class="modal" style="max-width:560px;">
-    <div class="modal-hdr">
-      <h3 id="view-modal-title">👁 Detail Material</h3>
-      <button class="modal-close" onclick="closeModal('view-modal')">✕</button>
-    </div>
-    <div class="modal-body" id="view-modal-body"></div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('view-modal')">Tutup</button>
-      <button class="btn btn-secondary" onclick="exportViewPDF()" style="color:#8b1a1a;border-color:#e0a0a0;">📕 PDF</button>
-      <button class="btn btn-primary" id="view-edit-btn" onclick="">✏️ Edit</button>
-    </div>
-  </div>
-</div>
-
-<!-- IMPORT MODAL -->
-<div class="modal-overlay" id="import-modal">
-  <div class="modal" style="max-width:520px;">
-    <div class="modal-hdr">
-      <h3>📥 Import Material dari File</h3>
-      <button class="modal-close" onclick="closeModal('import-modal')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div style="background:#fff8e8;border:1px solid #f0c060;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#7a5a10;">
-        ⚠️ <b>Format CSV/Excel yang diterima:</b> ID, Nama, NamaPanjang, Kategori(SW/PW/NW), Kelas, Rendemen, Densitas, Harga, Satuan
-      </div>
-      <div class="import-zone" id="import-zone" onclick="document.getElementById('import-file').click()"
-           ondragover="event.preventDefault();this.classList.add('drag')"
-           ondragleave="this.classList.remove('drag')"
-           ondrop="handleImportDrop(event)">
-        <div class="icon">📂</div>
-        <div style="font-weight:600;margin-bottom:4px;">Klik atau drag & drop file</div>
-        <div style="font-size:12px;color:#8a8680;">CSV, Excel (.xlsx, .xls)</div>
-      </div>
-      <input type="file" id="import-file" accept=".csv,.xlsx,.xls" style="display:none" onchange="handleImportFile(event)">
-      <div id="import-preview-area" style="display:none;">
-        <div style="font-size:12px;font-weight:600;color:#2d5a27;margin:12px 0 6px;">✅ Preview Data (<span id="import-count">0</span> baris):</div>
-        <div class="import-preview" id="import-preview"></div>
-      </div>
-      <div id="import-template-link" style="margin-top:12px;font-size:12px;text-align:center;">
-        <span style="color:#8a8680;">Belum punya template? </span>
-        <button onclick="downloadImportTemplate()" style="background:none;border:none;color:#2d5a27;cursor:pointer;font-size:12px;font-weight:600;text-decoration:underline;">Download Template CSV</button>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('import-modal')">Batal</button>
-      <button class="btn btn-primary" id="import-save-btn" onclick="processImport()" disabled style="opacity:.5;">📥 Import Sekarang</button>
-    </div>
-  </div>
 </div>
 
 <!-- ADD/EDIT MODAL -->
-<div class="modal-overlay" id="mat-modal">
+<div class="modal-ov" id="modal-add">
   <div class="modal">
-    <div class="modal-hdr">
-      <h3 id="modal-title" data-i18n="mat_add_btn">➕ Tambah Material Baru</h3>
-      <button class="modal-close" onclick="closeModal('mat-modal')">✕</button>
-    </div>
+    <div class="modal-hdr"><h3 id="modal-title">➕ Tambah Material</h3><button class="modal-x" onclick="closeModal('modal-add')">✕</button></div>
     <div class="modal-body">
-      <div class="form-grid">
-        <div class="fg">
-          <label>ID Material <span style="color:#8a8680;font-weight:400">(auto/manual)</span></label>
-          <input type="text" class="fc" id="m-id" placeholder="SW-013, PW-008..." maxlength="10">
-        </div>
-        <div class="fg">
-          <label>Kategori</label>
-          <select class="fc" id="m-cat" onchange="updateIdSuggestion()">
+      <div class="fgrid">
+        <div class="fg"><label>ID Material</label><input type="text" class="fc" id="m-id" placeholder="SW-013" maxlength="10"></div>
+        <div class="fg"><label>Kategori</label>
+          <select class="fc" id="m-cat" onchange="autoId()">
             <option value="SW">Solid Wood (SW)</option>
-            <option value="PW">Plywood / Board (PW)</option>
+            <option value="PW">Plywood (PW)</option>
             <option value="NW">Non-Wood (NW)</option>
           </select>
         </div>
       </div>
-      <div class="form-grid">
-        <div class="fg">
-          <label>Nama Singkat</label>
-          <input type="text" class="fc" id="m-nama" placeholder="Jati, Mindi, Akasia...">
-        </div>
-        <div class="fg">
-          <label>Nama Panjang / Ilmiah</label>
-          <input type="text" class="fc" id="m-nama-panjang" placeholder="Jati (Tectona grandis)">
-        </div>
+      <div class="fgrid">
+        <div class="fg"><label>Nama</label><input type="text" class="fc" id="m-nama" placeholder="Jati, Mindi..."></div>
+        <div class="fg"><label>Nama Ilmiah</label><input type="text" class="fc" id="m-ilmiah" placeholder="Tectona grandis"></div>
       </div>
-      <div class="form-grid">
-        <div class="fg">
-          <label>Kelas Kayu</label>
+      <div class="fgrid">
+        <div class="fg"><label>Kelas</label>
           <select class="fc" id="m-kelas">
             <option value="1">Kelas 1 (Premium)</option>
-            <option value="2">Kelas 2 (Standard)</option>
+            <option value="2" selected>Kelas 2 (Standard)</option>
             <option value="3">Kelas 3 (Economy)</option>
-            <option value="0">— Tidak Berlaku</option>
+            <option value="0">— N/A</option>
           </select>
         </div>
-        <div class="fg">
-          <label>Rendemen dari Log (%)</label>
-          <input type="number" class="fc" id="m-rendemen" value="35" min="10" max="100" placeholder="35">
-        </div>
+        <div class="fg"><label>Rendemen (%)</label><input type="number" class="fc" id="m-rdm" value="35" min="10" max="100"></div>
       </div>
-      <div class="form-grid">
-        <div class="fg">
-          <label>Densitas (kg/m³)</label>
-          <input type="number" class="fc" id="m-density" placeholder="720" min="100" max="9000">
-        </div>
-        <div class="fg">
-          <label>Satuan Harga</label>
+      <div class="fgrid">
+        <div class="fg"><label>Densitas (kg/m³)</label><input type="number" class="fc" id="m-dens" placeholder="720"></div>
+        <div class="fg"><label>Satuan Harga</label>
           <select class="fc" id="m-unit">
-            <option value="m³">m³ (meter kubik)</option>
+            <option value="m³">m³</option>
             <option value="lembar">lembar (122×244cm)</option>
-            <option value="meter">meter (panjang)</option>
-            <option value="m²">m² (meter persegi)</option>
-            <option value="kg">kg (kilogram)</option>
+            <option value="meter">meter</option>
+            <option value="m²">m²</option>
+            <option value="kg">kg</option>
           </select>
         </div>
       </div>
-      <div class="fg">
-        <label>Harga Awal (Rp)</label>
-        <input type="number" class="fc" id="m-harga" placeholder="18000000" min="0">
-      </div>
-      <div class="fg">
-        <label>Keterangan / Deskripsi</label>
-        <textarea class="fc" id="m-ket" rows="2" placeholder="Keterangan tambahan tentang material ini..."></textarea>
-      </div>
-      <div class="fg" style="display:flex;align-items:center;gap:10px;">
-        <input type="checkbox" id="m-aktif" checked style="width:16px;height:16px;">
-        <label for="m-aktif" style="margin-bottom:0;cursor:pointer;">Material Aktif (tersedia untuk digunakan)</label>
-      </div>
+      <div class="fg"><label>Harga (Rp)</label><input type="number" class="fc" id="m-harga" placeholder="18000000"></div>
+      <div class="fg"><label>Keterangan</label><textarea class="fc" id="m-ket" rows="2" placeholder="Catatan tambahan..."></textarea></div>
+      <div style="display:flex;align-items:center;gap:8px;"><input type="checkbox" id="m-aktif" checked style="width:15px;height:15px;"><label for="m-aktif" style="cursor:pointer;margin:0;">Material Aktif</label></div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('mat-modal')">Batal</button>
-      <button class="btn btn-primary" id="modal-save-btn" onclick="saveMaterial()">💾 Simpan</button>
+      <button class="btn" style="background:#f0efe9;color:#5a5750;border:1.5px solid #d8d5cb;" onclick="closeModal('modal-add')">Batal</button>
+      <button class="btn btn-primary" id="save-btn" onclick="saveMaterial()">💾 Simpan</button>
     </div>
   </div>
 </div>
 
-<!-- UPDATE HARGA MODAL -->
-<div class="modal-overlay" id="price-modal">
-  <div class="modal" style="max-width:440px;">
-    <div class="modal-hdr">
-      <h3>💰 Update Harga Material</h3>
-      <button class="modal-close" onclick="closeModal('price-modal')">✕</button>
-    </div>
+<!-- PRICE MODAL -->
+<div class="modal-ov" id="modal-price">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-hdr"><h3>💰 Update Harga</h3><button class="modal-x" onclick="closeModal('modal-price')">✕</button></div>
     <div class="modal-body">
-      <div id="price-modal-info" style="background:#f5f4f0;border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:13px;"></div>
-      <div class="fg">
-        <label>Harga Baru (Rp)</label>
-        <input type="number" class="fc" id="pm-harga-baru" placeholder="0" min="0" style="font-size:18px;font-weight:700;">
-      </div>
-      <div class="fg">
-        <label>Tanggal Berlaku</label>
-        <input type="date" class="fc" id="pm-tanggal">
-      </div>
-      <div class="fg">
-        <label>Keterangan Perubahan <span style="color:#8a8680;font-weight:400">(opsional)</span></label>
-        <input type="text" class="fc" id="pm-ket" placeholder="Contoh: Naik karena kenaikan BBM, Harga pasar baru...">
-      </div>
-      <div id="pm-preview" style="background:#eaf3e8;border-radius:8px;padding:10px 12px;font-size:12px;color:#1e4219;display:none;margin-top:8px;"></div>
+      <div id="price-info" style="background:#f5f4f0;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:13px;"></div>
+      <div class="fg"><label>Harga Baru (Rp)</label><input type="number" class="fc" id="pm-harga" placeholder="0" style="font-size:18px;font-weight:700;" oninput="previewChange()"></div>
+      <div class="fg"><label>Tanggal Berlaku</label><input type="date" class="fc" id="pm-tanggal"></div>
+      <div class="fg"><label>Keterangan (opsional)</label><input type="text" class="fc" id="pm-ket" placeholder="Naik karena BBM, harga pasar..."></div>
+      <div id="pm-preview" style="display:none;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:600;margin-top:6px;"></div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('price-modal')">Batal</button>
-      <button class="btn btn-primary" onclick="savePrice()">💾 Update Harga</button>
+      <button class="btn" style="background:#f0efe9;color:#5a5750;border:1.5px solid #d8d5cb;" onclick="closeModal('modal-price')">Batal</button>
+      <button class="btn btn-primary" onclick="savePrice()">💾 Update</button>
     </div>
   </div>
 </div>
 
 <!-- HISTORY MODAL -->
-<div class="modal-overlay" id="hist-modal">
+<div class="modal-ov" id="modal-hist">
   <div class="modal" style="max-width:500px;">
-    <div class="modal-hdr">
-      <h3 id="hist-modal-title">📈 Historis Harga</h3>
-      <button class="modal-close" onclick="closeModal('hist-modal')">✕</button>
+    <div class="modal-hdr"><h3 id="hist-title">📈 Historis Harga</h3><button class="modal-x" onclick="closeModal('modal-hist')">✕</button></div>
+    <div class="modal-body" id="hist-body"><div class="empty">⏳ Memuat...</div></div>
+  </div>
+</div>
+
+<!-- VIEW MODAL -->
+<div class="modal-ov" id="modal-view">
+  <div class="modal" style="max-width:500px;">
+    <div class="modal-hdr"><h3 id="view-title">👁 Detail Material</h3><button class="modal-x" onclick="closeModal('modal-view')">✕</button></div>
+    <div class="modal-body" id="view-body"></div>
+    <div class="modal-footer">
+      <button class="btn" style="background:#f0efe9;color:#5a5750;border:1.5px solid #d8d5cb;" onclick="closeModal('modal-view')">Tutup</button>
+      <button class="btn btn-primary" id="view-edit-btn">✏️ Edit</button>
     </div>
+  </div>
+</div>
+
+<!-- IMPORT MODAL -->
+<div class="modal-ov" id="modal-import">
+  <div class="modal" style="max-width:500px;">
+    <div class="modal-hdr"><h3>📥 Import Material</h3><button class="modal-x" onclick="closeModal('modal-import')">✕</button></div>
     <div class="modal-body">
-      <div id="hist-chart-area" style="margin-bottom:16px;"></div>
-      <div id="hist-list-area"></div>
+      <div style="background:#fff8e8;border:1px solid #f0c060;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:#7a5a10;">
+        Format CSV: ID, Nama, NamaPanjang, Kategori(SW/PW/NW), Kelas, Rendemen, Densitas, Harga, Satuan, Status, Keterangan
+      </div>
+      <div class="import-zone" id="import-zone" onclick="document.getElementById('imp-file').click()"
+           ondragover="event.preventDefault();this.style.borderColor='#2d5a27'"
+           ondragleave="this.style.borderColor='#d8d5cb'"
+           ondrop="dropFile(event)">
+        <div style="font-size:36px;margin-bottom:8px;">📂</div>
+        <div style="font-weight:600;margin-bottom:4px;">Klik atau drag & drop</div>
+        <div style="font-size:12px;color:#8a8680;">CSV, Excel (.xlsx)</div>
+      </div>
+      <input type="file" id="imp-file" accept=".csv,.xlsx,.xls" style="display:none" onchange="readImportFile(event)">
+      <div id="imp-preview-wrap" style="display:none;">
+        <div style="font-size:12px;font-weight:600;color:#2d5a27;margin:10px 0 4px;">Preview (<span id="imp-count">0</span> baris):</div>
+        <div class="import-preview" id="imp-preview"></div>
+      </div>
+      <div style="margin-top:10px;text-align:center;">
+        <button onclick="dlTemplate()" style="background:none;border:none;color:#2d5a27;cursor:pointer;font-size:12px;font-weight:600;text-decoration:underline;">Download Template CSV</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="background:#f0efe9;color:#5a5750;border:1.5px solid #d8d5cb;" onclick="closeModal('modal-import')">Batal</button>
+      <button class="btn btn-primary" id="imp-btn" onclick="doImport()" disabled style="opacity:.5;">📥 Import Sekarang</button>
     </div>
   </div>
 </div>
@@ -555,46 +320,69 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
 
 <script type="module">
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import {
-  getFirestore, collection, doc,
-  getDocs, getDoc, setDoc, addDoc, updateDoc, deleteDoc,
-  query, where, orderBy, limit,
-  serverTimestamp, Timestamp
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, doc, getDocs, getDoc, setDoc, addDoc, updateDoc, deleteDoc, query, where, orderBy, limit, serverTimestamp, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-console.log('MATERIALS VERSION: 3.3 - BUILD 2026-05-23');
-const FC = {
-  apiKey:"AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",
-  authDomain:"gabe-international-hub.firebaseapp.com",
-  projectId:"gabe-international-hub",
-  storageBucket:"gabe-international-hub.firebasestorage.app",
-  messagingSenderId:"115783216069",
-  appId:"1:115783216069:web:62cfabf543b1fbb85bf9ac"
-};
+// Firebase config
+const FC = {apiKey:"AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",authDomain:"gabe-international-hub.firebaseapp.com",projectId:"gabe-international-hub",storageBucket:"gabe-international-hub.firebasestorage.app",messagingSenderId:"115783216069",appId:"1:115783216069:web:62cfabf543b1fbb85bf9ac"};
+const fbApp = getApps().find(function(a){return a.name==='mat';}) || initializeApp(FC,'mat');
+const auth = getAuth(fbApp);
+const db = getFirestore(fbApp);
 
-const fbApp = getApps().find(a=>a.name==='materials') || initializeApp(FC,'materials');
-const auth  = getAuth(fbApp);
-const db    = getFirestore(fbApp);
-
-// ── Auth ─────────────────────────────────────────────────────────────
+// Auth check
 const stored = sessionStorage.getItem('gabe_user');
-if (!stored) { window.location.href='index.html'; }
-const currentUser = JSON.parse(stored||'{}');
-document.getElementById('user-name').textContent = '👤 ' + (currentUser.name||currentUser.email||'');
-document.getElementById('user-role').textContent = (currentUser.role||'').toUpperCase();
+if (!stored) { window.location.href = 'index.html'; }
+const CU = JSON.parse(stored || '{}');
+document.getElementById('user-name').textContent = '👤 ' + (CU.name || CU.email || '');
+document.getElementById('user-role').textContent = (CU.role || '').toUpperCase();
+const canEdit = ['admin','manager'].includes(CU.role);
 
-const canEdit = ['admin','manager'].includes(currentUser.role);
+// Init lang toggle
+(function(){
+  function initLang(){
+    var wrap = document.getElementById('lang-wrap');
+    if (wrap && typeof buildLangToggle === 'function') {
+      var s = document.createElement('span');
+      s.innerHTML = buildLangToggle();
+      wrap.replaceWith(s.firstChild);
+    }
+    if (typeof applyLang === 'function') applyLang();
+  }
+  if (typeof buildLangToggle === 'function') { initLang(); }
+  else { document.addEventListener('DOMContentLoaded', initLang); }
+})();
 
-window.doLogout = async function() {
-  try { await signOut(auth); } catch(e){}
-  sessionStorage.removeItem('gabe_user');
-  window.location.href = 'index.html';
-}
+// Constants
+const CAT_CLR = {SW:'#e65100',PW:'#1565c0',NW:'#6a1b9a'};
+const CAT_BG  = {SW:'#fff3e0',PW:'#e3f2fd',NW:'#f3e5f5'};
+const CAT_DOT = {SW:'#ff7043',PW:'#1976d2',NW:'#8e24aa'};
+const KLS_LBL = {1:'⭐⭐⭐ K1',2:'⭐⭐ K2',3:'⭐ K3',0:'—'};
 
-// ── Default material seeds ────────────────────────────────────────────
-const DEFAULT_MATERIALS = [
-  {id:'SW-001',nama:'Jati',namaPanjang:'Jati (Tectona grandis)',cat:'SW',kelas:1,rendemen:35,density:720,harga:18000000,unit:'m³',aktif:true,ket:'Kayu keras premium, kelas 1'},
+// State
+let MAT = [];
+let curFilter = 'ALL';
+let curView = 'card';
+let sortKey = 'id';
+let sortAsc = true;
+let editId = null;
+let priceId = null;
+let importRows = [];
+
+// Format helpers
+function fm(n){ return 'Rp ' + Math.round(n||0).toLocaleString('id-ID'); }
+function fdt(ts){ if(!ts) return '—'; var d = ts.toDate ? ts.toDate() : new Date(ts); return d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}); }
+function today(){ return new Date().toISOString().split('T')[0]; }
+function dlBlob(data, name, mime){ var b = new Blob([data],{type:mime}); var a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); document.body.removeChild(a); }
+
+// Toast
+window.showToast = function(msg){ var t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 2500); };
+
+// Logout
+window.doLogout = async function(){ try{ await signOut(auth); }catch(e){} sessionStorage.removeItem('gabe_user'); window.location.href = 'index.html'; };
+
+// Default seeds
+const SEEDS = [
+  {id:'SW-001',nama:'Jati',namaPanjang:'Jati (Tectona grandis)',cat:'SW',kelas:1,rendemen:35,density:720,harga:18000000,unit:'m³',aktif:true,ket:'Kayu keras premium'},
   {id:'SW-002',nama:'Sonokeling',namaPanjang:'Sonokeling (Dalbergia latifolia)',cat:'SW',kelas:1,rendemen:32,density:860,harga:22000000,unit:'m³',aktif:true,ket:''},
   {id:'SW-003',nama:'Sono Kembang',namaPanjang:'Sono Kembang (Pterocarpus)',cat:'SW',kelas:2,rendemen:33,density:800,harga:14000000,unit:'m³',aktif:true,ket:''},
   {id:'SW-004',nama:'Mahoni',namaPanjang:'Mahoni (Swietenia mahagoni)',cat:'SW',kelas:2,rendemen:38,density:640,harga:7500000,unit:'m³',aktif:true,ket:''},
@@ -606,1006 +394,504 @@ const DEFAULT_MATERIALS = [
   {id:'SW-010',nama:'Albasia',namaPanjang:'Albasia / Falcata',cat:'SW',kelas:3,rendemen:45,density:300,harga:2500000,unit:'m³',aktif:true,ket:''},
   {id:'SW-011',nama:'Pinus',namaPanjang:'Pinus (Pinus merkusii)',cat:'SW',kelas:3,rendemen:42,density:480,harga:3200000,unit:'m³',aktif:true,ket:''},
   {id:'SW-012',nama:'Trembesi',namaPanjang:'Trembesi (Samanea saman)',cat:'SW',kelas:3,rendemen:40,density:560,harga:4000000,unit:'m³',aktif:true,ket:''},
-  {id:'PW-001',nama:'Plywood 18mm',namaPanjang:'Plywood 18mm (122×244cm)',cat:'PW',kelas:0,rendemen:100,density:600,harga:220000,unit:'lembar',aktif:true,ket:''},
-  {id:'PW-002',nama:'Plywood 15mm',namaPanjang:'Plywood 15mm (122×244cm)',cat:'PW',kelas:0,rendemen:100,density:600,harga:190000,unit:'lembar',aktif:true,ket:''},
-  {id:'PW-003',nama:'Plywood 12mm',namaPanjang:'Plywood 12mm (122×244cm)',cat:'PW',kelas:0,rendemen:100,density:580,harga:165000,unit:'lembar',aktif:true,ket:''},
-  {id:'PW-004',nama:'Plywood 9mm',namaPanjang:'Plywood 9mm (122×244cm)',cat:'PW',kelas:0,rendemen:100,density:560,harga:140000,unit:'lembar',aktif:true,ket:''},
-  {id:'PW-005',nama:'MDF 18mm',namaPanjang:'MDF 18mm (122×244cm)',cat:'PW',kelas:0,rendemen:100,density:720,harga:180000,unit:'lembar',aktif:true,ket:''},
+  {id:'PW-001',nama:'Plywood 18mm',namaPanjang:'Plywood 18mm (122x244cm)',cat:'PW',kelas:0,rendemen:100,density:600,harga:220000,unit:'lembar',aktif:true,ket:''},
+  {id:'PW-002',nama:'Plywood 15mm',namaPanjang:'Plywood 15mm (122x244cm)',cat:'PW',kelas:0,rendemen:100,density:600,harga:190000,unit:'lembar',aktif:true,ket:''},
+  {id:'PW-003',nama:'Plywood 12mm',namaPanjang:'Plywood 12mm (122x244cm)',cat:'PW',kelas:0,rendemen:100,density:580,harga:165000,unit:'lembar',aktif:true,ket:''},
+  {id:'PW-004',nama:'Plywood 9mm',namaPanjang:'Plywood 9mm (122x244cm)',cat:'PW',kelas:0,rendemen:100,density:560,harga:140000,unit:'lembar',aktif:true,ket:''},
+  {id:'PW-005',nama:'MDF 18mm',namaPanjang:'MDF 18mm (122x244cm)',cat:'PW',kelas:0,rendemen:100,density:720,harga:180000,unit:'lembar',aktif:true,ket:''},
+  {id:'PW-006',nama:'HDF/Hardboard',namaPanjang:'HDF Hardboard 3mm',cat:'PW',kelas:0,rendemen:100,density:850,harga:65000,unit:'lembar',aktif:true,ket:''},
   {id:'NW-001',nama:'Kaca 5mm',namaPanjang:'Kaca Bening 5mm',cat:'NW',kelas:0,rendemen:100,density:2500,harga:180000,unit:'m²',aktif:true,ket:''},
   {id:'NW-002',nama:'Rotan Anyaman',namaPanjang:'Anyaman Rotan (per m²)',cat:'NW',kelas:0,rendemen:100,density:200,harga:145000,unit:'m²',aktif:true,ket:''},
-  {id:'NW-003',nama:'Busa Foam',namaPanjang:'Busa Foam (Seat/Back)',cat:'NW',kelas:0,rendemen:100,density:30,harga:85000,unit:'lembar',aktif:true,ket:''},
+  {id:'NW-003',nama:'Busa Foam',namaPanjang:'Busa Foam Seat/Back',cat:'NW',kelas:0,rendemen:100,density:30,harga:85000,unit:'lembar',aktif:true,ket:''},
 ];
 
-const CAT_COLOR  = {SW:'#e65100',PW:'#1565c0',NW:'#6a1b9a'};
-const CAT_BG     = {SW:'#fff3e0',PW:'#e3f2fd',NW:'#f3e5f5'};
-const CAT_DOT    = {SW:'#ff7043',PW:'#1976d2',NW:'#8e24aa'};
-const KELAS_LBL  = {1:'⭐⭐⭐ Kelas 1',2:'⭐⭐ Kelas 2',3:'⭐ Kelas 3',0:'—'};
-
-let allMaterials = [];
-let currentFilter = 'ALL';
-let currentView = 'card';
-let sortKey = 'id';
-let sortAsc = true;
-let editId = null;
-let priceEditId = null;
-
-function fm(n){ return 'Rp '+Math.round(n).toLocaleString('id-ID'); }
-function fts(ts){
-  if(!ts) return '—';
-  const d = ts.toDate ? ts.toDate() : new Date(ts);
-  return d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});
-}
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
-
-// ── Seed default materials if empty ──────────────────────────────────
-async function seedIfEmpty() {
-  const snap = await getDocs(collection(db,'materials'));
-  if (!snap.empty) return;
-  showToast('⏳ Inisialisasi data material...');
-  for (const m of DEFAULT_MATERIALS) {
-    await setDoc(doc(db,'materials',m.id), {
-      ...m, createdAt: serverTimestamp(), createdBy: currentUser.email||'system'
-    });
+async function seedIfEmpty(){
+  var snap = await getDocs(collection(db,'materials'));
+  if(!snap.empty) return;
+  showToast('Inisialisasi data material...');
+  for(var i=0;i<SEEDS.length;i++){
+    await setDoc(doc(db,'materials',SEEDS[i].id), Object.assign({},SEEDS[i],{createdAt:serverTimestamp(),createdBy:CU.email||'system'}));
   }
-  showToast('✅ Data material berhasil diinisialisasi!');
+  showToast('Data material berhasil diinisialisasi!');
 }
 
-// ── Load materials ────────────────────────────────────────────────────
-async function loadMaterials() {
-  await seedIfEmpty();
-  const snap = await getDocs(query(collection(db,'materials'), orderBy('id')));
-  allMaterials = [];
-  snap.forEach(d => allMaterials.push({...d.data(), _id:d.id}));
-  updateStats();
-  renderMaterials();
+async function loadMaterials(){
+  try{
+    await seedIfEmpty();
+    var snap = await getDocs(query(collection(db,'materials'), orderBy('id')));
+    MAT = [];
+    snap.forEach(function(d){ MAT.push(Object.assign({},d.data(),{_id:d.id})); });
+    updateStats();
+    render();
+  } catch(e){
+    document.getElementById('mat-grid').innerHTML = '<div class="empty">❌ Gagal memuat: ' + e.message + '</div>';
+    console.error(e);
+  }
 }
 
-function updateStats() {
-  document.getElementById('stat-total').textContent = allMaterials.length;
-  document.getElementById('stat-sw').textContent = allMaterials.filter(m=>m.cat==='SW').length;
-  document.getElementById('stat-pw').textContent = allMaterials.filter(m=>m.cat==='PW').length;
-  document.getElementById('stat-nw').textContent = allMaterials.filter(m=>m.cat==='NW').length;
-  // Count this month's price updates
-  const now = new Date();
-  // We'll update this after loading price history
+function updateStats(){
+  document.getElementById('s-total').textContent = MAT.length;
+  document.getElementById('s-sw').textContent = MAT.filter(function(m){return m.cat==='SW';}).length;
+  document.getElementById('s-pw').textContent = MAT.filter(function(m){return m.cat==='PW';}).length;
+  document.getElementById('s-nw').textContent = MAT.filter(function(m){return m.cat==='NW';}).length;
+  document.getElementById('s-upd').textContent = '—';
 }
 
-// ── DOM Helper Functions ────────────────────────────────────────────
-function mkEl(tag, cls, txt, style) {
-  var e = document.createElement(tag);
-  if (cls) e.className = cls;
-  if (txt !== undefined) e.textContent = txt;
-  if (style) e.style.cssText = style;
-  return e;
-}
-function mkBtn(cls, onclickFn, label) {
-  var b = document.createElement('button');
-  b.className = cls;
-  b.textContent = label;
-  b.onclick = onclickFn;
-  return b;
-}
-
-function renderMaterials() {
-  const grid = document.getElementById('mat-grid');
-  const q = document.getElementById('search-inp').value.toLowerCase();
-  let filtered = allMaterials.filter(m => {
-    if (currentFilter === 'SW') return m.cat === 'SW';
-    if (currentFilter === 'PW') return m.cat === 'PW';
-    if (currentFilter === 'NW') return m.cat === 'NW';
-    if (currentFilter === 'ACTIVE') return m.aktif !== false;
+function getFiltered(){
+  var q = (document.getElementById('search-inp').value||'').toLowerCase();
+  return MAT.filter(function(m){
+    if(curFilter==='SW') return m.cat==='SW';
+    if(curFilter==='PW') return m.cat==='PW';
+    if(curFilter==='NW') return m.cat==='NW';
+    if(curFilter==='ACT') return m.aktif!==false;
     return true;
-  }).filter(m => {
-    if (!q) return true;
-    return (m.id||'').toLowerCase().includes(q) ||
-           (m.nama||'').toLowerCase().includes(q) ||
-           (m.namaPanjang||'').toLowerCase().includes(q);
+  }).filter(function(m){
+    if(!q) return true;
+    return (m.id||'').toLowerCase().includes(q)||(m.nama||'').toLowerCase().includes(q)||(m.namaPanjang||'').toLowerCase().includes(q);
   });
+}
 
-  if (!filtered.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#8a8680"><div style="font-size:40px;margin-bottom:10px">🔍</div>Tidak ada material ditemukan</div>';
-    return;
-  }
+function render(){
+  if(curView==='list'){ renderList(); return; }
+  renderCards();
+}
 
+function renderCards(){
+  var grid = document.getElementById('mat-grid');
+  var data = getFiltered();
   grid.innerHTML = '';
-  filtered.forEach(m => {
-    const card = document.createElement('div');
+  if(!data.length){ grid.innerHTML = '<div class="empty">🔍 Tidak ada material ditemukan</div>'; return; }
+  data.forEach(function(m){
+    var mid = m.id||m._id;
+    var aktif = m.aktif!==false;
+    var dot = CAT_DOT[m.cat]||'#888';
+    var cbg = CAT_BG[m.cat]||'#f0f0f0';
+    var cclr = CAT_CLR[m.cat]||'#555';
+    var harga = m.harga||0;
+    var upd = m.harga_updated_at ? fdt(m.harga_updated_at) : (m.createdAt ? fdt(m.createdAt) : '—');
+
+    var card = document.createElement('div');
     card.className = 'mat-card';
-    card.style.opacity = m.aktif === false ? '0.6' : '1';
+    if(!aktif) card.style.opacity = '0.6';
 
-    const dot = CAT_DOT[m.cat]||'#888';
-    const catBg = CAT_BG[m.cat]||'#f0f0f0';
-    const catClr = CAT_COLOR[m.cat]||'#555';
-    const klsLabel = KELAS_LBL[m.kelas]||'—';
-    const harga = m.harga || 0;
-    const updDate = m.harga_updated_at ? fts(m.harga_updated_at) : (m.createdAt ? fts(m.createdAt) : '—');
+    // Header
+    var hdr = document.createElement('div'); hdr.className = 'card-hdr';
+    var dotEl = document.createElement('div'); dotEl.className = 'card-dot'; dotEl.style.background = dot;
+    var idEl = document.createElement('span'); idEl.className = 'card-id'; idEl.textContent = mid;
+    var nameEl = document.createElement('span'); nameEl.className = 'card-name'; nameEl.textContent = m.nama||'—';
+    var catEl = document.createElement('span'); catEl.className = 'cat-badge'; catEl.style.background = cbg; catEl.style.color = cclr; catEl.textContent = m.cat;
+    hdr.append(dotEl, idEl, nameEl, catEl);
+    if(!aktif){ var nb = document.createElement('span'); nb.style.cssText='font-size:10px;background:#fceaea;color:#8b2020;padding:2px 6px;border-radius:20px;font-weight:700;'; nb.textContent='Nonaktif'; hdr.appendChild(nb); }
 
-    // Build card using DOM methods - no string concat, no ternary issues
-    var mid = m.id || m._id;
-    var aktif = m.aktif !== false;
+    // Body
+    var body = document.createElement('div'); body.className = 'card-body';
+    var mg = document.createElement('div'); mg.className = 'meta-grid';
+    [{l:'Nama Ilmiah',v:m.namaPanjang||m.nama||'—'},{l:'Kelas',v:KLS_LBL[m.kelas]||'—'},{l:'Rendemen',v:(m.rendemen||'—')+'%'},{l:'Densitas',v:(m.density||'—')+' kg/m³'}]
+      .forEach(function(f){ var mi=document.createElement('div'); mi.className='meta-item'; mi.innerHTML=f.l+'<strong>'+f.v+'</strong>'; mg.appendChild(mi); });
     
-    // Helper: create element
-    function el(tag, cls, txt, style) {
-      var e = document.createElement(tag);
-      if (cls) e.className = cls;
-      if (txt !== undefined) e.textContent = txt;
-      if (style) e.style.cssText = style;
-      return e;
-    }
-    function btn(cls, onclick, label) {
-      var b = document.createElement('button');
-      b.className = cls;
-      b.textContent = label;
-      b.onclick = onclick;
-      return b;
-    }
+    var pb = document.createElement('div'); pb.className = 'price-box';
+    var pl = document.createElement('div');
+    var pv = document.createElement('div'); pv.className = 'price-val'; pv.innerHTML = fm(harga)+' <span class="price-unit">/ '+(m.unit||'m³')+'</span>';
+    var pd = document.createElement('div'); pd.className = 'price-date'; pd.textContent = 'Update: '+upd;
+    pl.append(pv,pd); pb.appendChild(pl);
+    if(canEdit){ var ub=document.createElement('button'); ub.className='upd-btn'; ub.textContent='✏️ Update'; ub.onclick=(function(id){return function(){openPriceModal(id);};})(mid); pb.appendChild(ub); }
+    body.append(mg,pb);
+    if(m.ket){ var ke=document.createElement('div'); ke.style.cssText='margin-top:8px;font-size:11px;color:#8a8680;font-style:italic;'; ke.textContent=m.ket; body.appendChild(ke); }
 
-    // Card header
-    var hdr = document.createElement('div');
-    hdr.className = 'mat-card-hdr';
-    
-    var dotEl = document.createElement('div');
-    dotEl.className = 'mat-color-dot';
-    dotEl.style.background = dot;
-    
-    var idEl = mkEl('span','mat-id', mid);
-    var namaEl = mkEl('span','mat-nama', m.nama||'—');
-    
-    var catEl = mkEl('span','mat-cat-badge');
-    catEl.style.background = catBg;
-    catEl.style.color = catClr;
-    catEl.textContent = {SW:'Solid Wood',PW:'Plywood',NW:'Non-Wood'}[m.cat]||m.cat;
-    
-    hdr.append(dotEl, idEl, namaEl, catEl);
-    if (!aktif) {
-      var nonaktifEl = mkEl('span','','Nonaktif','font-size:10px;background:#fceaea;color:#8b2020;padding:2px 7px;border-radius:20px;font-weight:700;');
-      hdr.appendChild(nonaktifEl);
+    // Footer
+    var ft = document.createElement('div'); ft.className = 'card-footer';
+    var vb=document.createElement('button'); vb.className='foot-btn info'; vb.textContent='👁 View'; vb.onclick=(function(id){return function(){viewMat(id);};})(mid);
+    ft.appendChild(vb);
+    if(canEdit){
+      var eb=document.createElement('button'); eb.className='foot-btn'; eb.textContent='✏️ Edit'; eb.onclick=(function(id){return function(){openEditModal(id);};})(mid);
+      var dp=document.createElement('button'); dp.className='foot-btn'; dp.textContent='⧉ Duplikat'; dp.onclick=(function(id){return function(){dupMat(id);};})(mid);
+      ft.append(eb,dp);
     }
-    
-    // Card body
-    var body = document.createElement('div');
-    body.className = 'mat-card-body';
-    
-    var metaGrid = document.createElement('div');
-    metaGrid.className = 'mat-meta-grid';
-    [
-      ['Nama Ilmiah', m.namaPanjang||m.nama||'—'],
-      ['Kelas', {1:'⭐⭐⭐ K1',2:'⭐⭐ K2',3:'⭐ K3',0:'—'}[m.kelas]||'—'],
-      ['Rendemen Log', (m.rendemen||'—')+'%'],
-      ['Densitas', (m.density||'—')+' kg/m³'],
-    ].forEach(function(f) {
-      var item = document.createElement('div');
-      item.className = 'mat-meta-item';
-      item.innerHTML = f[0] + '<strong style="font-size:11px;">' + f[1] + '</strong>';
-      metaGrid.appendChild(item);
-    });
-    
-    // Price section
-    var priceSection = document.createElement('div');
-    priceSection.className = 'price-section';
-    var priceRow = document.createElement('div');
-    priceRow.className = 'price-row';
-    var priceLeft = document.createElement('div');
-    priceLeft.innerHTML = 
-      '<div class="price-label">' + (typeof t==='function'?t('mat_price'):'💰 Harga Aktif') + '</div>' +
-      '<div class="price-value">' + fm(harga) + ' <span style="font-size:11px;font-weight:400;color:#8a8680">/ ' + (m.unit||'m³') + '</span></div>' +
-      '<div class="price-date">Update: ' + updDate + '</div>';
-    priceRow.appendChild(priceLeft);
-    if (canEdit) {
-      var updBtn = document.createElement('button');
-      updBtn.style.cssText = 'padding:6px 12px;background:#2d5a27;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;';
-      updBtn.textContent = typeof t==='function'?t('mat_update_price'):'✏️ Update';
-      updBtn.onclick = (function(id){ return function(){ openPriceModal(id); }; })(mid);
-      priceRow.appendChild(updBtn);
-    }
-    priceSection.appendChild(priceRow);
-    body.append(metaGrid, priceSection);
-    if (m.ket) {
-      var ketEl = mkEl('div','','', 'margin-top:8px;font-size:11px;color:#8a8680;font-style:italic;');
-      ketEl.textContent = m.ket;
-      body.appendChild(ketEl);
+    var hb=document.createElement('button'); hb.className='foot-btn'; hb.textContent='📈 Historis'; hb.onclick=(function(id,nm){return function(){showHist(id,nm);};})(mid,m.nama);
+    ft.appendChild(hb);
+    if(canEdit && CU.role==='admin'){
+      var db2=document.createElement('button'); db2.className='foot-btn danger'; db2.textContent='🗑 Hapus'; db2.onclick=(function(id,nm){return function(){delMat(id,nm);};})(mid,m.nama);
+      ft.appendChild(db2);
     }
 
-    // Card footer
-    var footer = document.createElement('div');
-    footer.className = 'mat-card-footer';
-    
-    var viewBtn = mkBtn('card-btn info', (function(id){ return function(){ viewMaterial(id); }; })(mid), typeof t==='function'?t('act_view'):'👁 View');
-    footer.appendChild(viewBtn);
-    
-    if (canEdit) {
-      var editBtnEl = mkBtn('card-btn', (function(id){ return function(){ openEditModal(id); }; })(mid), typeof t==='function'?t('act_edit'):'✏️ Edit');
-      var dupBtnEl  = mkBtn('card-btn', (function(id){ return function(){ duplicateMaterial(id); }; })(mid), typeof t==='function'?t('act_duplicate'):'⧉ Duplikat');
-      footer.append(editBtnEl, dupBtnEl);
-    }
-    
-    // More menu
-    var menuWrap = document.createElement('div');
-    menuWrap.className = 'action-menu';
-    var menuTrigger = document.createElement('button');
-    menuTrigger.className = 'card-btn';
-    menuTrigger.textContent = '⋯ Lainnya';
-    menuTrigger.onclick = (function(menuId){ return function(e){ toggleActionMenu(e, menuId); }; })('menu-'+mid);
-    
-    var dropdown = document.createElement('div');
-    dropdown.className = 'action-dropdown';
-    dropdown.id = 'menu-'+mid;
-    
-    var histItem = mkBtn('action-item', (function(id,nm){ return function(){ showHistory(id,nm); closeAllMenus(); }; })(mid, m.nama), '📈 Historis Harga');
-    var pdfItem  = mkBtn('action-item', (function(id){ return function(){ exportSinglePDF(id); closeAllMenus(); }; })(mid), '📕 Export PDF');
-    var csvItem  = mkBtn('action-item', (function(id){ return function(){ exportSingleCSV(id); closeAllMenus(); }; })(mid), '📊 Export CSV');
-    var sep = document.createElement('div'); sep.className = 'action-sep';
-    dropdown.append(histItem, pdfItem, csvItem, sep);
-    
-    if (canEdit && currentUser.role==='admin') {
-      var togItem = mkBtn('action-item', (function(id,ak){ return function(){ toggleAktif(id,ak); closeAllMenus(); }; })(mid, aktif), aktif ? '🚫 Nonaktifkan' : '✅ Aktifkan');
-      dropdown.appendChild(togItem);
-    }
-    if (currentUser.role==='admin') {
-      var delItem = mkBtn('action-item danger', (function(id,nm){ return function(){ deleteMaterial(id,nm); closeAllMenus(); }; })(mid, m.nama), '🗑 Hapus');
-      dropdown.appendChild(delItem);
-    }
-    
-    menuWrap.append(menuTrigger, dropdown);
-    footer.appendChild(menuWrap);
-    
-    card.append(hdr, body, footer);
-    card.style.opacity = aktif ? '1' : '0.6';
-    card.onclick = null;
-
+    card.append(hdr,body,ft);
     grid.appendChild(card);
   });
-  // If in list view, also update list
-  if (currentView === 'list') renderListView();
 }
 
-// ── View Toggle ──────────────────────────────────────────────────────
-window.setView = function(view) {
-  currentView = view;
-  var btnCard = document.getElementById('btn-card');
-  var btnList = document.getElementById('btn-list');
-  var matGrid = document.getElementById('mat-grid');
-  var matList = document.getElementById('mat-list');
-  if (btnCard) btnCard.classList.toggle('active', view==='card');
-  if (btnList) btnList.classList.toggle('active', view==='list');
-  if (matGrid) matGrid.classList.toggle('hidden', view==='list');
-  if (matList) matList.classList.toggle('active', view==='list');
-  if (view === 'list') renderListView();
-  else renderMaterials();
-}
-
-window.sortList = function(key) {
-  if (sortKey === key) sortAsc = !sortAsc;
-  else { sortKey = key; sortAsc = true; }
-  renderListView();
-}
-
-function getFiltered() {
-  var q = document.getElementById('search-inp').value.toLowerCase();
-  return allMaterials.filter(function(m) {
-    if (currentFilter === 'SW') return m.cat === 'SW';
-    if (currentFilter === 'PW') return m.cat === 'PW';
-    if (currentFilter === 'NW') return m.cat === 'NW';
-    if (currentFilter === 'ACTIVE') return m.aktif !== false;
-    return true;
-  }).filter(function(m) {
-    if (!q) return true;
-    return (m.id||'').toLowerCase().includes(q) ||
-           (m.nama||'').toLowerCase().includes(q) ||
-           (m.namaPanjang||'').toLowerCase().includes(q);
+function renderList(){
+  var tbody = document.getElementById('list-body');
+  var data = getFiltered().slice().sort(function(a,b){
+    var av=a[sortKey]||'', bv=b[sortKey]||'';
+    if(typeof av==='number'&&typeof bv==='number') return sortAsc?av-bv:bv-av;
+    return sortAsc?String(av).localeCompare(String(bv)):String(bv).localeCompare(String(av));
   });
-}
-
-function renderListView() {
-  var tbody = document.getElementById('list-tbody');
-  if (!tbody) return;
-  var filtered = getFiltered().sort(function(a,b) {
-    var av = a[sortKey]||'', bv = b[sortKey]||'';
-    if (typeof av === 'number') return sortAsc ? av-bv : bv-av;
-    return sortAsc ? String(av).localeCompare(String(bv)) : String(bv).localeCompare(String(av));
-  });
-  if (!filtered.length) {
-    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:30px;color:#8a8680">Tidak ada material ditemukan</td></tr>';
-    return;
-  }
-  var CAT_LABEL = {SW:'Solid Wood',PW:'Plywood',NW:'Non-Wood'};
-  tbody.innerHTML = '';
-  filtered.forEach(function(m) {
-    var mid2 = m.id||m._id;
-    var aktif2 = m.aktif !== false;
-    var catBg2 = CAT_BG[m.cat]||'#f0f0f0';
-    var catClr2 = CAT_COLOR[m.cat]||'#555';
-    var harga2 = m.harga||0;
-    var updDate2 = m.harga_updated_at ? fts(m.harga_updated_at) : (m.createdAt ? fts(m.createdAt) : '—');
-    var tr = document.createElement('tr');
-    tr.style.opacity = aktif2 ? '1' : '0.55';
-
-    // Col 1: ID
-    var td1 = document.createElement('td');
-    var idSpan = document.createElement('span');
-    idSpan.style.cssText = 'font-family:monospace;font-size:11px;background:#f0efe9;color:#5a5750;padding:2px 7px;border-radius:4px;';
-    idSpan.textContent = mid2;
-    td1.appendChild(idSpan);
-
-    // Col 2: Name
-    var td2 = document.createElement('td');
-    var nameDiv = document.createElement('div');
-    nameDiv.style.fontWeight = '600';
-    nameDiv.textContent = m.nama;
-    var subDiv = document.createElement('div');
-    subDiv.style.cssText = 'font-size:11px;color:#8a8680;';
-    subDiv.textContent = m.namaPanjang||'';
-    td2.append(nameDiv, subDiv);
-
-    // Col 3: Category
-    var td3 = document.createElement('td');
-    var catSpan = document.createElement('span');
-    catSpan.className = 'mat-cat-badge';
-    catSpan.style.background = catBg2;
-    catSpan.style.color = catClr2;
-    catSpan.textContent = {SW:'Solid Wood',PW:'Plywood',NW:'Non-Wood'}[m.cat]||m.cat;
-    td3.appendChild(catSpan);
-
-    // Col 4: Kelas
-    var td4 = document.createElement('td');
-    td4.style.cssText = 'text-align:center;font-size:12px;';
-    td4.textContent = m.kelas||'—';
-
-    // Col 5: Rendemen
-    var td5 = document.createElement('td');
-    var rdmSpan = document.createElement('span');
-    rdmSpan.className = 'rdm-badge';
-    rdmSpan.textContent = (m.rendemen||'—') + '%';
-    td5.appendChild(rdmSpan);
-
-    // Col 6: Price
-    var td6 = document.createElement('td');
-    var priceDiv = document.createElement('div');
-    priceDiv.style.cssText = 'font-weight:700;color:#2d5a27;';
-    priceDiv.textContent = fm(harga2);
-    var unitDiv = document.createElement('div');
-    unitDiv.style.cssText = 'font-size:10px;color:#8a8680;';
-    unitDiv.textContent = '/ ' + (m.unit||'m³');
-    td6.append(priceDiv, unitDiv);
-
-    // Col 7: Update date
-    var td7 = document.createElement('td');
-    td7.style.cssText = 'font-size:11px;color:#8a8680;';
-    td7.textContent = updDate2;
-
-    // Col 8: Status
-    var td8 = document.createElement('td');
-    var statusSpan = document.createElement('span');
-    statusSpan.style.cssText = 'font-size:10px;padding:3px 8px;border-radius:20px;font-weight:700;background:' + (aktif2?'#eaf3e8':'#fceaea') + ';color:' + (aktif2?'#2d5a27':'#8b2020') + ';';
-    statusSpan.textContent = aktif2 ? '✅ Aktif' : '🚫 Nonaktif';
-    td8.appendChild(statusSpan);
-
-    // Col 9: Actions
-    var td9 = document.createElement('td');
-    var actDiv = document.createElement('div');
-    actDiv.style.cssText = 'display:flex;gap:4px;';
-
-    var vBtn = mkBtn('list-btn', (function(id){ return function(){ viewMaterial(id); }; })(mid2), '👁');
-    vBtn.title = 'View';
-    actDiv.appendChild(vBtn);
-
-    if (canEdit) {
-      var pBtn = mkBtn('list-btn primary', (function(id){ return function(){ openPriceModal(id); }; })(mid2), '💰');
-      pBtn.title = 'Update Harga';
-      var eBtn = mkBtn('list-btn', (function(id){ return function(){ openEditModal(id); }; })(mid2), '✏️');
-      eBtn.title = 'Edit';
-      actDiv.append(pBtn, eBtn);
+  tbody.innerHTML='';
+  if(!data.length){ tbody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:20px;color:#8a8680;">Tidak ada data</td></tr>'; return; }
+  data.forEach(function(m){
+    var mid=m.id||m._id; var aktif=m.aktif!==false;
+    var cbg=CAT_BG[m.cat]||'#f0f0f0'; var cclr=CAT_CLR[m.cat]||'#555';
+    var upd=m.harga_updated_at?fdt(m.harga_updated_at):(m.createdAt?fdt(m.createdAt):'—');
+    var tr=document.createElement('tr'); if(!aktif) tr.style.opacity='0.6';
+    var cells=[
+      '<span style="font-family:monospace;font-size:11px;background:#f0efe9;padding:2px 6px;border-radius:4px;">'+mid+'</span>',
+      '<div style="font-weight:600">'+m.nama+'</div><div style="font-size:11px;color:#8a8680">'+(m.namaPanjang||'')+'</div>',
+      '<span style="background:'+cbg+';color:'+cclr+';padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;">'+m.cat+'</span>',
+      '<span style="font-size:12px">'+(m.kelas||'—')+'</span>',
+      '<span style="font-size:11px;background:#f0efe9;padding:2px 7px;border-radius:20px;">'+(m.rendemen||'—')+'%</span>',
+      '<div style="font-weight:700;color:#2d5a27">'+fm(m.harga||0)+'</div><div style="font-size:10px;color:#8a8680">/ '+(m.unit||'m³')+'</div>',
+      '<span style="font-size:11px;color:#8a8680">'+upd+'</span>',
+      '<span style="font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;background:'+(aktif?'#eaf3e8':'#fceaea')+';color:'+(aktif?'#2d5a27':'#8b2020')+'">'+(aktif?'✅ Aktif':'🚫 Nonaktif')+'</span>',
+      ''
+    ];
+    cells.forEach(function(c,i){ var td=document.createElement('td'); td.innerHTML=c; tr.appendChild(td); });
+    // Actions cell
+    var atd=tr.lastChild;
+    var ab=document.createElement('div'); ab.style.cssText='display:flex;gap:4px;flex-wrap:wrap;';
+    var vb2=document.createElement('button'); vb2.style.cssText='padding:3px 8px;border:1px solid #d8d5cb;border-radius:5px;background:#fff;font-size:11px;cursor:pointer;'; vb2.textContent='👁'; vb2.title='View'; vb2.onclick=(function(id){return function(){viewMat(id);};})(mid);
+    ab.appendChild(vb2);
+    if(canEdit){
+      var eb2=document.createElement('button'); eb2.style.cssText='padding:3px 8px;border:1px solid #d8d5cb;border-radius:5px;background:#2d5a27;color:#fff;font-size:11px;cursor:pointer;'; eb2.textContent='💰'; eb2.title='Update Harga'; eb2.onclick=(function(id){return function(){openPriceModal(id);};})(mid);
+      var ed2=document.createElement('button'); ed2.style.cssText='padding:3px 8px;border:1px solid #d8d5cb;border-radius:5px;background:#fff;font-size:11px;cursor:pointer;'; ed2.textContent='✏️'; ed2.title='Edit'; ed2.onclick=(function(id){return function(){openEditModal(id);};})(mid);
+      ab.append(eb2,ed2);
     }
-
-    var hBtn = mkBtn('list-btn info', (function(id,nm){ return function(){ showHistory(id,nm); }; })(mid2, m.nama), '📈');
-    hBtn.title = 'Historis';
-    actDiv.appendChild(hBtn);
-
-    if (currentUser.role==='admin') {
-      var dBtn = mkBtn('list-btn', (function(id,nm){ return function(){ deleteMaterial(id,nm); }; })(mid2, m.nama), '🗑');
-      dBtn.style.cssText = 'color:#8b2020;border-color:#f5c2c2;';
-      dBtn.title = 'Hapus';
-      actDiv.appendChild(dBtn);
+    var hb2=document.createElement('button'); hb2.style.cssText='padding:3px 8px;border:1px solid #c0d8f5;border-radius:5px;background:#e8f0fb;color:#1a4a7a;font-size:11px;cursor:pointer;'; hb2.textContent='📈'; hb2.title='Historis'; hb2.onclick=(function(id,nm){return function(){showHist(id,nm);};})(mid,m.nama);
+    ab.appendChild(hb2);
+    if(CU.role==='admin'){
+      var db3=document.createElement('button'); db3.style.cssText='padding:3px 8px;border:1px solid #f5c2c2;border-radius:5px;background:#fceaea;color:#8b2020;font-size:11px;cursor:pointer;'; db3.textContent='🗑'; db3.title='Hapus'; db3.onclick=(function(id,nm){return function(){delMat(id,nm);};})(mid,m.nama);
+      ab.appendChild(db3);
     }
-
-    td9.appendChild(actDiv);
-    tr.append(td1,td2,td3,td4,td5,td6,td7,td8,td9);
+    atd.appendChild(ab);
     tbody.appendChild(tr);
   });
 }
 
-// ── Filter & Search ───────────────────────────────────────────────────
-window.setFilter = function(f, btn) {
-  currentFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+// ── Window Functions (accessible from HTML onclick) ───────────────────
+
+window.setFilter = function(f,btn){
+  curFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
-  renderMaterials();
-}
-window.filterMaterials = function() { renderMaterials(); }
-
-// ── Update Harga Modal ────────────────────────────────────────────────
-window.openPriceModal = function(id) {
-  const m = allMaterials.find(x=>(x.id||x._id)===id);
-  if (!m) return;
-  priceEditId = id;
-  const hargaLama = m.harga || 0;
-  document.getElementById('pm-harga-baru').value = hargaLama;
-  document.getElementById('pm-tanggal').value = new Date().toISOString().split('T')[0];
-  document.getElementById('pm-ket').value = '';
-  document.getElementById('pm-preview').style.display = 'none';
-  var infoEl = document.getElementById('price-modal-info');
-  infoEl.innerHTML = '';
-  var d1 = document.createElement('div');
-  d1.style.cssText = 'font-weight:700;font-size:14px;margin-bottom:6px';
-  d1.innerHTML = '🪵 ' + m.nama + ' <span style="font-size:11px;color:#8a8680">(' + (m.id||m._id) + ')</span>';
-  var d2 = document.createElement('div');
-  d2.style.cssText = 'color:#8a8680;font-size:12px';
-  d2.innerHTML = 'Harga saat ini: <b style="color:#2d5a27;font-size:14px">' + fm(hargaLama) + '</b> / ' + (m.unit||'m³');
-  infoEl.appendChild(d1);
-  infoEl.appendChild(d2);
-
-  // Preview on input
-  document.getElementById('pm-harga-baru').oninput = function() {
-    const baru = +this.value;
-    const prev = document.getElementById('pm-preview');
-    if (baru && baru !== hargaLama) {
-      const diff = baru - hargaLama;
-      const pct = ((diff/hargaLama)*100).toFixed(1);
-      const arah = diff>0?'📈 Naik':'📉 Turun';
-      const clr = diff>0?'#c0392b':'#27ae60';
-      prev.style.display = 'block';
-      prev.style.background = diff>0?'#fceaea':'#eaf3e8';
-      prev.style.color = clr;
-      prev.innerHTML = arah + ' ' + Math.abs(diff).toLocaleString('id-ID') + ' (' + Math.abs(pct) + '%) dari harga sebelumnya';
-    } else {
-      prev.style.display = 'none';
-    }
-  };
-
-  document.getElementById('price-modal').classList.add('show');
-}
-
-window.savePrice = async function() {
-  const id = priceEditId;
-  const m = allMaterials.find(x=>(x.id||x._id)===id);
-  if (!m) return;
-
-  const hargaBaru = +document.getElementById('pm-harga-baru').value;
-  const tanggal   = document.getElementById('pm-tanggal').value;
-  const ket       = document.getElementById('pm-ket').value;
-  const hargaLama = m.harga || 0;
-
-  if (!hargaBaru || hargaBaru <= 0) { showToast('⚠️ Harga tidak valid!'); return; }
-
-  try {
-    // 1. Save price history
-    await addDoc(collection(db,'price_history'), {
-      material_id:  id,
-      material_nama: m.nama,
-      harga_lama:   hargaLama,
-      harga_baru:   hargaBaru,
-      perubahan:    hargaBaru - hargaLama,
-      persen:       hargaLama ? +((((hargaBaru-hargaLama)/hargaLama)*100).toFixed(2)) : 0,
-      tanggal:      tanggal ? Timestamp.fromDate(new Date(tanggal)) : serverTimestamp(),
-      keterangan:   ket || '',
-      updated_by:   currentUser.email || 'unknown',
-      updated_at:   serverTimestamp(),
-    });
-
-    // 2. Update material harga
-    await updateDoc(doc(db,'materials',id), {
-      harga: hargaBaru,
-      harga_updated_at: serverTimestamp(),
-      harga_updated_by: currentUser.email||'unknown',
-    });
-
-    // Update local state
-    m.harga = hargaBaru;
-    m.harga_updated_at = { toDate: () => new Date() };
-
-    closeModal('price-modal');
-    renderMaterials();
-    showToast('✅ Harga ' + m.nama + ' diupdate → ' + fm(hargaBaru));
-  } catch(e) {
-    showToast('❌ Gagal update: ' + e.message);
-    console.error(e);
-  }
-}
-
-// ── Add / Edit Material ───────────────────────────────────────────────
-window.openAddModal = function() {
-  if (!canEdit) { showToast('⚠️ Hanya Admin/Manager!'); return; }
-  editId = null;
-  document.getElementById('modal-title').textContent = '➕ Tambah Material Baru';
-  document.getElementById('modal-save-btn').textContent = '💾 Simpan';
-  // Reset form
-  ['m-id','m-nama','m-nama-panjang','m-ket'].forEach(id=>{
-    document.getElementById(id).value = '';
-  });
-  document.getElementById('m-cat').value = 'SW';
-  document.getElementById('m-kelas').value = '2';
-  document.getElementById('m-rendemen').value = '35';
-  document.getElementById('m-density').value = '';
-  document.getElementById('m-harga').value = '';
-  document.getElementById('m-unit').value = 'm³';
-  document.getElementById('m-aktif').checked = true;
-  document.getElementById('m-id').readOnly = false;
-  updateIdSuggestion();
-  document.getElementById('mat-modal').classList.add('show');
-}
-
-window.openEditModal = function(id) {
-  const m = allMaterials.find(x=>(x.id||x._id)===id);
-  if (!m) return;
-  editId = id;
-  document.getElementById('modal-title').textContent = '✏️ Edit Material';
-  document.getElementById('modal-save-btn').textContent = '💾 Update';
-  document.getElementById('m-id').value = m.id||m._id;
-  document.getElementById('m-id').readOnly = true;
-  document.getElementById('m-cat').value = m.cat||'SW';
-  document.getElementById('m-nama').value = m.nama||'';
-  document.getElementById('m-nama-panjang').value = m.namaPanjang||'';
-  document.getElementById('m-kelas').value = String(m.kelas||0);
-  document.getElementById('m-rendemen').value = m.rendemen||35;
-  document.getElementById('m-density').value = m.density||'';
-  document.getElementById('m-harga').value = m.harga||'';
-  document.getElementById('m-unit').value = m.unit||'m³';
-  document.getElementById('m-ket').value = m.ket||'';
-  document.getElementById('m-aktif').checked = m.aktif!==false;
-  document.getElementById('mat-modal').classList.add('show');
-}
-
-window.updateIdSuggestion = function() {
-  if (editId) return;
-  const cat = document.getElementById('m-cat').value;
-  const existing = allMaterials.filter(m=>m.cat===cat);
-  const nums = existing.map(m=>{
-    const parts = (m.id||m._id).split('-');
-    return parseInt(parts[1]||'0');
-  }).filter(n=>!isNaN(n));
-  const nextNum = nums.length ? Math.max(...nums)+1 : 1;
-  document.getElementById('m-id').value = cat + '-' + String(nextNum).padStart(3,'0');
-}
-
-window.saveMaterial = async function() {
-  const id       = document.getElementById('m-id').value.trim().toUpperCase();
-  const cat      = document.getElementById('m-cat').value;
-  const nama     = document.getElementById('m-nama').value.trim();
-  const namaPanjang = document.getElementById('m-nama-panjang').value.trim();
-  const kelas    = +document.getElementById('m-kelas').value;
-  const rendemen = +document.getElementById('m-rendemen').value;
-  const density  = +document.getElementById('m-density').value || 0;
-  const harga    = +document.getElementById('m-harga').value || 0;
-  const unit     = document.getElementById('m-unit').value;
-  const ket      = document.getElementById('m-ket').value.trim();
-  const aktif    = document.getElementById('m-aktif').checked;
-  const btn      = document.getElementById('modal-save-btn');
-
-  if (!id || !nama) { showToast('⚠️ ID dan Nama wajib diisi!'); return; }
-
-  btn.disabled = true; btn.textContent = '⏳ Menyimpan...';
-
-  try {
-    const data = {
-      id, cat, nama, namaPanjang: namaPanjang||nama,
-      kelas, rendemen, density, harga, unit, ket, aktif,
-      updatedAt: serverTimestamp(), updatedBy: currentUser.email||'unknown'
-    };
-
-    if (editId) {
-      await updateDoc(doc(db,'materials',id), data);
-      showToast('✅ Material berhasil diupdate!');
-    } else {
-      const exists = allMaterials.find(m=>(m.id||m._id)===id);
-      if (exists) { showToast('❌ ID sudah ada! Gunakan ID lain.'); return; }
-      await setDoc(doc(db,'materials',id), {...data, createdAt:serverTimestamp(), createdBy:currentUser.email||'unknown'});
-      showToast('✅ Material baru berhasil ditambahkan!');
-    }
-    closeModal('mat-modal');
-    await loadMaterials();
-  } catch(e) {
-    showToast('❌ Error: ' + e.message);
-    console.error(e);
-  } finally {
-    btn.disabled = false; btn.textContent = editId ? '💾 Update' : '💾 Simpan';
-  }
-}
-
-window.toggleAktif = async function(id, currentAktif) {
-  const label = currentAktif ? 'nonaktifkan' : 'aktifkan';
-  if (!confirm(label.charAt(0).toUpperCase()+label.slice(1) + ' material ini?')) return;
-  await updateDoc(doc(db,'materials',id), {aktif: !currentAktif});
-  const m = allMaterials.find(x=>(x.id||x._id)===id);
-  if (m) m.aktif = !currentAktif;
-  renderMaterials();
-  showToast((!currentAktif?'✅':'🚫') + ' Material ' + (!currentAktif?'diaktifkan':'dinonaktifkan'));
-}
-
-// ── Price History ─────────────────────────────────────────────────────
-window.showHistory = async function(id, nama) {
-  document.getElementById('hist-modal-title').textContent = '📈 Historis Harga — ' + nama;
-  document.getElementById('hist-list-area').innerHTML = '<div style="text-align:center;padding:20px;color:#8a8680">⏳ Memuat historis...</div>';
-  document.getElementById('hist-modal').classList.add('show');
-
-  try {
-    const snap = await getDocs(
-      query(collection(db,'price_history'),
-        where('material_id','==',id),
-        orderBy('updated_at','desc'),
-        limit(20))
-    );
-
-    const items = [];
-    snap.forEach(d => items.push(d.data()));
-
-    // Current price
-    const m = allMaterials.find(x=>(x.id||x._id)===id);
-    const currentPrice = m?.harga || 0;
-
-    // Mini chart
-    const prices = [currentPrice, ...items.map(i=>i.harga_lama)].reverse();
-    const chartHtml = renderMiniChart(prices, nama);
-    document.getElementById('hist-chart-area').innerHTML = chartHtml;
-
-    if (!items.length) {
-      document.getElementById('hist-list-area').innerHTML = '<div class="no-hist"><div style="font-size:36px;margin-bottom:8px">📊</div>Belum ada historis perubahan harga.<br><span style="font-size:12px;color:#aaa">Harga saat ini: <b style="color:#2d5a27">'+fm(currentPrice)+'</b></span></div>';
-      return;
-    }
-
-    var html = '<div class="hist-list">';
-    // Current price as first item
-    var activeDate = m && m.harga_updated_at ? fts(m.harga_updated_at) : 'Sekarang';
-    html += '<div class="hist-item" style="background:#eaf3e8;border-color:#b8d9b4">' +
-      '<div class="hist-date">🟢 HARGA AKTIF — ' + activeDate + '</div>' +
-      '<div class="hist-prices"><span class="hist-new" style="font-size:18px">' + fm(currentPrice) + '</span></div>' +
-      '</div>';
-
-    items.forEach(function(item) {
-      var diff = item.perubahan || (item.harga_baru - item.harga_lama);
-      var isUp = diff > 0;
-      var pct = item.persen ? Math.abs(item.persen) : 0;
-      var ketHtml = item.keterangan ? '<div class="hist-note">📝 ' + item.keterangan + '</div>' : '';
-      html += '<div class="hist-item">' +
-        '<div class="hist-date">' + fts(item.updated_at||item.tanggal) + ' · oleh ' + (item.updated_by||'—') + '</div>' +
-        '<div class="hist-prices">' +
-          '<span class="hist-old">' + fm(item.harga_lama||0) + '</span>' +
-          '<span class="hist-arrow">→</span>' +
-          '<span class="hist-new">' + fm(item.harga_baru||0) + '</span>' +
-          '<span class="hist-change ' + (isUp?'up':'down') + '">' + (isUp?'▲':'▼') + ' ' + pct + '%</span>' +
-        '</div>' +
-        ketHtml +
-        '</div>';
-    });
-    html += '</div>';
-    document.getElementById('hist-list-area').innerHTML = html;
-  } catch(e) {
-    document.getElementById('hist-list-area').innerHTML = '<div class="no-hist">❌ Gagal memuat: ' + e.message + '</div>';
-  }
-}
-
-function renderMiniChart(prices, nama) {
-  if (prices.length < 2) return '';
-  const max = Math.max(...prices);
-  const min = Math.min(...prices);
-  const range = max - min || 1;
-  const W = 400, H = 80, PAD = 10;
-  const points = prices.map((p,i) => {
-    const x = PAD + (i/(prices.length-1)) * (W-PAD*2);
-    const y = PAD + (1 - (p-min)/range) * (H-PAD*2);
-    return x + ',' + y;
-  }).join(' ');
-  const lastPrice = prices[prices.length-1];
-  const firstPrice = prices[0];
-  const trend = lastPrice > firstPrice ? '#27ae60' : lastPrice < firstPrice ? '#c0392b' : '#8a8680';
-  var circles2 = prices.map(function(p,ix){
-    var cx2 = PAD + (ix/(prices.length-1)) * (W-PAD*2);
-    var cy2 = PAD + (1 - (p-min)/range) * (H-PAD*2);
-    return '<circle cx="'+cx2+'" cy="'+cy2+'" r="3" fill="'+trend+'"/>';
-  }).join('');
-  return '<div style="background:#f8f8f8;border-radius:10px;padding:12px;margin-bottom:4px;">' +
-    '<div style="font-size:11px;color:#8a8680;margin-bottom:6px;">Tren Harga (' + prices.length + ' titik data)</div>' +
-    '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:60px;">' +
-      '<polyline points="'+points+'" fill="none" stroke="'+trend+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>' +
-      circles2 +
-      '<text x="'+PAD+'" y="'+(H-2)+'" font-size="9" fill="#8a8680">'+fm(min)+'</text>' +
-      '<text x="'+PAD+'" y="12" font-size="9" fill="#8a8680">'+fm(max)+'</text>' +
-    '</svg></div>';
-}
-
-// ── Export Price List ─────────────────────────────────────────────────
-window.exportPriceList = function() {
-  let csv = 'ID,Nama,Nama Panjang,Kategori,Kelas,Rendemen(%),Densitas(kg/m3),Harga Aktif,Satuan,Status\n';
-  allMaterials.forEach(m => {
-    csv += [
-      m.id||m._id, m.nama, '"'+(m.namaPanjang||'')+'",',
-      m.cat, m.kelas||0, m.rendemen||0, m.density||0,
-      m.harga||0, m.unit||'m³',
-      m.aktif!==false?'Aktif':'Nonaktif'
-    ].join(',') + '\n';
-  });
-  const blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'PriceList_GabeInternational_' + new Date().toISOString().split('T')[0] + '.csv';
-  a.click();
-  showToast('📄 Price list diexport!');
-}
-
-// ── Helpers ───────────────────────────────────────────────────────────
-window.closeModal = function(id) {
-  document.getElementById(id).classList.remove('show');
-}
-
-
-// ── Export / Import Functions ─────────────────────────────────────────
-
-window.exportCSV = function() {
-  if (!allMaterials.length) { showToast('⚠️ Tidak ada data!'); return; }
-  var csv = 'ID,Nama,Nama Panjang,Kategori,Kelas,Rendemen(%),Densitas(kg/m3),Harga Aktif,Satuan,Status,Keterangan\n';
-  allMaterials.forEach(function(m) {
-    csv += [
-      m.id||m._id, m.nama,
-      '"' + (m.namaPanjang||'').replace(/"/g,'""') + '"',
-      m.cat, m.kelas||0, m.rendemen||0, m.density||0,
-      m.harga||0, m.unit||'m3',
-      m.aktif!==false ? 'Aktif' : 'Nonaktif',
-      '"' + (m.ket||'').replace(/"/g,'""') + '"'
-    ].join(',') + '
-';
-  });
-  dlBlob('﻿' + csv, 'MaterialMaster_' + todayStr() + '.csv', 'text/csv;charset=utf-8');
-  showToast('📊 CSV diexport! (' + allMaterials.length + ' item)');
+  render();
 };
 
-window.exportExcel = function() {
-  if (!allMaterials.length) { showToast('⚠️ Tidak ada data!'); return; }
-  var tbl = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"></head><body><table>';
-  tbl += '<tr style="background:#2d5a27;color:#fff;font-weight:bold;">';
-  ['ID','Nama','Nama Panjang','Kategori','Kelas','Rendemen(%)','Densitas','Harga Aktif','Satuan','Status','Keterangan']
-    .forEach(function(h){ tbl += '<th>' + h + '</th>'; });
-  tbl += '</tr>';
-  allMaterials.forEach(function(m, i) {
-    var bg = i % 2 === 0 ? '#f5f4f0' : '#ffffff';
-    tbl += '<tr style="background:' + bg + ';">';
-    [m.id||m._id, m.nama, m.namaPanjang||'', m.cat, m.kelas||0,
-     m.rendemen||0, m.density||0, m.harga||0, m.unit||'m3',
-     m.aktif!==false?'Aktif':'Nonaktif', m.ket||'']
-      .forEach(function(v){ tbl += '<td>' + v + '</td>'; });
-    tbl += '</tr>';
+window.doFilter = function(){ render(); };
+
+window.setView = function(view){
+  curView=view;
+  document.getElementById('btn-card').classList.toggle('active',view==='card');
+  document.getElementById('btn-list').classList.toggle('active',view==='list');
+  document.getElementById('mat-grid').classList.toggle('hidden',view==='list');
+  var ml=document.getElementById('mat-list');
+  if(view==='list') ml.classList.add('active'); else ml.classList.remove('active');
+  render();
+};
+
+window.sortBy = function(key){
+  if(sortKey===key) sortAsc=!sortAsc; else{sortKey=key;sortAsc=true;}
+  renderList();
+};
+
+window.closeModal = function(id){ document.getElementById(id).classList.remove('show'); };
+
+window.openAddModal = function(){
+  if(!canEdit){showToast('⚠️ Hanya Admin/Manager!');return;}
+  editId=null;
+  document.getElementById('modal-title').textContent='➕ Tambah Material Baru';
+  document.getElementById('save-btn').textContent='💾 Simpan';
+  document.getElementById('m-id').value='';
+  document.getElementById('m-id').readOnly=false;
+  document.getElementById('m-cat').value='SW';
+  document.getElementById('m-nama').value='';
+  document.getElementById('m-ilmiah').value='';
+  document.getElementById('m-kelas').value='2';
+  document.getElementById('m-rdm').value='35';
+  document.getElementById('m-dens').value='';
+  document.getElementById('m-harga').value='';
+  document.getElementById('m-unit').value='m³';
+  document.getElementById('m-ket').value='';
+  document.getElementById('m-aktif').checked=true;
+  autoId();
+  document.getElementById('modal-add').classList.add('show');
+};
+
+window.autoId = function(){
+  if(editId) return;
+  var cat=document.getElementById('m-cat').value;
+  var existing=MAT.filter(function(m){return m.cat===cat;});
+  var nums=existing.map(function(m){ var p=(m.id||m._id).split('-'); return parseInt(p[1]||0); }).filter(function(n){return !isNaN(n);});
+  var next=nums.length?Math.max.apply(null,nums)+1:1;
+  document.getElementById('m-id').value=cat+'-'+String(next).padStart(3,'0');
+};
+
+window.openEditModal = function(id){
+  var m=MAT.find(function(x){return (x.id||x._id)===id;});
+  if(!m) return;
+  editId=id;
+  document.getElementById('modal-title').textContent='✏️ Edit Material';
+  document.getElementById('save-btn').textContent='💾 Update';
+  document.getElementById('m-id').value=m.id||m._id;
+  document.getElementById('m-id').readOnly=true;
+  document.getElementById('m-cat').value=m.cat||'SW';
+  document.getElementById('m-nama').value=m.nama||'';
+  document.getElementById('m-ilmiah').value=m.namaPanjang||'';
+  document.getElementById('m-kelas').value=String(m.kelas||0);
+  document.getElementById('m-rdm').value=m.rendemen||35;
+  document.getElementById('m-dens').value=m.density||'';
+  document.getElementById('m-harga').value=m.harga||'';
+  document.getElementById('m-unit').value=m.unit||'m³';
+  document.getElementById('m-ket').value=m.ket||'';
+  document.getElementById('m-aktif').checked=m.aktif!==false;
+  document.getElementById('modal-add').classList.add('show');
+};
+
+window.saveMaterial = async function(){
+  var id=document.getElementById('m-id').value.trim().toUpperCase();
+  var nama=document.getElementById('m-nama').value.trim();
+  if(!id||!nama){showToast('⚠️ ID dan Nama wajib diisi!');return;}
+  var btn=document.getElementById('save-btn');
+  btn.disabled=true; btn.textContent='⏳ Menyimpan...';
+  var data={id:id,cat:document.getElementById('m-cat').value,nama:nama,namaPanjang:document.getElementById('m-ilmiah').value||nama,kelas:+document.getElementById('m-kelas').value,rendemen:+document.getElementById('m-rdm').value,density:+document.getElementById('m-dens').value||0,harga:+document.getElementById('m-harga').value||0,unit:document.getElementById('m-unit').value,ket:document.getElementById('m-ket').value,aktif:document.getElementById('m-aktif').checked,updatedAt:serverTimestamp(),updatedBy:CU.email||'unknown'};
+  try{
+    if(editId){ await updateDoc(doc(db,'materials',id),data); showToast('✅ Material diupdate!'); }
+    else{ if(MAT.find(function(m){return (m.id||m._id)===id;})){showToast('❌ ID sudah ada!');return;} await setDoc(doc(db,'materials',id),Object.assign({},data,{createdAt:serverTimestamp(),createdBy:CU.email||'unknown'})); showToast('✅ Material ditambahkan!'); }
+    closeModal('modal-add');
+    await loadMaterials();
+  }catch(e){showToast('❌ Error: '+e.message);}
+  finally{btn.disabled=false; btn.textContent=editId?'💾 Update':'💾 Simpan';}
+};
+
+window.openPriceModal = function(id){
+  var m=MAT.find(function(x){return (x.id||x._id)===id;});
+  if(!m) return;
+  priceId=id;
+  var pi=document.getElementById('price-info');
+  pi.innerHTML='<div style="font-weight:700;font-size:14px;">'+m.nama+' <span style="font-size:11px;color:#8a8680;">('+id+')</span></div><div style="color:#8a8680;font-size:12px;margin-top:2px;">Harga saat ini: <b style="color:#2d5a27;font-size:14px;">'+fm(m.harga||0)+'</b> / '+(m.unit||'m³')+'</div>';
+  document.getElementById('pm-harga').value=m.harga||0;
+  document.getElementById('pm-tanggal').value=today();
+  document.getElementById('pm-ket').value='';
+  document.getElementById('pm-preview').style.display='none';
+  document.getElementById('modal-price').classList.add('show');
+};
+
+window.previewChange = function(){
+  var id=priceId;
+  var m=MAT.find(function(x){return (x.id||x._id)===id;});
+  if(!m) return;
+  var baru=+document.getElementById('pm-harga').value;
+  var lama=m.harga||0;
+  var prev=document.getElementById('pm-preview');
+  if(baru&&baru!==lama){
+    var diff=baru-lama;
+    var pct=(Math.abs(diff)/lama*100).toFixed(1);
+    var up=diff>0;
+    prev.style.display='block';
+    prev.style.background=up?'#fceaea':'#eaf3e8';
+    prev.style.color=up?'#8b2020':'#2d5a27';
+    prev.textContent=(up?'📈 Naik ':'📉 Turun ')+Math.abs(diff).toLocaleString('id-ID')+' ('+pct+'%)';
+  } else { prev.style.display='none'; }
+};
+
+window.savePrice = async function(){
+  var m=MAT.find(function(x){return (x.id||x._id)===priceId;});
+  if(!m) return;
+  var baru=+document.getElementById('pm-harga').value;
+  var tgl=document.getElementById('pm-tanggal').value;
+  var ket=document.getElementById('pm-ket').value;
+  if(!baru||baru<=0){showToast('⚠️ Harga tidak valid!');return;}
+  try{
+    await addDoc(collection(db,'price_history'),{material_id:priceId,material_nama:m.nama,harga_lama:m.harga||0,harga_baru:baru,perubahan:baru-(m.harga||0),persen:m.harga?+((((baru-(m.harga||0))/(m.harga||1))*100).toFixed(2)):0,tanggal:tgl?Timestamp.fromDate(new Date(tgl)):serverTimestamp(),keterangan:ket||'',updated_by:CU.email||'unknown',updated_at:serverTimestamp()});
+    await updateDoc(doc(db,'materials',priceId),{harga:baru,harga_updated_at:serverTimestamp(),harga_updated_by:CU.email||'unknown'});
+    m.harga=baru; m.harga_updated_at={toDate:function(){return new Date();}};
+    closeModal('modal-price'); render();
+    showToast('✅ Harga '+m.nama+' diupdate ke '+fm(baru));
+  }catch(e){showToast('❌ Gagal: '+e.message);}
+};
+
+window.viewMat = function(id){
+  var m=MAT.find(function(x){return (x.id||x._id)===id;});
+  if(!m) return;
+  document.getElementById('view-title').textContent='👁 '+m.nama+' ('+id+')';
+  document.getElementById('view-edit-btn').onclick=function(){closeModal('modal-view');openEditModal(id);};
+  var body=document.getElementById('view-body');
+  var cbg=CAT_BG[m.cat]||'#f0f0f0'; var cclr=CAT_CLR[m.cat]||'#555';
+  body.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:12px;background:#f5f4f0;border-radius:10px;margin-bottom:14px;">'+
+    '<div style="width:12px;height:12px;border-radius:50%;background:'+(CAT_DOT[m.cat]||'#888')+';flex-shrink:0;"></div>'+
+    '<div><div style="font-size:18px;font-weight:700;">'+m.nama+'</div><div style="font-size:12px;color:#8a8680;">'+(m.namaPanjang||'')+'</div></div>'+
+    '<span style="margin-left:auto;background:'+cbg+';color:'+cclr+';padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;">'+m.cat+'</span></div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">'+
+    ['ID Material|'+(m.id||m._id),'Kelas|'+(KLS_LBL[m.kelas]||'—'),'Rendemen Log|'+(m.rendemen||'—')+'%','Densitas|'+(m.density||'—')+' kg/m³','Satuan|'+(m.unit||'m³'),'Status|'+(m.aktif!==false?'✅ Aktif':'🚫 Nonaktif')]
+    .map(function(f){ var p=f.split('|'); return '<div style="background:#f5f4f0;border-radius:8px;padding:10px 12px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;margin-bottom:2px;">'+p[0]+'</div><div style="font-size:14px;font-weight:600;">'+p[1]+'</div></div>'; }).join('')+
+    '<div style="grid-column:1/-1;background:#eaf3e8;border-radius:8px;padding:12px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;margin-bottom:4px;">Harga Aktif</div><div style="font-size:22px;font-weight:700;color:#2d5a27;">'+fm(m.harga||0)+' <span style="font-size:13px;font-weight:400;color:#5a5750;">/ '+(m.unit||'m³')+'</span></div></div>'+
+    '</div>'+
+    (m.ket?'<div style="margin-top:12px;padding:10px;background:#f5f4f0;border-radius:8px;font-size:13px;"><b>Keterangan:</b> '+m.ket+'</div>':'');
+  document.getElementById('modal-view').classList.add('show');
+};
+
+window.dupMat = function(id){
+  var m=MAT.find(function(x){return (x.id||x._id)===id;});
+  if(!m) return;
+  openAddModal();
+  setTimeout(function(){
+    document.getElementById('m-cat').value=m.cat;
+    autoId();
+    document.getElementById('m-nama').value=m.nama+' (Copy)';
+    document.getElementById('m-ilmiah').value=m.namaPanjang||'';
+    document.getElementById('m-kelas').value=String(m.kelas||0);
+    document.getElementById('m-rdm').value=m.rendemen||35;
+    document.getElementById('m-dens').value=m.density||'';
+    document.getElementById('m-harga').value=m.harga||'';
+    document.getElementById('m-unit').value=m.unit||'m³';
+    document.getElementById('m-ket').value=m.ket||'';
+    showToast('⧉ Duplikat siap — ubah ID & Nama lalu simpan!');
+  },100);
+};
+
+window.delMat = async function(id,nama){
+  if(!confirm('⚠️ Hapus "'+nama+'" ('+id+') secara permanen?')) return;
+  if(!confirm('Konfirmasi: Hapus "'+nama+'"?')) return;
+  try{
+    await deleteDoc(doc(db,'materials',id));
+    MAT=MAT.filter(function(x){return (x.id||x._id)!==id;});
+    updateStats(); render();
+    showToast('🗑 "'+nama+'" dihapus!');
+  }catch(e){showToast('❌ Gagal hapus: '+e.message);}
+};
+
+window.showHist = async function(id,nama){
+  document.getElementById('hist-title').textContent='📈 Historis Harga — '+nama;
+  document.getElementById('hist-body').innerHTML='<div class="empty">⏳ Memuat...</div>';
+  document.getElementById('modal-hist').classList.add('show');
+  try{
+    var snap=await getDocs(query(collection(db,'price_history'),where('material_id','==',id),orderBy('updated_at','desc'),limit(20)));
+    var items=[]; snap.forEach(function(d){items.push(d.data());});
+    var m=MAT.find(function(x){return (x.id||x._id)===id;});
+    var cur=m?m.harga||0:0;
+    var html='<div class="hist-item active"><div class="hist-date">🟢 HARGA AKTIF — '+(m&&m.harga_updated_at?fdt(m.harga_updated_at):'Sekarang')+'</div><div class="hist-prices"><span class="hist-new" style="font-size:18px;">'+fm(cur)+'</span></div></div>';
+    if(!items.length){ html+='<div style="text-align:center;padding:20px;color:#8a8680;">Belum ada historis perubahan harga.</div>'; }
+    items.forEach(function(item){
+      var diff=item.perubahan||(item.harga_baru-item.harga_lama);
+      var up=diff>0;
+      var pct=item.persen?Math.abs(item.persen):0;
+      html+='<div class="hist-item"><div class="hist-date">'+fdt(item.updated_at||item.tanggal)+' · oleh '+(item.updated_by||'—')+'</div><div class="hist-prices"><span class="hist-old">'+fm(item.harga_lama||0)+'</span><span style="color:#8a8680;margin:0 4px;">→</span><span class="hist-new">'+fm(item.harga_baru||0)+'</span><span class="hist-pct '+(up?'up':'dn')+'">'+(up?'▲':'▼')+' '+pct+'%</span></div>'+(item.keterangan?'<div class="hist-note">📝 '+item.keterangan+'</div>':'')+'</div>';
+    });
+    document.getElementById('hist-body').innerHTML=html;
+  }catch(e){ document.getElementById('hist-body').innerHTML='<div class="empty">❌ Gagal: '+e.message+'</div>'; }
+};
+
+// ── Export Functions ──────────────────────────────────────────────────
+
+window.exportCSV = function(){
+  if(!MAT.length){showToast('⚠️ Tidak ada data!');return;}
+  var rows=['ID,Nama,Nama Panjang,Kategori,Kelas,Rendemen,Densitas,Harga,Satuan,Status,Keterangan'];
+  MAT.forEach(function(m){
+    rows.push([m.id||m._id,m.nama,'"'+(m.namaPanjang||'')+'"',m.cat,m.kelas||0,m.rendemen||0,m.density||0,m.harga||0,m.unit||'m3',m.aktif!==false?'Aktif':'Nonaktif','"'+(m.ket||'')+'"'].join(','));
   });
-  tbl += '</table></body></html>';
-  dlBlob(tbl, 'MaterialMaster_' + todayStr() + '.xls', 'application/vnd.ms-excel');
+  dlBlob('\uFEFF'+rows.join('\n'),'MaterialMaster_'+today()+'.csv','text/csv;charset=utf-8');
+  showToast('📊 CSV diexport! ('+MAT.length+' item)');
+};
+
+window.exportExcel = function(){
+  if(!MAT.length){showToast('⚠️ Tidak ada data!');return;}
+  var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"></head><body><table>';
+  html+='<tr style="background:#2d5a27;color:#fff;font-weight:bold;"><th>ID</th><th>Nama</th><th>Nama Panjang</th><th>Kategori</th><th>Kelas</th><th>Rendemen</th><th>Densitas</th><th>Harga</th><th>Satuan</th><th>Status</th><th>Keterangan</th></tr>';
+  MAT.forEach(function(m,i){
+    var bg=i%2===0?'#f5f4f0':'#ffffff';
+    html+='<tr style="background:'+bg+'"><td>'+(m.id||m._id)+'</td><td>'+m.nama+'</td><td>'+(m.namaPanjang||'')+'</td><td>'+m.cat+'</td><td>'+(m.kelas||0)+'</td><td>'+(m.rendemen||0)+'</td><td>'+(m.density||0)+'</td><td>'+(m.harga||0)+'</td><td>'+(m.unit||'m3')+'</td><td>'+(m.aktif!==false?'Aktif':'Nonaktif')+'</td><td>'+(m.ket||'')+'</td></tr>';
+  });
+  html+='</table></body></html>';
+  dlBlob(html,'MaterialMaster_'+today()+'.xls','application/vnd.ms-excel');
   showToast('📗 Excel diexport!');
 };
 
-window.exportPDF = function() {
-  if (!allMaterials.length) { showToast('⚠️ Tidak ada data!'); return; }
-  var w = window.open('', '_blank');
-  var rows = allMaterials.map(function(m, i) {
-    var bg = i % 2 === 0 ? '#f9f9f9' : '#fff';
-    var catBg = CAT_BG[m.cat]||'#f0f0f0';
-    var catClr = CAT_COLOR[m.cat]||'#555';
-    return '<tr style="background:' + bg + '">' +
-      '<td>' + (m.id||m._id) + '</td>' +
-      '<td>' + m.nama + '</td>' +
-      '<td><span style="background:' + catBg + ';color:' + catClr + ';padding:2px 7px;border-radius:10px;font-size:11px;">' + m.cat + '</span></td>' +
-      '<td style="text-align:center">' + (m.kelas||'—') + '</td>' +
-      '<td style="text-align:center">' + (m.rendemen||'—') + '%</td>' +
-      '<td style="text-align:right;font-weight:600;color:#2d5a27">' + fm(m.harga||0) + '</td>' +
-      '<td>' + (m.unit||'m³') + '</td>' +
-      '<td style="color:' + (m.aktif!==false?'#2d5a27':'#8b2020') + '">' + (m.aktif!==false?'Aktif':'Nonaktif') + '</td>' +
-      '</tr>';
+window.exportPDF = function(){
+  if(!MAT.length){showToast('⚠️ Tidak ada data!');return;}
+  var w=window.open('','_blank');
+  var rows=MAT.map(function(m,i){
+    var bg=i%2===0?'#f9f9f9':'#fff';
+    var cbg=CAT_BG[m.cat]||'#f0f0f0'; var cclr=CAT_CLR[m.cat]||'#555';
+    return '<tr style="background:'+bg+'"><td>'+(m.id||m._id)+'</td><td>'+m.nama+'</td><td><span style="background:'+cbg+';color:'+cclr+';padding:2px 7px;border-radius:10px;font-size:11px;">'+m.cat+'</span></td><td style="text-align:center">'+(m.kelas||'—')+'</td><td style="text-align:center">'+(m.rendemen||'—')+'%</td><td style="text-align:right;font-weight:600;color:#2d5a27">'+fm(m.harga||0)+'</td><td>'+(m.unit||'m³')+'</td><td style="color:'+(m.aktif!==false?'#2d5a27':'#8b2020')+'">'+(m.aktif!==false?'Aktif':'Nonaktif')+'</td></tr>';
   }).join('');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8">' +
-    '<title>Material Master — PT. Gabe International</title>' +
-    '<style>body{font-family:Segoe UI,sans-serif;padding:20px;color:#1a1917;}' +
-    'h1{color:#2d5a27;font-size:20px;}' +
-    'table{width:100%;border-collapse:collapse;font-size:12px;}' +
-    'th{background:#2d5a27;color:#fff;padding:8px 10px;text-align:left;}' +
-    'td{padding:7px 10px;border-bottom:1px solid #e8e6df;}' +
-    '.footer{margin-top:16px;font-size:11px;color:#8a8680;text-align:center;}' +
-    '@media print{button{display:none}}</style></head><body>' +
-    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">' +
-    '<div style="width:40px;height:40px;background:#2d5a27;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;">🌿</div>' +
-    '<div><div style="font-size:20px;font-weight:700;color:#2d5a27">PT. Gabe International</div>' +
-    '<div style="color:#8a8680;font-size:12px;">Material Master — Price List · ' + new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'}) + '</div></div>' +
-    '<button onclick="window.print()" style="margin-left:auto;padding:8px 16px;background:#2d5a27;color:#fff;border:none;border-radius:8px;cursor:pointer;">🖨️ Print / PDF</button>' +
-    '</div>' +
-    '<table><thead><tr><th>ID</th><th>Nama</th><th>Kat.</th><th>Kls</th><th>Rendemen</th><th>Harga Aktif</th><th>Satuan</th><th>Status</th></tr></thead>' +
-    '<tbody>' + rows + '</tbody></table>' +
-    '<div class="footer">Total: ' + allMaterials.length + ' material · Dicetak: ' + new Date().toLocaleString('id-ID') + '</div>' +
-    '</body></html>');
-  w.document.close();
-  w.focus();
-  showToast('📕 PDF dibuka di tab baru — klik Print/Save!');
-};
-
-window.exportSinglePDF = function(id) {
-  var m = allMaterials.find(function(x){ return (x.id||x._id)===id; });
-  if (!m) return;
-  var w = window.open('', '_blank');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8">' +
-    '<title>' + m.nama + ' — Gabe International</title>' +
-    '<style>body{font-family:Segoe UI,sans-serif;padding:30px;color:#1a1917;}' +
-    '.field{margin-bottom:12px;}.lbl{font-size:11px;color:#8a8680;text-transform:uppercase;letter-spacing:.06em;}' +
-    '.val{font-size:15px;font-weight:600;}.price{font-size:24px;font-weight:700;color:#2d5a27;}' +
-    '@media print{button{display:none}}</style></head><body>' +
-    '<div style="display:flex;justify-content:space-between;margin-bottom:20px;">' +
-    '<div><div style="font-size:20px;font-weight:700;color:#2d5a27">🌿 PT. Gabe International</div>' +
-    '<div style="color:#8a8680;font-size:13px;">Material Detail Sheet</div></div>' +
-    '<button onclick="window.print()" style="padding:8px 16px;background:#2d5a27;color:#fff;border:none;border-radius:8px;cursor:pointer;">🖨️ Print</button>' +
-    '</div>' +
-    '<div style="border:1px solid #d8d5cb;border-radius:12px;padding:20px;">' +
-    '<div style="font-size:22px;font-weight:700;margin-bottom:4px;">' + m.nama + '</div>' +
-    '<div style="color:#8a8680;font-size:13px;margin-bottom:16px;">' + (m.namaPanjang||'') + '</div>' +
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">' +
-    '<div class="field"><div class="lbl">ID Material</div><div class="val" style="font-family:monospace">' + (m.id||m._id) + '</div></div>' +
-    '<div class="field"><div class="lbl">Kategori</div><div class="val">' + m.cat + '</div></div>' +
-    '<div class="field"><div class="lbl">Kelas</div><div class="val">' + (m.kelas||'—') + '</div></div>' +
-    '<div class="field"><div class="lbl">Rendemen Log</div><div class="val">' + (m.rendemen||'—') + '%</div></div>' +
-    '<div class="field"><div class="lbl">Densitas</div><div class="val">' + (m.density||'—') + ' kg/m³</div></div>' +
-    '<div class="field"><div class="lbl">Satuan</div><div class="val">' + (m.unit||'m³') + '</div></div>' +
-    '<div class="field" style="grid-column:1/-1;background:#eaf3e8;padding:14px;border-radius:8px;">' +
-    '<div class="lbl">💰 Harga Aktif</div>' +
-    '<div class="price">' + fm(m.harga||0) + ' <span style="font-size:14px;font-weight:400;color:#5a5750;">/ ' + (m.unit||'m³') + '</span></div>' +
-    '</div></div>' +
-    (m.ket ? '<div style="margin-top:12px;padding:10px;background:#f5f4f0;border-radius:8px;font-size:13px;"><b>Keterangan:</b> ' + m.ket + '</div>' : '') +
-    '</div>' +
-    '<div style="margin-top:20px;font-size:11px;color:#8a8680;text-align:center;">Dicetak: ' + new Date().toLocaleString('id-ID') + ' · Gabe International Hub</div>' +
-    '</body></html>');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Price List — PT. Gabe International</title><style>body{font-family:Segoe UI,sans-serif;padding:20px;}h1{color:#2d5a27;font-size:18px;}table{width:100%;border-collapse:collapse;font-size:12px;}th{background:#2d5a27;color:#fff;padding:7px 10px;text-align:left;}td{padding:6px 10px;border-bottom:1px solid #e8e6df;}@media print{button{display:none}}</style></head><body>'+
+    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><div style="width:40px;height:40px;background:#2d5a27;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;">🌿</div>'+
+    '<div><h1>PT. Gabe International — Price List</h1><div style="color:#8a8680;font-size:12px;">Material Master · '+new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'})+'</div></div>'+
+    '<button onclick="window.print()" style="margin-left:auto;padding:8px 16px;background:#2d5a27;color:#fff;border:none;border-radius:8px;cursor:pointer;">🖨️ Print / PDF</button></div>'+
+    '<table><thead><tr><th>ID</th><th>Nama</th><th>Kat.</th><th>Kls</th><th>Rendemen</th><th>Harga Aktif</th><th>Satuan</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+    '<div style="margin-top:14px;font-size:11px;color:#8a8680;text-align:center;">Total: '+MAT.length+' material · Dicetak: '+new Date().toLocaleString('id-ID')+'</div></body></html>');
   w.document.close(); w.focus();
+  showToast('📕 PDF dibuka di tab baru!');
 };
 
-window.exportSingleCSV = function(id) {
-  var m = allMaterials.find(function(x){ return (x.id||x._id)===id; });
-  if (!m) return;
-  var csv = 'ID,Nama,Nama Panjang,Kategori,Kelas,Rendemen,Densitas,Harga,Satuan,Status,Keterangan
-';
-  csv += [m.id||m._id, m.nama, '"'+(m.namaPanjang||'')+'"', m.cat, m.kelas||0,
-          m.rendemen||0, m.density||0, m.harga||0, m.unit||'m3',
-          m.aktif!==false?'Aktif':'Nonaktif', '"'+(m.ket||'')+'"'].join(',');
-  dlBlob('﻿' + csv, (m.id||m._id) + '_' + m.nama + '.csv', 'text/csv;charset=utf-8');
-  showToast('📊 CSV diexport!');
+// ── Import Functions ──────────────────────────────────────────────────
+
+window.openImportModal = function(){
+  if(!canEdit){showToast('⚠️ Hanya Admin/Manager!');return;}
+  importRows=[];
+  document.getElementById('imp-preview-wrap').style.display='none';
+  document.getElementById('imp-btn').disabled=true;
+  document.getElementById('imp-btn').style.opacity='0.5';
+  document.getElementById('imp-file').value='';
+  document.getElementById('modal-import').classList.add('show');
 };
 
-window.openImportModal = function() {
-  if (!canEdit) { showToast('⚠️ Hanya Admin/Manager!'); return; }
-  importData = [];
-  document.getElementById('import-preview-area').style.display = 'none';
-  var saveBtn = document.getElementById('import-save-btn');
-  if (saveBtn) { saveBtn.disabled = true; saveBtn.style.opacity = '0.5'; }
-  var fileInp = document.getElementById('import-file');
-  if (fileInp) fileInp.value = '';
-  document.getElementById('import-modal').classList.add('show');
-};
-
-window.handleImportDrop = function(e) {
+window.dropFile = function(e){
   e.preventDefault();
-  document.getElementById('import-zone').classList.remove('drag');
-  var file = e.dataTransfer.files[0];
-  if (file) processImportFile(file);
+  document.getElementById('import-zone').style.borderColor='#d8d5cb';
+  if(e.dataTransfer.files[0]) readFile(e.dataTransfer.files[0]);
 };
 
-window.handleImportFile = function(e) {
-  var file = e.target.files[0];
-  if (file) processImportFile(file);
+window.readImportFile = function(e){ if(e.target.files[0]) readFile(e.target.files[0]); };
+
+function readFile(file){
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var text=e.target.result;
+    var lines=text.split('\n').filter(function(r){return r.trim();});
+    importRows=[];
+    var html='<div style="display:grid;grid-template-columns:70px 1fr 50px 100px;gap:4px;font-weight:700;margin-bottom:4px;font-size:10px;color:#8a8680;">ID|Nama|Kat|Harga</div>';
+    for(var i=1;i<lines.length;i++){
+      var cols=lines[i].split(',').map(function(c){return c.replace(/^"|"$/g,'').trim();});
+      if(cols.length<4||!cols[0]) continue;
+      var item={id:cols[0].toUpperCase(),nama:cols[1]||'',namaPanjang:cols[2]||cols[1]||'',cat:(cols[3]||'SW').toUpperCase(),kelas:parseInt(cols[4])||2,rendemen:parseFloat(cols[5])||35,density:parseFloat(cols[6])||0,harga:parseFloat(cols[7])||0,unit:cols[8]||'m³',aktif:(cols[9]||'').toLowerCase()!=='nonaktif',ket:cols[10]||''};
+      importRows.push(item);
+      var ex=MAT.find(function(m){return (m.id||m._id)===item.id;});
+      html+='<div style="display:grid;grid-template-columns:70px 1fr 50px 100px;gap:4px;padding:3px 0;border-bottom:1px solid #e8e6df;font-size:11px;"><span style="font-family:monospace;color:'+(ex?'#e65100':'#2d5a27')+'">'+item.id+(ex?' ⚠️':' ✨')+'</span><span>'+item.nama+'</span><span>'+item.cat+'</span><span style="font-weight:600;color:#2d5a27">'+fm(item.harga)+'</span></div>';
+    }
+    document.getElementById('imp-count').textContent=importRows.length;
+    document.getElementById('imp-preview').innerHTML=html;
+    document.getElementById('imp-preview-wrap').style.display='block';
+    if(importRows.length){document.getElementById('imp-btn').disabled=false;document.getElementById('imp-btn').style.opacity='1';}
+  };
+  reader.readAsText(file,'UTF-8');
+}
+
+window.doImport = async function(){
+  if(!importRows.length){showToast('⚠️ Tidak ada data!');return;}
+  var btn=document.getElementById('imp-btn');
+  btn.disabled=true; btn.textContent='⏳ Mengimport...';
+  var ok=0,fail=0;
+  for(var i=0;i<importRows.length;i++){
+    try{
+      await setDoc(doc(db,'materials',importRows[i].id),Object.assign({},importRows[i],{updatedAt:serverTimestamp(),updatedBy:CU.email||'import'}));
+      ok++;
+    }catch(e){fail++;console.error(e);}
+  }
+  closeModal('modal-import');
+  await loadMaterials();
+  showToast('✅ Import: '+ok+' berhasil'+(fail?', '+fail+' gagal':''));
+  btn.disabled=false; btn.textContent='📥 Import Sekarang';
 };
 
-window.downloadImportTemplate = function() {
-  var csv = 'ID,Nama,NamaPanjang,Kategori,Kelas,Rendemen,Densitas,Harga,Satuan,Status,Keterangan
-' +
-    'SW-013,Keruing,Keruing (Dipterocarpus spp.),SW,2,38,680,6000000,m3,Aktif,Contoh kayu keras
-' +
-    'PW-008,Plywood 6mm,Plywood 6mm (122x244cm),PW,0,100,520,110000,lembar,Aktif,
-';
-  dlBlob('﻿' + csv, 'Template_Import_Material.csv', 'text/csv;charset=utf-8');
+window.dlTemplate = function(){
+  var csv='ID,Nama,NamaPanjang,Kategori,Kelas,Rendemen,Densitas,Harga,Satuan,Status,Keterangan\n';
+  csv+='SW-013,Keruing,Keruing (Dipterocarpus spp.),SW,2,38,680,6000000,m3,Aktif,Contoh\n';
+  csv+='PW-008,Plywood 6mm,Plywood 6mm (122x244cm),PW,0,100,520,110000,lembar,Aktif,\n';
+  dlBlob('\uFEFF'+csv,'Template_Import_Material.csv','text/csv;charset=utf-8');
   showToast('📄 Template didownload!');
 };
 
-window.processImport = async function() {
-  if (!importData.length) { showToast('⚠️ Tidak ada data!'); return; }
-  var btn = document.getElementById('import-save-btn');
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Mengimport...'; }
-  var success = 0, failed = 0;
-  for (var i = 0; i < importData.length; i++) {
-    var item = importData[i];
-    try {
-      await setDoc(doc(db, 'materials', item.id), {
-        id: item.id, nama: item.nama, namaPanjang: item.namaPanjang||item.nama,
-        cat: item.cat, kelas: item.kelas, rendemen: item.rendemen,
-        density: item.density, harga: item.harga, unit: item.unit,
-        aktif: item.aktif, ket: item.ket||'',
-        updatedAt: serverTimestamp(), updatedBy: currentUser.email||'import'
-      });
-      success++;
-    } catch(e) { failed++; console.error('Import error:', e); }
-  }
-  closeModal('import-modal');
-  await loadMaterials();
-  showToast('✅ Import selesai: ' + success + ' berhasil' + (failed ? ', ' + failed + ' gagal' : ''));
-  if (btn) { btn.disabled = false; btn.textContent = '📥 Import Sekarang'; }
-};
-
-// ── Export/Import Helpers ─────────────────────────────────────────────
-var importData = [];
-
-function dlBlob(content, filename, type) {
-  var blob = new Blob([content], {type: type});
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(a.href);
-}
-
-function todayStr() {
-  return new Date().toISOString().split('T')[0];
-}
-
-function processImportFile(file) {
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var text = e.target.result;
-    var rows = text.split('
-').filter(function(r){ return r.trim(); });
-    if (rows.length < 2) { showToast('❌ File kosong atau format salah!'); return; }
-    importData = [];
-    var preview = document.getElementById('import-preview');
-    var html = '<div style="display:grid;grid-template-columns:70px 1fr 50px 100px;gap:4px;font-weight:700;margin-bottom:6px;font-size:11px;color:#8a8680;">ID | Nama | Kat | Harga</div>';
-    for (var i = 1; i < rows.length; i++) {
-      var cols = rows[i].split(',').map(function(c){ return c.replace(/^"|"$/g,'').trim(); });
-      if (cols.length < 4 || !cols[0]) continue;
-      var item = {
-        id: cols[0].toUpperCase(), nama: cols[1]||'',
-        namaPanjang: cols[2]||cols[1]||'',
-        cat: (cols[3]||'SW').toUpperCase(),
-        kelas: parseInt(cols[4])||2,
-        rendemen: parseFloat(cols[5])||35,
-        density: parseFloat(cols[6])||0,
-        harga: parseFloat(cols[7])||0,
-        unit: cols[8]||'m3',
-        aktif: (cols[9]||'').toLowerCase() !== 'nonaktif',
-        ket: cols[10]||''
-      };
-      importData.push(item);
-      var exists = allMaterials.find(function(m){ return (m.id||m._id)===item.id; });
-      var clr = exists ? '#e65100' : '#2d5a27';
-      html += '<div style="display:grid;grid-template-columns:70px 1fr 50px 100px;gap:4px;padding:4px 0;border-bottom:1px solid #e8e6df;font-size:11px;">' +
-        '<span style="font-family:monospace;color:'+clr+'">'+item.id+(exists?' ⚠️':' ✨')+'</span>' +
-        '<span>'+item.nama+'</span>' +
-        '<span style="color:'+((CAT_COLOR&&CAT_COLOR[item.cat])||'#555')+'">'+item.cat+'</span>' +
-        '<span style="font-weight:600;color:#2d5a27">'+fm(item.harga)+'</span>' +
-        '</div>';
-    }
-    if (preview) preview.innerHTML = html;
-    var countEl = document.getElementById('import-count');
-    if (countEl) countEl.textContent = importData.length;
-    var previewArea = document.getElementById('import-preview-area');
-    if (previewArea) previewArea.style.display = 'block';
-    var saveBtn = document.getElementById('import-save-btn');
-    if (saveBtn && importData.length) { saveBtn.disabled = false; saveBtn.style.opacity = '1'; }
-  };
-  reader.readAsText(file, 'UTF-8');
-}
-
-
-// ── INIT ──────────────────────────────────────────────────────────────
-// Init language toggle
-(function(){
-  var wrap = document.getElementById('lang-toggle-wrap');
-  if(wrap) { var btn = document.createElement('span'); btn.innerHTML = buildLangToggle(); wrap.replaceWith(btn.firstChild); }
-  if(typeof applyLang==='function') applyLang();
-})();
-loadMaterials().catch(e=>{
-  document.getElementById('mat-grid').innerHTML =
-    '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#8b2020">❌ Gagal memuat: ' + e.message + '</div>';
-});
+// ── INIT ─────────────────────────────────────────────────────────────
+loadMaterials();
 </script>
 </body>
 </html>
