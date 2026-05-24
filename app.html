@@ -1517,30 +1517,70 @@ window.analyzeImage = async function() {
 
 
   try {
-    // Call via Vercel serverless function (avoids CORS)
-    var response = await fetch('/api/analyze', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        imageData: base64,
-        mimeType: mimeType
-      })
-    });
+    // Try /api/analyze first (Vercel serverless), fallback to direct
+    var apiUrl = '/api/analyze';
+    var useProxy = true;
 
-    if (!response.ok) {
-      var errData = await response.json();
-      throw new Error(errData.error || 'Server error ' + response.status);
+    // Check if proxy available
+    try {
+      var checkResp = await fetch(apiUrl, {method:'OPTIONS'});
+      if (checkResp.status === 404) useProxy = false;
+    } catch(e) { useProxy = false; }
+
+    var response;
+    if (useProxy) {
+      response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageData: base64, mimeType: mimeType })
+      });
+      var data = await response.json();
+      if (!data.success) throw new Error(data.error || 'Analisis gagal');
+      var result = data.result;
+      _aiResult = result;
+      showAiResult(result);
+    } else {
+      // Direct call (works if CORS allowed / dev mode)
+      response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1024,
+          messages: [{
+            role: 'user',
+            content: [
+              { type: 'image', source: { type: 'base64', media_type: mimeType, data: base64 } },
+              { type: 'text', text: prompt }
+            ]
+          }]
+        })
+      });
+      if (!response.ok) {
+        var errText = await response.text();
+        throw new Error('API tidak tersedia. Upload folder api/ ke GitHub terlebih dahulu. Detail: ' + response.status);
+      }
+      var d2 = await response.json();
+      var rawText = d2.content[0].text;
+      var jsonMatch = rawText.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('Respons AI tidak valid');
+      var result = JSON.parse(jsonMatch[0]);
+      _aiResult = result;
+      showAiResult(result);
     }
 
-    var data = await response.json();
-    if (!data.success) throw new Error(data.error || 'Analisis gagal');
-
-    var result = data.result;
-    _aiResult = result;
-    showAiResult(result);
-
   } catch(e) {
-    showAiError('❌ Gagal analisis: ' + e.message + '. Pastikan koneksi internet aktif.');
+    var msg = e.message || 'Unknown error';
+    if (msg.includes('404') || msg.includes('api/analyze')) {
+      showAiError('⚠️ API belum aktif. Langkah: 1) Upload folder api/ ke GitHub, 2) Set ANTHROPIC_API_KEY di Vercel Environment Variables, 3) Redeploy.');
+    } else if (msg.includes('CORS') || msg.includes('fetch')) {
+      showAiError('🌐 CORS Error: Upload folder api/ ke GitHub dan set ANTHROPIC_API_KEY di Vercel Settings.');
+    } else {
+      showAiError('❌ ' + msg);
+    }
     console.error('AI Error:', e);
   } finally {
     btn.disabled = false;
