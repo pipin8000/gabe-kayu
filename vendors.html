@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vendor Master — Gabe International Hub</title>
 <script src="lang.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a1917;font-size:14px;}
@@ -119,6 +120,39 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
 #toast.show{opacity:1;transform:translateY(0);}
 .empty{text-align:center;padding:40px;color:#8a8680;grid-column:1/-1;}
 
+/* IMAGE UPLOAD */
+.img-upload-zone{border:2px dashed #d8d5cb;border-radius:12px;padding:20px;text-align:center;cursor:pointer;background:#fafaf8;transition:all .2s;}
+.img-upload-zone:hover{border-color:#2d5a27;background:#eaf3e8;}
+.img-preview{width:100%;max-height:180px;object-fit:cover;border-radius:10px;margin-top:8px;display:none;}
+.img-preview.show{display:block;}
+
+/* GMAP */
+.gmap-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#e8f0fb;border:1px solid #85b7eb;border-radius:8px;color:#0c447c;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;}
+.gmap-btn:hover{background:#b5d4f4;}
+
+/* QR CODE */
+.qr-wrap{background:#fff;border:1px solid #d8d5cb;border-radius:12px;padding:16px;text-align:center;}
+.qr-box{display:inline-block;padding:12px;background:#fff;border:1px solid #e8e6df;border-radius:8px;}
+.qr-info{font-size:11px;color:#8a8680;margin-top:8px;line-height:1.6;}
+.qr-actions{display:flex;gap:8px;justify-content:center;margin-top:10px;}
+.qr-btn{padding:6px 14px;border:1px solid #d8d5cb;border-radius:8px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;}
+.qr-btn.primary{background:#2d5a27;color:#fff;border-color:#2d5a27;}
+
+/* HISTORY */
+.hist-empty{text-align:center;padding:24px;color:#8a8680;font-size:13px;}
+.hist-item-tx{padding:10px 12px;border:1px solid #e8e6df;border-radius:10px;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.hist-tx-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+
+/* VIEW TABS */
+.view-tabs{display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid #e8e6df;padding-bottom:10px;}
+.view-tab{padding:6px 14px;border:none;background:none;font-size:13px;font-weight:600;cursor:pointer;color:#8a8680;border-radius:8px;}
+.view-tab.active{background:#2d5a27;color:#fff;}
+
+/* VENDOR CARD image */
+.vnd-img{width:100%;height:120px;object-fit:cover;border-bottom:1px solid #e8e6df;}
+.vtab.active{display:block!important;}
+
+
 /* Category colors */
 .cat-kayu{background:#fff3e0;color:#633806;}
 .cat-plywood{background:#e3f2fd;color:#0c447c;}
@@ -191,6 +225,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
   </div>
 
   <!-- IO Bar -->
+  <!-- Link to Master Setup -->
+  <div style="background:#e8f0fb;border:1px solid #85b7eb;border-radius:10px;padding:8px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="font-size:12px;color:#0c447c;"><b>⚙️ Schema-First Design</b> · Group & Kategori dikelola dari database</div>
+    <a href="vendor_master.html" style="font-size:12px;font-weight:700;color:#0c447c;text-decoration:none;padding:4px 12px;background:#fff;border:1px solid #85b7eb;border-radius:6px;">🗂️ Kelola Group & Kategori</a>
+  </div>
   <div class="io-bar">
     <span class="io-label">📤 EXPORT:</span>
     <button class="io-btn csv" onclick="exportCSV()">📊 CSV</button>
@@ -324,6 +363,28 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
       </div>
       <div class="fg"><label>Keterangan / Catatan</label>
         <textarea class="fc" id="m-ket" rows="2" placeholder="Catatan khusus tentang vendor ini..."></textarea></div>
+      <!-- Image -->
+      <div class="section-hdr">Foto / Gambar Vendor</div>
+      <div class="fg">
+        <label>URL Gambar <span style="color:#8a8680;font-weight:400">(atau upload di bawah)</span></label>
+        <input type="text" class="fc" id="m-imgurl" placeholder="https://..." oninput="previewImgUrl(this.value)">
+      </div>
+      <div class="img-upload-zone" onclick="document.getElementById('m-imgfile').click()">
+        <div style="font-size:24px;margin-bottom:4px;">📷</div>
+        <div style="font-size:12px;font-weight:600;">Klik untuk upload foto vendor</div>
+        <div style="font-size:11px;color:#8a8680;">JPG, PNG (maks 500KB)</div>
+        <img id="m-imgpreview" class="img-preview" alt="preview">
+      </div>
+      <input type="file" id="m-imgfile" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="handleImgUpload(event)">
+
+      <!-- Google Maps -->
+      <div class="section-hdr">Lokasi Google Maps</div>
+      <div class="fg">
+        <label>Link Google Maps</label>
+        <input type="text" class="fc" id="m-gmap" placeholder="https://maps.google.com/... atau https://goo.gl/maps/...">
+      </div>
+      <div style="font-size:11px;color:#8a8680;margin-top:-8px;margin-bottom:8px;">💡 Buka Google Maps → cari lokasi → klik Share → Copy Link</div>
+
       <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
         <input type="checkbox" id="m-aktif" checked style="width:15px;height:15px;accent-color:#2d5a27;">
         <label for="m-aktif" style="cursor:pointer;font-size:13px;">Vendor Aktif</label>
@@ -338,14 +399,30 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
 
 <!-- VIEW MODAL -->
 <div class="modal-ov" id="modal-view">
-  <div class="modal" style="max-width:540px;">
+  <div class="modal" style="max-width:580px;">
     <div class="modal-hdr">
       <h3 id="view-title">👁 Detail Vendor</h3>
       <button class="modal-x" onclick="closeModal('modal-view')">✕</button>
     </div>
-    <div class="modal-body" id="view-body"></div>
+    <div class="modal-body">
+      <!-- Vendor header -->
+      <div id="view-header"></div>
+      <!-- Tabs -->
+      <div class="view-tabs">
+        <button class="view-tab active" onclick="switchViewTab('info',this)">📋 Info</button>
+        <button class="view-tab" onclick="switchViewTab('material',this)">🪵 Material</button>
+        <button class="view-tab" onclick="switchViewTab('history',this)">📊 Historis</button>
+        <button class="view-tab" onclick="switchViewTab('qr',this)">📱 QR Code</button>
+      </div>
+      <!-- Tab contents -->
+      <div id="vtab-info" class="vtab active"></div>
+      <div id="vtab-material" class="vtab" style="display:none"></div>
+      <div id="vtab-history" class="vtab" style="display:none"></div>
+      <div id="vtab-qr" class="vtab" style="display:none"></div>
+    </div>
     <div class="modal-footer">
       <button class="btn" style="background:#f0efe9;color:#5a5750;border:1.5px solid #d8d5cb;" onclick="closeModal('modal-view')">Tutup</button>
+      <button class="btn" style="background:#e8f0fb;color:#0c447c;border:1px solid #85b7eb;" id="view-gmap-btn" onclick="">🗺️ Buka Maps</button>
       <button class="btn btn-primary" id="view-edit-btn">✏️ Edit</button>
     </div>
   </div>
@@ -680,7 +757,9 @@ window.openAddModal = function(){
   editId=null;
   document.getElementById('modal-title').textContent='➕ Tambah Vendor Baru';
   document.getElementById('save-btn').textContent='💾 Simpan';
-  ['m-id','m-nama','m-pic','m-jabatan','m-wa','m-telp','m-email','m-web','m-alamat','m-kota','m-prov','m-ket'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['m-id','m-nama','m-pic','m-jabatan','m-wa','m-telp','m-email','m-web','m-alamat','m-kota','m-prov','m-ket','m-gmap','m-imgurl'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  window._vendorImgData = null;
+  var prev=document.getElementById('m-imgpreview'); if(prev){prev.src='';prev.classList.remove('show');}
   document.getElementById('m-id').readOnly=false;
   document.getElementById('m-kat').value='Kayu Log';
   document.getElementById('m-jarak').value='0';
@@ -719,6 +798,15 @@ window.openEditModal = function(id){
   document.getElementById('m-payment').value=v.payment||'Cash';
   document.getElementById('m-ket').value=v.ket||'';
   document.getElementById('m-aktif').checked=v.aktif!==false;
+  var gmapEl=document.getElementById('m-gmap'); if(gmapEl) gmapEl.value=v.gmap||'';
+  var imgurlEl=document.getElementById('m-imgurl'); if(imgurlEl) imgurlEl.value=v.imgUrl||'';
+  window._vendorImgData = v.imgData||null;
+  var prev=document.getElementById('m-imgpreview');
+  if(prev){
+    var imgSrc=v.imgData||v.imgUrl||'';
+    if(imgSrc){prev.src=imgSrc;prev.classList.add('show');}
+    else{prev.src='';prev.classList.remove('show');}
+  }
   curRating=v.rating||3; setRating(curRating);
   buildMatCheckboxes(v.materials||[]);
   document.getElementById('modal-add').classList.add('show');
@@ -733,6 +821,7 @@ window.saveVendor = async function(){
   // Get selected materials
   var selMats=[];
   document.querySelectorAll('input[name="mat-cb"]:checked').forEach(function(cb){selMats.push(cb.value);});
+  window._vendorImgData = window._vendorImgData || null;
   var data={
     id:id,nama:nama,
     kategori:document.getElementById('m-kat').value,
@@ -753,6 +842,9 @@ window.saveVendor = async function(){
     materials:selMats,
     ket:document.getElementById('m-ket').value,
     aktif:document.getElementById('m-aktif').checked,
+    gmap:document.getElementById('m-gmap').value||'',
+    imgUrl:document.getElementById('m-imgurl').value||'',
+    imgData:window._vendorImgData||null,
     updatedAt:serverTimestamp(),updatedBy:CU.email||'unknown'
   };
   try{
@@ -768,31 +860,220 @@ window.saveVendor = async function(){
   finally{btn.disabled=false; btn.textContent=editId?'💾 Update':'💾 Simpan';}
 };
 
+
+window.switchViewTab = function(tab, btn) {
+  document.querySelectorAll('.view-tab').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.querySelectorAll('.vtab').forEach(function(t){t.style.display='none';});
+  document.getElementById('vtab-'+tab).style.display='block';
+};
+
 window.viewVnd = function(id){
   var v=VND.find(function(x){return (x.id||x._id)===id;});
   if(!v) return;
   document.getElementById('view-title').textContent='👁 '+v.nama+' ('+id+')';
   document.getElementById('view-edit-btn').onclick=function(){closeModal('modal-view');openEditModal(id);};
+
+  // GMap button
+  var gmapBtn = document.getElementById('view-gmap-btn');
+  if (v.gmap) { gmapBtn.style.display='inline-flex'; gmapBtn.onclick=function(){window.open(v.gmap,'_blank');}; }
+  else { gmapBtn.style.display='none'; }
+
   var catCls=CAT_CLR[v.kategori]||'cat-general';
   var catIcon=CAT_ICON[v.kategori]||'📦';
-  var mats=(v.materials||[]).map(function(mid){ var m=MATS.find(function(x){return (x.id||x._id)===mid;}); return m?m.nama:mid; }).join(' · ')||'—';
-  var body=document.getElementById('view-body');
-  body.innerHTML=
+
+  // Header with image
+  var hdr = document.getElementById('view-header');
+  var imgHtml = '';
+  if (v.imgData || v.imgUrl) {
+    imgHtml = '<img src="'+(v.imgData||v.imgUrl)+'" style="width:100%;max-height:160px;object-fit:cover;border-radius:10px;margin-bottom:12px;" onerror="this.style.display='none'">';
+  }
+  hdr.innerHTML = imgHtml +
     '<div style="display:flex;align-items:center;gap:12px;padding:12px;background:#f5f4f0;border-radius:10px;margin-bottom:14px;">'+
     '<div class="avatar" style="background:'+CAT_AVT[v.kategori]+';width:48px;height:48px;font-size:20px;">'+catIcon+'</div>'+
     '<div style="flex:1;"><div style="font-size:18px;font-weight:700;">'+v.nama+'</div>'+
-    '<span class="cat-badge '+catCls+'">'+v.kategori+'</span></div>'+
-    '<div style="font-size:20px;color:#ef9f27;">'+stars(v.rating||0)+'</div></div>'+
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">'+
-    [['ID Vendor',id],['PIC',v.pic||'—'],['Jabatan',v.jabatan||'—'],['Kota',(v.kota||'—')+(v.jarak?' ('+v.jarak+' km)':'')],
-     ['WhatsApp',v.wa||'—'],['Telepon',v.telp||'—'],['Email',v.email||'—'],['Min. Order',v.minOrder||'—'],
-     ['Lead Time',(v.leadTime||'—')+' hari'],['Payment',v.payment||'—']]
-    .map(function(f){return '<div style="background:#f5f4f0;border-radius:8px;padding:9px 12px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;margin-bottom:2px;">'+f[0]+'</div><div style="font-size:13px;font-weight:600;">'+f[1]+'</div></div>';}).join('')+
+    '<span class="cat-badge '+catCls+'">'+v.kategori+'</span>'+
+    (v.alamat?'<div style="font-size:11px;color:#8a8680;margin-top:3px;">'+v.alamat+', '+( v.kota||'')+'</div>':'')+'</div>'+
+    '<div style="font-size:22px;color:#ef9f27;text-align:right"><div>'+stars(v.rating||0)+'</div><div style="font-size:11px;color:#8a8680">'+(v.rating||0)+'/5</div></div></div>';
+
+  // TAB: INFO
+  var infoTab = document.getElementById('vtab-info');
+  infoTab.innerHTML =
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">'+
+    [['ID Vendor',id],['PIC / Kontak',v.pic||'—'],['Jabatan',v.jabatan||'—'],
+     ['Kota / Jarak',(v.kota||'—')+(v.jarak?' ('+v.jarak+' km)':'')],
+     ['WhatsApp',v.wa||'—'],['Telepon',v.telp||'—'],
+     ['Email',v.email||'—'],['Website',v.web||'—'],
+     ['Min. Order',v.minOrder||'—'],['Lead Time',(v.leadTime||'—')+' hari'],
+     ['Term Payment',v.payment||'—'],['Provinsi',v.provinsi||'—']]
+    .map(function(f){
+      return '<div style="background:#f5f4f0;border-radius:8px;padding:9px 12px;">'+
+        '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;margin-bottom:2px;">'+f[0]+'</div>'+
+        '<div style="font-size:13px;font-weight:600;">'+f[1]+'</div></div>';
+    }).join('')+'</div>'+
+    (v.gmap?'<a href="'+v.gmap+'" target="_blank" class="gmap-btn" style="margin-bottom:10px;">🗺️ Buka di Google Maps</a><br>':'') +
+    (v.ket?'<div style="background:#f5f4f0;border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;"><b>Keterangan:</b> '+v.ket+'</div>':'');
+
+  // TAB: MATERIAL
+  var matTab = document.getElementById('vtab-material');
+  var mats = v.materials||[];
+  var matHtml = '<div style="margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">'+
+    '<div style="font-size:13px;font-weight:600;">Material yang Di-supply ('+mats.length+')</div>';
+  if (canEdit) {
+    matHtml += '<button onclick="openAddMatFromVendor(''+id+'')" style="padding:5px 12px;background:#2d5a27;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">➕ Tambah Material Baru</button>';
+  }
+  matHtml += '</div>';
+  if (!mats.length) {
+    matHtml += '<div class="hist-empty">Belum ada material terdaftar untuk vendor ini.</div>';
+  } else {
+    mats.forEach(function(mid){
+      var m = MATS.find(function(x){return (x.id||x._id)===mid;});
+      var catClr = m ? (m.cat==='SW'?'#27500a':m.cat==='PW'?'#0c447c':'#3c3489') : '#5a5750';
+      var catBg  = m ? (m.cat==='SW'?'#eaf3de':m.cat==='PW'?'#e3f2fd':'#f3e5f5') : '#f0efe9';
+      matHtml += '<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid #e8e6df;border-radius:10px;margin-bottom:6px;">'+
+        '<span style="font-family:monospace;font-size:10px;background:#f0efe9;padding:2px 6px;border-radius:4px;color:#8a8680;">'+mid+'</span>'+
+        '<span style="flex:1;font-weight:600;font-size:13px;">'+(m?m.nama:mid)+'</span>'+
+        (m?'<span style="font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;background:'+catBg+';color:'+catClr+'">'+m.cat+'</span>':'')+
+        (m?'<span style="font-size:11px;color:#8a8680;margin-left:4px;">'+(m.harga?('Rp '+Math.round(m.harga).toLocaleString('id-ID')):'—')+'</span>':'')+
+        '</div>';
+    });
+  }
+  matTab.innerHTML = matHtml;
+
+  // TAB: HISTORY
+  var histTab = document.getElementById('vtab-history');
+  histTab.innerHTML =
+    '<div style="text-align:center;padding:20px;background:#f5f4f0;border-radius:10px;margin-bottom:12px;">'+
+    '<div style="font-size:32px;margin-bottom:8px;">📊</div>'+
+    '<div style="font-weight:600;font-size:14px;color:#1a1917;margin-bottom:4px;">Historis Transaksi</div>'+
+    '<div style="font-size:12px;color:#8a8680;">Modul ini akan aktif saat Purchase Order dikembangkan.</div>'+
+    '<div style="margin-top:12px;font-size:11px;color:#8a8680;background:#fff;border-radius:8px;padding:10px;">'+
+    '🔜 <b>Akan Terhubung Ke:</b><br>'+
+    '• Purchase Order (PO)<br>'+
+    '• Goods Receipt (GR)<br>'+
+    '• Invoice Vendor<br>'+
+    '• Retur Material<br>'+
+    '• Laporan Pembelian per Vendor'+
+    '</div></div>'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;">'+
+    ['📦 Total PO: —','💰 Total Pembelian: —','📅 Terakhir Order: —','⭐ On-Time Delivery: —']
+    .map(function(s){return '<div style="flex:1;min-width:120px;background:#f5f4f0;border-radius:8px;padding:10px;text-align:center;font-size:12px;color:#8a8680;">'+s+'</div>';}).join('')+'</div>';
+
+  // TAB: QR CODE
+  var qrTab = document.getElementById('vtab-qr');
+  var qrData = JSON.stringify({
+    type:'GABE_VENDOR',
+    id: id,
+    nama: v.nama,
+    kategori: v.kategori,
+    wa: v.wa||'',
+    kota: v.kota||'',
+    materials: v.materials||[],
+    url: 'https://gabe-kayu.vercel.app/vendors.html'
+  });
+  qrTab.innerHTML =
+    '<div class="qr-wrap">'+
+    '<div style="font-size:13px;font-weight:600;margin-bottom:12px;">QR Code Vendor — '+v.nama+'</div>'+
+    '<div class="qr-box"><div id="qr-canvas"></div></div>'+
+    '<div class="qr-info">'+
+    'Scan QR ini untuk akses data vendor langsung<br>'+
+    '<b>'+id+'</b> · '+v.kategori+' · '+( v.kota||'Jepara')+'<br>'+
+    '<span style="font-size:10px;color:#c4c0b2;">QR berisi: ID, Nama, Kontak, Material Supply</span>'+
     '</div>'+
-    '<div style="background:#eaf3de;border-radius:8px;padding:10px 12px;margin-bottom:10px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#27500a;margin-bottom:6px;">Material yang Di-supply</div>'+
-    '<div style="font-size:12px;color:#1a1917;">'+mats+'</div></div>'+
-    (v.ket?'<div style="background:#f5f4f0;border-radius:8px;padding:10px 12px;font-size:13px;"><b>Keterangan:</b> '+v.ket+'</div>':'');
+    '<div class="qr-actions">'+
+    '<button class="qr-btn" onclick="printQR(''+id+'',''+v.nama+'')">🖨️ Print QR</button>'+
+    '<button class="qr-btn primary" onclick="dlQR(''+id+'')">⬇️ Download QR</button>'+
+    '</div></div>'+
+    '<div style="margin-top:10px;font-size:11px;color:#8a8680;background:#f5f4f0;border-radius:8px;padding:10px;">'+
+    '🔗 <b>Integrasi QR ke Depan:</b><br>'+
+    '• Scan saat terima material (Goods Receipt)<br>'+
+    '• Tempel di kartu vendor / dokumen PO<br>'+
+    '• Link otomatis ke riwayat transaksi vendor<br>'+
+    '• Integrasi dengan sistem WMS / gudang'+
+    '</div>';
+
   document.getElementById('modal-view').classList.add('show');
+
+  // Generate QR
+  setTimeout(function(){
+    var qrEl = document.getElementById('qr-canvas');
+    if (qrEl && typeof QRCode !== 'undefined') {
+      qrEl.innerHTML = '';
+      new QRCode(qrEl, {
+        text: qrData,
+        width: 180,
+        height: 180,
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+  }, 100);
+};
+
+window.printQR = function(id, nama) {
+  var canvas = document.querySelector('#qr-canvas canvas') || document.querySelector('#qr-canvas img');
+  if (!canvas) { showToast('❌ QR belum ter-generate!'); return; }
+  var dataUrl = canvas.tagName==='CANVAS' ? canvas.toDataURL() : canvas.src;
+  var w = window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>QR Vendor - '+nama+'</title>'+
+    '<style>body{font-family:Segoe UI,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:20px;}'+
+    '.card{border:2px solid #1a3a1a;border-radius:16px;padding:24px;text-align:center;max-width:280px;}'+
+    'h2{color:#1a3a1a;font-size:16px;margin:0 0 4px;}'+
+    '.sub{color:#8a8680;font-size:12px;margin-bottom:16px;}'+
+    'img{width:180px;height:180px;}'+
+    '.id{font-family:monospace;font-size:12px;background:#f0efe9;padding:4px 10px;border-radius:6px;margin-top:12px;display:inline-block;}'+
+    '.foot{font-size:10px;color:#8a8680;margin-top:8px;}'+
+    '@media print{button{display:none}}</style></head><body>'+
+    '<div class="card">'+
+    '<h2>🌿 PT. Gabe International</h2>'+
+    '<div class="sub">Vendor Master</div>'+
+    '<img src="'+dataUrl+'" alt="QR">'+
+    '<div class="id">'+id+'</div>'+
+    '<div style="font-weight:700;margin-top:6px;font-size:13px;">'+nama+'</div>'+
+    '<div class="foot">gabe-kayu.vercel.app</div>'+
+    '</div>'+
+    '<button onclick="window.print()" style="margin-top:16px;padding:10px 24px;background:#2d5a27;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;">🖨️ Print</button>'+
+    '</body></html>');
+  w.document.close(); w.focus();
+};
+
+window.dlQR = function(id) {
+  var canvas = document.querySelector('#qr-canvas canvas');
+  if (!canvas) { showToast('❌ QR belum ter-generate!'); return; }
+  var a = document.createElement('a');
+  a.href = canvas.toDataURL('image/png');
+  a.download = 'QR_Vendor_'+id+'.png';
+  a.click();
+  showToast('✅ QR Code didownload!');
+};
+
+window.openAddMatFromVendor = function(vendorId) {
+  showToast('➕ Fitur tambah material baru akan membuka Material Master. Tambahkan material baru di sana lalu refresh vendor ini.');
+  setTimeout(function(){ window.open('materials.html','_blank'); }, 500);
+};
+
+window.previewImgUrl = function(url) {
+  var prev = document.getElementById('m-imgpreview');
+  if (!prev) return;
+  if (!url) { prev.classList.remove('show'); return; }
+  prev.src = url;
+  prev.classList.add('show');
+  prev.onerror = function(){ prev.classList.remove('show'); };
+};
+
+window.handleImgUpload = function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 500*1024) { showToast('⚠️ File terlalu besar! Maks 500KB'); return; }
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    var prev = document.getElementById('m-imgpreview');
+    if (prev) { prev.src = ev.target.result; prev.classList.add('show'); }
+    window._vendorImgData = ev.target.result;
+    var urlInp = document.getElementById('m-imgurl');
+    if (urlInp) urlInp.value = '';
+    showToast('✅ Foto berhasil diupload!');
+  };
+  reader.readAsDataURL(file);
 };
 
 window.delVnd = async function(id,nama){
@@ -855,8 +1136,10 @@ window.exportPDF = function(){
 
 // ── INIT ─────────────────────────────────────────────────────────────
 window.showToast = showToast;
-await loadMaterials();
-await loadVendors();
+(async function(){
+  await loadMaterials();
+  await loadVendors();
+})();
 </script>
 </body>
 </html>

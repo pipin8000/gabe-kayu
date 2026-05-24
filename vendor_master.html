@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendor Master Setup — Gabe International Hub</title>
+<script src="lang.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a1917;font-size:14px;}
+.topbar{background:#1a3a1a;color:#fff;padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-left{display:flex;align-items:center;gap:10px;}
+.back-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:5px 12px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;text-decoration:none;}
+.topbar-right{display:flex;align-items:center;gap:8px;}
+.logout-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px;}
+.app{max-width:1200px;margin:0 auto;padding:20px 16px 60px;}
+.page-hdr{margin-bottom:24px;}
+.page-title{font-size:22px;font-weight:700;}
+.page-sub{font-size:13px;color:#8a8680;margin-top:3px;}
+
+/* SCHEMA INFO BANNER */
+.schema-banner{background:linear-gradient(135deg,#1a3a1a,#2d5a27);color:#fff;border-radius:14px;padding:18px 20px;margin-bottom:24px;display:flex;align-items:center;gap:16px;}
+.schema-icon{font-size:32px;flex-shrink:0;}
+.schema-title{font-size:15px;font-weight:700;margin-bottom:3px;}
+.schema-sub{font-size:12px;opacity:.8;line-height:1.6;}
+
+/* LAYOUT 2 PANEL */
+.two-panel{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.panel{background:#fff;border:1px solid #d8d5cb;border-radius:14px;overflow:hidden;}
+.panel-hdr{padding:12px 16px;background:#f5f4f0;border-bottom:1px solid #d8d5cb;display:flex;align-items:center;justify-content:space-between;}
+.panel-title{font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px;}
+.panel-body{padding:14px 16px;}
+.btn-sm{padding:5px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .15s;}
+.btn-primary{background:#2d5a27;color:#fff;}
+.btn-primary:hover{background:#3d7a35;}
+.btn-secondary{background:#f0efe9;color:#5a5750;border:1.5px solid #d8d5cb;}
+.btn-secondary:hover{background:#e8e6df;}
+
+/* GROUP & CATEGORY ITEMS */
+.item-list{display:flex;flex-direction:column;gap:6px;min-height:60px;}
+.item-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid #e8e6df;border-radius:8px;background:#fff;transition:all .15s;}
+.item-row:hover{background:#f5f4f0;border-color:#d8d5cb;}
+.item-row.selected{background:#eaf3e8;border-color:#2d5a27;}
+.item-icon{font-size:18px;width:24px;text-align:center;flex-shrink:0;}
+.item-info{flex:1;}
+.item-name{font-size:13px;font-weight:600;}
+.item-sub{font-size:11px;color:#8a8680;margin-top:1px;}
+.item-badge{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:700;background:#f0efe9;color:#5a5750;}
+.item-actions{display:flex;gap:4px;flex-shrink:0;}
+.act-btn{width:26px;height:26px;border:1px solid #d8d5cb;border-radius:6px;background:#fff;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.act-btn:hover{background:#f0efe9;}
+.act-btn.del:hover{background:#fceaea;border-color:#f5c2c2;}
+.empty-msg{text-align:center;padding:20px;color:#8a8680;font-size:12px;}
+
+/* INLINE ADD FORM */
+.add-form{background:#f5f4f0;border-radius:10px;padding:12px;margin-top:10px;border:1px dashed #d8d5cb;}
+.add-form-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+.fc-sm{flex:1;min-width:100px;padding:7px 10px;border:1.5px solid #d8d5cb;border-radius:7px;font-size:13px;font-family:inherit;background:#fff;}
+.fc-sm:focus{outline:none;border-color:#2d5a27;}
+.icon-picker{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;}
+.icon-opt{width:32px;height:32px;border:1.5px solid #d8d5cb;border-radius:6px;background:#fff;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.icon-opt:hover,.icon-opt.sel{border-color:#2d5a27;background:#eaf3e8;}
+
+/* VENDOR TABLE */
+.vnd-table-wrap{background:#fff;border:1px solid #d8d5cb;border-radius:14px;overflow:hidden;}
+.vnd-table-hdr{padding:12px 16px;background:#f5f4f0;border-bottom:1px solid #d8d5cb;display:flex;align-items:center;justify-content:space-between;}
+.vnd-tbl{width:100%;border-collapse:collapse;}
+.vnd-tbl thead th{padding:9px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#8a8680;border-bottom:1.5px solid #d8d5cb;background:#f5f4f0;white-space:nowrap;}
+.vnd-tbl tbody td{padding:9px 12px;border-bottom:1px solid #e8e6df;font-size:13px;vertical-align:middle;}
+.vnd-tbl tbody tr:hover td{background:#f5f4f0;}
+.vnd-tbl tbody tr:last-child td{border-bottom:none;}
+.cat-pill{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;white-space:nowrap;}
+
+/* MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:16px;}
+.modal-ov.show{display:flex;}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:460px;box-shadow:0 24px 80px rgba(0,0,0,.3);}
+.modal-hdr{padding:14px 18px;border-bottom:1px solid #d8d5cb;display:flex;align-items:center;justify-content:space-between;}
+.modal-hdr h3{font-size:14px;font-weight:700;}
+.modal-x{width:26px;height:26px;border:none;background:#e8e6df;border-radius:50%;cursor:pointer;font-size:14px;}
+.modal-body{padding:16px 18px;}
+.modal-footer{padding:12px 18px;border-top:1px solid #d8d5cb;display:flex;gap:8px;justify-content:flex-end;}
+.fg{margin-bottom:12px;}
+.fg label{display:block;font-size:12px;font-weight:600;color:#5a5750;margin-bottom:3px;}
+.fc{width:100%;padding:8px 11px;border:1.5px solid #d8d5cb;border-radius:8px;font-size:13px;font-family:inherit;}
+.fc:focus{outline:none;border-color:#2d5a27;}
+
+/* TOAST */
+#toast{position:fixed;bottom:20px;right:20px;background:#2d5a27;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:all .22s;pointer-events:none;z-index:999;}
+#toast.show{opacity:1;transform:translateY(0);}
+
+/* SCHEMA VISUAL */
+.schema-visual{background:#fff;border:1px solid #d8d5cb;border-radius:14px;padding:16px;margin-bottom:16px;}
+.schema-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.schema-box{background:#f5f4f0;border:1px solid #d8d5cb;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;text-align:center;}
+.schema-box.active{background:#eaf3e8;border-color:#2d5a27;color:#1a3a1a;}
+.schema-box.future{background:#faeeda;border-color:#ef9f27;color:#633806;opacity:.7;}
+.schema-arr{color:#8a8680;font-size:16px;}
+
+@media(max-width:768px){
+  .two-panel{grid-template-columns:1fr;}
+  .schema-flow{flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-left">
+    <a href="vendors.html" class="back-btn">← Vendor</a>
+    <div>
+      <div style="font-size:14px;font-weight:600;">⚙️ Vendor Master Setup</div>
+      <div style="font-size:10px;opacity:.7;">Group · Kategori · Schema Database</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span id="lang-wrap"></span>
+    <span id="user-name" style="font-size:11px;opacity:.8;"></span>
+    <button class="logout-btn" onclick="doLogout()">Keluar</button>
+  </div>
+</nav>
+
+<div class="app">
+
+  <!-- Banner -->
+  <div class="schema-banner">
+    <div class="schema-icon">🗄️</div>
+    <div>
+      <div class="schema-title">Schema-First Design — Vendor Master</div>
+      <div class="schema-sub">
+        Struktur database dibangun dari atas ke bawah: <b>Group</b> → <b>Kategori</b> → <b>Vendor</b> → <b>Transaksi</b><br>
+        Ini memastikan data terstruktur, mudah di-maintain, dan siap berkembang ke modul ERP lainnya.
+      </div>
+    </div>
+  </div>
+
+  <!-- Schema Visual -->
+  <div class="schema-visual">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;margin-bottom:10px;">Struktur Hierarki Database</div>
+    <div class="schema-flow">
+      <div class="schema-box active">🗂️ vendor_groups<br><span style="font-size:10px;font-weight:400;color:#5a5750;">8 grup utama</span></div>
+      <div class="schema-arr">→</div>
+      <div class="schema-box active">📋 vendor_categories<br><span style="font-size:10px;font-weight:400;color:#5a5750;">kategori per grup</span></div>
+      <div class="schema-arr">→</div>
+      <div class="schema-box active">🏪 vendors<br><span style="font-size:10px;font-weight:400;color:#5a5750;">data vendor</span></div>
+      <div class="schema-arr">→</div>
+      <div class="schema-box future">📦 purchase_orders<br><span style="font-size:10px;font-weight:400;">Fase 3</span></div>
+      <div class="schema-arr">→</div>
+      <div class="schema-box future">💰 vendor_invoices<br><span style="font-size:10px;font-weight:400;">Fase 4</span></div>
+      <div class="schema-arr">→</div>
+      <div class="schema-box future">📊 accounting<br><span style="font-size:10px;font-weight:400;">Fase 5</span></div>
+    </div>
+  </div>
+
+  <!-- Group & Category panels -->
+  <div class="two-panel">
+
+    <!-- PANEL 1: GROUPS -->
+    <div class="panel">
+      <div class="panel-hdr">
+        <div class="panel-title">🗂️ Vendor Groups <span id="grp-count" class="item-badge">0</span></div>
+        <button class="btn-sm btn-primary" onclick="toggleAddGroup()">➕ Tambah Group</button>
+      </div>
+      <div class="panel-body">
+        <!-- Add form -->
+        <div class="add-form" id="add-grp-form" style="display:none;">
+          <div class="add-form-row">
+            <input type="text" class="fc-sm" id="grp-icon-inp" placeholder="icon" style="width:50px;text-align:center;" readonly>
+            <input type="text" class="fc-sm" id="grp-name-inp" placeholder="Nama group...">
+            <input type="text" class="fc-sm" id="grp-desc-inp" placeholder="Deskripsi singkat...">
+          </div>
+          <div class="icon-picker" id="grp-icon-picker"></div>
+          <div style="display:flex;gap:6px;margin-top:8px;">
+            <button class="btn-sm btn-primary" onclick="saveGroup()">💾 Simpan</button>
+            <button class="btn-sm btn-secondary" onclick="toggleAddGroup()">Batal</button>
+          </div>
+        </div>
+        <!-- Group list -->
+        <div class="item-list" id="grp-list">
+          <div class="empty-msg">⏳ Memuat groups...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: CATEGORIES -->
+    <div class="panel">
+      <div class="panel-hdr">
+        <div class="panel-title">📋 Vendor Categories <span id="cat-count" class="item-badge">0</span></div>
+        <button class="btn-sm btn-primary" onclick="toggleAddCat()">➕ Tambah Kategori</button>
+      </div>
+      <div class="panel-body">
+        <!-- Add form -->
+        <div class="add-form" id="add-cat-form" style="display:none;">
+          <div class="add-form-row">
+            <select class="fc-sm" id="cat-grp-sel" style="min-width:130px;">
+              <option value="">Pilih Group...</option>
+            </select>
+            <input type="text" class="fc-sm" id="cat-icon-inp" placeholder="icon" style="width:50px;text-align:center;" readonly>
+            <input type="text" class="fc-sm" id="cat-name-inp" placeholder="Nama kategori...">
+          </div>
+          <div class="icon-picker" id="cat-icon-picker"></div>
+          <div style="display:flex;gap:6px;margin-top:8px;">
+            <button class="btn-sm btn-primary" onclick="saveCat()">💾 Simpan</button>
+            <button class="btn-sm btn-secondary" onclick="toggleAddCat()">Batal</button>
+          </div>
+        </div>
+        <!-- Filter by group -->
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;" id="cat-filter-wrap"></div>
+        <!-- Category list -->
+        <div class="item-list" id="cat-list">
+          <div class="empty-msg">⏳ Memuat kategori...</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Vendor Table -->
+  <div class="vnd-table-wrap">
+    <div class="vnd-table-hdr">
+      <div style="font-size:13px;font-weight:700;">🏪 Daftar Vendor <span id="vnd-count" class="item-badge" style="margin-left:6px;">0</span></div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-sm btn-secondary" onclick="window.location.href='vendors.html'">📋 Kelola Vendor Lengkap</button>
+        <button class="btn-sm btn-primary" onclick="openAddVndModal()">➕ Vendor Baru</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="vnd-tbl">
+        <thead><tr>
+          <th>ID</th><th>Nama Vendor</th><th>Group</th><th>Kategori</th>
+          <th>Kota</th><th>Rating</th><th>Status</th><th>Aksi</th>
+        </tr></thead>
+        <tbody id="vnd-tbody">
+          <tr><td colspan="8" style="text-align:center;padding:20px;color:#8a8680;">⏳ Memuat vendor...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- EDIT GROUP MODAL -->
+<div class="modal-ov" id="modal-grp">
+  <div class="modal">
+    <div class="modal-hdr"><h3 id="grp-modal-title">Edit Group</h3><button class="modal-x" onclick="closeModal('modal-grp')">✕</button></div>
+    <div class="modal-body">
+      <div class="fg"><label>Icon</label>
+        <input type="text" class="fc" id="em-grp-icon" style="font-size:20px;width:60px;text-align:center;" readonly>
+        <div class="icon-picker" id="em-grp-icon-picker" style="margin-top:6px;"></div>
+      </div>
+      <div class="fg"><label>Nama Group</label><input type="text" class="fc" id="em-grp-name" placeholder="Nama group..."></div>
+      <div class="fg"><label>Deskripsi</label><input type="text" class="fc" id="em-grp-desc" placeholder="Deskripsi singkat..."></div>
+      <div class="fg"><label>Urutan / Sort Order</label><input type="number" class="fc" id="em-grp-order" value="1" min="1"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-sm btn-secondary" onclick="closeModal('modal-grp')">Batal</button>
+      <button class="btn-sm btn-primary" onclick="updateGroup()">💾 Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD VENDOR QUICK MODAL -->
+<div class="modal-ov" id="modal-vnd-add">
+  <div class="modal" style="max-width:500px;">
+    <div class="modal-hdr"><h3>➕ Tambah Vendor Baru</h3><button class="modal-x" onclick="closeModal('modal-vnd-add')">✕</button></div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="fg"><label>ID Vendor</label><input type="text" class="fc" id="vq-id" placeholder="VND-007"></div>
+        <div class="fg"><label>Group</label>
+          <select class="fc" id="vq-grp" onchange="updateCatByGroup()">
+            <option value="">Pilih Group...</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label>Kategori</label>
+        <select class="fc" id="vq-cat"><option value="">Pilih Kategori...</option></select>
+      </div>
+      <div class="fg"><label>Nama Vendor / Perusahaan</label><input type="text" class="fc" id="vq-nama" placeholder="CV. Nama Vendor..."></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="fg"><label>PIC / Kontak</label><input type="text" class="fc" id="vq-pic" placeholder="Nama PIC..."></div>
+        <div class="fg"><label>WhatsApp</label><input type="text" class="fc" id="vq-wa" placeholder="081234567890"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="fg"><label>Kota</label><input type="text" class="fc" id="vq-kota" placeholder="Jepara"></div>
+        <div class="fg"><label>Jarak dari Jepara (km)</label><input type="number" class="fc" id="vq-jarak" placeholder="0" min="0"></div>
+      </div>
+      <div class="fg"><label>Keterangan</label><textarea class="fc" id="vq-ket" rows="2" placeholder="Catatan tentang vendor ini..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-sm btn-secondary" onclick="closeModal('modal-vnd-add')">Batal</button>
+      <button class="btn-sm btn-primary" onclick="quickSaveVendor()">💾 Simpan Vendor</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, doc, getDocs, setDoc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const FC = {apiKey:"AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",authDomain:"gabe-international-hub.firebaseapp.com",projectId:"gabe-international-hub",storageBucket:"gabe-international-hub.firebasestorage.app",messagingSenderId:"115783216069",appId:"1:115783216069:web:62cfabf543b1fbb85bf9ac"};
+const fbApp = getApps().find(function(a){return a.name==='vms';}) || initializeApp(FC,'vms');
+const auth = getAuth(fbApp);
+const db = getFirestore(fbApp);
+
+// Auth
+const stored = sessionStorage.getItem('gabe_user');
+if (!stored) { window.location.href='index.html'; }
+const CU = JSON.parse(stored||'{}');
+if (!['admin','manager'].includes(CU.role)) { alert('Hanya Admin & Manager!'); window.location.href='vendors.html'; }
+document.getElementById('user-name').textContent = '👤 '+(CU.name||CU.email||'');
+
+// Lang
+(function(){
+  function initL(){
+    var w=document.getElementById('lang-wrap');
+    if(w&&typeof buildLangToggle==='function'){var s=document.createElement('span');s.innerHTML=buildLangToggle();w.replaceWith(s.firstChild);}
+    if(typeof applyLang==='function') applyLang();
+  }
+  if(typeof buildLangToggle==='function') initL();
+  else document.addEventListener('DOMContentLoaded',initL);
+})();
+
+window.doLogout = async function(){ try{await signOut(auth);}catch(e){} sessionStorage.removeItem('gabe_user'); window.location.href='index.html'; };
+
+// State
+let GROUPS = [];
+let CATS = [];
+let VENDORS = [];
+let selGrpFilter = 'ALL';
+let editGrpId = null;
+let selGrpIcon = '📦';
+let selCatIcon = '📋';
+let selEditGrpIcon = '📦';
+
+// Icons available
+const ICONS = ['🪵','📐','🎨','🔩','🪑','👷','🏭','🛠️','📦','🌿','⚡','🏗️','🚛','🧴','🪞','🧵','🔧','🏠','💡','🖥️','🌊','🌱','🔑','📋','🗂️','💼','🏪','🏭','🔨','✂️'];
+
+// Seeds
+const SEED_GROUPS = [
+  {id:'GRP-001',icon:'🪵',nama:'Raw Material',desc:'Bahan baku utama kayu & material alam',order:1},
+  {id:'GRP-002',icon:'🎨',nama:'Finishing & Surface',desc:'Cat, coating, politur, amplas',order:2},
+  {id:'GRP-003',icon:'🔩',nama:'Hardware & Komponen',desc:'Engsel, rel, kaca, aksesoris',order:3},
+  {id:'GRP-004',icon:'🪑',nama:'Upholstery & Fabric',desc:'Busa, kain, rotan, anyaman',order:4},
+  {id:'GRP-005',icon:'👷',nama:'Manpower & Jasa',desc:'Tenaga kerja, sub-kontraktor, ekspedisi',order:5},
+  {id:'GRP-006',icon:'🏭',nama:'Fasilitas & Infrastruktur',desc:'Listrik, bangunan, mesin, generator',order:6},
+  {id:'GRP-007',icon:'🛠️',nama:'Tools & Equipment',desc:'Mata pisau, alat ukur, safety',order:7},
+  {id:'GRP-008',icon:'📦',nama:'General & Services',desc:'Packaging, IT, asuransi, legal',order:8},
+];
+
+const SEED_CATS = [
+  {id:'CAT-001',groupId:'GRP-001',icon:'🪵',nama:'Supplier Kayu Log',desc:'Kayu solid gelondongan'},
+  {id:'CAT-002',groupId:'GRP-001',icon:'📐',nama:'Supplier Plywood/Board',desc:'Plywood, MDF, HDF'},
+  {id:'CAT-003',groupId:'GRP-001',icon:'🌿',nama:'Supplier Material Alam',desc:'Bambu, rotan mentah, dll'},
+  {id:'CAT-004',groupId:'GRP-002',icon:'🎨',nama:'Supplier Cat & Coating',desc:'Cat dasar, cat akhir, thinner'},
+  {id:'CAT-005',groupId:'GRP-002',icon:'🧴',nama:'Supplier Politur/Lacquer',desc:'NC lacquer, PU, water based'},
+  {id:'CAT-006',groupId:'GRP-002',icon:'🛠️',nama:'Supplier Amplas/Abrasive',desc:'Kertas amplas, pad'},
+  {id:'CAT-007',groupId:'GRP-003',icon:'🔩',nama:'Supplier Engsel & Fitting',desc:'Hinge, handle, kunci'},
+  {id:'CAT-008',groupId:'GRP-003',icon:'🪞',nama:'Supplier Kaca & Cermin',desc:'Kaca polos, cermin'},
+  {id:'CAT-009',groupId:'GRP-003',icon:'🔧',nama:'Supplier Rel & Sistem',desc:'Rel laci, soft-close'},
+  {id:'CAT-010',groupId:'GRP-004',icon:'🪑',nama:'Supplier Busa/Foam',desc:'Foam seat, back cushion'},
+  {id:'CAT-011',groupId:'GRP-004',icon:'🧵',nama:'Supplier Kain & Fabric',desc:'Fabric sofa, kulit sintetis'},
+  {id:'CAT-012',groupId:'GRP-004',icon:'🌊',nama:'Supplier Rotan/Anyaman',desc:'Anyaman rotan, seagrass'},
+  {id:'CAT-013',groupId:'GRP-005',icon:'👷',nama:'Tenaga Kerja Harian',desc:'Pekerja harian lepas'},
+  {id:'CAT-014',groupId:'GRP-005',icon:'🏗️',nama:'Sub-Kontraktor Produksi',desc:'Vendor produksi outsource'},
+  {id:'CAT-015',groupId:'GRP-005',icon:'🚛',nama:'Vendor Ekspedisi/Kirim',desc:'Jasa pengiriman container'},
+  {id:'CAT-016',groupId:'GRP-006',icon:'⚡',nama:'Vendor Listrik/Generator',desc:'PLN, genset, solar panel'},
+  {id:'CAT-017',groupId:'GRP-006',icon:'🏠',nama:'Vendor Bangunan/Sipil',desc:'Kontraktor gedung, renovasi'},
+  {id:'CAT-018',groupId:'GRP-006',icon:'🔨',nama:'Vendor Perawatan Mesin',desc:'Service mesin produksi'},
+  {id:'CAT-019',groupId:'GRP-007',icon:'✂️',nama:'Supplier Mata Pisau/Router',desc:'Blade, bit router, gergaji'},
+  {id:'CAT-020',groupId:'GRP-007',icon:'🛠️',nama:'Supplier Alat Ukur',desc:'Meteran, jangka, waterpass'},
+  {id:'CAT-021',groupId:'GRP-008',icon:'📦',nama:'Vendor Packaging',desc:'Kardus, bubble wrap, palet'},
+  {id:'CAT-022',groupId:'GRP-008',icon:'🖥️',nama:'Vendor IT & Software',desc:'Hardware, software, internet'},
+];
+
+function showToast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(function(){t.classList.remove('show');},2500); }
+function fm(n){ return 'Rp '+Math.round(n||0).toLocaleString('id-ID'); }
+function stars(n){ var s=''; for(var i=1;i<=5;i++) s+=(i<=n?'★':'☆'); return s; }
+
+// ── Seed ─────────────────────────────────────────────────────────────
+async function seedAll(){
+  var gSnap = await getDocs(collection(db,'vendor_groups'));
+  if (gSnap.empty){
+    for(var i=0;i<SEED_GROUPS.length;i++){
+      await setDoc(doc(db,'vendor_groups',SEED_GROUPS[i].id), Object.assign({},SEED_GROUPS[i],{createdAt:serverTimestamp()}));
+    }
+    showToast('Groups diinisialisasi!');
+  }
+  var cSnap = await getDocs(collection(db,'vendor_categories'));
+  if (cSnap.empty){
+    for(var j=0;j<SEED_CATS.length;j++){
+      await setDoc(doc(db,'vendor_categories',SEED_CATS[j].id), Object.assign({},SEED_CATS[j],{createdAt:serverTimestamp()}));
+    }
+    showToast('Kategori diinisialisasi!');
+  }
+}
+
+// ── Load ─────────────────────────────────────────────────────────────
+async function loadAll(){
+  await seedAll();
+  var gSnap = await getDocs(query(collection(db,'vendor_groups'),orderBy('order')));
+  GROUPS=[]; gSnap.forEach(function(d){GROUPS.push(Object.assign({},d.data(),{_id:d.id}));});
+  var cSnap = await getDocs(query(collection(db,'vendor_categories'),orderBy('id')));
+  CATS=[]; cSnap.forEach(function(d){CATS.push(Object.assign({},d.data(),{_id:d.id}));});
+  var vSnap = await getDocs(query(collection(db,'vendors'),orderBy('id')));
+  VENDORS=[]; vSnap.forEach(function(d){VENDORS.push(Object.assign({},d.data(),{_id:d.id}));});
+  renderAll();
+}
+
+function renderAll(){
+  renderGroups();
+  renderCats();
+  renderVendors();
+  populateSelects();
+  buildIconPickers();
+}
+
+function getGroupName(id){ var g=GROUPS.find(function(x){return (x.id||x._id)===id;}); return g?g.icon+' '+g.nama:'—'; }
+function getCatName(id){ var c=CATS.find(function(x){return (x.id||x._id)===id;}); return c?c.icon+' '+c.nama:'—'; }
+function getCatsByGroup(gid){ return CATS.filter(function(c){return c.groupId===gid;}); }
+
+// ── Render Groups ─────────────────────────────────────────────────────
+function renderGroups(){
+  var list = document.getElementById('grp-list');
+  document.getElementById('grp-count').textContent = GROUPS.length;
+  if(!GROUPS.length){list.innerHTML='<div class="empty-msg">Belum ada group</div>';return;}
+  list.innerHTML='';
+  GROUPS.forEach(function(g){
+    var gid=g.id||g._id;
+    var catCount=getCatsByGroup(gid).length;
+    var vendorCount=VENDORS.filter(function(v){return v.groupId===gid;}).length;
+    var row=document.createElement('div');
+    row.className='item-row';
+    row.innerHTML=
+      '<div class="item-icon">'+g.icon+'</div>'+
+      '<div class="item-info">'+
+        '<div class="item-name">'+g.nama+'</div>'+
+        '<div class="item-sub">'+g.desc+'</div>'+
+      '</div>'+
+      '<span class="item-badge">'+catCount+' kat · '+vendorCount+' vendor</span>'+
+      '<div class="item-actions">'+
+        '<button class="act-btn" onclick="openEditGroup(\''+gid+'\')" title="Edit">✏️</button>'+
+        (vendorCount===0?'<button class="act-btn del" onclick="delGroup(\''+gid+'\',\''+g.nama+'\')" title="Hapus">🗑</button>':
+        '<button class="act-btn" title="Ada vendor — tidak bisa dihapus" style="opacity:.3;cursor:not-allowed;">🗑</button>')+
+      '</div>';
+    list.appendChild(row);
+  });
+  // Update filter
+  var filterWrap=document.getElementById('cat-filter-wrap');
+  var allBtn='<button class="btn-sm '+(selGrpFilter==='ALL'?'btn-primary':'btn-secondary')+'" onclick="filterCat(\'ALL\')" style="font-size:11px;padding:3px 10px;">Semua</button>';
+  var btns=GROUPS.map(function(g){
+    var gid=g.id||g._id;
+    return '<button class="btn-sm '+(selGrpFilter===gid?'btn-primary':'btn-secondary')+'" onclick="filterCat(\''+gid+'\')" style="font-size:11px;padding:3px 10px;">'+g.icon+' '+g.nama+'</button>';
+  });
+  filterWrap.innerHTML=allBtn+btns.join('');
+}
+
+// ── Render Categories ─────────────────────────────────────────────────
+function renderCats(){
+  var list=document.getElementById('cat-list');
+  document.getElementById('cat-count').textContent=CATS.length;
+  var filtered=selGrpFilter==='ALL'?CATS:CATS.filter(function(c){return c.groupId===selGrpFilter;});
+  if(!filtered.length){list.innerHTML='<div class="empty-msg">Tidak ada kategori</div>';return;}
+  list.innerHTML='';
+  filtered.forEach(function(c){
+    var cid=c.id||c._id;
+    var grp=GROUPS.find(function(g){return (g.id||g._id)===c.groupId;});
+    var vCount=VENDORS.filter(function(v){return v.catId===cid;}).length;
+    var row=document.createElement('div'); row.className='item-row';
+    row.innerHTML=
+      '<div class="item-icon">'+c.icon+'</div>'+
+      '<div class="item-info">'+
+        '<div class="item-name">'+c.nama+'</div>'+
+        '<div class="item-sub">'+(grp?grp.icon+' '+grp.nama:'—')+' · '+(c.desc||'')+'</div>'+
+      '</div>'+
+      '<span class="item-badge">'+vCount+' vendor</span>'+
+      '<div class="item-actions">'+
+        (vCount===0?'<button class="act-btn del" onclick="delCat(\''+cid+'\',\''+c.nama+'\')" title="Hapus">🗑</button>':
+        '<button class="act-btn" style="opacity:.3;cursor:not-allowed;" title="Ada vendor">🗑</button>')+
+      '</div>';
+    list.appendChild(row);
+  });
+}
+
+// ── Render Vendors ─────────────────────────────────────────────────────
+function renderVendors(){
+  var tbody=document.getElementById('vnd-tbody');
+  document.getElementById('vnd-count').textContent=VENDORS.length;
+  if(!VENDORS.length){tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:20px;color:#8a8680;">Belum ada vendor</td></tr>';return;}
+  tbody.innerHTML='';
+  VENDORS.forEach(function(v){
+    var vid=v.id||v._id;
+    var aktif=v.aktif!==false;
+    var grpName=v.groupId?getGroupName(v.groupId):(v.kategori||'—');
+    var catName=v.catId?getCatName(v.catId):(v.kategori||'—');
+    var tr=document.createElement('tr');
+    tr.innerHTML=
+      '<td><span style="font-family:monospace;font-size:11px;background:#f0efe9;padding:2px 6px;border-radius:4px;">'+vid+'</span></td>'+
+      '<td><div style="font-weight:600;font-size:13px;">'+(v.nama||'—')+'</div><div style="font-size:11px;color:#8a8680;">'+(v.pic||'')+'</div></td>'+
+      '<td><span style="font-size:12px;">'+grpName+'</span></td>'+
+      '<td><span class="cat-pill" style="background:#f0efe9;color:#5a5750;">'+catName+'</span></td>'+
+      '<td style="font-size:12px;">'+(v.kota||'—')+'</td>'+
+      '<td style="color:#ef9f27;font-size:13px;">'+stars(v.rating||0)+'</td>'+
+      '<td><span style="font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;background:'+(aktif?'#eaf3de':'#fceaea')+';color:'+(aktif?'#27500a':'#791f1f')+'">'+(aktif?'Aktif':'Nonaktif')+'</span></td>'+
+      '<td><a href="vendors.html" style="font-size:11px;color:#2d5a27;font-weight:600;">Kelola →</a></td>';
+    tbody.appendChild(tr);
+  });
+}
+
+function populateSelects(){
+  var opts='<option value="">Pilih Group...</option>'+GROUPS.map(function(g){return '<option value="'+(g.id||g._id)+'">'+g.icon+' '+g.nama+'</option>';}).join('');
+  var catGrpSel=document.getElementById('cat-grp-sel'); if(catGrpSel) catGrpSel.innerHTML=opts;
+  var vqGrp=document.getElementById('vq-grp'); if(vqGrp) vqGrp.innerHTML=opts;
+  // Auto ID
+  var nums=VENDORS.map(function(v){var p=(v.id||v._id).split('-');return parseInt(p[1]||0);}).filter(function(n){return !isNaN(n);});
+  var next=nums.length?Math.max.apply(null,nums)+1:7;
+  var vqId=document.getElementById('vq-id'); if(vqId) vqId.value='VND-'+String(next).padStart(3,'0');
+}
+
+function buildIconPickers(){
+  ['grp-icon-picker','cat-icon-picker','em-grp-icon-picker'].forEach(function(pickerId){
+    var picker=document.getElementById(pickerId); if(!picker) return;
+    picker.innerHTML='';
+    ICONS.forEach(function(ic){
+      var btn=document.createElement('button'); btn.type='button'; btn.className='icon-opt'; btn.textContent=ic;
+      btn.onclick=function(){
+        picker.querySelectorAll('.icon-opt').forEach(function(b){b.classList.remove('sel');});
+        btn.classList.add('sel');
+        if(pickerId==='grp-icon-picker'){ selGrpIcon=ic; var inp=document.getElementById('grp-icon-inp'); if(inp) inp.value=ic; }
+        else if(pickerId==='cat-icon-picker'){ selCatIcon=ic; var inp2=document.getElementById('cat-icon-inp'); if(inp2) inp2.value=ic; }
+        else if(pickerId==='em-grp-icon-picker'){ selEditGrpIcon=ic; var inp3=document.getElementById('em-grp-icon'); if(inp3) inp3.value=ic; }
+      };
+      picker.appendChild(btn);
+    });
+  });
+}
+
+// ── Group CRUD ────────────────────────────────────────────────────────
+window.toggleAddGroup = function(){
+  var f=document.getElementById('add-grp-form');
+  f.style.display=f.style.display==='none'?'block':'none';
+  if(f.style.display==='block'){ selGrpIcon='📦'; document.getElementById('grp-icon-inp').value='📦'; document.getElementById('grp-name-inp').value=''; }
+};
+
+window.saveGroup = async function(){
+  var nama=document.getElementById('grp-name-inp').value.trim();
+  var desc=document.getElementById('grp-desc-inp').value.trim();
+  if(!nama){showToast('⚠️ Nama wajib diisi!');return;}
+  var nums=GROUPS.map(function(g){var p=(g.id||g._id).split('-');return parseInt(p[1]||0);}).filter(function(n){return !isNaN(n);});
+  var next=nums.length?Math.max.apply(null,nums)+1:9;
+  var id='GRP-'+String(next).padStart(3,'0');
+  try{
+    await setDoc(doc(db,'vendor_groups',id),{id:id,icon:selGrpIcon,nama:nama,desc:desc,order:next,createdAt:serverTimestamp(),createdBy:CU.email||'system'});
+    showToast('✅ Group "'+nama+'" ditambahkan!');
+    toggleAddGroup();
+    await loadAll();
+  }catch(e){showToast('❌ '+e.message);}
+};
+
+window.openEditGroup = function(id){
+  var g=GROUPS.find(function(x){return (x.id||x._id)===id;}); if(!g) return;
+  editGrpId=id;
+  selEditGrpIcon=g.icon||'📦';
+  document.getElementById('em-grp-icon').value=g.icon||'📦';
+  document.getElementById('em-grp-name').value=g.nama||'';
+  document.getElementById('em-grp-desc').value=g.desc||'';
+  document.getElementById('em-grp-order').value=g.order||1;
+  var picker=document.getElementById('em-grp-icon-picker');
+  picker.querySelectorAll('.icon-opt').forEach(function(b){b.classList.toggle('sel',b.textContent===g.icon);});
+  document.getElementById('modal-grp').classList.add('show');
+};
+
+window.updateGroup = async function(){
+  if(!editGrpId) return;
+  var nama=document.getElementById('em-grp-name').value.trim();
+  if(!nama){showToast('⚠️ Nama wajib!');return;}
+  try{
+    await updateDoc(doc(db,'vendor_groups',editGrpId),{icon:selEditGrpIcon,nama:nama,desc:document.getElementById('em-grp-desc').value,order:+document.getElementById('em-grp-order').value,updatedAt:serverTimestamp()});
+    showToast('✅ Group diupdate!');
+    closeModal('modal-grp');
+    await loadAll();
+  }catch(e){showToast('❌ '+e.message);}
+};
+
+window.delGroup = async function(id,nama){
+  if(!confirm('Hapus group "'+nama+'"?')) return;
+  try{ await deleteDoc(doc(db,'vendor_groups',id)); showToast('🗑 Group dihapus!'); await loadAll(); }
+  catch(e){showToast('❌ '+e.message);}
+};
+
+// ── Category CRUD ─────────────────────────────────────────────────────
+window.toggleAddCat = function(){
+  var f=document.getElementById('add-cat-form');
+  f.style.display=f.style.display==='none'?'block':'none';
+  if(f.style.display==='block'){ selCatIcon='📋'; document.getElementById('cat-icon-inp').value='📋'; document.getElementById('cat-name-inp').value=''; }
+};
+
+window.saveCat = async function(){
+  var grpId=document.getElementById('cat-grp-sel').value;
+  var nama=document.getElementById('cat-name-inp').value.trim();
+  if(!grpId||!nama){showToast('⚠️ Group dan Nama wajib!');return;}
+  var nums=CATS.map(function(c){var p=(c.id||c._id).split('-');return parseInt(p[1]||0);}).filter(function(n){return !isNaN(n);});
+  var next=nums.length?Math.max.apply(null,nums)+1:23;
+  var id='CAT-'+String(next).padStart(3,'0');
+  try{
+    await setDoc(doc(db,'vendor_categories',id),{id:id,groupId:grpId,icon:selCatIcon,nama:nama,desc:'',createdAt:serverTimestamp()});
+    showToast('✅ Kategori "'+nama+'" ditambahkan!');
+    toggleAddCat();
+    await loadAll();
+  }catch(e){showToast('❌ '+e.message);}
+};
+
+window.delCat = async function(id,nama){
+  if(!confirm('Hapus kategori "'+nama+'"?')) return;
+  try{ await deleteDoc(doc(db,'vendor_categories',id)); showToast('🗑 Kategori dihapus!'); await loadAll(); }
+  catch(e){showToast('❌ '+e.message);}
+};
+
+window.filterCat = function(gid){
+  selGrpFilter=gid;
+  renderGroups();
+  renderCats();
+};
+
+// ── Quick Add Vendor ──────────────────────────────────────────────────
+window.openAddVndModal = function(){
+  populateSelects();
+  document.getElementById('vq-cat').innerHTML='<option value="">Pilih Group dulu...</option>';
+  document.getElementById('modal-vnd-add').classList.add('show');
+};
+
+window.updateCatByGroup = function(){
+  var gid=document.getElementById('vq-grp').value;
+  var catSel=document.getElementById('vq-cat');
+  var cats=CATS.filter(function(c){return c.groupId===gid;});
+  catSel.innerHTML='<option value="">Pilih Kategori...</option>'+
+    cats.map(function(c){return '<option value="'+(c.id||c._id)+'">'+c.icon+' '+c.nama+'</option>';}).join('');
+};
+
+window.quickSaveVendor = async function(){
+  var id=document.getElementById('vq-id').value.trim().toUpperCase();
+  var nama=document.getElementById('vq-nama').value.trim();
+  var grpId=document.getElementById('vq-grp').value;
+  var catId=document.getElementById('vq-cat').value;
+  if(!id||!nama||!grpId||!catId){showToast('⚠️ ID, Nama, Group, Kategori wajib!');return;}
+  if(VENDORS.find(function(v){return (v.id||v._id)===id;})){showToast('❌ ID sudah ada!');return;}
+  var grp=GROUPS.find(function(g){return (g.id||g._id)===grpId;});
+  var cat=CATS.find(function(c){return (c.id||c._id)===catId;});
+  try{
+    await setDoc(doc(db,'vendors',id),{
+      id:id,nama:nama,groupId:grpId,catId:catId,
+      kategori:cat?cat.nama:'General',
+      pic:document.getElementById('vq-pic').value,
+      wa:document.getElementById('vq-wa').value,
+      kota:document.getElementById('vq-kota').value,
+      jarak:+document.getElementById('vq-jarak').value||0,
+      ket:document.getElementById('vq-ket').value,
+      rating:3,aktif:true,materials:[],
+      createdAt:serverTimestamp(),createdBy:CU.email||'unknown'
+    });
+    showToast('✅ Vendor "'+nama+'" ditambahkan!');
+    closeModal('modal-vnd-add');
+    await loadAll();
+  }catch(e){showToast('❌ '+e.message);}
+};
+
+window.closeModal = function(id){ document.getElementById(id).classList.remove('show'); };
+
+// ── INIT ─────────────────────────────────────────────────────────────
+window.showToast = showToast;
+(async function(){ await loadAll(); })();
+</script>
+</body>
+</html>
