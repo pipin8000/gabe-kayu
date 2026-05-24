@@ -2,6 +2,7 @@
 if(window._langLoaded) return;
 window._langLoaded = true;
 
+
 // ═══════════════════════════════════════════════════════════
 // GABE INTERNATIONAL HUB — Language System (i18n)
 // Languages: Indonesian (id) | English (en)
@@ -673,4 +674,10 @@ document.addEventListener('DOMContentLoaded', function() {
   applyLang();
 });
 
+window._t = t;
+window.t = t;
+window.setLang = setLang;
+window.getLang = getLang;
+window.applyLang = applyLang;
+window.buildLangToggle = buildLangToggle;
 })();
