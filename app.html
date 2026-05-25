@@ -888,7 +888,7 @@ function buildWA(comps){
   });
   el.appendChild(wrap2);
 }
-function buildDWS(){const s=document.getElementById('sel-default-wood');if(!s)return;s.innerHTML='';MM.filter(m=>m.c==='SW').forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.n+' — Kls '+m.kl+' (Rdm '+m.rd+'%)';if(m.id===ST.dw)o.selected=true;s.appendChild(o)});s.onchange=e=>{ST.dw=e.target.value;const w=getMat(ST.dw);ST.rendemen=w.rd;document.getElementById('rng-rendemen').value=w.rd;document.getElementById('inp-rendemen').value=w.rd;ST.mm={};newRef();render()}}
+function buildDWS(){const s=document.getElementById('sel-default-wood');if(!s)return;if(!MM||!MM.length)return;s.innerHTML='';MM.filter(m=>m.c==='SW').forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.n+' — Kls '+m.kl+' (Rdm '+m.rd+'%)';if(m.id===ST.dw)o.selected=true;s.appendChild(o)});s.onchange=e=>{ST.dw=e.target.value;const w=getMat(ST.dw);ST.rendemen=w.rd;document.getElementById('rng-rendemen').value=w.rd;document.getElementById('inp-rendemen').value=w.rd;ST.mm={};newRef();render()}}
 window.switchTab = function(t){ST.tab=t;const ns=['cutting','volume','master','history','bom'];document.querySelectorAll('.tbtn').forEach((b,i)=>b.classList.toggle('active',ns[i]===t));document.querySelectorAll('.tcont').forEach(c=>c.classList.remove('active'));document.getElementById('tab-'+t).classList.add('active')}
 window.showToast = function(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
 window.copyBOM = function(){const txt=document.getElementById('bom-preview').textContent;navigator.clipboard.writeText(txt).then(()=>showToast('✅ BOM JSON tersalin!'))}
@@ -1747,7 +1747,7 @@ window.applyAiResult = function() {
       if (typeof render === 'function') render();
       if (typeof buildWA === 'function') {
         var comps = typeof TMPL !== 'undefined' && TMPL[ST.ftype] ? TMPL[ST.ftype].comps : [];
-        buildWA(comps);
+        if (comps && comps.length) buildWA(comps);
       }
 
       if (typeof showToast === 'function') {
