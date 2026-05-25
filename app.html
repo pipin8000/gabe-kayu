@@ -378,10 +378,10 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
 
 
 /* ─── MULTI IMAGE SLOTS ─── */
-.ai-img-slot{border:1.5px dashed rgba(255,255,255,.3);border-radius:8px;height:72px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,.06);position:relative;overflow:hidden;transition:all .2s;}
-.ai-img-slot:hover{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.12);}
-.ai-img-slot.filled{border-color:#97c459;border-style:solid;}
-.ai-slot-empty{display:flex;flex-direction:column;align-items:center;color:rgba(255,255,255,.5);font-size:16px;}
+.ai-img-slot{border:1.5px dashed #b8d9b4;border-radius:8px;height:76px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#f5faf4;position:relative;overflow:hidden;transition:all .2s;}
+.ai-img-slot:hover{border-color:#2d5a27;background:#eaf3e8;}
+.ai-img-slot.filled{border-color:#2d5a27;border-style:solid;background:#eaf3e8;}
+.ai-slot-empty{display:flex;flex-direction:column;align-items:center;color:#8a8680;font-size:18px;gap:2px;}
 .ai-slot-img{width:100%;height:100%;object-fit:cover;border-radius:6px;}
 .ai-slot-rm{position:absolute;top:3px;right:3px;width:18px;height:18px;background:rgba(139,32,32,.85);color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:11px;line-height:18px;text-align:center;z-index:2;}
 
@@ -435,10 +435,10 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
           <div class="ai-col-title">📸 Upload Gambar / Foto</div>
           <!-- Multi-image upload -->
           <div style="margin-bottom:8px;">
-            <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7);margin-bottom:6px;">Upload Gambar (makin banyak = AI makin akurat)</div>
+            <div style="font-size:10px;font-weight:700;color:#5a5750;margin-bottom:6px;">📸 Upload gambar — makin banyak, AI makin akurat 🎯</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px;">
               <div>
-                <div style="font-size:9px;color:rgba(255,255,255,.6);margin-bottom:3px;">📷 Foto Produk</div>
+                <div style="font-size:9px;color:#5a5750;font-weight:600;margin-bottom:3px;">📷 Foto Produk</div>
                 <div class="ai-img-slot" id="slot-foto" onclick="triggerSlot('inp-foto')">
                   <img id="prev-foto" class="ai-slot-img" style="display:none">
                   <div class="ai-slot-empty" id="empty-foto"><div>📷</div><div style="font-size:9px;margin-top:2px;">Foto/render</div></div>
@@ -447,7 +447,7 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
                 <input type="file" id="inp-foto" accept="image/*" style="display:none" onchange="pickSlot(event,'foto')">
               </div>
               <div>
-                <div style="font-size:9px;color:rgba(255,255,255,.6);margin-bottom:3px;">📐 Gambar Teknik</div>
+                <div style="font-size:9px;color:#5a5750;font-weight:600;margin-bottom:3px;">📐 Gambar Teknik</div>
                 <div class="ai-img-slot" id="slot-teknik" onclick="triggerSlot('inp-teknik')">
                   <img id="prev-teknik" class="ai-slot-img" style="display:none">
                   <div class="ai-slot-empty" id="empty-teknik"><div>📐</div><div style="font-size:9px;margin-top:2px;">Blueprint</div></div>
@@ -456,7 +456,7 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
                 <input type="file" id="inp-teknik" accept="image/*" style="display:none" onchange="pickSlot(event,'teknik')">
               </div>
               <div>
-                <div style="font-size:9px;color:rgba(255,255,255,.6);margin-bottom:3px;">✏️ Sketsa</div>
+                <div style="font-size:9px;color:#5a5750;font-weight:600;margin-bottom:3px;">✏️ Sketsa</div>
                 <div class="ai-img-slot" id="slot-sketsa" onclick="triggerSlot('inp-sketsa')">
                   <img id="prev-sketsa" class="ai-slot-img" style="display:none">
                   <div class="ai-slot-empty" id="empty-sketsa"><div>✏️</div><div style="font-size:9px;margin-top:2px;">Sketsa</div></div>
@@ -465,7 +465,7 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
                 <input type="file" id="inp-sketsa" accept="image/*" style="display:none" onchange="pickSlot(event,'sketsa')">
               </div>
               <div>
-                <div style="font-size:9px;color:rgba(255,255,255,.6);margin-bottom:3px;">🖼️ Katalog/Ref</div>
+                <div style="font-size:9px;color:#5a5750;font-weight:600;margin-bottom:3px;">🖼️ Katalog/Ref</div>
                 <div class="ai-img-slot" id="slot-ref" onclick="triggerSlot('inp-ref')">
                   <img id="prev-ref" class="ai-slot-img" style="display:none">
                   <div class="ai-slot-empty" id="empty-ref"><div>🖼️</div><div style="font-size:9px;margin-top:2px;">Katalog</div></div>
