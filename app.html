@@ -376,6 +376,15 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
 .imp-preview tr:hover td{background:#f0efe9;}
 .imp-modal-footer{padding:12px 18px;border-top:1px solid #d8d5cb;display:flex;gap:8px;justify-content:flex-end;}
 
+
+/* ─── MULTI IMAGE SLOTS ─── */
+.ai-img-slot{border:1.5px dashed rgba(255,255,255,.3);border-radius:8px;height:72px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,.06);position:relative;overflow:hidden;transition:all .2s;}
+.ai-img-slot:hover{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.12);}
+.ai-img-slot.filled{border-color:#97c459;border-style:solid;}
+.ai-slot-empty{display:flex;flex-direction:column;align-items:center;color:rgba(255,255,255,.5);font-size:16px;}
+.ai-slot-img{width:100%;height:100%;object-fit:cover;border-radius:6px;}
+.ai-slot-rm{position:absolute;top:3px;right:3px;width:18px;height:18px;background:rgba(139,32,32,.85);color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:11px;line-height:18px;text-align:center;z-index:2;}
+
 </style>
 </head>
 <body>
@@ -424,27 +433,49 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
         <!-- Kolom Kiri: Upload -->
         <div>
           <div class="ai-col-title">📸 Upload Gambar / Foto</div>
-          <div class="ai-drop" id="ai-drop"
-            onclick="document.getElementById('ai-file').click()"
-            ondragover="event.preventDefault();this.style.borderColor='#2d5a27'"
-            ondragleave="this.style.borderColor='#b8d9b4'"
-            ondrop="handleAiDrop(event)">
-            <div class="di">📷</div>
-            <div class="dt">Klik atau drag & drop</div>
-            <div class="ds">Foto produk · Sketsa · Blueprint · Katalog</div>
-            <div class="ai-chips">
-              <span class="ai-chip">📷 Foto</span>
-              <span class="ai-chip">✏️ Sketsa</span>
-              <span class="ai-chip">📐 Blueprint</span>
-              <span class="ai-chip">🖼️ Katalog</span>
+          <!-- Multi-image upload -->
+          <div style="margin-bottom:8px;">
+            <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.7);margin-bottom:6px;">Upload Gambar (makin banyak = AI makin akurat)</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px;">
+              <div>
+                <div style="font-size:9px;color:rgba(255,255,255,.6);margin-bottom:3px;">📷 Foto Produk</div>
+                <div class="ai-img-slot" id="slot-foto" onclick="triggerSlot('inp-foto')">
+                  <img id="prev-foto" class="ai-slot-img" style="display:none">
+                  <div class="ai-slot-empty" id="empty-foto"><div>📷</div><div style="font-size:9px;margin-top:2px;">Foto/render</div></div>
+                  <button class="ai-slot-rm" id="rm-foto" onclick="rmSlot(event,'foto')" style="display:none">✕</button>
+                </div>
+                <input type="file" id="inp-foto" accept="image/*" style="display:none" onchange="pickSlot(event,'foto')">
+              </div>
+              <div>
+                <div style="font-size:9px;color:rgba(255,255,255,.6);margin-bottom:3px;">📐 Gambar Teknik</div>
+                <div class="ai-img-slot" id="slot-teknik" onclick="triggerSlot('inp-teknik')">
+                  <img id="prev-teknik" class="ai-slot-img" style="display:none">
+                  <div class="ai-slot-empty" id="empty-teknik"><div>📐</div><div style="font-size:9px;margin-top:2px;">Blueprint</div></div>
+                  <button class="ai-slot-rm" id="rm-teknik" onclick="rmSlot(event,'teknik')" style="display:none">✕</button>
+                </div>
+                <input type="file" id="inp-teknik" accept="image/*" style="display:none" onchange="pickSlot(event,'teknik')">
+              </div>
+              <div>
+                <div style="font-size:9px;color:rgba(255,255,255,.6);margin-bottom:3px;">✏️ Sketsa</div>
+                <div class="ai-img-slot" id="slot-sketsa" onclick="triggerSlot('inp-sketsa')">
+                  <img id="prev-sketsa" class="ai-slot-img" style="display:none">
+                  <div class="ai-slot-empty" id="empty-sketsa"><div>✏️</div><div style="font-size:9px;margin-top:2px;">Sketsa</div></div>
+                  <button class="ai-slot-rm" id="rm-sketsa" onclick="rmSlot(event,'sketsa')" style="display:none">✕</button>
+                </div>
+                <input type="file" id="inp-sketsa" accept="image/*" style="display:none" onchange="pickSlot(event,'sketsa')">
+              </div>
+              <div>
+                <div style="font-size:9px;color:rgba(255,255,255,.6);margin-bottom:3px;">🖼️ Katalog/Ref</div>
+                <div class="ai-img-slot" id="slot-ref" onclick="triggerSlot('inp-ref')">
+                  <img id="prev-ref" class="ai-slot-img" style="display:none">
+                  <div class="ai-slot-empty" id="empty-ref"><div>🖼️</div><div style="font-size:9px;margin-top:2px;">Katalog</div></div>
+                  <button class="ai-slot-rm" id="rm-ref" onclick="rmSlot(event,'ref')" style="display:none">✕</button>
+                </div>
+                <input type="file" id="inp-ref" accept="image/*" style="display:none" onchange="pickSlot(event,'ref')">
+              </div>
             </div>
           </div>
-          <input type="file" id="ai-file" accept="image/*" style="display:none" onchange="handleAiSelect(event)">
-          <div class="ai-prev-wrap" id="ai-prev-wrap">
-            <img id="ai-prev-img" class="ai-prev-img" alt="preview">
-            <button class="ai-rm-btn" onclick="removeAiImg()">✕</button>
-          </div>
-          <button class="ai-analyze-btn" id="ai-btn" onclick="analyzeImage()">
+          <button class="ai-analyze-btn" id="ai-btn" onclick="analyzeImage()" style="display:none;">
             🔍 Analisis dengan AI
           </button>
         </div>
@@ -484,6 +515,15 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
             <div class="ai-comps" id="ai-comps" style="display:none">
               <div class="ai-comp-label">Komponen Terdeteksi</div>
               <div class="ai-comp-tags" id="ai-comp-tags"></div>
+            </div>
+            <!-- Exploded View -->
+            <div id="ai-exploded-wrap" style="display:none;margin-bottom:8px;">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;margin-bottom:5px;">Exploded View — AI Generated</div>
+              <div id="ai-exploded-svg" style="background:#f5f4f0;border-radius:8px;padding:8px;overflow:auto;"></div>
+              <div style="display:flex;gap:5px;margin-top:5px;">
+                <button onclick="printAiExploded()" style="flex:1;padding:4px 8px;border:1px solid #e0a0a0;border-radius:6px;background:#fef0f0;color:#8b1a1a;font-size:10px;font-weight:600;cursor:pointer;">🖨️ Print</button>
+                <button onclick="downloadAiExplodedSVG()" style="flex:1;padding:4px 8px;border:1px solid #80c080;border-radius:6px;background:#e8f5e8;color:#1a5a2a;font-size:10px;font-weight:600;cursor:pointer;">💾 SVG</button>
+              </div>
             </div>
             <button class="ai-apply-btn" onclick="applyAiResult()">✅ Terapkan ke Kalkulator</button>
             <div style="font-size:10px;color:#8a8680;text-align:center;margin-top:5px;">Semua field tetap bisa diedit manual</div>
@@ -1496,47 +1536,75 @@ window.toggleAiPanel = function() {
   arrow.textContent = collapsed ? '▼' : '▲';
 };
 
-// Image handling
-window.handleAiDrop = function(e) {
-  e.preventDefault();
-  document.getElementById('ai-drop').classList.remove('drag');
-  var file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith('image/')) loadAiImage(file);
+// ── Multi-slot image handling ─────────────────────────────────────────
+var _slotData = {foto:null, teknik:null, sketsa:null, ref:null};
+
+window.triggerSlot = function(inputId) {
+  document.getElementById(inputId).click();
 };
 
-window.handleAiSelect = function(e) {
+window.pickSlot = function(e, slot) {
   var file = e.target.files[0];
-  if (file) loadAiImage(file);
+  if (file) loadSlot(file, slot);
 };
 
-function loadAiImage(file) {
-  if (file.size > 5 * 1024 * 1024) {
-    showAiError('⚠️ Ukuran file maksimal 5MB!'); return;
-  }
+window.rmSlot = function(e, slot) {
+  e.stopPropagation();
+  _slotData[slot] = null;
+  var prev = document.getElementById('prev-'+slot);
+  var empty = document.getElementById('empty-'+slot);
+  var rm = document.getElementById('rm-'+slot);
+  var slotEl = document.getElementById('slot-'+slot);
+  if(prev) prev.style.display = 'none';
+  if(empty) empty.style.display = 'flex';
+  if(rm) rm.style.display = 'none';
+  if(slotEl) slotEl.classList.remove('filled');
+  document.getElementById('inp-'+slot).value = '';
+  updateAnalyzeBtn();
+};
+
+function loadSlot(file, slot) {
+  if (file.size > 8*1024*1024) { showAiError('⚠️ Maks 8MB per gambar!'); return; }
   var reader = new FileReader();
   reader.onload = function(ev) {
-    _aiImgData = ev.target.result;
-    var prev = document.getElementById('ai-prev-img');
-    var wrap = document.getElementById('ai-prev-wrap');
-    var btn  = document.getElementById('ai-btn');
-    prev.src = _aiImgData;
-    wrap.classList.add('show');
-    btn.style.display = 'block';
-    document.getElementById('ai-empty').style.display  = 'none';
-    document.getElementById('ai-result').classList.remove('show');
+    _slotData[slot] = ev.target.result;
+    var prev = document.getElementById('prev-'+slot);
+    var empty = document.getElementById('empty-'+slot);
+    var rm = document.getElementById('rm-'+slot);
+    var slotEl = document.getElementById('slot-'+slot);
+    if(prev){ prev.src = ev.target.result; prev.style.display='block'; }
+    if(empty) empty.style.display = 'none';
+    if(rm) rm.style.display = 'block';
+    if(slotEl) slotEl.classList.add('filled');
     document.getElementById('ai-error').classList.remove('show');
+    document.getElementById('ai-result').classList.remove('show');
+    updateAnalyzeBtn();
   };
   reader.readAsDataURL(file);
 }
 
-window.removeAiImg = function() {
-  _aiImgData = null;
-  document.getElementById('ai-prev-wrap').classList.remove('show');
-  document.getElementById('ai-btn').style.display = 'none';
-  document.getElementById('ai-file').value = '';
-  document.getElementById('ai-result').classList.remove('show');
-  document.getElementById('ai-empty').style.display = 'block';
-  document.getElementById('ai-error').classList.remove('show');
+function updateAnalyzeBtn() {
+  var hasAny = Object.values(_slotData).some(function(v){ return v !== null; });
+  var btn = document.getElementById('ai-btn');
+  if(btn) btn.style.display = hasAny ? 'block' : 'none';
+}
+
+function getActiveImages() {
+  var imgs = [];
+  var labels = {foto:'Foto Produk', teknik:'Gambar Teknik', sketsa:'Sketsa', ref:'Katalog/Referensi'};
+  Object.keys(_slotData).forEach(function(slot){
+    if(_slotData[slot]){
+      imgs.push({slot:slot, label:labels[slot], data:_slotData[slot]});
+    }
+  });
+  return imgs;
+}
+
+// Keep backward compat
+window.handleAiDrop = function(e){ e.preventDefault(); };
+window.handleAiSelect = function(e){ var f=e.target.files[0]; if(f) loadSlot(f,'foto'); };
+window.removeAiImg = function(){
+  Object.keys(_slotData).forEach(function(s){ if(_slotData[s]) window.rmSlot({stopPropagation:function(){}},s); });
 };
 
 function showAiError(msg) {
@@ -1548,7 +1616,7 @@ function showAiError(msg) {
 
 // ── Main AI Analysis ───────────────────────────────────────────────────
 window.analyzeImage = async function() {
-  if (!_aiImgData) { showAiError('⚠️ Upload gambar dulu!'); return; }
+  if (!getActiveImages().length) { showAiError('⚠️ Upload minimal 1 gambar!'); return; }
 
   var btn = document.getElementById('ai-btn');
   btn.disabled = true;
@@ -1637,6 +1705,7 @@ window.analyzeImage = async function() {
 };
 
 function showAiResult(r) {
+  window._aiResult = r;
   // Map furniture type
   var typeMap = {
     bed: '🛏️ Tempat Tidur',
@@ -1690,7 +1759,94 @@ function showAiResult(r) {
 
   document.getElementById('ai-result').classList.add('show');
   document.getElementById('ai-empty').style.display = 'none';
+  // Generate exploded view
+  if (r.components && r.components.length) {
+    generateAiExploded(r.components, r);
+  }
 }
+
+// ── Generate Exploded View ────────────────────────────────────────────
+function generateAiExploded(comps, r) {
+  if (!comps || !comps.length) return;
+  var wrap = document.getElementById('ai-exploded-wrap');
+  var svgEl = document.getElementById('ai-exploded-svg');
+  if (!wrap || !svgEl) return;
+
+  var svgH = Math.max(220, comps.length * 32 + 50);
+  var svg = '<svg width="100%" viewBox="0 0 420 ' + svgH + '" style="font-family:sans-serif;">';
+  svg += '<text x="210" y="12" text-anchor="middle" font-size="8" fill="currentColor" opacity=".4" font-weight="bold">';
+  svg += (r.furniture_name_id || 'Furniture') + ' — Exploded View';
+  svg += '</text>';
+
+  var startY = 22;
+  var gap = Math.min(32, (svgH - 40) / Math.max(1, comps.length));
+
+  comps.forEach(function(c, i) {
+    var y = startY + i * gap;
+    var p = c.p || c.P || 80;
+    var l = c.l || c.L || 20;
+    var w = Math.min(160, Math.max(30, (p / 100) * 100));
+    var h = Math.min(18, Math.max(7, (l / 100) * 60));
+    var x = 150 - w / 2;
+    var type = c.type || 'SW';
+    var op = type === 'SW' ? '.65' : type === 'PW' ? '.35' : '.3';
+    var stroke = type === 'PW' ? '#1565c0' : type === 'NW' ? '#6a1b9a' : 'currentColor';
+
+    if (i > 0) {
+      svg += '<line x1="150" y1="' + (y - gap + h) + '" x2="150" y2="' + y + '" stroke="currentColor" stroke-width=".5" stroke-dasharray="2,2" opacity=".15"/>';
+    }
+    svg += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="2" fill="currentColor" opacity="' + op + '"/>';
+    if (type !== 'SW') {
+      svg += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="2" fill="none" stroke="' + stroke + '" stroke-width=".8" opacity=".6"/>';
+    }
+
+    var code = c.code || ('C-' + String(i + 1).padStart(2, '0'));
+    svg += '<text x="' + (x - 4) + '" y="' + (y + h / 2 + 3) + '" text-anchor="end" font-size="8" fill="currentColor" opacity=".6" font-family="monospace">' + code + '</text>';
+
+    var name = (c.name || 'Komponen').slice(0, 20);
+    var dim = (c.qty || 1) + 'x ' + (c.p || '?') + 'x' + (c.l || '?') + 'x' + (c.t || '?') + ' cm';
+    svg += '<line x1="' + (x + w) + '" y1="' + (y + h / 2) + '" x2="' + (x + w + 8) + '" y2="' + (y + h / 2) + '" stroke="currentColor" stroke-width=".5" opacity=".25" stroke-dasharray="2,1"/>';
+    svg += '<text x="' + (x + w + 12) + '" y="' + (y + h / 2 - 1) + '" font-size="9" fill="currentColor" opacity=".8" font-weight="600">' + name + '</text>';
+    svg += '<text x="' + (x + w + 12) + '" y="' + (y + h / 2 + 10) + '" font-size="7.5" fill="currentColor" opacity=".5">' + dim + '</text>';
+  });
+
+  var conf = r.confidence || 0;
+  svg += '<rect x="50" y="' + (svgH - 10) + '" width="200" height="3" rx="1.5" fill="currentColor" opacity=".08"/>';
+  svg += '<rect x="50" y="' + (svgH - 10) + '" width="' + Math.round(200 * conf / 100) + '" height="3" rx="1.5" fill="#2d5a27" opacity=".45"/>';
+  svg += '<text x="258" y="' + (svgH - 6) + '" font-size="7" fill="currentColor" opacity=".35">' + conf + '% confidence</text>';
+  svg += '</svg>';
+
+  svgEl.innerHTML = svg;
+  wrap.style.display = 'block';
+}
+
+window.printAiExploded = function() {
+  var svg = document.getElementById('ai-exploded-svg');
+  if (!svg || !svg.innerHTML) { showToast('⚠️ Belum ada exploded view!'); return; }
+  var r = window._aiResult || {};
+  var w = window.open('', '_blank');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Exploded View</title><style>body{font-family:sans-serif;padding:20px;}@media print{button{display:none}}</style></head><body>' +
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">' +
+    '<div><b style="font-size:15px;">PT. Gabe International — Exploded View</b><br>' +
+    '<span style="font-size:12px;color:#8a8680;">' + (r.furniture_name_id || 'Furniture') + ' · AI Generated</span></div>' +
+    '<button onclick="window.print()" style="padding:7px 14px;background:#2d5a27;color:#fff;border:none;border-radius:7px;cursor:pointer;">🖨️ Print</button></div>' +
+    '<div style="border:1px solid #e8e6df;border-radius:8px;padding:12px;">' + svg.innerHTML + '</div>' +
+    '</body></html>');
+  w.document.close();
+};
+
+window.downloadAiExplodedSVG = function() {
+  var svg = document.getElementById('ai-exploded-svg');
+  if (!svg || !svg.innerHTML) { showToast('⚠️ Belum ada exploded view!'); return; }
+  var r = window._aiResult || {};
+  var name = (r.furniture_name_id || 'exploded').replace(/\s+/g, '_');
+  var blob = new Blob([svg.innerHTML], {type: 'image/svg+xml'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ExplodedView_' + name + '.svg';
+  a.click();
+  showToast('💾 SVG didownload!');
+};
 
 // ── Apply to Calculator ────────────────────────────────────────────────
 window.applyAiResult = function() {
