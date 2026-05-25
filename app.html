@@ -434,8 +434,19 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
         <div>
           <div class="ai-col-title" style="margin-bottom:6px;">📸 Upload Gambar / Foto</div>
 
+          <!-- Drag & drop zone (shows when empty) -->
+          <div id="ai-drop-zone"
+               style="border:2px dashed #b8d9b4;border-radius:10px;padding:16px;text-align:center;cursor:pointer;background:#f5faf4;margin-bottom:6px;transition:all .2s;"
+               onclick="addImgSlot()"
+               ondragover="event.preventDefault();this.style.borderColor='#2d5a27';this.style.background='#eaf3e8'"
+               ondragleave="this.style.borderColor='#b8d9b4';this.style.background='#f5faf4'"
+               ondrop="handleDropZone(event)">
+            <div style="font-size:28px;margin-bottom:4px;">📸</div>
+            <div style="font-size:12px;font-weight:700;color:#2d5a27;">Klik atau drag & drop gambar</div>
+            <div style="font-size:10px;color:#8a8680;margin-top:2px;">Foto · Sketsa · Blueprint · Katalog</div>
+          </div>
           <!-- Dynamic image gallery -->
-          <div id="ai-img-gallery" style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px;"></div>
+          <div id="ai-img-gallery" style="display:none;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:6px;"></div>
 
           <!-- Add more / Google Photos row -->
           <div style="display:flex;gap:5px;margin-bottom:6px;">
@@ -448,14 +459,18 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
           </div>
 
           <!-- URL input (hidden by default) -->
-          <div id="url-input-wrap" style="display:none;margin-bottom:6px;">
-            <div style="font-size:10px;color:#5a5750;font-weight:600;margin-bottom:3px;">URL Gambar / Google Photos / Drive</div>
-            <div style="display:flex;gap:4px;">
-              <input type="text" id="url-img-input" class="fc" placeholder="https://photos.google.com/... atau URL gambar" style="font-size:11px;padding:5px 8px;flex:1;">
-              <button onclick="addImgFromUrl()" style="padding:5px 10px;background:#2d5a27;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;">➕</button>
-              <button onclick="document.getElementById('url-input-wrap').style.display='none'" style="padding:5px 8px;background:#f0efe9;border:1.5px solid #d8d5cb;border-radius:7px;font-size:11px;cursor:pointer;">✕</button>
+          <div id="url-input-wrap" style="display:none;margin-bottom:6px;background:#f0f4fb;border:1px solid #85b7eb;border-radius:8px;padding:8px;">
+            <div style="font-size:10px;color:#0c447c;font-weight:700;margin-bottom:5px;">🔗 Tambah Gambar via URL</div>
+            <div style="display:flex;gap:4px;margin-bottom:4px;">
+              <input type="text" id="url-img-input" placeholder="https://... (URL langsung ke file .jpg/.png)" style="flex:1;padding:5px 8px;border:1.5px solid #85b7eb;border-radius:7px;font-size:11px;font-family:inherit;">
+              <button onclick="addImgFromUrl()" style="padding:5px 10px;background:#1565c0;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;">➕</button>
+              <button onclick="document.getElementById('url-input-wrap').style.display='none'" style="padding:5px 8px;background:#fff;border:1.5px solid #85b7eb;border-radius:7px;font-size:11px;cursor:pointer;color:#5a5750;">✕</button>
             </div>
-            <div style="font-size:10px;color:#8a8680;margin-top:3px;">💡 Google Photos: buka foto → Share → Copy link</div>
+            <div style="font-size:10px;color:#5a5750;line-height:1.6;">
+              ✅ <b>URL langsung:</b> link yang berakhir .jpg/.png/.webp<br>
+              ✅ <b>Google Drive:</b> Upload foto → klik kanan → <i>Get link</i> → paste<br>
+              ⚠️ <b>Google Photos:</b> tidak support akses langsung (CORS). Gunakan <b>Tambah Foto</b> untuk upload dari device.
+            </div>
           </div>
 
           <!-- Image count indicator -->
@@ -1534,8 +1549,20 @@ var IMG_ICONS  = ['📷','📐','✏️','🖼️','🔍','📏','↩️','↔�
 
 function renderGallery() {
   var gallery = document.getElementById('ai-img-gallery');
+  var dropZone = document.getElementById('ai-drop-zone');
   if (!gallery) return;
   gallery.innerHTML = '';
+
+  // Show/hide drop zone based on images
+  if (dropZone) {
+    if (_images.length === 0) {
+      dropZone.style.display = 'block';
+      gallery.style.display = 'none';
+    } else {
+      dropZone.style.display = 'none';
+      gallery.style.display = 'grid';
+    }
+  }
 
   // Render existing images
   _images.forEach(function(img) {
@@ -1629,40 +1656,69 @@ window.addImgFromUrl = function() {
   var inp = document.getElementById('url-img-input');
   if (!inp || !inp.value.trim()) { showAiError('⚠️ Masukkan URL gambar!'); return; }
   var url = inp.value.trim();
-
-  // Handle Google Photos / Drive share links
-  if (url.includes('photos.google.com') || url.includes('drive.google.com')) {
-    // Convert Google Photos share link to direct image
-    if (url.includes('drive.google.com/file/d/')) {
-      var match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-      if (match) { url = 'https://drive.google.com/uc?export=view&id=' + match[1]; }
-    }
-    showAiError('⚠️ Google Photos memerlukan link langsung ke gambar (bukan album). Gunakan Google Drive: upload ke Drive → Share → Copy link → paste di sini.');
-    return;
-  }
-
   var idx = _images.length;
   var label = IMG_LABELS[idx % IMG_LABELS.length];
   var icon  = IMG_ICONS[idx % IMG_ICONS.length];
 
-  // Try to load URL as image
-  var testImg = new Image();
-  testImg.crossOrigin = 'anonymous';
-  testImg.onload = function() {
-    // Valid image URL — store as URL type
+  // Google Photos: cannot load directly, show guide
+  if (url.includes('photos.app.goo.gl') || url.includes('photos.google.com')) {
+    showAiError('⚠️ Google Photos tidak bisa diakses langsung dari browser (CORS). Solusi: simpan foto ke device lalu klik "➕ Tambah Foto" untuk upload.');
+    return;
+  }
+
+  // Google Drive: convert to direct link
+  if (url.includes('drive.google.com')) {
+    var match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (match) {
+      url = 'https://drive.google.com/uc?export=download&id=' + match[1];
+      label = 'Google Drive';
+      icon = '☁️';
+    }
+  }
+
+  // Fetch image via proxy to avoid CORS — use our own API
+  fetch('/api/fetch-image', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({url: url})
+  }).then(function(r) {
+    if (!r.ok) throw new Error('fetch failed');
+    return r.json();
+  }).then(function(data) {
+    if (data.imageData) {
+      addImageData(data.imageData, label, icon);
+      inp.value = '';
+      document.getElementById('url-input-wrap').style.display = 'none';
+      document.getElementById('ai-error').classList.remove('show');
+      showToast('✅ Gambar dari URL ditambahkan!');
+    }
+  }).catch(function() {
+    // Fallback: try direct as img src
     _imgCounter++;
     _images.push({ id: _imgCounter, data: url, label: label, icon: icon, type: 'url' });
     renderGallery();
     inp.value = '';
     document.getElementById('url-input-wrap').style.display = 'none';
-    showAiError('');
     document.getElementById('ai-error').classList.remove('show');
-    showToast('✅ Gambar dari URL ditambahkan!');
-  };
-  testImg.onerror = function() {
-    showAiError('⚠️ URL tidak valid atau gambar tidak bisa diakses. Pastikan URL langsung ke file gambar (.jpg/.png).');
-  };
-  testImg.src = url;
+    showToast('✅ URL ditambahkan — AI akan akses saat analisis.');
+  });
+};
+
+// Drag & drop on the main zone
+window.handleDropZone = function(e) {
+  e.preventDefault();
+  var dz = document.getElementById('ai-drop-zone');
+  if(dz){ dz.style.borderColor='#b8d9b4'; dz.style.background='#f5faf4'; }
+  var files = Array.from(e.dataTransfer.files).filter(function(f){ return f.type.startsWith('image/'); });
+  files.forEach(function(file) {
+    if (file.size > 10*1024*1024) { showAiError('⚠️ Maks 10MB per gambar!'); return; }
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      var idx = _images.length;
+      addImageData(ev.target.result, IMG_LABELS[idx % IMG_LABELS.length], IMG_ICONS[idx % IMG_ICONS.length]);
+    };
+    reader.readAsDataURL(file);
+  });
 };
 
 // Backward compat
