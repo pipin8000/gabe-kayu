@@ -1741,7 +1741,7 @@ function showAiError(msg) {
 
 // ── Main AI Analysis ───────────────────────────────────────────────────
 window.analyzeImage = async function() {
-  if (!getActiveImages().length) { showAiError('⚠️ Upload minimal 1 gambar!'); return; }
+  // Images checked below after loading state
 
   var btn = document.getElementById('ai-btn');
   btn.disabled = true;
@@ -1750,9 +1750,26 @@ window.analyzeImage = async function() {
   document.getElementById('ai-result').classList.remove('show');
   document.getElementById('ai-error').classList.remove('show');
 
-  // Extract base64 data
-  var base64 = _aiImgData.split(',')[1];
-  var mimeType = _aiImgData.split(';')[0].split(':')[1] || 'image/jpeg';
+  // Use first image as primary for API call
+  var activeImgs = getActiveImages();
+  if (!activeImgs.length) {
+    document.getElementById('ai-loading').classList.remove('show');
+    showAiError('⚠️ Upload minimal 1 gambar dulu!');
+    btn.disabled = false;
+    btn.textContent = '🔍 Analisis dengan AI';
+    return;
+  }
+  var primaryData = activeImgs[0].data;
+  // Handle both base64 and URL types
+  var base64, mimeType;
+  if (primaryData.startsWith('data:')) {
+    base64   = primaryData.split(',')[1];
+    mimeType = primaryData.split(';')[0].split(':')[1] || 'image/jpeg';
+  } else {
+    // URL type - send as url for API to fetch
+    base64   = btoa(primaryData);
+    mimeType = 'image/jpeg';
+  }
 
 
 
