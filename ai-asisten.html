@@ -796,24 +796,72 @@ function buildComponentCards(comps){
 }
 
 function buildCompIllustration(c, i){
-  var p = c.p||c.P||80; var l = c.l||c.L||20; var t = c.t||c.T||4;
-  var type = c.type||'SW';
-  var maxP = 80, maxL = 40;
-  var w = Math.min(maxP, Math.max(20, p*0.7));
-  var h = Math.min(maxL, Math.max(10, l*0.7));
-  var cx = 80, cy = 50;
-  var x = cx - w/2, y = cy - h/2;
-  var fill = type==='PW'?'rgba(21,101,192,.2)':type==='NW'?'rgba(106,27,154,.2)':'currentColor';
-  var stroke = type==='PW'?'#1565c0':type==='NW'?'#6a1b9a':'currentColor';
-  var op = type==='SW'?'.55':'.4';
-  return '<svg width="160" height="100" viewBox="0 0 160 100">'+
-    '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="3" fill="'+fill+'" opacity="'+op+'"/>'+
-    '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="3" fill="none" stroke="'+stroke+'" stroke-width=".8" opacity=".5"/>'+
-    '<line x1="'+x+'" y1="85" x2="'+(x+w)+'" y2="85" stroke="currentColor" stroke-width=".5" opacity=".2"/>'+
-    '<text x="'+(cx)+'" y="90" text-anchor="middle" font-size="8" fill="currentColor" opacity=".4">'+p+' cm</text>'+
-    '<line x1="145" y1="'+y+'" x2="145" y2="'+(y+h)+'" stroke="currentColor" stroke-width=".5" opacity=".2"/>'+
-    '<text x="152" y="'+(cy+3)+'" text-anchor="middle" font-size="8" fill="currentColor" opacity=".4">'+l+'</text>'+
-    '</svg>';
+  var p = c.p||c.P||80;
+  var l = c.l||c.L||20;
+  var t = c.t||c.T||4;
+  var type = (c.type||'SW').toUpperCase();
+  var shape = (c.shape||'rectangular').toLowerCase();
+  var diam = c.diameter || p;
+  var cx = 80, cy = 48;
+
+  var fill   = type==='PW'?'rgba(21,101,192,.25)':
+               type==='NW'?'rgba(106,27,154,.2)':
+               type==='MARBLE'?'rgba(142,142,158,.35)':
+               type==='METAL'?'rgba(85,85,85,.4)':
+               'currentColor';
+  var stroke = type==='PW'?'#1565c0':
+               type==='NW'?'#6a1b9a':
+               type==='MARBLE'?'#8e8e9e':
+               type==='METAL'?'#555':
+               'currentColor';
+  var op = type==='SW'?'.55':'.35';
+
+  var svg = '<svg width="160" height="100" viewBox="0 0 160 100">';
+
+  if (shape === 'round' || shape === 'circular' || shape === 'circle') {
+    // Circular component — show as ellipse (top view)
+    var rx = Math.min(72, Math.max(20, (diam/200)*130));
+    var ry = Math.round(rx * 0.28 + 4);
+    var cy2 = 45;
+    svg += '<ellipse cx="'+cx+'" cy="'+cy2+'" rx="'+rx+'" ry="'+ry+'"';
+    svg += ' fill="'+fill+'" opacity="'+op+'"/>';
+    svg += '<ellipse cx="'+cx+'" cy="'+cy2+'" rx="'+rx+'" ry="'+ry+'"';
+    svg += ' fill="none" stroke="'+stroke+'" stroke-width=".8" opacity=".6"/>';
+    // Inner ring
+    svg += '<ellipse cx="'+cx+'" cy="'+cy2+'" rx="'+(rx*0.82)+'" ry="'+(ry*0.82)+'"';
+    svg += ' fill="none" stroke="'+stroke+'" stroke-width=".4" opacity=".25" stroke-dasharray="3,2"/>';
+    // Diameter annotation
+    svg += '<line x1="'+(cx-rx)+'" y1="'+cy2+'" x2="'+(cx+rx)+'" y2="'+cy2+'"';
+    svg += ' stroke="currentColor" stroke-width=".4" opacity=".2"/>';
+    svg += '<text x="'+cx+'" y="85" text-anchor="middle" font-size="9" fill="currentColor" opacity=".5">Ø'+diam+' cm · t='+t+' cm</text>';
+
+  } else if (shape === 'panel') {
+    // Tall narrow panel
+    var pw = Math.min(50, Math.max(14, (l/80)*70));
+    var ph = Math.min(60, Math.max(20, (p/60)*55));
+    var px = cx-pw/2, py2 = cy-ph/2;
+    svg += '<rect x="'+px+'" y="'+py2+'" width="'+pw+'" height="'+ph+'" rx="2"';
+    svg += ' fill="'+fill+'" opacity="'+op+'"/>';
+    svg += '<rect x="'+px+'" y="'+py2+'" width="'+pw+'" height="'+ph+'" rx="2"';
+    svg += ' fill="none" stroke="'+stroke+'" stroke-width=".7" opacity=".5"/>';
+    svg += '<text x="'+cx+'" y="88" text-anchor="middle" font-size="9" fill="currentColor" opacity=".5">'+p+'×'+l+'×'+t+' cm</text>';
+
+  } else {
+    // Default rectangle
+    var w = Math.min(130, Math.max(20, (p/160)*130));
+    var h = Math.min(36, Math.max(8, (t/15)*32+8));
+    var x = cx-w/2, y2 = cy-h/2;
+    svg += '<rect x="'+x+'" y="'+y2+'" width="'+w+'" height="'+h+'" rx="3"';
+    svg += ' fill="'+fill+'" opacity="'+op+'"/>';
+    svg += '<rect x="'+x+'" y="'+y2+'" width="'+w+'" height="'+h+'" rx="3"';
+    svg += ' fill="none" stroke="'+stroke+'" stroke-width=".7" opacity=".5"/>';
+    // Width dimension
+    svg += '<line x1="'+x+'" y1="82" x2="'+(x+w)+'" y2="82" stroke="currentColor" stroke-width=".4" opacity=".2"/>';
+    svg += '<text x="'+cx+'" y="88" text-anchor="middle" font-size="9" fill="currentColor" opacity=".5">'+p+'×'+l+'×'+t+' cm</text>';
+  }
+
+  svg += '</svg>';
+  return svg;
 }
 
 // Sync status
