@@ -346,6 +346,36 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
 .ai-error-box.show{display:block;}
 @media(max-width:640px){.ai-two-col{grid-template-columns:1fr;}}
 
+
+/* ═══ EXPORT / IMPORT BAR ═══ */
+.ei-bar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#f5f4f0;border-top:1px solid #d8d5cb;flex-wrap:wrap;}
+.ei-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;}
+.ei-btn{display:inline-flex;align-items:center;gap:4px;padding:5px 11px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid;font-family:inherit;transition:all .15s;}
+.ei-btn.csv{color:#1a5c1a;border-color:#a0d0a0;background:#f0faf0;}
+.ei-btn.csv:hover{background:#dcf3dc;}
+.ei-btn.excel{color:#1a5a2a;border-color:#80c080;background:#e8f5e8;}
+.ei-btn.excel:hover{background:#d0ecd0;}
+.ei-btn.imp{color:#1a4a7a;border-color:#a0c0e0;background:#f0f4fb;}
+.ei-btn.imp:hover{background:#dce8f5;}
+.ei-btn.tmpl{color:#5a3a1a;border-color:#c0a060;background:#faf4e8;}
+.ei-btn.tmpl:hover{background:#f0e8d0;}
+.ei-sep{width:1px;height:18px;background:#d8d5cb;}
+.imp-modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:600;padding:16px;}
+.imp-modal-ov.show{display:flex;}
+.imp-modal{background:#fff;border-radius:16px;width:100%;max-width:540px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.imp-modal-hdr{padding:14px 18px;border-bottom:1px solid #d8d5cb;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;}
+.imp-modal-hdr h3{font-size:14px;font-weight:700;}
+.imp-modal-x{width:26px;height:26px;border:none;background:#e8e6df;border-radius:50%;cursor:pointer;font-size:14px;}
+.imp-modal-body{padding:16px 18px;}
+.imp-drop{border:2px dashed #d8d5cb;border-radius:10px;padding:24px;text-align:center;cursor:pointer;background:#fafaf8;transition:all .2s;}
+.imp-drop:hover{border-color:#2d5a27;background:#eaf3e8;}
+.imp-preview{margin-top:10px;background:#f5f4f0;border-radius:8px;padding:10px;font-size:11px;max-height:200px;overflow-y:auto;display:none;}
+.imp-preview table{width:100%;border-collapse:collapse;font-size:10px;}
+.imp-preview th{background:#2d5a27;color:#fff;padding:4px 6px;text-align:left;}
+.imp-preview td{padding:3px 6px;border-bottom:1px solid #e8e6df;}
+.imp-preview tr:hover td{background:#f0efe9;}
+.imp-modal-footer{padding:12px 18px;border-top:1px solid #d8d5cb;display:flex;gap:8px;justify-content:flex-end;}
+
 </style>
 </head>
 <body>
@@ -524,6 +554,16 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
               </tr></thead>
               <tbody id="cl-body"></tbody>
               <tfoot id="cl-foot"></tfoot></table>
+            </div>
+            <!-- Export / Import Bar -->
+            <div class="ei-bar">
+              <span class="ei-label">📤 Export:</span>
+              <button class="ei-btn csv" onclick="exportCuttingCSV()">📊 CSV</button>
+              <button class="ei-btn excel" onclick="exportCuttingExcel()">📗 Excel</button>
+              <div class="ei-sep"></div>
+              <span class="ei-label">📥 Import:</span>
+              <button class="ei-btn imp" onclick="openImportCutting()">📂 Upload CSV/Excel</button>
+              <button class="ei-btn tmpl" onclick="downloadCuttingTemplate()">📄 Download Template</button>
             </div>
           </div>
           <div class="tcont" id="tab-volume"><div id="vol-detail"></div></div>
@@ -1718,6 +1758,287 @@ window.applyAiResult = function() {
       showToast('⚠️ Tipe furniture tidak dikenali. Pilih manual di tab furnitur.');
     }
   }
+};
+</script>
+
+
+<!-- IMPORT CUTTING LIST MODAL -->
+<div class="imp-modal-ov" id="imp-modal">
+  <div class="imp-modal">
+    <div class="imp-modal-hdr">
+      <h3>📥 Import Cutting List</h3>
+      <button class="imp-modal-x" onclick="closeImpModal()">✕</button>
+    </div>
+    <div class="imp-modal-body">
+      <div style="background:#fff8e8;border:1px solid #f0c060;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#7a5a10;">
+        <b>Format CSV:</b> Kode, Nama Komponen, Tipe(SW/PW/NW), Material ID, Qty, P(cm), L(cm), T(cm)<br>
+        <span style="color:#8a8680;">Contoh: KR-01, Kaki Depan, SW, SW-005, 2, 45, 4, 4</span>
+      </div>
+      <div class="imp-drop" id="imp-drop-zone"
+           onclick="document.getElementById('imp-file-input').click()"
+           ondragover="event.preventDefault();this.style.borderColor='#2d5a27'"
+           ondragleave="this.style.borderColor='#d8d5cb'"
+           ondrop="handleImpDrop(event)">
+        <div style="font-size:28px;margin-bottom:6px;">📂</div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:2px;">Klik atau drag & drop file</div>
+        <div style="font-size:11px;color:#8a8680;">CSV atau Excel (.xlsx)</div>
+      </div>
+      <input type="file" id="imp-file-input" accept=".csv,.xlsx,.xls" style="display:none" onchange="readImpFile(event)">
+      <div class="imp-preview" id="imp-preview-tbl">
+        <div id="imp-preview-count" style="font-size:11px;font-weight:700;color:#2d5a27;margin-bottom:6px;"></div>
+        <table id="imp-preview-table">
+          <thead><tr><th>Kode</th><th>Nama</th><th>Tipe</th><th>Qty</th><th>P</th><th>L</th><th>T</th></tr></thead>
+          <tbody id="imp-preview-body"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="imp-modal-footer">
+      <button onclick="closeImpModal()" style="padding:7px 16px;background:#f0efe9;border:1.5px solid #d8d5cb;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;">Batal</button>
+      <button id="imp-apply-btn" onclick="applyImport()" disabled style="padding:7px 16px;background:#2d5a27;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;opacity:.5;">📥 Terapkan ke Kalkulator</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ═══ EXPORT / IMPORT CUTTING LIST ═══════════════════════════════════
+
+function getCuttingData() {
+  var rows = [];
+  var tbody = document.getElementById('cl-body');
+  if (!tbody) return rows;
+  var trs = tbody.querySelectorAll('tr');
+  trs.forEach(function(tr) {
+    var tds = tr.querySelectorAll('td');
+    if (tds.length < 8) return;
+    var sel = tr.querySelector('select.msel');
+    var matId = sel ? sel.value : 'TBD';
+    var matName = '';
+    if (sel) {
+      var opt = sel.querySelector('option[value="'+matId+'"]');
+      matName = opt ? opt.textContent : matId;
+    }
+    rows.push({
+      kode:     tds[0] ? tds[0].textContent.trim() : '',
+      nama:     tds[0] ? tds[0].title || tds[0].textContent.trim() : '',
+      tipe:     tds[1] ? tds[1].textContent.trim() : '',
+      material: matId,
+      mat_nama: matName,
+      qty:      tds[3] ? tds[3].textContent.trim() : '1',
+      p:        tds[4] ? tds[4].textContent.trim() : '0',
+      l:        tds[5] ? tds[5].textContent.trim() : '0',
+      t:        tds[6] ? tds[6].textContent.trim() : '0',
+      vol_pcs:  tds[7] ? tds[7].textContent.trim() : '0',
+      vol_tot:  tds[8] ? tds[8].textContent.trim() : '0',
+      vol_log:  tds[9] ? tds[9].textContent.trim() : '0'
+    });
+  });
+  return rows;
+}
+
+function dlBlob(data, name, mime) {
+  var b = new Blob([data], {type: mime});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function todayStr() {
+  return new Date().toISOString().split('T')[0];
+}
+
+// ── EXPORT CSV ───────────────────────────────────────────────────────
+window.exportCuttingCSV = function() {
+  var rows = getCuttingData();
+  if (!rows.length) { showToast('⚠️ Tidak ada data cutting list!'); return; }
+
+  var ftypeLabel = typeof ST !== 'undefined' ? (ST.ftype || 'furniture') : 'furniture';
+  var ref = typeof ST !== 'undefined' ? (ST.ref || '') : '';
+
+  var NL = String.fromCharCode(10);
+  var headerRows = [
+    'Ref,' + ref,
+    'Furniture Type,' + ftypeLabel,
+    'Export Date,' + todayStr(),
+    'Generated by,Gabe International Hub',
+    '',
+    'Kode,Nama Komponen,Tipe Material,Material ID,Nama Material,Qty,P (cm),L (cm),T (cm),Vol/pcs (m3),Vol Total (m3),Vol Log (m3)'
+  ];
+  var csv = headerRows.join(NL) + NL;
+    rows.forEach(function(r) {
+    csv += [
+      r.kode,
+      '"'+r.nama+'"',
+      r.tipe,
+      r.material,
+      '"'+r.mat_nama+'"',
+      r.qty, r.p, r.l, r.t,
+      r.vol_pcs, r.vol_tot, r.vol_log
+    ].join(',') + NL;
+  });
+
+  dlBlob('﻿' + csv, 'CuttingList_' + ftypeLabel + '_' + todayStr() + '.csv', 'text/csv;charset=utf-8');
+  showToast('📊 Cutting List diexport ke CSV! (' + rows.length + ' komponen)');
+};
+
+// ── EXPORT EXCEL ─────────────────────────────────────────────────────
+window.exportCuttingExcel = function() {
+  var rows = getCuttingData();
+  if (!rows.length) { showToast('⚠️ Tidak ada data!'); return; }
+
+  var ftypeLabel = typeof ST !== 'undefined' ? (ST.ftype || 'furniture') : 'furniture';
+  var ref = typeof ST !== 'undefined' ? (ST.ref || '') : '';
+
+  var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">';
+  html += '<head><meta charset="UTF-8"></head><body>';
+
+  // Info header
+  html += '<table>';
+  html += '<tr><td style="font-weight:bold;background:#1a3a1a;color:#fff" colspan="12">PT. Gabe International — Cutting List</td></tr>';
+  html += '<tr><td>Referensi</td><td>'+ref+'</td></tr>';
+  html += '<tr><td>Furniture</td><td>'+ftypeLabel+'</td></tr>';
+  html += '<tr><td>Tanggal</td><td>'+todayStr()+'</td></tr>';
+  html += '<tr><td colspan="12"></td></tr>';
+
+  // Table header
+  html += '<tr style="background:#2d5a27;color:#fff;font-weight:bold;">';
+  ['Kode','Nama Komponen','Tipe','Material ID','Nama Material','Qty','P (cm)','L (cm)','T (cm)','Vol/pcs m³','Vol Total m³','Vol Log m³']
+    .forEach(function(h) { html += '<th>'+h+'</th>'; });
+  html += '</tr>';
+
+  // Data rows
+  rows.forEach(function(r, i) {
+    var bg = i % 2 === 0 ? '#f5f4f0' : '#ffffff';
+    var typeColor = r.tipe === 'SW' ? '#e65100' : r.tipe === 'PW' ? '#1565c0' : '#6a1b9a';
+    html += '<tr style="background:'+bg+'">';
+    html += '<td style="font-family:monospace;font-size:11px;">'+r.kode+'</td>';
+    html += '<td style="font-weight:600;">'+r.nama+'</td>';
+    html += '<td style="color:'+typeColor+';font-weight:700;">'+r.tipe+'</td>';
+    html += '<td style="font-family:monospace;">'+r.material+'</td>';
+    html += '<td>'+r.mat_nama+'</td>';
+    html += '<td style="text-align:center;">'+r.qty+'</td>';
+    html += '<td style="text-align:right;">'+r.p+'</td>';
+    html += '<td style="text-align:right;">'+r.l+'</td>';
+    html += '<td style="text-align:right;">'+r.t+'</td>';
+    html += '<td style="text-align:right;">'+r.vol_pcs+'</td>';
+    html += '<td style="text-align:right;font-weight:600;color:#2d5a27;">'+r.vol_tot+'</td>';
+    html += '<td style="text-align:right;color:#e65100;">'+r.vol_log+'</td>';
+    html += '</tr>';
+  });
+  html += '</table></body></html>';
+
+  dlBlob(html, 'CuttingList_' + ftypeLabel + '_' + todayStr() + '.xls', 'application/vnd.ms-excel');
+  showToast('📗 Excel diexport!');
+};
+
+// ── DOWNLOAD TEMPLATE ────────────────────────────────────────────────
+window.downloadCuttingTemplate = function() {
+  var NL = String.fromCharCode(10);
+  var lines = [
+    'Kode,Nama Komponen,Tipe Material,Material ID,Qty,P (cm),L (cm),T (cm)',
+    'KR-01,Kaki Depan,SW,SW-005,2,45,4,4',
+    'KR-02,Kaki Belakang,SW,SW-005,2,60,4,4',
+    'KR-03,Front Rail,SW,SW-005,1,37,6,3',
+    'KR-08,Panel Dudukan,PW,PW-001,1,39,39,1.8'
+  ];
+  var csv = lines.join(NL);
+  dlBlob('\uFEFF' + csv, 'Template_CuttingList.csv', 'text/csv;charset=utf-8');
+  showToast('Template CSV didownload!');
+};
+
+// ── IMPORT FUNCTIONS ─────────────────────────────────────────────────
+var _impRows = [];
+
+window.openImportCutting = function() {
+  _impRows = [];
+  document.getElementById('imp-preview-tbl').style.display = 'none';
+  document.getElementById('imp-apply-btn').disabled = true;
+  document.getElementById('imp-apply-btn').style.opacity = '0.5';
+  document.getElementById('imp-file-input').value = '';
+  document.getElementById('imp-modal').classList.add('show');
+};
+
+window.closeImpModal = function() {
+  document.getElementById('imp-modal').classList.remove('show');
+};
+
+window.handleImpDrop = function(e) {
+  e.preventDefault();
+  document.getElementById('imp-drop-zone').style.borderColor = '#d8d5cb';
+  if (e.dataTransfer.files[0]) readImpFileObj(e.dataTransfer.files[0]);
+};
+
+window.readImpFile = function(e) {
+  if (e.target.files[0]) readImpFileObj(e.target.files[0]);
+};
+
+function readImpFileObj(file) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var text = e.target.result;
+    var lines = text.split(String.fromCharCode(10)).filter(function(l) {
+      return l.trim() && !l.startsWith('#') && !l.startsWith('Ref') &&
+             !l.startsWith('Furniture') && !l.startsWith('Tanggal') &&
+             !l.startsWith('Export') && !l.startsWith('Generated') &&
+             !l.startsWith('Kode,Nama') && l.trim() !== '';
+    });
+    _impRows = [];
+    lines.forEach(function(line) {
+      var cols = line.split(',').map(function(c) { return c.replace(/^"|"$/g,'').trim(); });
+      if (cols.length < 6 || !cols[0]) return;
+      _impRows.push({
+        kode: cols[0],
+        nama: cols[1] || cols[0],
+        tipe: (cols[2] || 'SW').toUpperCase(),
+        material: cols[3] || 'TBD',
+        qty: parseFloat(cols[4] || cols[5]) || 1,
+        p: parseFloat(cols[5] || cols[6]) || 0,
+        l: parseFloat(cols[6] || cols[7]) || 0,
+        t: parseFloat(cols[7] || cols[8]) || 0
+      });
+    });
+    showImpPreview();
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+function showImpPreview() {
+  var tbody = document.getElementById('imp-preview-body');
+  tbody.innerHTML = '';
+  _impRows.forEach(function(r) {
+    var tr = document.createElement('tr');
+    var typeColor = r.tipe==='SW'?'#e65100':r.tipe==='PW'?'#1565c0':'#6a1b9a';
+    tr.innerHTML =
+      '<td style="font-family:monospace;">'+r.kode+'</td>'+
+      '<td style="font-weight:600;">'+r.nama+'</td>'+
+      '<td style="color:'+typeColor+';font-weight:700;">'+r.tipe+'</td>'+
+      '<td style="text-align:center;">'+r.qty+'</td>'+
+      '<td style="text-align:right;">'+r.p+'</td>'+
+      '<td style="text-align:right;">'+r.l+'</td>'+
+      '<td style="text-align:right;">'+r.t+'</td>';
+    tbody.appendChild(tr);
+  });
+  document.getElementById('imp-preview-count').textContent = '✅ ' + _impRows.length + ' komponen siap diimport:';
+  document.getElementById('imp-preview-tbl').style.display = 'block';
+  if (_impRows.length) {
+    document.getElementById('imp-apply-btn').disabled = false;
+    document.getElementById('imp-apply-btn').style.opacity = '1';
+  }
+}
+
+window.applyImport = function() {
+  if (!_impRows.length) return;
+  if (typeof ST === 'undefined') { showToast('⚠️ Kalkulator belum siap!'); return; }
+  ST.overrides = ST.overrides || {};
+  _impRows.forEach(function(r) {
+    ST.overrides[r.kode] = { p: r.p, l: r.l, t: r.t, qty: r.qty, mat: r.material };
+  });
+  if (typeof render === 'function') render();
+  closeImpModal();
+  showToast('✅ ' + _impRows.length + ' komponen diimport! Cek cutting list.');
 };
 </script>
 
