@@ -1494,7 +1494,7 @@ window.removeAiImg = function() {
 
 function showAiError(msg) {
   var el = document.getElementById('ai-error');
-  el.textContent = msg;
+  el.innerHTML = msg;
   el.classList.add('show');
   document.getElementById('ai-loading').classList.remove('show');
 }
@@ -1626,18 +1626,19 @@ function showAiResult(r) {
     '<span style="font-size:10px;color:#8a8680;">Jenis gambar: ' + imgType + '</span>';
 
   // Components
-  var compsEl = document.getElementById('ai-components');
-  if (r.components && r.components.length) {
-    var html = '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;margin-bottom:5px;">Komponen Terdeteksi (' + r.components.length + ')</div>';
-    html += '<div style="display:flex;flex-wrap:wrap;gap:3px;">';
+  var compsWrap = document.getElementById('ai-comps');
+  var compsTagEl = document.getElementById('ai-comp-tags');
+  if (r.components && r.components.length && compsWrap && compsTagEl) {
+    compsTagEl.innerHTML = '';
     r.components.forEach(function(c) {
-      html += '<span style="font-size:10px;background:#fff;border:1px solid #d8d5cb;border-radius:20px;padding:2px 8px;color:#5a5750;">' + (c.code ? c.code + ' · ' : '') + c.name + ' ×' + (c.qty || 1) + '</span>';
+      var span = document.createElement('span');
+      span.className = 'ai-comp-tag';
+      span.textContent = (c.code ? c.code + ' · ' : '') + c.name + ' x' + (c.qty || 1);
+      compsTagEl.appendChild(span);
     });
-    html += '</div>';
-    compsEl.innerHTML = html;
-    compsEl.style.display = 'block';
-  } else {
-    compsEl.style.display = 'none';
+    compsWrap.style.display = 'block';
+  } else if (compsWrap) {
+    compsWrap.style.display = 'none';
   }
 
   document.getElementById('ai-result').classList.add('show');
