@@ -432,49 +432,38 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
 
         <!-- Kolom Kiri: Upload -->
         <div>
-          <div class="ai-col-title">📸 Upload Gambar / Foto</div>
-          <!-- Multi-image upload -->
-          <div style="margin-bottom:8px;">
-            <div style="font-size:10px;font-weight:700;color:#5a5750;margin-bottom:6px;">📸 Upload gambar — makin banyak, AI makin akurat 🎯</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px;">
-              <div>
-                <div style="font-size:9px;color:#5a5750;font-weight:600;margin-bottom:3px;">📷 Foto Produk</div>
-                <div class="ai-img-slot" id="slot-foto" onclick="triggerSlot('inp-foto')">
-                  <img id="prev-foto" class="ai-slot-img" style="display:none">
-                  <div class="ai-slot-empty" id="empty-foto"><div>📷</div><div style="font-size:9px;margin-top:2px;">Foto/render</div></div>
-                  <button class="ai-slot-rm" id="rm-foto" onclick="rmSlot(event,'foto')" style="display:none">✕</button>
-                </div>
-                <input type="file" id="inp-foto" accept="image/*" style="display:none" onchange="pickSlot(event,'foto')">
-              </div>
-              <div>
-                <div style="font-size:9px;color:#5a5750;font-weight:600;margin-bottom:3px;">📐 Gambar Teknik</div>
-                <div class="ai-img-slot" id="slot-teknik" onclick="triggerSlot('inp-teknik')">
-                  <img id="prev-teknik" class="ai-slot-img" style="display:none">
-                  <div class="ai-slot-empty" id="empty-teknik"><div>📐</div><div style="font-size:9px;margin-top:2px;">Blueprint</div></div>
-                  <button class="ai-slot-rm" id="rm-teknik" onclick="rmSlot(event,'teknik')" style="display:none">✕</button>
-                </div>
-                <input type="file" id="inp-teknik" accept="image/*" style="display:none" onchange="pickSlot(event,'teknik')">
-              </div>
-              <div>
-                <div style="font-size:9px;color:#5a5750;font-weight:600;margin-bottom:3px;">✏️ Sketsa</div>
-                <div class="ai-img-slot" id="slot-sketsa" onclick="triggerSlot('inp-sketsa')">
-                  <img id="prev-sketsa" class="ai-slot-img" style="display:none">
-                  <div class="ai-slot-empty" id="empty-sketsa"><div>✏️</div><div style="font-size:9px;margin-top:2px;">Sketsa</div></div>
-                  <button class="ai-slot-rm" id="rm-sketsa" onclick="rmSlot(event,'sketsa')" style="display:none">✕</button>
-                </div>
-                <input type="file" id="inp-sketsa" accept="image/*" style="display:none" onchange="pickSlot(event,'sketsa')">
-              </div>
-              <div>
-                <div style="font-size:9px;color:#5a5750;font-weight:600;margin-bottom:3px;">🖼️ Katalog/Ref</div>
-                <div class="ai-img-slot" id="slot-ref" onclick="triggerSlot('inp-ref')">
-                  <img id="prev-ref" class="ai-slot-img" style="display:none">
-                  <div class="ai-slot-empty" id="empty-ref"><div>🖼️</div><div style="font-size:9px;margin-top:2px;">Katalog</div></div>
-                  <button class="ai-slot-rm" id="rm-ref" onclick="rmSlot(event,'ref')" style="display:none">✕</button>
-                </div>
-                <input type="file" id="inp-ref" accept="image/*" style="display:none" onchange="pickSlot(event,'ref')">
-              </div>
-            </div>
+          <div class="ai-col-title" style="margin-bottom:6px;">📸 Upload Gambar / Foto</div>
+
+          <!-- Dynamic image gallery -->
+          <div id="ai-img-gallery" style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px;"></div>
+
+          <!-- Add more / Google Photos row -->
+          <div style="display:flex;gap:5px;margin-bottom:6px;">
+            <button onclick="addImgSlot()" style="flex:1;padding:6px;border:1.5px dashed #b8d9b4;border-radius:8px;background:#f5faf4;color:#2d5a27;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">
+              ➕ Tambah Foto
+            </button>
+            <button onclick="openGPhotoLink()" style="flex:1;padding:6px;border:1.5px dashed #85b7eb;border-radius:8px;background:#e8f0fb;color:#0c447c;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">
+              🔗 Link URL/GPhoto
+            </button>
           </div>
+
+          <!-- URL input (hidden by default) -->
+          <div id="url-input-wrap" style="display:none;margin-bottom:6px;">
+            <div style="font-size:10px;color:#5a5750;font-weight:600;margin-bottom:3px;">URL Gambar / Google Photos / Drive</div>
+            <div style="display:flex;gap:4px;">
+              <input type="text" id="url-img-input" class="fc" placeholder="https://photos.google.com/... atau URL gambar" style="font-size:11px;padding:5px 8px;flex:1;">
+              <button onclick="addImgFromUrl()" style="padding:5px 10px;background:#2d5a27;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;">➕</button>
+              <button onclick="document.getElementById('url-input-wrap').style.display='none'" style="padding:5px 8px;background:#f0efe9;border:1.5px solid #d8d5cb;border-radius:7px;font-size:11px;cursor:pointer;">✕</button>
+            </div>
+            <div style="font-size:10px;color:#8a8680;margin-top:3px;">💡 Google Photos: buka foto → Share → Copy link</div>
+          </div>
+
+          <!-- Image count indicator -->
+          <div id="img-count-bar" style="font-size:10px;color:#8a8680;margin-bottom:5px;display:none;">
+            <span id="img-count-txt">0 gambar</span>
+            <span style="margin-left:6px;color:#2d5a27;font-weight:600;">— Semua akan dianalisis AI</span>
+          </div>
+
           <button class="ai-analyze-btn" id="ai-btn" onclick="analyzeImage()" style="display:none;">
             🔍 Analisis dengan AI
           </button>
@@ -1536,76 +1525,156 @@ window.toggleAiPanel = function() {
   arrow.textContent = collapsed ? '▼' : '▲';
 };
 
-// ── Multi-slot image handling ─────────────────────────────────────────
-var _slotData = {foto:null, teknik:null, sketsa:null, ref:null};
+// ── Dynamic Unlimited Image Upload ────────────────────────────────────
+var _images = []; // [{id, label, data, type:'file'|'url'}]
+var _imgCounter = 0;
 
-window.triggerSlot = function(inputId) {
-  document.getElementById(inputId).click();
-};
+var IMG_LABELS = ['Foto Produk','Gambar Teknik','Sketsa','Katalog/Ref','Detail View','Dimension View','Back View','Side View'];
+var IMG_ICONS  = ['📷','📐','✏️','🖼️','🔍','📏','↩️','↔️'];
 
-window.pickSlot = function(e, slot) {
-  var file = e.target.files[0];
-  if (file) loadSlot(file, slot);
-};
+function renderGallery() {
+  var gallery = document.getElementById('ai-img-gallery');
+  if (!gallery) return;
+  gallery.innerHTML = '';
 
-window.rmSlot = function(e, slot) {
-  e.stopPropagation();
-  _slotData[slot] = null;
-  var prev = document.getElementById('prev-'+slot);
-  var empty = document.getElementById('empty-'+slot);
-  var rm = document.getElementById('rm-'+slot);
-  var slotEl = document.getElementById('slot-'+slot);
-  if(prev) prev.style.display = 'none';
-  if(empty) empty.style.display = 'flex';
-  if(rm) rm.style.display = 'none';
-  if(slotEl) slotEl.classList.remove('filled');
-  document.getElementById('inp-'+slot).value = '';
+  // Render existing images
+  _images.forEach(function(img) {
+    var cell = document.createElement('div');
+    cell.style.cssText = 'position:relative;border-radius:8px;overflow:hidden;border:1.5px solid #2d5a27;background:#eaf3e8;';
+    var imgEl = document.createElement('img');
+    imgEl.src = img.data;
+    imgEl.style.cssText = 'width:100%;height:76px;object-fit:cover;display:block;';
+    imgEl.onerror = function(){ imgEl.style.display='none'; cell.style.background='#fceaea'; };
+    var label = document.createElement('div');
+    label.style.cssText = 'position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);color:#fff;font-size:9px;padding:2px 5px;font-weight:600;';
+    label.textContent = img.icon + ' ' + img.label;
+    var rm = document.createElement('button');
+    rm.textContent = '✕';
+    rm.style.cssText = 'position:absolute;top:3px;right:3px;width:18px;height:18px;background:rgba(139,32,32,.85);color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:11px;line-height:18px;text-align:center;z-index:2;';
+    rm.onclick = (function(id){ return function(e){ e.stopPropagation(); removeImg(id); }; })(img.id);
+    cell.append(imgEl, label, rm);
+    gallery.appendChild(cell);
+  });
+
+  // Update count
+  var countBar = document.getElementById('img-count-bar');
+  var countTxt = document.getElementById('img-count-txt');
+  if (countBar && countTxt) {
+    if (_images.length > 0) {
+      countBar.style.display = 'block';
+      countTxt.textContent = _images.length + ' gambar';
+    } else {
+      countBar.style.display = 'none';
+    }
+  }
+
   updateAnalyzeBtn();
-};
+}
 
-function loadSlot(file, slot) {
-  if (file.size > 8*1024*1024) { showAiError('⚠️ Maks 8MB per gambar!'); return; }
-  var reader = new FileReader();
-  reader.onload = function(ev) {
-    _slotData[slot] = ev.target.result;
-    var prev = document.getElementById('prev-'+slot);
-    var empty = document.getElementById('empty-'+slot);
-    var rm = document.getElementById('rm-'+slot);
-    var slotEl = document.getElementById('slot-'+slot);
-    if(prev){ prev.src = ev.target.result; prev.style.display='block'; }
-    if(empty) empty.style.display = 'none';
-    if(rm) rm.style.display = 'block';
-    if(slotEl) slotEl.classList.add('filled');
-    document.getElementById('ai-error').classList.remove('show');
-    document.getElementById('ai-result').classList.remove('show');
-    updateAnalyzeBtn();
-  };
-  reader.readAsDataURL(file);
+function removeImg(id) {
+  _images = _images.filter(function(img){ return img.id !== id; });
+  renderGallery();
+}
+
+function addImageData(data, label, icon) {
+  _imgCounter++;
+  _images.push({ id: _imgCounter, data: data, label: label, icon: icon || '🖼️', type: 'file' });
+  renderGallery();
+  document.getElementById('ai-error').classList.remove('show');
+  document.getElementById('ai-result').classList.remove('show');
 }
 
 function updateAnalyzeBtn() {
-  var hasAny = Object.values(_slotData).some(function(v){ return v !== null; });
   var btn = document.getElementById('ai-btn');
-  if(btn) btn.style.display = hasAny ? 'block' : 'none';
+  if (btn) btn.style.display = _images.length > 0 ? 'block' : 'none';
 }
 
 function getActiveImages() {
-  var imgs = [];
-  var labels = {foto:'Foto Produk', teknik:'Gambar Teknik', sketsa:'Sketsa', ref:'Katalog/Referensi'};
-  Object.keys(_slotData).forEach(function(slot){
-    if(_slotData[slot]){
-      imgs.push({slot:slot, label:labels[slot], data:_slotData[slot]});
-    }
-  });
-  return imgs;
+  return _images;
 }
 
-// Keep backward compat
-window.handleAiDrop = function(e){ e.preventDefault(); };
-window.handleAiSelect = function(e){ var f=e.target.files[0]; if(f) loadSlot(f,'foto'); };
-window.removeAiImg = function(){
-  Object.keys(_slotData).forEach(function(s){ if(_slotData[s]) window.rmSlot({stopPropagation:function(){}},s); });
+// ── Add slot via file picker ─────────────────────────────────────────
+window.addImgSlot = function() {
+  var inp = document.createElement('input');
+  inp.type = 'file';
+  inp.accept = 'image/*';
+  inp.multiple = true;
+  inp.style.display = 'none';
+  inp.onchange = function(e) {
+    var files = Array.from(e.target.files);
+    files.forEach(function(file, fi) {
+      if (file.size > 10*1024*1024) { showAiError('⚠️ Maks 10MB per gambar!'); return; }
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        var idx = _images.length;
+        var label = IMG_LABELS[idx % IMG_LABELS.length];
+        var icon  = IMG_ICONS[idx % IMG_ICONS.length];
+        addImageData(ev.target.result, label, icon);
+      };
+      reader.readAsDataURL(file);
+    });
+    document.body.removeChild(inp);
+  };
+  document.body.appendChild(inp);
+  inp.click();
 };
+
+// ── Add from URL / Google Photos ─────────────────────────────────────
+window.openGPhotoLink = function() {
+  var wrap = document.getElementById('url-input-wrap');
+  if (wrap) { wrap.style.display = wrap.style.display === 'none' ? 'block' : 'none'; }
+};
+
+window.addImgFromUrl = function() {
+  var inp = document.getElementById('url-img-input');
+  if (!inp || !inp.value.trim()) { showAiError('⚠️ Masukkan URL gambar!'); return; }
+  var url = inp.value.trim();
+
+  // Handle Google Photos / Drive share links
+  if (url.includes('photos.google.com') || url.includes('drive.google.com')) {
+    // Convert Google Photos share link to direct image
+    if (url.includes('drive.google.com/file/d/')) {
+      var match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (match) { url = 'https://drive.google.com/uc?export=view&id=' + match[1]; }
+    }
+    showAiError('⚠️ Google Photos memerlukan link langsung ke gambar (bukan album). Gunakan Google Drive: upload ke Drive → Share → Copy link → paste di sini.');
+    return;
+  }
+
+  var idx = _images.length;
+  var label = IMG_LABELS[idx % IMG_LABELS.length];
+  var icon  = IMG_ICONS[idx % IMG_ICONS.length];
+
+  // Try to load URL as image
+  var testImg = new Image();
+  testImg.crossOrigin = 'anonymous';
+  testImg.onload = function() {
+    // Valid image URL — store as URL type
+    _imgCounter++;
+    _images.push({ id: _imgCounter, data: url, label: label, icon: icon, type: 'url' });
+    renderGallery();
+    inp.value = '';
+    document.getElementById('url-input-wrap').style.display = 'none';
+    showAiError('');
+    document.getElementById('ai-error').classList.remove('show');
+    showToast('✅ Gambar dari URL ditambahkan!');
+  };
+  testImg.onerror = function() {
+    showAiError('⚠️ URL tidak valid atau gambar tidak bisa diakses. Pastikan URL langsung ke file gambar (.jpg/.png).');
+  };
+  testImg.src = url;
+};
+
+// Backward compat
+window.triggerSlot = function(id){ document.getElementById(id) && document.getElementById(id).click(); };
+window.pickSlot = function(e, slot){ var f=e.target.files[0]; if(f){ var r=new FileReader(); r.onload=function(ev){addImageData(ev.target.result,slot,'📷');}; r.readAsDataURL(f); } };
+window.rmSlot = function(e,slot){ e.stopPropagation(); };
+window.handleAiDrop = function(e){ e.preventDefault(); };
+window.handleAiSelect = function(e){ var f=e.target.files[0]; if(f){ var r=new FileReader(); r.onload=function(ev){addImageData(ev.target.result,'Foto Produk','📷');}; r.readAsDataURL(f); } };
+window.removeAiImg = function(){ _images=[]; renderGallery(); };
+
+// Init gallery on load
+renderGallery();
 
 function showAiError(msg) {
   var el = document.getElementById('ai-error');
