@@ -24,9 +24,15 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'imageData is required' });
     }
 
-    // Build prompt
+    // Build prompt with multi-image context
+    const { imageCount = 1, imageLabels = 'Foto Produk', hasMultiple = false } = req.body;
+    const multiCtx = hasMultiple
+      ? 'Gambar yang dikirim adalah: ' + imageLabels + '. Gunakan semua konteks untuk analisis lebih akurat.'
+      : '';
+
     const prompt = [
       'Kamu adalah ahli furniture Jepara berpengalaman.',
+      multiCtx,
       'Analisis gambar furniture ini dan jawab HANYA dengan JSON valid.',
       'Field yang dibutuhkan:',
       '- furniture_type: bed/lemari/kursi/sofa/meja',
