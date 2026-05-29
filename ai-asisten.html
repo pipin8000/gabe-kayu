@@ -175,6 +175,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
   <div class="topbar-right">
     <span id="lang-wrap"></span>
     <span id="user-name" style="font-size:11px;opacity:.8;"></span>
+    <a href="products.html" class="topbar-btn">📦 Produk</a>
     <a href="materials.html" class="topbar-btn">🪵 Material</a>
     <a href="vendors.html" class="topbar-btn">🏪 Vendor</a>
     <button class="topbar-btn" onclick="doLogout()">Keluar</button>
@@ -963,6 +964,7 @@ window.saveIdentitas = async function() {
   var identitas = {
     sku:       sku,
     nama:      document.getElementById('p-nama').value.trim(),
+    status:    'draft',
     kategori:  document.getElementById('p-kategori').value,
     style:     document.getElementById('p-style').value.trim(),
     panjang:   +document.getElementById('p-panjang').value || 0,
@@ -982,13 +984,35 @@ window.saveIdentitas = async function() {
 
   try {
     await setDoc(doc(db, 'products', sku), identitas);
+    
+    // Update status badge
     var statusEl = document.getElementById('id-status');
     if (statusEl) {
       statusEl.textContent = '✅ Tersimpan';
       statusEl.className = 'badge badge-done';
     }
-    showToast('✅ Identitas produk ' + sku + ' tersimpan ke Firebase!');
-    // Reload product list
+    
+    // Show success with action buttons
+    var notifHtml = '<div style="margin-top:10px;background:#eaf3de;border:1.5px solid #97c459;border-radius:10px;padding:12px 14px;">' +
+      '<div style="font-size:12px;font-weight:700;color:#27500a;margin-bottom:8px;">✅ Identitas produk <b>' + sku + '</b> berhasil disimpan!</div>' +
+      '<div style="display:flex;gap:6px;">' +
+        '<a href="products.html" style="flex:1;padding:7px;background:#2d5a27;color:#fff;border-radius:8px;font-size:11px;font-weight:700;text-align:center;text-decoration:none;">📦 Lihat di Master Produk</a>' +
+        '<a href="app.html?sku=' + sku + '" style="flex:1;padding:7px;background:#e6f1fb;color:#0c447c;border-radius:8px;font-size:11px;font-weight:700;text-align:center;text-decoration:none;border:1.5px solid #85b7eb;">📐 Buka di Kalkulator</a>' +
+      '</div>' +
+    '</div>';
+    
+    // Insert after save button
+    var saveBtn = document.querySelector('[onclick*="saveIdentitas"]');
+    if (saveBtn) {
+      var existing = document.getElementById('save-notif');
+      if (existing) existing.remove();
+      var notifEl = document.createElement('div');
+      notifEl.id = 'save-notif';
+      notifEl.innerHTML = notifHtml;
+      saveBtn.parentNode.insertBefore(notifEl, saveBtn.nextSibling);
+    }
+    
+    showToast('✅ ' + sku + ' tersimpan!');
     await loadProductList();
   } catch(e) {
     showToast('❌ Gagal simpan: ' + e.message);
