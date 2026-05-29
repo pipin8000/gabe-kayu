@@ -520,6 +520,11 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
               <div class="ai-comp-label">Komponen Terdeteksi</div>
               <div class="ai-comp-tags" id="ai-comp-tags"></div>
             </div>
+            <!-- Component Cards Grid -->
+            <div id="ai-comp-cards-wrap" style="display:none;margin-bottom:8px;">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:5px;">Gambar Komponen</div>
+              <div id="ai-comp-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px;"></div>
+            </div>
             <!-- Exploded View -->
             <div id="ai-exploded-wrap" style="display:none;margin-bottom:8px;">
               <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;margin-bottom:5px;">Exploded View — AI Generated</div>
@@ -1903,9 +1908,10 @@ function showAiResult(r) {
 
   document.getElementById('ai-result').classList.add('show');
   document.getElementById('ai-empty').style.display = 'none';
-  // Generate exploded view
+  // Generate exploded view + component cards
   if (r.components && r.components.length) {
     generateAiExploded(r.components, r);
+    buildAiComponentCards(r.components);
   }
 }
 
