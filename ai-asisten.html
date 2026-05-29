@@ -969,15 +969,6 @@ window.saveIdentitas = async function() {
   }
 };
 
-// ── SHOW TOAST ────────────────────────────────────────────────────
-function showToast(msg) {
-  var t = document.getElementById('toast');
-  if (!t) return;
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(function(){ t.classList.remove('show'); }, 3000);
-}
-
 // Register bridge aliases for HTML inline handlers
 window._handleFileSelect = window.handleFileSelect;
 window._handleDrop = window.handleDrop;
