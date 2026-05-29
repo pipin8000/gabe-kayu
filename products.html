@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Master Produk — Gabe International Hub</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a1917;min-height:100vh;}
+
+/* TOPBAR */
+.topbar{background:#1a3a1a;color:#fff;padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-brand{display:flex;align-items:center;gap:10px;}
+.back-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:5px 12px;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;cursor:pointer;}
+.topbar-nav{display:flex;align-items:center;gap:6px;}
+.topbar-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;text-decoration:none;cursor:pointer;}
+.topbar-btn.active{background:rgba(255,255,255,.25);}
+
+/* SEARCH HERO */
+.search-hero{background:linear-gradient(135deg,#1a3a1a 0%,#2d5a27 100%);padding:32px 20px;text-align:center;}
+.search-title{font-size:22px;font-weight:700;color:#fff;margin-bottom:4px;}
+.search-sub{font-size:13px;color:rgba(255,255,255,.7);margin-bottom:20px;}
+
+/* SEARCH BOX */
+.search-wrap{max-width:640px;margin:0 auto;position:relative;}
+.search-input{width:100%;padding:14px 48px 14px 18px;border:none;border-radius:12px;font-size:14px;font-family:inherit;box-shadow:0 4px 20px rgba(0,0,0,.2);outline:none;background:#fff;color:#1a1917;}
+.search-input:focus{box-shadow:0 4px 24px rgba(0,0,0,.3);}
+.search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none;}
+.search-clear{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:16px;cursor:pointer;color:#8a8680;display:none;background:none;border:none;padding:4px;}
+
+/* FILTER CHIPS */
+.filter-row{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+.fchip{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;transition:all .15s;}
+.fchip:hover,.fchip.active{background:#fff;color:#1a3a1a;border-color:#fff;}
+.fchip .cnt{font-size:10px;opacity:.7;margin-left:4px;}
+
+/* MAIN CONTENT */
+.main{max-width:1300px;margin:0 auto;padding:20px 16px 60px;}
+
+/* RESULTS INFO */
+.results-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.results-count{font-size:13px;color:#5a5750;font-weight:500;}
+.results-sort{display:flex;align-items:center;gap:6px;}
+.sort-sel{padding:6px 10px;border:1.5px solid #d8d5cb;border-radius:8px;font-size:12px;font-family:inherit;background:#fff;cursor:pointer;}
+.new-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:#2d5a27;color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;}
+
+/* PRODUCT GRID */
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+
+/* PRODUCT CARD */
+.prod-card{background:#fff;border:1px solid #d8d5cb;border-radius:14px;overflow:hidden;cursor:pointer;transition:all .2s;}
+.prod-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.1);transform:translateY(-2px);}
+.pc-hdr{padding:10px 14px;background:#f5f4f0;border-bottom:1px solid #e8e6df;display:flex;align-items:center;justify-content:space-between;}
+.pc-sku{font-family:monospace;font-size:11px;font-weight:700;background:#fff;padding:2px 8px;border-radius:5px;border:1px solid #d8d5cb;}
+.pc-status{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;}
+.pc-body{padding:12px 14px;}
+.pc-nama{font-size:14px;font-weight:700;margin-bottom:4px;color:#1a1917;}
+.pc-dim{font-size:11px;color:#8a8680;margin-bottom:8px;}
+.pc-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
+.tag{font-size:10px;padding:2px 8px;border-radius:20px;}
+.tag-kayu{background:#faf5ee;color:#7a5830;border:1px solid #e0c8a0;}
+.tag-kat{background:#f0efe9;color:#5a5750;border:1px solid #d8d5cb;}
+.tag-komp{background:#eaf3de;color:#27500a;border:1px solid #b0d890;}
+.pc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:8px;background:#f5f4f0;border-radius:8px;margin-bottom:8px;}
+.pcs-item{text-align:center;}
+.pcs-val{font-size:13px;font-weight:700;}
+.pcs-lbl{font-size:9px;color:#8a8680;text-transform:uppercase;}
+.pc-meta{font-size:10px;color:#8a8680;}
+.pc-foot{padding:8px 14px;border-top:1px solid #e8e6df;display:flex;gap:6px;}
+.pc-btn{flex:1;padding:6px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid;font-family:inherit;text-align:center;text-decoration:none;display:block;}
+.pc-btn.grn{background:#eaf3de;border-color:#97c459;color:#27500a;}
+.pc-btn.blu{background:#e6f1fb;border-color:#85b7eb;color:#0c447c;}
+.pc-btn.red{background:#fceaea;border-color:#f5c2c2;color:#8b2020;}
+
+/* STATUS BADGES */
+.st-draft{background:#f1f5f9;color:#334155;}
+.st-progress{background:#fef3c7;color:#92400e;}
+.st-review{background:#dbeafe;color:#1e3a8a;}
+.st-final{background:#dcfce7;color:#14532d;}
+.st-invoiced{background:#ede9fe;color:#4c1d95;}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:60px 20px;grid-column:1/-1;}
+.empty-icon{font-size:52px;margin-bottom:12px;opacity:.3;}
+.empty-title{font-size:16px;font-weight:700;color:#5a5750;margin-bottom:6px;}
+.empty-sub{font-size:12px;color:#8a8680;margin-bottom:16px;}
+
+/* DETAIL MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-end;justify-content:center;z-index:500;padding:0;}
+.modal-ov.show{display:flex;}
+.modal{background:#fff;width:100%;max-width:860px;max-height:90vh;border-radius:16px 16px 0 0;overflow:hidden;display:flex;flex-direction:column;}
+@media(min-width:640px){
+  .modal-ov{align-items:center;padding:20px;}
+  .modal{border-radius:16px;max-height:85vh;}
+}
+.modal-hdr{padding:14px 18px;border-bottom:1px solid #d8d5cb;display:flex;align-items:center;justify-content:space-between;background:#f5f4f0;flex-shrink:0;}
+.modal-title{font-size:14px;font-weight:700;}
+.modal-x{width:28px;height:28px;border:none;background:#e8e6df;border-radius:50%;cursor:pointer;font-size:14px;flex-shrink:0;}
+.modal-body{padding:18px;overflow-y:auto;flex:1;}
+.modal-foot{padding:12px 18px;border-top:1px solid #d8d5cb;display:flex;gap:8px;justify-content:flex-end;background:#fafaf8;flex-shrink:0;}
+.mf-btn{padding:8px 18px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:inherit;}
+
+/* CUTTING TABLE */
+.cut-tbl{width:100%;border-collapse:collapse;font-size:11px;}
+.cut-tbl th{padding:6px 10px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#8a8680;border-bottom:1.5px solid #d8d5cb;background:#f5f4f0;}
+.cut-tbl td{padding:6px 10px;border-bottom:1px solid #e8e6df;}
+.cut-tbl tr:hover td{background:#f5f4f0;}
+.t-sw{background:#eaf3de;color:#27500a;font-size:10px;padding:1px 6px;border-radius:20px;font-weight:700;}
+.t-pw{background:#e3f2fd;color:#0c447c;font-size:10px;padding:1px 6px;border-radius:20px;font-weight:700;}
+.t-nw{background:#f3e5f5;color:#3c3489;font-size:10px;padding:1px 6px;border-radius:20px;font-weight:700;}
+
+/* STATS TOP */
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px;}
+.stat-c{background:#fff;border:1px solid #d8d5cb;border-radius:10px;padding:10px 14px;}
+.stat-v{font-size:22px;font-weight:700;margin-bottom:2px;}
+.stat-l{font-size:10px;color:#8a8680;text-transform:uppercase;letter-spacing:.04em;}
+
+/* LOADING */
+.spinner{display:inline-block;width:28px;height:28px;border:3px solid #d8d5cb;border-top-color:#2d5a27;border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-state{grid-column:1/-1;text-align:center;padding:60px;color:#8a8680;}
+
+/* TOAST */
+#toast{position:fixed;bottom:20px;right:20px;background:#2d5a27;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:all .22s;z-index:999;pointer-events:none;}
+#toast.show{opacity:1;transform:translateY(0);}
+
+@media(max-width:640px){
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+  .prod-grid{grid-template-columns:1fr;}
+  .results-bar{flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-brand">
+    <a href="app.html" class="back-btn">← Kalkulator</a>
+    <div style="font-size:14px;font-weight:700;">📦 Master Produk</div>
+  </div>
+  <div class="topbar-nav">
+    <span id="user-name" style="font-size:11px;opacity:.7;"></span>
+    <a href="ai-asisten.html" class="topbar-btn">🤖 AI Asisten</a>
+    <a href="materials.html" class="topbar-btn">🪵 Material</a>
+    <a href="vendors.html" class="topbar-btn">🏪 Vendor</a>
+    <button class="topbar-btn" onclick="doLogout()">Keluar</button>
+  </div>
+</nav>
+
+<!-- SEARCH HERO -->
+<div class="search-hero">
+  <div class="search-title">📦 Master Produk Gabe International</div>
+  <div class="search-sub">Cari dan kelola semua identitas produk yang tersimpan</div>
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="search-input"
+      placeholder="🔍  Cari berdasarkan Nama, SKU / Kode, atau Kategori..."
+      oninput="handleSearch(this.value)" autocomplete="off">
+    <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+    <span class="search-icon" id="search-icon">🔍</span>
+  </div>
+  <!-- Filter chips -->
+  <div class="filter-row">
+    <span class="fchip active" onclick="setFilter('', this)">Semua <span class="cnt" id="cnt-all">0</span></span>
+    <span class="fchip" onclick="setFilter('bed', this)">🛏️ Bed <span class="cnt" id="cnt-bed">0</span></span>
+    <span class="fchip" onclick="setFilter('lemari', this)">🗄️ Lemari <span class="cnt" id="cnt-lemari">0</span></span>
+    <span class="fchip" onclick="setFilter('kursi', this)">🪑 Kursi <span class="cnt" id="cnt-kursi">0</span></span>
+    <span class="fchip" onclick="setFilter('sofa', this)">🛋️ Sofa <span class="cnt" id="cnt-sofa">0</span></span>
+    <span class="fchip" onclick="setFilter('meja', this)">🪵 Meja <span class="cnt" id="cnt-meja">0</span></span>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- STATS -->
+  <div class="stats-row" id="stats-row" style="display:none;">
+    <div class="stat-c"><div class="stat-v" id="s-total" style="color:#1a1917;">0</div><div class="stat-l">Total Produk</div></div>
+    <div class="stat-c"><div class="stat-v" id="s-bed" style="color:#1e3a8a;">0</div><div class="stat-l">Bed</div></div>
+    <div class="stat-c"><div class="stat-v" id="s-lemari" style="color:#713f12;">0</div><div class="stat-l">Lemari</div></div>
+    <div class="stat-c"><div class="stat-v" id="s-kursi" style="color:#14532d;">0</div><div class="stat-l">Kursi</div></div>
+    <div class="stat-c"><div class="stat-v" id="s-meja" style="color:#3730a3;">0</div><div class="stat-l">Meja</div></div>
+  </div>
+
+  <!-- RESULTS BAR -->
+  <div class="results-bar">
+    <div class="results-count" id="results-count">Memuat data...</div>
+    <div class="results-sort">
+      <select class="sort-sel" id="sort-sel" onchange="renderProducts()">
+        <option value="updated">Terbaru</option>
+        <option value="sku">SKU A-Z</option>
+        <option value="nama">Nama A-Z</option>
+        <option value="kategori">Kategori</option>
+      </select>
+      <a href="ai-asisten.html" class="new-btn">➕ Produk Baru</a>
+    </div>
+  </div>
+
+  <!-- PRODUCT GRID -->
+  <div class="prod-grid" id="prod-grid">
+    <div class="loading-state"><div class="spinner"></div><div style="margin-top:12px;">Memuat produk...</div></div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-ov" id="detail-modal" onclick="handleModalClick(event)">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-title" id="modal-title">Detail Produk</div>
+      <button class="modal-x" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-foot">
+      <button class="mf-btn" onclick="closeModal()" style="background:#f0efe9;color:#5a5750;">Tutup</button>
+      <button class="mf-btn" id="modal-load-btn" style="background:#2d5a27;color:#fff;">📐 Load ke Kalkulator</button>
+      <button class="mf-btn" id="modal-del-btn" style="background:#fceaea;color:#8b2020;">🗑️ Hapus</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const FC = {apiKey:"AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",authDomain:"gabe-international-hub.firebaseapp.com",projectId:"gabe-international-hub",storageBucket:"gabe-international-hub.firebasestorage.app",messagingSenderId:"115783216069",appId:"1:115783216069:web:62cfabf543b1fbb85bf9ac"};
+const fbApp = getApps().find(a=>a.name==='prd')||initializeApp(FC,'prd');
+const auth  = getAuth(fbApp);
+const db    = getFirestore(fbApp);
+
+// Dev mode
+var stored = sessionStorage.getItem('gabe_user');
+if (!stored) { stored=JSON.stringify({name:'Manampin Girsang',email:'pipin@i-gabe.com',role:'admin'}); sessionStorage.setItem('gabe_user',stored); }
+const CU = JSON.parse(stored||'{}');
+document.getElementById('user-name').textContent = '👤 '+(CU.name||CU.email||'');
+
+window.doLogout = async function(){ try{await signOut(auth);}catch(e){} sessionStorage.removeItem('gabe_user'); window.location.href='index.html'; };
+
+// State
+let _all = [], _filtered = [], _activeFilter = '', _searchQ = '', _currentSku = null;
+
+function showToast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+
+// Demo products seed
+const DEMOS = [
+  {sku:'TSARI-CRD-BP-01',nama:'TSARI Credenza',kategori:'lemari',style:'Modern Minimalis',panjang:172.7,lebar:50.8,tinggi:91.4,kayu:'Oak Solid / Oak Veneer',finishing:'Natural Oil / Matte',ket:'Credenza 4 modul 17 inci. Canvas panel. Metal leg powder coated.',status:'on-progress',
+    komponen:[{code:'CRD-TP',name:'Top Panel (MDF/Veneer)',type:'PW',qty:1,p:172,l:50,t:2},{code:'CRD-BP',name:'Bottom Panel',type:'PW',qty:1,p:172,l:50,t:2},{code:'CRD-SP',name:'Side Panel Kiri & Kanan',type:'SW',qty:2,p:91,l:50,t:4},{code:'CRD-VD',name:'Vertical Divider',type:'SW',qty:3,p:84,l:50,t:4},{code:'CRD-DR',name:'Door Panel Canvas',type:'NW',qty:4,p:40,l:84,t:2},{code:'CRD-SH',name:'Adjustable Shelf',type:'PW',qty:4,p:40,l:46,t:2},{code:'CRD-RR',name:'Rear Rail',type:'SW',qty:1,p:172,l:8,t:4},{code:'CRD-BK',name:'Back Panel',type:'PW',qty:1,p:172,l:91,t:1.8},{code:'CRD-LG',name:'Metal Leg',type:'NW',qty:4,p:17,l:3.8,t:3.8}]},
+  {sku:'INFU2586-SM',nama:'Materazzo Small Arm Chair',kategori:'kursi',style:'Modern Minimalis',panjang:55,lebar:54,tinggi:60,kayu:'Mindi K2',finishing:'Natural Oil / PU Matt',ket:'Arm chair modern. Seat upholstery busa + fabric.',status:'final',
+    komponen:[{code:'KR-01',name:'Kaki Depan',type:'SW',qty:2,p:45,l:10,t:10},{code:'KR-02',name:'Kaki Belakang',type:'SW',qty:2,p:60,l:10,t:10},{code:'KR-03',name:'Seat Rail',type:'SW',qty:4,p:47,l:7,t:4},{code:'KR-06',name:'Arm Rest',type:'SW',qty:2,p:54,l:10,t:4},{code:'KR-07',name:'Back Frame',type:'SW',qty:1,p:55,l:4,t:10},{code:'KR-08',name:'Panel Dudukan',type:'PW',qty:1,p:53,l:51,t:1.8}]},
+  {sku:'MARBLE-COFFE-120',nama:'Marble Coffee Table Round',kategori:'meja',style:'Modern Minimalis',panjang:120,lebar:120,tinggi:30,kayu:'Jati K1',finishing:'Natural Oil',ket:'Coffee table top marble bundar Ø120cm.',status:'draft',
+    komponen:[{code:'TW-01',name:'Top Marble',type:'NW',qty:1,p:120,l:120,t:2,shape:'round',diameter:120},{code:'LK-01',name:'Kaki Panel',type:'SW',qty:4,p:28,l:21.5,t:4},{code:'ST-01',name:'Stretcher',type:'SW',qty:2,p:116,l:8,t:4}]}
+];
+
+// Load products
+async function loadProducts() {
+  try {
+    var snap = await getDocs(collection(db,'products'));
+    _all = [];
+    snap.forEach(d => _all.push(d.data()));
+    if (_all.length===0) {
+      for (var d of DEMOS) {
+        await setDoc(doc(db,'products',d.sku), Object.assign({},d,{updatedAt:serverTimestamp(),updatedBy:'system'}));
+        _all.push(d);
+      }
+    }
+    updateCounts();
+    applyFilter();
+  } catch(e) {
+    document.getElementById('prod-grid').innerHTML = '<div class="empty"><div class="empty-icon">❌</div><div class="empty-title">Gagal memuat</div><div class="empty-sub">'+e.message+'</div></div>';
+  }
+}
+
+function calcVol(komps) {
+  if(!komps||!komps.length) return {net:0,log:0,ply:0};
+  let net=0,log=0,ply=0;
+  komps.forEach(c=>{
+    const p=+(c.p||0),l=+(c.l||0),t=+(c.t||0),q=+(c.qty||1),v=(p/100)*(l/100)*(t/100)*q;
+    if(c.type==='PW') ply++;
+    else if(c.type==='SW'){net+=v;log+=v/0.35;}
+  });
+  return {net:net.toFixed(4),log:log.toFixed(4),ply};
+}
+
+function updateCounts() {
+  document.getElementById('s-total').textContent = _all.length;
+  document.getElementById('s-bed').textContent   = _all.filter(p=>p.kategori==='bed').length;
+  document.getElementById('s-lemari').textContent= _all.filter(p=>p.kategori==='lemari').length;
+  document.getElementById('s-kursi').textContent = _all.filter(p=>p.kategori==='kursi').length;
+  document.getElementById('s-meja').textContent  = _all.filter(p=>p.kategori==='meja').length;
+  document.getElementById('cnt-all').textContent    = _all.length;
+  document.getElementById('cnt-bed').textContent    = _all.filter(p=>p.kategori==='bed').length;
+  document.getElementById('cnt-lemari').textContent = _all.filter(p=>p.kategori==='lemari').length;
+  document.getElementById('cnt-kursi').textContent  = _all.filter(p=>p.kategori==='kursi').length;
+  document.getElementById('cnt-sofa').textContent   = _all.filter(p=>p.kategori==='sofa').length;
+  document.getElementById('cnt-meja').textContent   = _all.filter(p=>p.kategori==='meja').length;
+  document.getElementById('stats-row').style.display = 'grid';
+}
+
+function applyFilter() {
+  const q = _searchQ.toLowerCase().trim();
+  _filtered = _all.filter(p => {
+    const matchCat = !_activeFilter || p.kategori===_activeFilter;
+    const matchQ   = !q ||
+      (p.sku||'').toLowerCase().includes(q) ||
+      (p.nama||'').toLowerCase().includes(q) ||
+      (p.kategori||'').toLowerCase().includes(q) ||
+      (p.kayu||'').toLowerCase().includes(q) ||
+      (p.style||'').toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+  renderProducts();
+}
+
+window.renderProducts = function() {
+  const sort = document.getElementById('sort-sel').value;
+  _filtered.sort((a,b)=>{
+    if(sort==='sku')      return (a.sku||'').localeCompare(b.sku||'');
+    if(sort==='nama')     return (a.nama||'').localeCompare(b.nama||'');
+    if(sort==='kategori') return (a.kategori||'').localeCompare(b.kategori||'');
+    const ta=a.updatedAt?.seconds||0, tb=b.updatedAt?.seconds||0;
+    return tb-ta;
+  });
+
+  const cnt = document.getElementById('results-count');
+  cnt.textContent = _filtered.length+' produk ditemukan'+(_searchQ?' untuk "'+_searchQ+'"':'');
+
+  const grid = document.getElementById('prod-grid');
+  if(!_filtered.length){
+    grid.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-title">Produk tidak ditemukan</div><div class="empty-sub">Coba kata kunci lain atau tambah produk baru</div><a href="ai-asisten.html" class="new-btn" style="display:inline-flex;margin:auto;">➕ Tambah Produk Baru</a></div>';
+    return;
+  }
+
+  const CAT_ICON = {bed:'🛏️',lemari:'🗄️',kursi:'🪑',sofa:'🛋️',meja:'🪵'};
+  const ST_CLASS = {draft:'st-draft','on-progress':'st-progress',review:'st-review',final:'st-final',invoiced:'st-invoiced'};
+  const ST_LABEL = {draft:'🆕 Draft','on-progress':'⚙️ Progress',review:'🔍 Review',final:'✅ Final',invoiced:'📄 Invoiced'};
+
+  grid.innerHTML = _filtered.map(p => {
+    const vol  = calcVol(p.komponen);
+    const icon = CAT_ICON[p.kategori]||'📦';
+    const stc  = ST_CLASS[p.status||'draft']||'st-draft';
+    const stl  = ST_LABEL[p.status||'draft']||'Draft';
+    const dim  = `${p.panjang||0}×${p.lebar||0}×${p.tinggi||0} cm`;
+    const kc   = (p.komponen||[]).length;
+    const upd  = p.updatedAt ? new Date(p.updatedAt.seconds*1000).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'2-digit'}) : '—';
+
+    return `<div class="prod-card" onclick="showDetail('${p.sku}')">
+      <div class="pc-hdr">
+        <span class="pc-sku">${p.sku}</span>
+        <span class="pc-status ${stc}">${stl}</span>
+      </div>
+      <div class="pc-body">
+        <div class="pc-nama">${icon} ${p.nama||'—'}</div>
+        <div class="pc-dim">📐 ${dim}</div>
+        <div class="pc-tags">
+          <span class="tag tag-kayu">🪵 ${p.kayu||'—'}</span>
+          <span class="tag tag-komp">✂️ ${kc} komponen</span>
+          ${p.finishing?`<span class="tag tag-kat">🎨 ${p.finishing.split('/')[0].trim()}</span>`:''}
+        </div>
+        <div class="pc-stats">
+          <div class="pcs-item"><div class="pcs-val" style="color:#2d5a27;">${vol.net}</div><div class="pcs-lbl">Vol m³</div></div>
+          <div class="pcs-item"><div class="pcs-val" style="color:#1565c0;">${vol.log}</div><div class="pcs-lbl">Log m³</div></div>
+          <div class="pcs-item"><div class="pcs-val" style="color:#6a1b9a;">${vol.ply||'—'}</div><div class="pcs-lbl">Plywood</div></div>
+        </div>
+        <div class="pc-meta">📅 ${upd} · 👤 ${p.updatedBy||'—'}</div>
+      </div>
+      <div class="pc-foot" onclick="event.stopPropagation()">
+        <a class="pc-btn grn" href="app.html?sku=${p.sku}">📐 Kalkulator</a>
+        <a class="pc-btn blu" href="ai-asisten.html?sku=${p.sku}">🤖 Edit AI</a>
+        <button class="pc-btn red" onclick="deleteProduct('${p.sku}')">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+};
+
+// Detail modal
+window.showDetail = function(sku) {
+  const p = _all.find(x=>x.sku===sku);
+  if(!p) return;
+  _currentSku = sku;
+  const ST_LABEL = {draft:'🆕 Draft','on-progress':'⚙️ On Progress',review:'🔍 Review',final:'✅ Final',invoiced:'📄 Invoiced'};
+  const vol = calcVol(p.komponen);
+  const upd = p.updatedAt ? new Date(p.updatedAt.seconds*1000).toLocaleString('id-ID') : '—';
+  const CAT_ICON = {bed:'🛏️',lemari:'🗄️',kursi:'🪑',sofa:'🛋️',meja:'🪵'};
+
+  document.getElementById('modal-title').innerHTML = `<span style="font-family:monospace;font-size:11px;background:#f0efe9;padding:2px 7px;border-radius:4px;">${p.sku}</span> <span style="margin-left:8px;">${CAT_ICON[p.kategori]||'📦'} ${p.nama||'—'}</span>`;
+
+  const kompRows = (p.komponen||[]).map((c,i) => {
+    const type = (c.type||'SW').toUpperCase();
+    const cls  = type==='PW'?'t-pw':type==='NW'?'t-nw':'t-sw';
+    const vol  = ((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))).toFixed(4);
+    return `<tr>
+      <td style="font-family:monospace;font-size:10px;">${c.code||'C-'+String(i+1).padStart(2,'0')}</td>
+      <td style="font-weight:600;">${c.name||'—'}</td>
+      <td><span class="${cls}">${type}</span></td>
+      <td style="text-align:center;">${c.qty||1}</td>
+      <td style="text-align:right;">${c.p||0}</td>
+      <td style="text-align:right;">${c.l||0}</td>
+      <td style="text-align:right;">${c.t||0}</td>
+      <td style="text-align:right;font-weight:700;color:#2d5a27;">${vol}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('modal-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+      <div style="background:#f5f4f0;border-radius:10px;padding:12px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#8a8680;margin-bottom:8px;">Identitas</div>
+        <div style="font-size:12px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <div><div style="color:#8a8680;font-size:10px;">Kategori</div><b>${CAT_ICON[p.kategori]||''} ${p.kategori||'—'}</b></div>
+          <div><div style="color:#8a8680;font-size:10px;">Status</div><b>${ST_LABEL[p.status||'draft']||'Draft'}</b></div>
+          <div><div style="color:#8a8680;font-size:10px;">Dimensi</div><b>${p.panjang||0}×${p.lebar||0}×${p.tinggi||0} cm</b></div>
+          <div><div style="color:#8a8680;font-size:10px;">Style</div><b>${p.style||'—'}</b></div>
+          <div><div style="color:#8a8680;font-size:10px;">Kayu</div><b>${p.kayu||'—'}</b></div>
+          <div><div style="color:#8a8680;font-size:10px;">Finishing</div><b>${p.finishing||'—'}</b></div>
+        </div>
+        ${p.ket?`<div style="margin-top:8px;font-size:11px;color:#5a5750;padding:6px;background:#fff;border-radius:6px;">📝 ${p.ket}</div>`:''}
+      </div>
+      <div style="background:#f5f4f0;border-radius:10px;padding:12px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#8a8680;margin-bottom:8px;">Volume Kayu</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;">
+          <div style="background:#fff;border-radius:8px;padding:8px;"><div style="font-size:18px;font-weight:700;color:#2d5a27;">${vol.net}</div><div style="font-size:9px;color:#8a8680;">Bersih m³</div></div>
+          <div style="background:#fff;border-radius:8px;padding:8px;"><div style="font-size:18px;font-weight:700;color:#1565c0;">${vol.log}</div><div style="font-size:9px;color:#8a8680;">Log m³</div></div>
+          <div style="background:#fff;border-radius:8px;padding:8px;"><div style="font-size:18px;font-weight:700;color:#6a1b9a;">${vol.ply||'—'}</div><div style="font-size:9px;color:#8a8680;">Plywood</div></div>
+        </div>
+        <div style="margin-top:8px;font-size:10px;color:#8a8680;">Diupdate: ${upd} · oleh ${p.updatedBy||'—'}</div>
+      </div>
+    </div>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#8a8680;margin-bottom:6px;">Cutting List — ${(p.komponen||[]).length} Komponen</div>
+    <div style="overflow-x:auto;">
+      <table class="cut-tbl">
+        <thead><tr><th>Kode</th><th>Nama Komponen</th><th>Tipe</th><th>Qty</th><th>P cm</th><th>L cm</th><th>T cm</th><th>Vol m³</th></tr></thead>
+        <tbody>${kompRows||'<tr><td colspan="8" style="text-align:center;padding:16px;color:#8a8680;">Belum ada komponen</td></tr>'}</tbody>
+      </table>
+    </div>`;
+
+  document.getElementById('modal-load-btn').onclick = () => { window.location.href='app.html?sku='+sku; };
+  document.getElementById('modal-del-btn').onclick  = () => { closeModal(); deleteProduct(sku); };
+  document.getElementById('detail-modal').classList.add('show');
+};
+
+window.closeModal = () => document.getElementById('detail-modal').classList.remove('show');
+window.handleModalClick = (e) => { if(e.target===document.getElementById('detail-modal')) closeModal(); };
+
+window.deleteProduct = async function(sku) {
+  if(!confirm('Hapus produk '+sku+'?')) return;
+  try {
+    await deleteDoc(doc(db,'products',sku));
+    _all = _all.filter(p=>p.sku!==sku);
+    updateCounts(); applyFilter();
+    showToast('🗑️ Produk '+sku+' dihapus!');
+  } catch(e) { showToast('❌ '+e.message); }
+};
+
+// Search handlers
+window.handleSearch = function(q) {
+  _searchQ = q;
+  var clearBtn = document.getElementById('search-clear');
+  var icon     = document.getElementById('search-icon');
+  clearBtn.style.display = q ? 'block' : 'none';
+  icon.style.display     = q ? 'none'  : 'block';
+  applyFilter();
+};
+
+window.clearSearch = function() {
+  document.getElementById('search-input').value = '';
+  _searchQ = '';
+  document.getElementById('search-clear').style.display = 'none';
+  document.getElementById('search-icon').style.display  = 'block';
+  applyFilter();
+};
+
+window.setFilter = function(cat, el) {
+  _activeFilter = cat;
+  document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  applyFilter();
+};
+
+// Load on start
+loadProducts();
+
+// Handle sku param from URL
+const urlSku = new URLSearchParams(window.location.search).get('sku');
+if(urlSku) setTimeout(()=>showDetail(urlSku), 1200);
+</script>
+
+</body>
+</html>
