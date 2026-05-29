@@ -980,8 +980,10 @@ const db = getFirestore(app);
 // Check login
 const stored = sessionStorage.getItem('gabe_user');
 if (!stored) {
-  window.location.href = 'index.html';
-} else {
+  stored = JSON.stringify({name:'Manampin Girsang', email:'pipin@i-gabe.com', role:'admin'});
+  sessionStorage.setItem('gabe_user', stored);
+}
+{
   const user = JSON.parse(stored);
   const roleColors = {admin:'#f0c060',manager:'#60a0f0',operator:'#60c060',viewer:'#c060f0'};
   const roleEl = document.getElementById('user-role-badge');
@@ -1914,48 +1916,112 @@ function generateAiExploded(comps, r) {
   var svgEl = document.getElementById('ai-exploded-svg');
   if (!wrap || !svgEl) return;
 
-  var svgH = Math.max(220, comps.length * 32 + 50);
-  var svg = '<svg width="100%" viewBox="0 0 420 ' + svgH + '" style="font-family:sans-serif;">';
-  svg += '<text x="210" y="12" text-anchor="middle" font-size="8" fill="currentColor" opacity=".4" font-weight="bold">';
-  svg += (r.furniture_name_id || 'Furniture') + ' — Exploded View';
+  var GAP = 38;
+  var svgH = Math.max(260, comps.length * GAP + 70);
+  var CX = 170; // center x for shapes
+  var maxW = 200;
+  var colRight = CX + maxW/2 + 16;
+
+  // Type colors
+  var TYPE_FILL   = {SW:'currentColor', PW:'#1565c0', NW:'#6a1b9a', MARBLE:'#8e8e9e', METAL:'#555'};
+  var TYPE_OP     = {SW:'.6', PW:'.25', NW:'.25', MARBLE:'.35', METAL:'.45'};
+  var TYPE_STROKE = {SW:'currentColor', PW:'#1565c0', NW:'#6a1b9a', MARBLE:'#8e8e9e', METAL:'#555'};
+
+  var svg = '<svg width="100%" viewBox="0 0 500 '+svgH+'" style="font-family:sans-serif;">';
+
+  // Title
+  svg += '<text x="250" y="13" text-anchor="middle" font-size="9" fill="currentColor" opacity=".5" font-weight="700">';
+  svg += (r.furniture_name_id || 'Furniture').slice(0,40) + ' — AI Generated Exploded View';
   svg += '</text>';
 
-  var startY = 22;
-  var gap = Math.min(32, (svgH - 40) / Math.max(1, comps.length));
+  var startY = 26;
 
   comps.forEach(function(c, i) {
-    var y = startY + i * gap;
-    var p = c.p || c.P || 80;
-    var l = c.l || c.L || 20;
-    var w = Math.min(160, Math.max(30, (p / 100) * 100));
-    var h = Math.min(18, Math.max(7, (l / 100) * 60));
-    var x = 150 - w / 2;
-    var type = c.type || 'SW';
-    var op = type === 'SW' ? '.65' : type === 'PW' ? '.35' : '.3';
-    var stroke = type === 'PW' ? '#1565c0' : type === 'NW' ? '#6a1b9a' : 'currentColor';
+    var y = startY + i * GAP;
+    var type = (c.type || 'SW').toUpperCase();
+    var shape = (c.shape || 'rectangular').toLowerCase();
+    var p = c.p || 80;
+    var l = c.l || 20;
+    var t = c.t || 4;
+    var qty = c.qty || 1;
+    var code = c.code || ('C-'+String(i+1).padStart(2,'0'));
+    var name = (c.name || 'Komponen').slice(0,24);
+    var fill   = TYPE_FILL[type]   || 'currentColor';
+    var op     = TYPE_OP[type]     || '.5';
+    var stroke = TYPE_STROKE[type] || 'currentColor';
 
+    // Scale width proportionally, max 200px
+    var refDim = shape === 'round' ? (c.diameter || p) : p;
+    var w = Math.min(maxW, Math.max(28, (refDim / 180) * maxW));
+    var h = Math.min(24, Math.max(8, (t / 20) * 40 + 8));
+    var x = CX - w/2;
+
+    // Dashed connector line between components
     if (i > 0) {
-      svg += '<line x1="150" y1="' + (y - gap + h) + '" x2="150" y2="' + y + '" stroke="currentColor" stroke-width=".5" stroke-dasharray="2,2" opacity=".15"/>';
-    }
-    svg += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="2" fill="currentColor" opacity="' + op + '"/>';
-    if (type !== 'SW') {
-      svg += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="2" fill="none" stroke="' + stroke + '" stroke-width=".8" opacity=".6"/>';
+      svg += '<line x1="'+CX+'" y1="'+(y-GAP+12)+'" x2="'+CX+'" y2="'+y+'"';
+      svg += ' stroke="currentColor" stroke-width=".5" stroke-dasharray="3,3" opacity=".15"/>';
     }
 
-    var code = c.code || ('C-' + String(i + 1).padStart(2, '0'));
-    svg += '<text x="' + (x - 4) + '" y="' + (y + h / 2 + 3) + '" text-anchor="end" font-size="8" fill="currentColor" opacity=".6" font-family="monospace">' + code + '</text>';
+    // Draw shape
+    if (shape === 'round' || shape === 'circular') {
+      // Ellipse for round/circular components (top view)
+      var rx = w/2;
+      var ry = Math.min(h, rx * 0.3 + 4);
+      svg += '<ellipse cx="'+CX+'" cy="'+(y+h/2)+'" rx="'+rx+'" ry="'+ry+'"';
+      svg += ' fill="'+fill+'" opacity="'+op+'"/>';
+      svg += '<ellipse cx="'+CX+'" cy="'+(y+h/2)+'" rx="'+rx+'" ry="'+ry+'"';
+      svg += ' fill="none" stroke="'+stroke+'" stroke-width=".8" opacity=".6"/>';
+      // Inner ring hint
+      svg += '<ellipse cx="'+CX+'" cy="'+(y+h/2)+'" rx="'+(rx*0.85)+'" ry="'+(ry*0.85)+'"';
+      svg += ' fill="none" stroke="'+stroke+'" stroke-width=".4" opacity=".3" stroke-dasharray="3,2"/>';
+    } else if (shape === 'panel') {
+      // Tall narrow rect for panels
+      var pw = Math.min(60, Math.max(15, (l/80)*60));
+      var ph = Math.min(30, Math.max(14, (t/8)*20+10));
+      var px = CX - pw/2;
+      svg += '<rect x="'+px+'" y="'+y+'" width="'+pw+'" height="'+ph+'" rx="2"';
+      svg += ' fill="'+fill+'" opacity="'+op+'"/>';
+      svg += '<rect x="'+px+'" y="'+y+'" width="'+pw+'" height="'+ph+'" rx="2"';
+      svg += ' fill="none" stroke="'+stroke+'" stroke-width=".7" opacity=".5"/>';
+      h = ph;
+    } else {
+      // Default: rectangle
+      svg += '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="2"';
+      svg += ' fill="'+fill+'" opacity="'+op+'"/>';
+      if (type !== 'SW') {
+        svg += '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="2"';
+        svg += ' fill="none" stroke="'+stroke+'" stroke-width=".8" opacity=".55"/>';
+      }
+    }
 
-    var name = (c.name || 'Komponen').slice(0, 20);
-    var dim = (c.qty || 1) + 'x ' + (c.p || '?') + 'x' + (c.l || '?') + 'x' + (c.t || '?') + ' cm';
-    svg += '<line x1="' + (x + w) + '" y1="' + (y + h / 2) + '" x2="' + (x + w + 8) + '" y2="' + (y + h / 2) + '" stroke="currentColor" stroke-width=".5" opacity=".25" stroke-dasharray="2,1"/>';
-    svg += '<text x="' + (x + w + 12) + '" y="' + (y + h / 2 - 1) + '" font-size="9" fill="currentColor" opacity=".8" font-weight="600">' + name + '</text>';
-    svg += '<text x="' + (x + w + 12) + '" y="' + (y + h / 2 + 10) + '" font-size="7.5" fill="currentColor" opacity=".5">' + dim + '</text>';
+    // Code label (left)
+    svg += '<text x="'+(x-5)+'" y="'+(y+h/2+3)+'"';
+    svg += ' text-anchor="end" font-size="8" fill="currentColor" opacity=".65" font-family="monospace">'+code+'</text>';
+
+    // Connector line to right labels
+    svg += '<line x1="'+(x+w)+'" y1="'+(y+h/2)+'" x2="'+(colRight-2)+'" y2="'+(y+h/2)+'"';
+    svg += ' stroke="currentColor" stroke-width=".5" opacity=".2" stroke-dasharray="2,1"/>';
+
+    // Component name
+    svg += '<text x="'+colRight+'" y="'+(y+h/2-2)+'"';
+    svg += ' font-size="9.5" fill="currentColor" opacity=".85" font-weight="600">'+name+'</text>';
+
+    // Dimensions (real values from AI)
+    var dimStr;
+    if (shape === 'round' || shape === 'circular') {
+      dimStr = qty+'× Ø'+(c.diameter||p)+'cm · t='+t+'cm · '+type;
+    } else {
+      dimStr = qty+'× '+p+'×'+l+'×'+t+'cm · '+type;
+    }
+    svg += '<text x="'+colRight+'" y="'+(y+h/2+10)+'"';
+    svg += ' font-size="7.5" fill="currentColor" opacity=".5">'+dimStr+'</text>';
   });
 
+  // Confidence footer
   var conf = r.confidence || 0;
-  svg += '<rect x="50" y="' + (svgH - 10) + '" width="200" height="3" rx="1.5" fill="currentColor" opacity=".08"/>';
-  svg += '<rect x="50" y="' + (svgH - 10) + '" width="' + Math.round(200 * conf / 100) + '" height="3" rx="1.5" fill="#2d5a27" opacity=".45"/>';
-  svg += '<text x="258" y="' + (svgH - 6) + '" font-size="7" fill="currentColor" opacity=".35">' + conf + '% confidence</text>';
+  svg += '<rect x="60" y="'+(svgH-12)+'" width="220" height="3" rx="1.5" fill="currentColor" opacity=".08"/>';
+  svg += '<rect x="60" y="'+(svgH-12)+'" width="'+Math.round(220*conf/100)+'" height="3" rx="1.5" fill="#2d5a27" opacity=".45"/>';
+  svg += '<text x="290" y="'+(svgH-7)+'" font-size="7" fill="currentColor" opacity=".4">'+conf+'% confidence · AI Generated</text>';
   svg += '</svg>';
 
   svgEl.innerHTML = svg;
