@@ -448,8 +448,13 @@ const fbApp = getApps().find(function(a){return a.name==='aia';}) || initializeA
 const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
 
-const stored = sessionStorage.getItem('gabe_user');
-if (!stored) { window.location.href='index.html'; }
+// DEV MODE: Auto-login bypass (remove when going live)
+var stored = sessionStorage.getItem('gabe_user');
+if (!stored) {
+  // Auto-set demo user for development
+  stored = JSON.stringify({name:'Manampin Girsang', email:'pipin@i-gabe.com', role:'admin'});
+  sessionStorage.setItem('gabe_user', stored);
+}
 const CU = JSON.parse(stored||'{}');
 document.getElementById('user-name').textContent = '👤 '+(CU.name||CU.email||'');
 
