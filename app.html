@@ -388,6 +388,8 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
 
 .prod-search-item:hover > div { background: #f5faf4 !important; }
 .prod-search-item:last-child > div { border-bottom: none !important; }
+.prod-srch-item:hover > div { background: #f5faf4 !important; }
+.prod-srch-item:last-child > div { border-bottom: none !important; }
 </style>
 </head>
 <body>
@@ -1022,7 +1024,7 @@ setInterval(()=>{const e=document.getElementById('ts-now');if(e)e.textContent=ft
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, getDocs, setDoc, updateDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",
@@ -1036,6 +1038,185 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+// ── DEMO PRODUCTS (seed if empty) ────────────────────────────────
+const DEMO_PRODUCTS = [
+  {
+    sku:'TSARI-CRD-BP-01', nama:'TSARI Credenza', kategori:'lemari',
+    style:'Modern Minimalis', panjang:172.7, lebar:50.8, tinggi:91.4,
+    kayu:'Oak Solid / Oak Veneer', finishing:'Natural Oil / Matte',
+    ket:'Credenza 4 modul 17 inci. Canvas panel stretched. Metal leg powder coated black.',
+    komponen:[
+      {code:'CRD-TP',name:'Top Panel (MDF/Veneer)',type:'PW',qty:1,p:172,l:50,t:2,shape:'panel_wide'},
+      {code:'CRD-BP',name:'Bottom Panel',type:'PW',qty:1,p:172,l:50,t:2,shape:'panel_wide'},
+      {code:'CRD-SP',name:'Side Panel Kiri & Kanan',type:'SW',qty:2,p:91,l:50,t:4,shape:'panel_tall'},
+      {code:'CRD-VD',name:'Vertical Divider',type:'SW',qty:3,p:84,l:50,t:4,shape:'panel_tall'},
+      {code:'CRD-DR',name:'Door Panel Canvas Insert',type:'NW',qty:4,p:40,l:84,t:2,shape:'panel_tall'},
+      {code:'CRD-SH',name:'Adjustable Shelf',type:'PW',qty:4,p:40,l:46,t:2,shape:'panel_wide'},
+      {code:'CRD-RR',name:'Rear Rail System',type:'SW',qty:1,p:172,l:8,t:4,shape:'rectangular'},
+      {code:'CRD-BK',name:'Back Panel',type:'PW',qty:1,p:172,l:91,t:1.8,shape:'panel_wide'},
+      {code:'CRD-LG',name:'Metal Leg Powder Coated',type:'NW',qty:4,p:17,l:3.8,t:3.8,shape:'rectangular'},
+    ]
+  },
+  {
+    sku:'INFU2586-SM', nama:'Materazzo Small Arm Chair', kategori:'kursi',
+    style:'Modern Minimalis', panjang:55, lebar:54, tinggi:60,
+    kayu:'Mindi K2', finishing:'Natural Oil / PU Matt',
+    ket:'Arm chair modern minimalis. Seat upholstery busa + fabric.',
+    komponen:[
+      {code:'KR-01',name:'Kaki Depan',type:'SW',qty:2,p:45,l:10,t:10,shape:'rectangular'},
+      {code:'KR-02',name:'Kaki Belakang',type:'SW',qty:2,p:60,l:10,t:10,shape:'rectangular'},
+      {code:'KR-03',name:'Seat Rail',type:'SW',qty:4,p:47,l:7,t:4,shape:'rectangular'},
+      {code:'KR-06',name:'Arm Rest',type:'SW',qty:2,p:54,l:10,t:4,shape:'panel_wide'},
+      {code:'KR-07',name:'Back Frame Curve',type:'SW',qty:1,p:55,l:4,t:10,shape:'rectangular'},
+      {code:'KR-08',name:'Panel Dudukan',type:'PW',qty:1,p:53,l:51,t:1.8,shape:'panel_wide'},
+    ]
+  },
+  {
+    sku:'MARBLE-COFFE-120', nama:'Marble Coffee Table Round', kategori:'meja',
+    style:'Modern Minimalis', panjang:120, lebar:120, tinggi:30,
+    kayu:'Jati K1', finishing:'Natural Oil',
+    ket:'Coffee table top marble bundar Diameter 120cm. Kaki solid block Jati.',
+    komponen:[
+      {code:'TW-01',name:'Top Marble Bundar',type:'NW',qty:1,p:120,l:120,t:2,shape:'round',diameter:120},
+      {code:'LK-01',name:'Kaki Panel Depan Kiri',type:'SW',qty:1,p:28,l:21.5,t:4,shape:'panel_tall'},
+      {code:'LK-02',name:'Kaki Panel Depan Kanan',type:'SW',qty:1,p:28,l:21.5,t:4,shape:'panel_tall'},
+      {code:'LK-03',name:'Kaki Panel Belakang Kiri',type:'SW',qty:1,p:28,l:21.5,t:4,shape:'panel_tall'},
+      {code:'LK-04',name:'Kaki Panel Belakang Kanan',type:'SW',qty:1,p:28,l:21.5,t:4,shape:'panel_tall'},
+      {code:'ST-01',name:'Stretcher Sabuk Bawah',type:'SW',qty:2,p:116,l:8,t:4,shape:'rectangular'},
+    ]
+  }
+];
+
+// ── LOAD & SEARCH PRODUCTS ────────────────────────────────────────
+var _calcProducts = [];
+
+async function loadCalcProducts() {
+  try {
+    var snap = await getDocs(collection(db,'products'));
+    _calcProducts = [];
+    snap.forEach(function(d){ _calcProducts.push(d.data()); });
+
+    // Seed demo products if empty
+    if (_calcProducts.length === 0) {
+      for (var i=0; i<DEMO_PRODUCTS.length; i++) {
+        var p = DEMO_PRODUCTS[i];
+        await setDoc(doc(db,'products',p.sku), Object.assign({},p,{
+          updatedAt: serverTimestamp(), updatedBy: 'system-demo'
+        }));
+        _calcProducts.push(p);
+      }
+      console.log('Demo products seeded:', _calcProducts.length);
+    }
+
+    // Update search if already open
+    var search = document.getElementById('prod-search');
+    if (search && search.value) searchProductsFn(search.value);
+  } catch(e) { console.log('loadCalcProducts:', e.message); }
+}
+
+function searchProductsFn(q) {
+  var dropdown = document.getElementById('prod-dropdown');
+  var inner    = document.getElementById('prod-dropdown-inner');
+  if (!dropdown || !inner) return;
+  q = (q||'').toLowerCase().trim();
+
+  var results = q
+    ? _calcProducts.filter(function(p){
+        return (p.sku||'').toLowerCase().includes(q)||
+               (p.nama||'').toLowerCase().includes(q)||
+               (p.kategori||'').toLowerCase().includes(q)||
+               (p.kayu||'').toLowerCase().includes(q)||
+               (p.style||'').toLowerCase().includes(q);
+      })
+    : _calcProducts.slice(0,10);
+
+  var CAT_ICON = {bed:'🛏️',lemari:'🗄️',kursi:'🪑',sofa:'🛋️',meja:'🪵'};
+
+  if (!results.length) {
+    inner.innerHTML = '<div style="padding:12px;text-align:center;color:#8a8680;font-size:11px;">🔍 Tidak ada produk "'+q+'"<br><span style="font-size:10px;">Simpan produk dulu di AI Asisten</span></div>';
+    dropdown.style.display = 'block';
+    return;
+  }
+
+  inner.innerHTML = results.slice(0,8).map(function(p){
+    var icon = CAT_ICON[p.kategori]||'📦';
+    var dim  = (p.panjang||0)+'×'+(p.lebar||0)+'×'+(p.tinggi||0)+' cm';
+    var kc   = (p.komponen||[]).length;
+    return '<div class="prod-srch-item" onclick="window.selectCalcProduct(''+p.sku+'')">'+
+      '<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:.5px solid #e8e6df;cursor:pointer;">'+
+        '<span style="font-size:16px;">'+icon+'</span>'+
+        '<div style="flex:1;min-width:0;">'+
+          '<div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">'+
+            '<span style="font-family:monospace;font-size:10px;font-weight:700;background:#f0efe9;padding:1px 5px;border-radius:4px;color:#1a1917;">'+p.sku+'</span>'+
+            '<span style="font-size:11px;font-weight:600;color:#1a1917;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+( p.nama||'—')+'</span>'+
+          '</div>'+
+          '<div style="font-size:10px;color:#8a8680;margin-top:2px;">'+dim+' · '+(p.kayu||'—')+' · '+kc+' komponen</div>'+
+        '</div>'+
+        '<span style="font-size:11px;color:#8a8680;flex-shrink:0;">›</span>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+
+  if(results.length>8){
+    inner.innerHTML+='<div style="padding:6px;text-align:center;font-size:10px;color:#8a8680;background:#f5f4f0;">+'+( results.length-8)+' lainnya...</div>';
+  }
+  dropdown.style.display = 'block';
+}
+
+window.searchProducts = searchProductsFn;
+
+window.selectCalcProduct = function(sku) {
+  var p = _calcProducts.find(function(x){ return x.sku===sku; });
+  if (!p) return;
+
+  // Close dropdown
+  var dd = document.getElementById('prod-dropdown');
+  if(dd) dd.style.display='none';
+  document.getElementById('prod-manual').style.display='none';
+
+  // Show selected chip
+  var sel = document.getElementById('prod-selected');
+  var selSku = document.getElementById('prod-sel-sku');
+  var selNama = document.getElementById('prod-sel-nama');
+  var selInfo = document.getElementById('prod-sel-info');
+  if(selSku)  selSku.textContent  = p.sku;
+  if(selNama) selNama.textContent = p.nama||'—';
+  if(selInfo) selInfo.textContent = '📐 '+(p.panjang||0)+'×'+(p.lebar||0)+'×'+(p.tinggi||0)+' cm · 🪵 '+(p.kayu||'—')+' · ✂️ '+(p.komponen||[]).length+' komponen';
+  if(sel) sel.style.display='block';
+
+  // Fill fields
+  var skuEl  = document.getElementById('p-sku-calc');
+  var namaEl = document.getElementById('p-nama-calc');
+  var srch   = document.getElementById('prod-search');
+  if(skuEl)  skuEl.value  = p.sku;
+  if(namaEl) namaEl.value = p.nama||'';
+  if(srch)   srch.value   = '';
+
+  showToast('✅ '+p.nama+' dimuat!');
+};
+
+window.clearProdSearch = function() {
+  var dd   = document.getElementById('prod-dropdown');
+  var sel  = document.getElementById('prod-selected');
+  var man  = document.getElementById('prod-manual');
+  var srch = document.getElementById('prod-search');
+  if(dd)   dd.style.display   = 'none';
+  if(sel)  sel.style.display  = 'none';
+  if(man)  man.style.display  = 'block';
+  if(srch) srch.value         = '';
+  var skuEl  = document.getElementById('p-sku-calc');
+  var namaEl = document.getElementById('p-nama-calc');
+  if(skuEl)  skuEl.value  = '';
+  if(namaEl) namaEl.value = '';
+};
+
+// Close dropdown on outside click
+document.addEventListener('click', function(e){
+  var dd  = document.getElementById('prod-dropdown');
+  var inp = document.getElementById('prod-search');
+  if(dd && inp && !dd.contains(e.target) && e.target!==inp) dd.style.display='none';
+});
 
 // Check login
 const stored = sessionStorage.getItem('gabe_user');
