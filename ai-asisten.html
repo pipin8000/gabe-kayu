@@ -926,6 +926,33 @@ function buildCompIllustration(c, i) {
 
 
 
+// ── GET TABLE ROWS ────────────────────────────────────────────────
+function getTableRows() {
+  var rows = [];
+  var tbody = document.getElementById('cut-body');
+  if (!tbody) return rows;
+  tbody.querySelectorAll('tr').forEach(function(tr) {
+    var tds = tr.querySelectorAll('td');
+    var inps = tr.querySelectorAll('.num-input, input[type="number"]');
+    if (tds.length < 4) return;
+    var codeEl  = tds[0];
+    var nameEl  = tds[1];
+    var typeEl  = tr.querySelector('.tag');
+    var type    = typeEl ? typeEl.textContent.trim() : 'SW';
+    var qty     = +(inps[0] ? inps[0].value : 1) || 1;
+    var p       = +(inps[1] ? inps[1].value : 0) || 0;
+    var l       = +(inps[2] ? inps[2].value : 0) || 0;
+    var t       = +(inps[3] ? inps[3].value : 0) || 0;
+    var volTot  = ((p/100)*(l/100)*(t/100)*qty).toFixed(4);
+    var volLog  = type==='SW' ? ((p/100)*(l/100)*(t/100)*qty/0.35).toFixed(4) : '';
+    var code    = codeEl.textContent.trim();
+    var name    = nameEl.querySelector('input') ? nameEl.querySelector('input').value : nameEl.textContent.trim();
+    if (!code) return;
+    rows.push({ code:code, name:name, type:type, qty:qty, p:p, l:l, t:t, volTot:volTot, volLog:volLog });
+  });
+  return rows;
+}
+
 // ── SAVE IDENTITAS PRODUK ─────────────────────────────────────────
 window.saveIdentitas = async function() {
   var sku = document.getElementById('p-sku').value.trim();
