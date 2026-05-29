@@ -545,7 +545,22 @@ tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px sol
 
   <div class="mgrid">
     <div class="card">
-      <div class="chdr"><h3>⚙️ Parameter &amp; Konfigurasi</h3></div>
+      <div class="chdr"><div style="margin-bottom:10px;background:#fff;border:1.5px solid #d8d5cb;border-radius:12px;padding:12px 16px;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;margin-bottom:8px;">🏷️ Identitas Produk (Opsional)</div>
+        <div style="display:grid;grid-template-columns:1fr 2fr;gap:8px;">
+          <div>
+            <div style="font-size:10px;color:#8a8680;margin-bottom:3px;">SKU / Product ID</div>
+            <input type="text" id="p-sku-calc" placeholder="misal: INFU2586-SM"
+              style="width:100%;padding:6px 10px;border:1.5px solid #d8d5cb;border-radius:7px;font-size:12px;font-family:monospace;">
+          </div>
+          <div>
+            <div style="font-size:10px;color:#8a8680;margin-bottom:3px;">Nama Produk</div>
+            <input type="text" id="p-nama-calc" placeholder="misal: Materazzo Small Arm Chair"
+              style="width:100%;padding:6px 10px;border:1.5px solid #d8d5cb;border-radius:7px;font-size:12px;font-family:inherit;">
+          </div>
+        </div>
+      </div>
+      <h3>⚙️ Parameter &amp; Konfigurasi</h3></div>
       <div class="cbody">
         <div class="csec"><div class="stitle" data-i18n="cfg_type">Tipe & Ukuran</div>
           <div class="fg"><label data-i18n="cfg_select_type">Pilih Tipe Standar</label><select class="fc" id="subtype-sel"></select></div>
@@ -1541,17 +1556,6 @@ var _aiImgData = null;
 var _aiResult  = null;
 
 // Toggle panel
-window.updateCalcRef = function() {
-  var sku  = document.getElementById('p-sku-calc');
-  var nama = document.getElementById('p-nama-calc');
-  var refEl = document.getElementById('calc-ref');
-  if (sku && refEl) {
-    var refTxt = sku.value ? sku.value : (typeof ST!=='undefined'&&ST.ref ? ST.ref : '');
-    if (nama && nama.value) refTxt += ' — ' + nama.value;
-    if (refTxt) refEl.textContent = refTxt;
-  }
-};
-
 window.toggleAiPanel = function() {
   var body = document.getElementById('ai-body');
   var arrow = document.getElementById('ai-arrow');
