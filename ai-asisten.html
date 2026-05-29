@@ -597,12 +597,14 @@ function processResult(r){
   badge.textContent = conf+'% confidence';
   badge.style.display = 'inline-block';
 
-  // Notes
-  if(r.notes){
-    var notesEl = document.getElementById('ai-notes');
-    notesEl.style.display = 'block';
-    notesEl.innerHTML = '<b>📋 Catatan AI:</b> '+r.notes+'<br><span style="font-size:10px;color:#8a8680;">Jenis gambar: '+( r.image_type||'—')+'</span>';
-  }
+  // Notes + dimension warning
+  var notesEl = document.getElementById('ai-notes');
+  var notesHtml = '';
+  if(r.notes) notesHtml += '<b>📋 Catatan AI:</b> '+r.notes+'<br>';
+  if(r.dimensionWarning) notesHtml += '<span style="color:#e65100;"><b>⚠️ '+r.dimensionWarning+'</b></span><br>';
+  notesHtml += '<span style="font-size:10px;color:#8a8680;">Jenis gambar: '+(r.image_type||'—')+'</span>';
+  notesEl.style.display = 'block';
+  notesEl.innerHTML = notesHtml;
 
   // Components
   _components = r.components || [];
@@ -996,6 +998,34 @@ window.saveIdentitas = async function() {
   }
 };
 
+// ── UPDATE SYNC STATUS ────────────────────────────────────────────
+function updateSyncStatus() {
+  var syncDiv = document.getElementById('sync-content');
+  if (!syncDiv) return;
+  var rows = document.querySelectorAll('#cut-body tr');
+  if (!rows.length) {
+    syncDiv.innerHTML = '<div style="text-align:center;padding:20px;color:#8a8680;">Belum ada data untuk disync.</div>';
+    return;
+  }
+  var html = '<div style="margin-bottom:8px;font-size:12px;font-weight:700;color:#1a1917;">Status Sync ke Master Data ERP</div>';
+  rows.forEach(function(tr) {
+    var tds = tr.querySelectorAll('td');
+    if (tds.length < 2) return;
+    var typeEl = tr.querySelector('.tag');
+    var type = typeEl ? typeEl.textContent.trim() : 'SW';
+    var name = tds[1].textContent.trim() || '—';
+    var code = tds[0].textContent.trim() || '—';
+    var inMat = _mats && _mats.some(function(m){ return m.id===code || m.cat===type; });
+    html += '<div style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;background:var(--bg2);margin-bottom:4px;">';
+    html += '<div style="width:7px;height:7px;border-radius:50%;flex-shrink:0;background:'+(inMat?'#639922':'#1565c0')+';"></div>';
+    html += '<span style="flex:1;font-size:11px;">'+name+' <span style="color:#8a8680;font-size:10px;">('+type+')</span></span>';
+    html += '<span style="font-size:10px;color:'+(inMat?'#2d5a27':'#1565c0')+';font-weight:600;">'+(inMat?'✅ Sudah di Master':'🆕 Akan ditambahkan')+'</span>';
+    html += '</div>';
+  });
+  html += '<button onclick="syncToERP()" style="margin-top:8px;width:100%;padding:8px;background:#2d5a27;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">🔄 Sync Sekarang ke ERP Master Data</button>';
+  syncDiv.innerHTML = html;
+}
+
 // Register bridge aliases for HTML inline handlers
 window._handleFileSelect = window.handleFileSelect;
 window._handleDrop = window.handleDrop;
@@ -1023,6 +1053,7 @@ window._addRow = window.addRow;
 window._loadProduct = window.loadProduct;
 window._printExploded = window.printExploded;
 window._downloadExplodedSVG = window.downloadExplodedSVG;
+window._updateSyncStatus = updateSyncStatus;
 </script>
 
 <!-- Bridge: non-module inline handlers -->
