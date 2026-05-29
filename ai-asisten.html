@@ -437,6 +437,445 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a191
 
 <div id="toast"></div>
 
+E html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Asisten — Gabe International Hub</title>
+<script src="lang.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a1917;font-size:14px;}
+.topbar{background:#1a3a1a;color:#fff;padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-left{display:flex;align-items:center;gap:10px;}
+.back-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:5px 12px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;text-decoration:none;}
+.topbar-right{display:flex;align-items:center;gap:8px;}
+.topbar-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;text-decoration:none;}
+.app{max-width:1300px;margin:0 auto;padding:16px 16px 60px;}
+
+/* MAIN GRID */
+.main-grid{display:grid;grid-template-columns:320px 1fr 280px;gap:14px;margin-bottom:14px;}
+
+/* CARDS */
+.card{background:#fff;border:1px solid #d8d5cb;border-radius:14px;overflow:hidden;}
+.card-hdr{padding:10px 14px;background:#f5f4f0;border-bottom:1px solid #d8d5cb;display:flex;align-items:center;justify-content:space-between;}
+.card-hdr-title{font-size:12px;font-weight:700;color:#1a1917;display:flex;align-items:center;gap:7px;}
+.card-body{padding:14px;}
+.badge{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;}
+.badge-ai{background:#eaf3de;color:#27500a;}
+.badge-draft{background:#fff8e8;color:#7a5a10;border:1px solid #f0c060;}
+.badge-done{background:#eaf3de;color:#27500a;border:1px solid #b8d9b4;}
+
+/* UPLOAD ZONE */
+.upload-zone{border:2px dashed #b8d9b4;border-radius:10px;padding:20px;text-align:center;cursor:pointer;background:#f5faf4;transition:all .2s;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;}
+.upload-zone:hover,.upload-zone.drag{border-color:#2d5a27;background:#eaf3e8;}
+.upload-zone-icon{font-size:32px;margin-bottom:4px;}
+.upload-zone-title{font-size:13px;font-weight:600;color:#2d5a27;}
+.upload-zone-sub{font-size:11px;color:#8a8680;}
+.type-chips{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;margin-top:4px;}
+.type-chip{font-size:10px;padding:2px 8px;border-radius:20px;background:#f0efe9;color:#5a5750;border:1px solid #d8d5cb;}
+.img-preview-wrap{position:relative;margin-top:10px;display:none;}
+.img-preview-wrap.show{display:block;}
+.img-preview-img{width:100%;max-height:220px;object-fit:contain;border-radius:8px;border:1px solid #d8d5cb;background:#f5f4f0;}
+.img-rm-btn{position:absolute;top:6px;right:6px;width:24px;height:24px;background:rgba(139,32,32,.85);color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:13px;line-height:24px;text-align:center;}
+.analyze-btn{width:100%;margin-top:10px;padding:10px;background:#1a3a1a;color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;}
+.analyze-btn:hover{background:#2d5a27;}
+.analyze-btn:disabled{opacity:.6;cursor:not-allowed;}
+
+/* EXPLODED VIEW */
+.exploded-wrap{background:#fafaf8;border-radius:10px;min-height:280px;display:flex;align-items:center;justify-content:center;position:relative;padding:10px;}
+.exploded-empty{display:flex;flex-direction:column;align-items:center;gap:8px;color:#8a8680;}
+.exploded-svg-container{width:100%;overflow:auto;}
+.exploded-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+
+/* LOADING */
+.ai-loading{display:none;text-align:center;padding:30px;}
+.ai-loading.show{display:block;}
+.spinner{width:32px;height:32px;border:3px solid #d8d5cb;border-top-color:#2d5a27;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* AI ERROR */
+.ai-error{display:none;background:#fceaea;border:1px solid #f5c2c2;border-radius:8px;padding:10px 12px;font-size:12px;color:#8b2020;margin-top:8px;}
+.ai-error.show{display:block;}
+
+/* PRODUCT INFO */
+.info-row{margin-bottom:10px;}
+.info-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;margin-bottom:2px;}
+.info-val{font-size:13px;font-weight:600;color:#1a1917;}
+.info-input{width:100%;padding:6px 9px;border:1.5px solid #d8d5cb;border-radius:7px;font-size:12px;font-family:inherit;background:#fff;color:#1a1917;}
+.info-input:focus{outline:none;border-color:#2d5a27;}
+.info-select{width:100%;padding:6px 9px;border:1.5px solid #d8d5cb;border-radius:7px;font-size:12px;font-family:inherit;background:#fff;}
+.conf-bar{height:4px;background:#e8e6df;border-radius:2px;margin-top:4px;}
+.conf-fill{height:100%;border-radius:2px;background:#2d5a27;transition:width .8s;}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px;}
+.stat-card{background:#fff;border:1px solid #d8d5cb;border-radius:10px;padding:10px 12px;}
+.stat-val{font-size:20px;font-weight:700;margin-bottom:2px;}
+.stat-lbl{font-size:10px;color:#8a8680;font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+
+/* TABS */
+.tab-bar{display:flex;gap:2px;border-bottom:1.5px solid #d8d5cb;margin-bottom:12px;}
+.tab{padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;border-radius:8px 8px 0 0;color:#8a8680;transition:all .15s;display:flex;align-items:center;gap:5px;}
+.tab.active{background:#fff;border:1.5px solid #d8d5cb;border-bottom-color:#fff;color:#1a1917;margin-bottom:-1.5px;}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+/* CUTTING TABLE */
+.cut-tbl{width:100%;border-collapse:collapse;font-size:12px;}
+.cut-tbl th{padding:7px 10px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#8a8680;border-bottom:1.5px solid #d8d5cb;background:#f5f4f0;white-space:nowrap;}
+.cut-tbl td{padding:7px 10px;border-bottom:1px solid #e8e6df;vertical-align:middle;}
+.cut-tbl tr:hover td{background:#f5f4f0;}
+.cut-tbl tr:last-child td{border-bottom:none;}
+.tag{display:inline-flex;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:700;}
+.tag-sw{background:#eaf3de;color:#27500a;}
+.tag-pw{background:#e3f2fd;color:#0c447c;}
+.tag-nw{background:#f3e5f5;color:#3c3489;}
+.msel{font-size:11px;padding:3px 6px;border:1.5px solid #d8d5cb;border-radius:6px;background:#fff;font-family:inherit;width:100%;min-width:120px;}
+.msel:focus{outline:none;border-color:#2d5a27;}
+.num-input{width:60px;padding:3px 6px;border:1.5px solid #d8d5cb;border-radius:6px;font-size:11px;font-family:inherit;text-align:right;}
+.num-input:focus{outline:none;border-color:#2d5a27;}
+
+/* COMPONENT CARDS */
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+.comp-card{background:#fff;border:1px solid #d8d5cb;border-radius:10px;overflow:hidden;}
+.comp-card-img{height:100px;background:#f5f4f0;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #e8e6df;}
+.comp-card-body{padding:8px 10px;}
+.comp-card-code{font-family:monospace;font-size:10px;background:#f0efe9;color:#8a8680;padding:1px 5px;border-radius:4px;margin-bottom:3px;display:inline-block;}
+.comp-card-name{font-size:12px;font-weight:700;margin-bottom:2px;}
+.comp-card-dim{font-size:10px;color:#8a8680;}
+.comp-card-foot{padding:5px 10px;border-top:1px solid #e8e6df;display:flex;align-items:center;justify-content:space-between;background:#fafaf8;}
+
+/* EI BAR */
+.ei-bar{display:flex;align-items:center;gap:6px;padding:10px 14px;background:#fff;border:1px solid #d8d5cb;border-radius:12px;flex-wrap:wrap;margin-bottom:14px;}
+.ei-label{font-size:10px;font-weight:700;color:#8a8680;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;}
+.ei-sep{width:1px;height:20px;background:#d8d5cb;margin:0 2px;}
+.ei-btn{display:inline-flex;align-items:center;gap:4px;padding:5px 11px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid;font-family:inherit;transition:all .15s;}
+.ei-btn:hover{opacity:.85;}
+.ei-btn.csv{color:#1a5c1a;border-color:#a0d0a0;background:#f0faf0;}
+.ei-btn.xls{color:#1a5a2a;border-color:#80c080;background:#e8f5e8;}
+.ei-btn.pdf{color:#8b1a1a;border-color:#e0a0a0;background:#fef0f0;}
+.ei-btn.json{color:#0a5040;border-color:#5dcaa5;background:#e1f5ee;}
+.ei-btn.imp{color:#1a4a7a;border-color:#a0c0e0;background:#f0f4fb;}
+.ei-btn.sync{color:#3c3489;border-color:#afa9ec;background:#eeedfe;}
+
+/* ACTION BAR */
+.act-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.act-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:all .15s;}
+.act-btn.green{background:#2d5a27;color:#fff;}
+.act-btn.green:hover{background:#3d7a35;}
+.act-btn.blue{background:#1565c0;color:#fff;}
+.act-btn.amber{background:#ef9f27;color:#fff;}
+.act-btn.gray{background:#f0efe9;color:#5a5750;border:1.5px solid #d8d5cb;}
+
+/* SYNC STATUS */
+.sync-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#f5f4f0;border-radius:8px;margin-bottom:6px;font-size:12px;}
+.sync-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.sync-dot.synced{background:#639922;}
+.sync-dot.pending{background:#ef9f27;}
+.sync-dot.new{background:#1565c0;}
+
+/* TOAST */
+#toast{position:fixed;bottom:20px;right:20px;background:#2d5a27;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:all .22s;pointer-events:none;z-index:999;}
+#toast.show{opacity:1;transform:translateY(0);}
+
+/* IMPORT MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:16px;}
+.modal-ov.show{display:flex;}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:520px;max-height:85vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.3);}
+.modal-hdr{padding:14px 18px;border-bottom:1px solid #d8d5cb;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;}
+.modal-hdr h3{font-size:14px;font-weight:700;}
+.modal-x{width:26px;height:26px;border:none;background:#e8e6df;border-radius:50%;cursor:pointer;font-size:14px;}
+.modal-body{padding:16px 18px;}
+.modal-footer{padding:12px 18px;border-top:1px solid #d8d5cb;display:flex;gap:8px;justify-content:flex-end;}
+.imp-drop{border:2px dashed #d8d5cb;border-radius:10px;padding:24px;text-align:center;cursor:pointer;background:#fafaf8;transition:all .2s;}
+.imp-drop:hover{border-color:#2d5a27;background:#eaf3e8;}
+.imp-preview{margin-top:10px;background:#f5f4f0;border-radius:8px;padding:10px;font-size:11px;max-height:200px;overflow-y:auto;display:none;}
+
+@media(max-width:900px){
+  .main-grid{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-left">
+    <a href="app.html" class="back-btn">← Kalkulator</a>
+    <div>
+      <div style="font-size:14px;font-weight:700;">🤖 AI Asisten</div>
+      <div style="font-size:10px;opacity:.7;">Analisis Gambar → Identifikasi Produk → Exploded View</div>
+    </div>
+    <span style="font-size:9px;background:rgba(255,255,255,.2);padding:2px 8px;border-radius:20px;font-weight:700;">POWERED BY CLAUDE AI</span>
+  </div>
+  <div class="topbar-right">
+    <span id="lang-wrap"></span>
+    <span id="user-name" style="font-size:11px;opacity:.8;"></span>
+    <a href="materials.html" class="topbar-btn">🪵 Material</a>
+    <a href="vendors.html" class="topbar-btn">🏪 Vendor</a>
+    <button class="topbar-btn" onclick="doLogout()">Keluar</button>
+  </div>
+</nav>
+
+<div class="app">
+
+  <!-- ACTION BAR -->
+  <div class="act-bar">
+    <button class="act-btn green" onclick="openImportModal()">📥 Import CSV/Excel</button>
+    <button class="act-btn blue" onclick="syncToERP()">🔄 Sync ke ERP Master Data</button>
+    <button class="act-btn gray" onclick="resetAll()">🔄 Reset / Baru</button>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="main-grid">
+
+    <!-- COL 1: UPLOAD -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-hdr-title">📸 Upload Foto / Gambar Produk</div>
+      </div>
+      <div class="card-body">
+        <div class="upload-zone" id="upload-zone"
+             onclick="document.getElementById('ai-file').click()"
+             ondragover="event.preventDefault();this.classList.add('drag')"
+             ondragleave="this.classList.remove('drag')"
+             ondrop="handleDrop(event)">
+          <div class="upload-zone-icon">📷</div>
+          <div class="upload-zone-title">Klik atau drag & drop</div>
+          <div class="upload-zone-sub">Foto render · Sketsa · Blueprint · Katalog</div>
+          <div class="type-chips">
+            <span class="type-chip">📷 Foto</span>
+            <span class="type-chip">✏️ Sketsa</span>
+            <span class="type-chip">📐 Blueprint</span>
+            <span class="type-chip">🖼️ Katalog</span>
+          </div>
+        </div>
+        <input type="file" id="ai-file" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
+        <div class="img-preview-wrap" id="img-preview-wrap">
+          <img id="img-preview" class="img-preview-img" alt="preview">
+          <button class="img-rm-btn" onclick="removeImage()">✕</button>
+        </div>
+        <button class="analyze-btn" id="analyze-btn" onclick="analyzeImage()" style="display:none;">
+          🤖 Analisis + Generate Exploded View
+        </button>
+        <div class="ai-error" id="ai-error"></div>
+      </div>
+    </div>
+
+    <!-- COL 2: EXPLODED VIEW -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-hdr-title">🔍 Exploded View — AI Generated</div>
+        <span class="badge badge-ai" id="conf-badge" style="display:none;">— %</span>
+      </div>
+      <div class="card-body" style="padding:10px;">
+        <div class="ai-loading" id="ai-loading">
+          <div class="spinner"></div>
+          <div style="font-size:13px;color:#5a5750;font-weight:600;">🤖 AI sedang menganalisis gambar...</div>
+          <div style="font-size:11px;color:#8a8680;margin-top:4px;">Mendeteksi komponen · Menghitung dimensi · Generating exploded view</div>
+        </div>
+        <div class="exploded-wrap" id="exploded-wrap">
+          <div class="exploded-empty" id="exploded-empty">
+            <div style="font-size:40px;opacity:.2;">🔍</div>
+            <div style="font-size:12px;">Upload gambar produk untuk<br>generate exploded view otomatis</div>
+          </div>
+          <div class="exploded-svg-container" id="exploded-svg-wrap" style="display:none;"></div>
+        </div>
+        <div class="exploded-actions" id="exploded-actions" style="display:none;">
+          <button class="ei-btn pdf" onclick="printExploded()">🖨️ Print Drawing</button>
+          <button class="ei-btn json" onclick="downloadExplodedSVG()">💾 Download SVG</button>
+          <button class="ei-btn gray" style="color:#5a5750;border-color:#d8d5cb;background:#f0efe9;" onclick="analyzeImage()">🔄 Re-generate</button>
+        </div>
+        <div id="ai-notes" style="display:none;margin-top:8px;background:#f5f4f0;border-radius:8px;padding:8px 12px;font-size:11px;color:#5a5750;line-height:1.6;"></div>
+      </div>
+    </div>
+
+    <!-- COL 3: PRODUCT IDENTITY -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-hdr-title">🏷️ Identitas Produk</div>
+        <span class="badge badge-draft" id="id-status">Draft</span>
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          <div class="info-label">SKU / Product ID</div>
+          <input type="text" class="info-input" id="p-sku" placeholder="INFU2586-SM" style="font-family:monospace;font-weight:700;">
+        </div>
+        <div class="info-row">
+          <div class="info-label">Nama Produk</div>
+          <input type="text" class="info-input" id="p-nama" placeholder="Nama produk...">
+        </div>
+        <div class="info-row">
+          <div class="info-label">Kategori / Tipe</div>
+          <select class="info-select" id="p-kategori">
+            <option value="bed">🛏️ Tempat Tidur</option>
+            <option value="lemari">🗄️ Lemari</option>
+            <option value="kursi" selected>🪑 Kursi / Chair</option>
+            <option value="sofa">🛋️ Sofa</option>
+            <option value="meja">🪵 Meja</option>
+            <option value="lain">📦 Lainnya</option>
+          </select>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Style / Desain</div>
+          <input type="text" class="info-input" id="p-style" placeholder="Modern Minimalis, Jepara, dll">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;">
+          <div class="info-row" style="margin:0;">
+            <div class="info-label">P (cm)</div>
+            <input type="number" class="info-input" id="p-panjang" placeholder="0">
+          </div>
+          <div class="info-row" style="margin:0;">
+            <div class="info-label">L (cm)</div>
+            <input type="number" class="info-input" id="p-lebar" placeholder="0">
+          </div>
+          <div class="info-row" style="margin:0;">
+            <div class="info-label">T (cm)</div>
+            <input type="number" class="info-input" id="p-tinggi" placeholder="0">
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Kayu Rekomendasi AI</div>
+          <input type="text" class="info-input" id="p-kayu" placeholder="Jati, Mindi, Mahoni...">
+        </div>
+        <div class="info-row">
+          <div class="info-label">Finishing</div>
+          <input type="text" class="info-input" id="p-finishing" placeholder="Natural Oil, PU Matt...">
+        </div>
+        <div class="info-row">
+          <div class="info-label">Keterangan</div>
+          <textarea class="info-input" id="p-ket" rows="2" placeholder="Catatan produk..."></textarea>
+        </div>
+        <div style="margin-bottom:6px;">
+          <div class="info-label" style="margin-bottom:4px;">Tingkat Keyakinan AI</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="conf-bar" style="flex:1;"><div class="conf-fill" id="conf-fill" style="width:0%"></div></div>
+            <span style="font-size:11px;font-weight:700;color:#2d5a27;" id="conf-pct">—</span>
+          </div>
+        </div>
+        <button onclick="saveIdentitas()" style="width:100%;padding:8px;background:#2d5a27;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;margin-top:4px;">💾 Simpan Identitas Produk</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-val" id="s-net" style="color:#2d5a27;">—</div><div class="stat-lbl">Vol Bersih m³</div></div>
+    <div class="stat-card"><div class="stat-val" id="s-log" style="color:#1565c0;">—</div><div class="stat-lbl">Vol Log m³</div></div>
+    <div class="stat-card"><div class="stat-val" id="s-ply" style="color:#6a1b9a;">—</div><div class="stat-lbl">Plywood</div></div>
+    <div class="stat-card"><div class="stat-val" id="s-cost" style="color:#2d5a27;">—</div><div class="stat-lbl">Est. Material</div></div>
+    <div class="stat-card"><div class="stat-val" id="s-comp" style="color:#1a1917;">—</div><div class="stat-lbl">Komponen</div></div>
+  </div>
+
+  <!-- EXPORT/IMPORT BAR -->
+  <div class="ei-bar">
+    <span class="ei-label">📤 Export:</span>
+    <button class="ei-btn csv" onclick="exportCSV()">📊 CSV</button>
+    <button class="ei-btn xls" onclick="exportExcel()">📗 Excel</button>
+    <button class="ei-btn pdf" onclick="exportPDF()">📕 PDF</button>
+    <button class="ei-btn json" onclick="exportJSON()">🔗 JSON/BOM</button>
+    <div class="ei-sep"></div>
+    <span class="ei-label">📥 Import:</span>
+    <button class="ei-btn imp" onclick="openImportModal()">📂 Upload CSV/Excel</button>
+    <button class="ei-btn imp" onclick="downloadTemplate()">📄 Template</button>
+    <div class="ei-sep"></div>
+    <span class="ei-label">🔄 Sync:</span>
+    <button class="ei-btn sync" onclick="syncToERP()">🔄 Sync ke Master Data ERP</button>
+  </div>
+
+  <!-- TABS: CUTTING LIST + KOMPONEN + SYNC -->
+  <div class="card">
+    <div class="card-body" style="padding:14px;">
+      <div class="tab-bar">
+        <div class="tab active" onclick="switchTab('cutting',this)">✂️ Cutting List</div>
+        <div class="tab" onclick="switchTab('komponen',this)">🖼️ Gambar Komponen</div>
+        <div class="tab" onclick="switchTab('sync',this)">🔄 Sync Status</div>
+      </div>
+
+      <!-- CUTTING LIST -->
+      <div class="tab-content active" id="tab-cutting">
+        <div style="overflow-x:auto;">
+          <table class="cut-tbl" id="cut-table">
+            <thead>
+              <tr>
+                <th>Kode</th>
+                <th style="min-width:140px;">Nama Komponen</th>
+                <th>Material</th>
+                <th>Qty</th>
+                <th>P cm</th>
+                <th>L cm</th>
+                <th>T cm</th>
+                <th>Vol/pcs m³</th>
+                <th>Vol Total m³</th>
+                <th>Vol Log m³</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="cut-body">
+              <tr><td colspan="11" style="text-align:center;padding:24px;color:#8a8680;">Upload gambar dan analisis untuk melihat cutting list</td></tr>
+            </tbody>
+            <tfoot id="cut-foot"></tfoot>
+          </table>
+        </div>
+        <button onclick="addRow()" style="margin-top:8px;padding:5px 12px;background:#f0efe9;border:1.5px solid #d8d5cb;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;color:#5a5750;">➕ Tambah Baris</button>
+      </div>
+
+      <!-- KOMPONEN CARDS -->
+      <div class="tab-content" id="tab-komponen">
+        <div class="comp-grid" id="comp-grid">
+          <div style="text-align:center;padding:30px;color:#8a8680;grid-column:1/-1;">Upload gambar untuk melihat gambar komponen</div>
+        </div>
+      </div>
+
+      <!-- SYNC STATUS -->
+      <div class="tab-content" id="tab-sync">
+        <div id="sync-content">
+          <div style="text-align:center;padding:30px;color:#8a8680;">Belum ada data untuk disync. Analisis gambar dulu.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- IMPORT MODAL -->
+<div class="modal-ov" id="modal-import">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h3>📥 Import Cutting List</h3>
+      <button class="modal-x" onclick="closeModal('modal-import')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:#fff8e8;border:1px solid #f0c060;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#7a5a10;">
+        Format: Kode, Nama Komponen, Tipe(SW/PW/NW), Material ID, Qty, P(cm), L(cm), T(cm)
+      </div>
+      <div class="imp-drop" id="imp-drop"
+           onclick="document.getElementById('imp-file').click()"
+           ondragover="event.preventDefault();this.style.borderColor='#2d5a27'"
+           ondragleave="this.style.borderColor='#d8d5cb'"
+           ondrop="handleImpDrop(event)">
+        <div style="font-size:28px;margin-bottom:6px;">📂</div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:2px;">Klik atau drag & drop</div>
+        <div style="font-size:11px;color:#8a8680;">CSV atau Excel (.xlsx)</div>
+      </div>
+      <input type="file" id="imp-file" accept=".csv,.xlsx,.xls" style="display:none" onchange="readImpFile(event)">
+      <div class="imp-preview" id="imp-preview">
+        <div id="imp-preview-count" style="font-size:11px;font-weight:700;color:#2d5a27;margin-bottom:6px;"></div>
+        <div id="imp-preview-content"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button onclick="closeModal('modal-import')" style="padding:7px 16px;background:#f0efe9;border:1.5px solid #d8d5cb;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:#5a5750;">Batal</button>
+      <button id="imp-apply-btn" onclick="applyImport()" disabled style="padding:7px 16px;background:#2d5a27;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;opacity:.5;">📥 Terapkan</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
 <script type="module">
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -916,3 +1355,69 @@ function buildCompIllustration(c, i) {
   svg += '</svg>';
   return svg;
 }
+
+
+
+
+// Register bridge aliases for HTML inline handlers
+window._handleFileSelect = window.handleFileSelect;
+window._handleDrop = window.handleDrop;
+window._removeImage = window.removeImage;
+window._analyzeImage = window.analyzeImage;
+window._addImgSlot = window.addImgSlot;
+window._openGPhotoLink = window.openGPhotoLink;
+window._addImgFromUrl = window.addImgFromUrl;
+window._switchTab = window.switchTab;
+window._exportCSV = window.exportCSV;
+window._exportExcel = window.exportExcel;
+window._exportPDF = window.exportPDF;
+window._exportJSON = window.exportJSON;
+window._downloadTemplate = window.downloadTemplate;
+window._openImportModal = window.openImportModal;
+window._closeModal = window.closeModal;
+window._handleImpDrop = window.handleImpDrop;
+window._readImpFile = window.readImpFile;
+window._applyImport = window.applyImport;
+window._syncToERP = window.syncToERP;
+window._saveIdentitas = window.saveIdentitas;
+window._resetAll = window.resetAll;
+window._updateStats = window.updateStats;
+window._addRow = window.addRow;
+window._loadProduct = window.loadProduct;
+window._printExploded = window.printExploded;
+window._downloadExplodedSVG = window.downloadExplodedSVG;
+</script>
+
+<!-- Bridge: non-module inline handlers -->
+<script>
+function handleFileSelect(e){ if(window._handleFileSelect) window._handleFileSelect(e); }
+function handleDrop(e){ if(window._handleDrop) window._handleDrop(e); else e.preventDefault(); }
+function removeImage(){ if(window._removeImage) window._removeImage(); }
+function analyzeImage(){ if(window._analyzeImage) window._analyzeImage(); }
+function addImgSlot(){ if(window._addImgSlot) window._addImgSlot(); }
+function openGPhotoLink(){ if(window._openGPhotoLink) window._openGPhotoLink(); }
+function addImgFromUrl(){ if(window._addImgFromUrl) window._addImgFromUrl(); }
+function switchTab(t,b){ if(window._switchTab) window._switchTab(t,b); }
+function exportCSV(){ if(window._exportCSV) window._exportCSV(); }
+function exportExcel(){ if(window._exportExcel) window._exportExcel(); }
+function exportPDF(){ if(window._exportPDF) window._exportPDF(); }
+function exportJSON(){ if(window._exportJSON) window._exportJSON(); }
+function downloadTemplate(){ if(window._downloadTemplate) window._downloadTemplate(); }
+function openImportModal(){ if(window._openImportModal) window._openImportModal(); }
+function closeModal(id){ if(window._closeModal) window._closeModal(id); }
+function handleImpDrop(e){ if(window._handleImpDrop) window._handleImpDrop(e); }
+function readImpFile(e){ if(window._readImpFile) window._readImpFile(e); }
+function applyImport(){ if(window._applyImport) window._applyImport(); }
+function syncToERP(){ if(window._syncToERP) window._syncToERP(); }
+function saveIdentitas(){ if(window._saveIdentitas) window._saveIdentitas(); }
+function resetAll(){ if(window._resetAll) window._resetAll(); }
+function updateStats(){ if(window._updateStats) window._updateStats(); }
+function addRow(){ if(window._addRow) window._addRow(); }
+function loadProduct(sku){ if(window._loadProduct) window._loadProduct(sku); }
+function printExploded(){ if(window._printExploded) window._printExploded(); }
+function downloadExplodedSVG(){ if(window._downloadExplodedSVG) window._downloadExplodedSVG(); }
+</script>
+
+<div id="toast"></div>
+</body>
+</html>
