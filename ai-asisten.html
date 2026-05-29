@@ -921,6 +921,58 @@ function buildCompIllustration(c, i) {
 
 
 
+// ── SAVE IDENTITAS PRODUK ─────────────────────────────────────────
+window.saveIdentitas = async function() {
+  var sku = document.getElementById('p-sku').value.trim();
+  if (!sku) { showToast('⚠️ SKU / Product ID wajib diisi!'); return; }
+
+  var identitas = {
+    sku:       sku,
+    nama:      document.getElementById('p-nama').value.trim(),
+    kategori:  document.getElementById('p-kategori').value,
+    style:     document.getElementById('p-style').value.trim(),
+    panjang:   +document.getElementById('p-panjang').value || 0,
+    lebar:     +document.getElementById('p-lebar').value  || 0,
+    tinggi:    +document.getElementById('p-tinggi').value || 0,
+    kayu:      document.getElementById('p-kayu').value.trim(),
+    finishing: document.getElementById('p-finishing').value.trim(),
+    ket:       document.getElementById('p-ket').value.trim(),
+    komponen:  getTableRows(),
+    confidence: _aiResult ? (_aiResult.confidence||0) : 0,
+    updatedAt:  serverTimestamp(),
+    updatedBy:  CU.email || 'unknown'
+  };
+
+  var btn = document.querySelector('[onclick*="saveIdentitas"]');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Menyimpan...'; }
+
+  try {
+    await setDoc(doc(db, 'products', sku), identitas);
+    var statusEl = document.getElementById('id-status');
+    if (statusEl) {
+      statusEl.textContent = '✅ Tersimpan';
+      statusEl.className = 'badge badge-done';
+    }
+    showToast('✅ Identitas produk ' + sku + ' tersimpan ke Firebase!');
+    // Reload product list
+    await loadProductList();
+  } catch(e) {
+    showToast('❌ Gagal simpan: ' + e.message);
+    console.error('saveIdentitas error:', e);
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = '💾 Simpan Identitas Produk'; }
+  }
+};
+
+// ── SHOW TOAST ────────────────────────────────────────────────────
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
+
 // Register bridge aliases for HTML inline handlers
 window._handleFileSelect = window.handleFileSelect;
 window._handleDrop = window.handleDrop;
