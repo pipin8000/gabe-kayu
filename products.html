@@ -121,9 +121,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0efe9;color:#1a191
 .mf-btn{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none;font-family:inherit;}
 
 /* TABS */
-.dtabs{display:flex;gap:2px;border-bottom:1.5px solid #d8d5cb;margin-bottom:12px;}
-.dtab{padding:6px 12px;font-size:11px;font-weight:600;cursor:pointer;border-radius:7px 7px 0 0;border:1.5px solid transparent;color:#8a8680;border-bottom:none;margin-bottom:-1.5px;}
+
+.dtab{padding:7px 14px;font-size:11px;font-weight:600;cursor:pointer;border-radius:8px 8px 0 0;border:1.5px solid transparent;color:#a09888;border-bottom:none;margin-bottom:-1.5px;transition:all .15s;}
+.dtab:hover{color:#5a5750;}
 .dtab.active{background:#fff;border-color:#d8d5cb;border-bottom-color:#fff;color:#1a1917;}
+.dtabs{display:flex;gap:2px;border-bottom:1.5px solid #d8d5cb;margin-bottom:14px;}
 .dtab-content{display:none;}
 .dtab-content.active{display:block;}
 
@@ -318,17 +320,18 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0efe9;color:#1a191
   <div class="modal">
     <div class="modal-hdr">
       <img id="modal-hero" class="modal-hero" onerror="this.style.display='none'">
-      <div class="modal-hdr-bar">
-        <div id="modal-title" style="font-size:13px;font-weight:700;"></div>
-        <button class="modal-x" onclick="closeModal()">✕</button>
+      <div class="modal-hdr-bar" style="padding:12px 16px;background:#fff;">
+        <div id="modal-title" style="font-size:13px;font-weight:700;display:flex;align-items:center;flex-wrap:wrap;gap:6px;"></div>
+        <button class="modal-x" onclick="closeModal()" style="background:#f5f4f0;border:1px solid #e8e6df;">✕</button>
       </div>
     </div>
     <div class="modal-body" id="modal-body"></div>
-    <div class="modal-foot">
-      <button class="mf-btn" onclick="closeModal()" style="background:#f0efe9;color:#5a5750;">Tutup</button>
-      <button class="mf-btn" id="modal-calc-btn" style="background:#2d5a27;color:#fff;">📐 Kalkulator</button>
-      <button class="mf-btn" id="modal-ai-btn" style="background:#e6f1fb;color:#0c447c;">🤖 Edit AI</button>
-      <button class="mf-btn" id="modal-del-btn" style="background:#fceaea;color:#8b2020;">🗑️ Hapus</button>
+    <div class="modal-foot" style="padding:12px 18px;gap:8px;border-top:1px solid #e8e6df;">
+      <button class="mf-btn" onclick="closeModal()" style="background:#f5f4f0;color:#5a5750;border:1.5px solid #d8d5cb;">Tutup</button>
+      <div style="flex:1;"></div>
+      <button class="mf-btn" id="modal-del-btn" style="background:#fff;color:#8b2020;border:1.5px solid #f5c2c2;">🗑️ Hapus</button>
+      <button class="mf-btn" id="modal-ai-btn" style="background:#e6f1fb;color:#0c447c;border:1.5px solid #85b7eb;">🤖 Edit AI</button>
+      <button class="mf-btn" id="modal-calc-btn" style="background:#2d5a27;color:#fff;border:none;">📐 Kalkulator</button>
     </div>
   </div>
 </div>
@@ -638,120 +641,230 @@ window.showDetail = function(sku) {
   }).join('');
 
   document.getElementById('modal-body').innerHTML = `
-    <!-- Info + Volume -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-      <div style="background:#f5f4f0;border-radius:10px;padding:12px;">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#8a8680;margin-bottom:8px;">Identitas</div>
-        <div style="font-size:12px;display:grid;grid-template-columns:1fr 1fr;gap:5px;">
-          <div><div style="font-size:10px;color:#8a8680;">Kategori</div><b>${icon} ${p.kategori||'—'}</b></div>
-          <div><div style="font-size:10px;color:#8a8680;">Status</div>
-            <select onchange="changeStatus('${sku}',this.value)" style="font-size:11px;padding:2px 6px;border:1px solid #d8d5cb;border-radius:5px;font-family:inherit;background:#fff;">${statusOpts}</select>
+    <!-- ── TOP INFO ROW ─────────────────────────────────────────── -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+
+      <!-- LEFT: Identitas -->
+      <div style="background:#f8f7f4;border-radius:12px;padding:14px 16px;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a09888;margin-bottom:10px;">Identitas Produk</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div>
+            <div style="font-size:10px;color:#a09888;margin-bottom:2px;">Kategori</div>
+            <div style="font-size:13px;font-weight:600;">${icon} ${p.kategori||'—'}</div>
           </div>
-          <div><div style="font-size:10px;color:#8a8680;">Dimensi</div><b>${p.panjang||0}×${p.lebar||0}×${p.tinggi||0} cm</b></div>
-          <div><div style="font-size:10px;color:#8a8680;">Style</div><b>${p.style||'—'}</b></div>
-          <div><div style="font-size:10px;color:#8a8680;">Kayu</div><b>${(p.kayu||'—').split('/')[0].trim()}</b></div>
-          <div><div style="font-size:10px;color:#8a8680;">Finishing</div><b>${(p.finishing||'—').split('/')[0].trim()}</b></div>
+          <div>
+            <div style="font-size:10px;color:#a09888;margin-bottom:2px;">Status</div>
+            <select onchange="changeStatus('${sku}',this.value)"
+              style="font-size:11px;padding:3px 8px;border:1.5px solid #d8d5cb;border-radius:7px;font-family:inherit;background:#fff;font-weight:600;color:#1a1917;cursor:pointer;">
+              ${statusOpts}
+            </select>
+          </div>
+          <div>
+            <div style="font-size:10px;color:#a09888;margin-bottom:2px;">Dimensi</div>
+            <div style="font-size:13px;font-weight:700;color:#1a1917;">${p.panjang||0}×${p.lebar||0}×${p.tinggi||0} <span style="font-size:10px;font-weight:400;color:#8a8680;">cm</span></div>
+          </div>
+          <div>
+            <div style="font-size:10px;color:#a09888;margin-bottom:2px;">Style</div>
+            <div style="font-size:12px;font-weight:600;">${p.style||'—'}</div>
+          </div>
+          <div>
+            <div style="font-size:10px;color:#a09888;margin-bottom:2px;">Kayu</div>
+            <div style="font-size:12px;font-weight:600;color:#7a5830;">🪵 ${(p.kayu||'—').split('/')[0].trim()}</div>
+          </div>
+          <div>
+            <div style="font-size:10px;color:#a09888;margin-bottom:2px;">Finishing</div>
+            <div style="font-size:12px;font-weight:600;">${(p.finishing||'—').split('/')[0].trim()||'—'}</div>
+          </div>
         </div>
-        ${p.ket?`<div style="margin-top:7px;font-size:11px;color:#5a5750;padding:5px;background:#fff;border-radius:6px;">📝 ${p.ket}</div>`:''}
+        ${p.ket?`<div style="margin-top:10px;padding:8px 10px;background:#fff;border-radius:8px;font-size:11px;color:#5a5750;line-height:1.5;border:1px solid #e8e6df;">📝 ${p.ket}</div>`:''}
+        <div style="margin-top:8px;font-size:10px;color:#b0a898;">🕐 ${upd} · 👤 ${p.updatedBy||'—'}</div>
       </div>
-      <div style="background:#f5f4f0;border-radius:10px;padding:12px;">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#8a8680;margin-bottom:8px;">Volume Kayu</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
-          <div style="background:#EAF3DE;border-radius:8px;padding:8px;text-align:center;"><div style="font-size:18px;font-weight:700;color:#27500A;">${vol.net}</div><div style="font-size:9px;color:#27500A;">SW Bersih m³</div></div>
-          <div style="background:#E6F1FB;border-radius:8px;padding:8px;text-align:center;"><div style="font-size:18px;font-weight:700;color:#0C447C;">${vol.log}</div><div style="font-size:9px;color:#0C447C;">Log m³</div></div>
+
+      <!-- RIGHT: Volume Summary -->
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <!-- Vol Bersih -->
+        <div style="background:linear-gradient(135deg,#eaf3de 0%,#d4edbc 100%);border-radius:12px;padding:12px 14px;flex:1;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#5a8a3a;margin-bottom:4px;">🪵 Solid Wood</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <div>
+              <div style="font-size:20px;font-weight:800;color:#27500a;line-height:1;">${vol.net}</div>
+              <div style="font-size:9px;color:#5a8a3a;margin-top:1px;">Bersih m³</div>
+            </div>
+            <div>
+              <div style="font-size:20px;font-weight:800;color:#e65100;line-height:1;">${vol.log}</div>
+              <div style="font-size:9px;color:#8a5030;margin-top:1px;">Log m³ (÷35%)</div>
+            </div>
+          </div>
         </div>
-        <div style="background:#1a3a1a;border-radius:8px;padding:8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center;">
-          <div><div style="font-size:13px;font-weight:700;color:#97C459;">${swC.length}</div><div style="font-size:9px;color:rgba(255,255,255,.5);">SW</div></div>
-          <div><div style="font-size:13px;font-weight:700;color:#85B7EB;">${pwC.length}</div><div style="font-size:9px;color:rgba(255,255,255,.5);">PW</div></div>
-          <div><div style="font-size:13px;font-weight:700;color:#CE93D8;">${nwC.length}</div><div style="font-size:9px;color:rgba(255,255,255,.5);">NW</div></div>
+        <!-- PW + NW counts -->
+        <div style="background:#1a3a1a;border-radius:12px;padding:10px 14px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center;">
+            <div>
+              <div style="font-size:18px;font-weight:700;color:#97c459;">${swC.length}</div>
+              <div style="font-size:9px;color:rgba(255,255,255,.5);text-transform:uppercase;">SW komp</div>
+            </div>
+            <div>
+              <div style="font-size:18px;font-weight:700;color:#85b7eb;">${pwC.length}</div>
+              <div style="font-size:9px;color:rgba(255,255,255,.5);text-transform:uppercase;">PW komp</div>
+            </div>
+            <div>
+              <div style="font-size:18px;font-weight:700;color:#ce93d8;">${nwC.length}</div>
+              <div style="font-size:9px;color:rgba(255,255,255,.5);text-transform:uppercase;">NW komp</div>
+            </div>
+          </div>
         </div>
-        <div style="font-size:10px;color:#8a8680;margin-top:6px;">Update: ${upd}</div>
       </div>
     </div>
 
-    <!-- Tabs -->
+    <!-- ── TABS ───────────────────────────────────────────────────── -->
     <div class="dtabs" id="dtabs">
-      <div class="dtab active" onclick="switchDTab('cutting',this)">✂️ Cutting List</div>
+      <div class="dtab active" onclick="switchDTab('cutting',this)">✂️ Cutting List <span style="background:#e8e6df;font-size:9px;padding:1px 5px;border-radius:10px;margin-left:3px;">${(p.komponen||[]).length}</span></div>
       <div class="dtab" onclick="switchDTab('volume',this)">📊 Volume CBM</div>
       <div class="dtab" onclick="switchDTab('bom',this)">💰 BOM Ref</div>
-      <div class="dtab" onclick="switchDTab('similar',this)">🔗 Produk Mirip</div>
+      <div class="dtab" onclick="switchDTab('similar',this)">🔗 Mirip</div>
     </div>
 
-    <!-- Tab: Cutting List -->
+    <!-- ── TAB: CUTTING LIST ──────────────────────────────────────── -->
     <div class="dtab-content active" id="dtab-cutting">
-      <div style="overflow-x:auto;">
-        <table class="cut-tbl">
-          <thead><tr><th>Kode</th><th>Nama</th><th>Tipe</th><th>Qty</th><th>P cm</th><th>L cm</th><th>T cm</th><th>Vol m³</th><th>Log m³</th></tr></thead>
-          <tbody>${kompRows||'<tr><td colspan="9" style="text-align:center;padding:16px;color:#8a8680;">Belum ada komponen</td></tr>'}</tbody>
-          <tfoot><tr style="background:#f5f4f0;font-weight:700;">
-            <td colspan="7" style="padding:5px 8px;">TOTAL</td>
-            <td style="padding:5px 8px;text-align:right;color:#2d5a27;">${vol.net}</td>
-            <td style="padding:5px 8px;text-align:right;color:#e65100;">${vol.log}</td>
-          </tr></tfoot>
+      <div style="overflow-x:auto;border-radius:8px;border:1px solid #e8e6df;">
+        <table class="cut-tbl" style="border-radius:8px;overflow:hidden;">
+          <thead>
+            <tr style="background:#f5f4f0;">
+              <th style="width:80px;">Kode</th>
+              <th>Nama Komponen</th>
+              <th style="width:44px;text-align:center;">Tipe</th>
+              <th style="width:36px;text-align:center;">Qty</th>
+              <th style="width:50px;text-align:right;">P cm</th>
+              <th style="width:50px;text-align:right;">L cm</th>
+              <th style="width:50px;text-align:right;">T cm</th>
+              <th style="width:72px;text-align:right;">Vol m³</th>
+              <th style="width:72px;text-align:right;">Log m³</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${(p.komponen||[]).map((c,i)=>{
+              const t=(c.type||'SW').toUpperCase();
+              const tcls=t==='PW'?'background:#e3f2fd;color:#0c447c':t==='NW'?'background:#f3e5f5;color:#6a1b9a':'background:#eaf3de;color:#27500a';
+              const vt=((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))).toFixed(4);
+              const vl=t==='SW'&&+(c.p||0)>0?((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))/0.35).toFixed(4):'—';
+              const noDim = !(+(c.p||0)) && !(+(c.l||0)) && !(+(c.t||0));
+              return `<tr style="${noDim?'background:#fffbf0;':''}">
+                <td style="font-family:monospace;font-size:10px;font-weight:700;color:#5a5750;">${c.code||'C-'+String(i+1).padStart(2,'0')}</td>
+                <td style="font-weight:600;">${c.name||'—'}${noDim?'<span style="font-size:9px;color:#f59e0b;margin-left:4px;">⚠️ isi dimensi</span>':''}</td>
+                <td style="text-align:center;"><span style="font-size:9px;padding:2px 6px;border-radius:20px;font-weight:700;${tcls}">${t}</span></td>
+                <td style="text-align:center;color:#5a5750;">${c.qty||1}</td>
+                <td style="text-align:right;${+(c.p||0)?'':'color:#d8d5cb;'}">${+(c.p||0)||'—'}</td>
+                <td style="text-align:right;${+(c.l||0)?'':'color:#d8d5cb;'}">${+(c.l||0)||'—'}</td>
+                <td style="text-align:right;${+(c.t||0)?'':'color:#d8d5cb;'}">${+(c.t||0)||'—'}</td>
+                <td style="text-align:right;font-weight:700;color:${+(vt)>0?'#27500a':'#d8d5cb'};">${+(vt)>0?vt:'—'}</td>
+                <td style="text-align:right;color:${vl!=='—'?'#e65100':'#d8d5cb'};">${vl}</td>
+              </tr>`;
+            }).join('')||'<tr><td colspan="9" style="text-align:center;padding:20px;color:#a09888;">Belum ada komponen</td></tr>'}
+          </tbody>
+          <tfoot>
+            <tr style="background:#1a3a1a;color:#fff;">
+              <td colspan="7" style="padding:8px 10px;font-weight:700;font-size:11px;">TOTAL</td>
+              <td style="padding:8px 10px;text-align:right;font-weight:700;color:#97c459;">${vol.net}</td>
+              <td style="padding:8px 10px;text-align:right;font-weight:700;color:#fac775;">${vol.log}</td>
+            </tr>
+          </tfoot>
         </table>
       </div>
+      ${+(vol.net)===0 ? `<div style="margin-top:8px;padding:8px 12px;background:#FEF3C7;border-radius:8px;font-size:11px;color:#92400E;display:flex;align-items:center;gap:6px;">⚠️ Dimensi komponen belum diisi. Klik <b>Edit AI</b> untuk input dimensi lengkap di AI Asisten.</div>` : ''}
     </div>
 
-    <!-- Tab: Volume CBM -->
+    <!-- ── TAB: VOLUME CBM ────────────────────────────────────────── -->
     <div class="dtab-content" id="dtab-volume">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <div style="background:#f5faf4;border:1px solid #b8d9b4;border-radius:8px;padding:10px;">
-          <div style="font-size:10px;font-weight:700;color:#27500A;margin-bottom:6px;">🪵 Solid Wood — ${swC.length} item</div>
-          ${swC.map(c=>{ const v=((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))); return `<div style="display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:.5px solid #d8d5cb;"><span style="color:#5a5750;">${c.code} ${(c.name||'').slice(0,18)} ×${c.qty||1}</span><b style="color:#27500A;">${v.toFixed(4)}</b></div>`; }).join('')}
-          <div style="margin-top:6px;padding:5px;background:#fff;border-radius:5px;display:flex;justify-content:space-between;font-size:12px;font-weight:700;"><span>Log Total (÷35%)</span><span style="color:#E65100;">${vol.log} m³</span></div>
-        </div>
-        <div>
-          <div style="background:#E6F1FB;border:1px solid #85B7EB;border-radius:8px;padding:10px;margin-bottom:8px;">
-            <div style="font-size:10px;font-weight:700;color:#0C447C;margin-bottom:6px;">🔷 Plywood — ${pwC.length} item</div>
-            ${pwC.map(c=>{ const v=((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))); return `<div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0;border-bottom:.5px solid #d8d5cb;"><span style="color:#5a5750;">${c.code} ×${c.qty||1}</span><b style="color:#0C447C;">${v.toFixed(4)}</b></div>`; }).join('')||'<div style="font-size:11px;color:#8a8680;">—</div>'}
+        <div style="background:#f5faf4;border:1px solid #b8d9b4;border-radius:10px;padding:12px;">
+          <div style="font-size:10px;font-weight:700;color:#2d5a27;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em;">🪵 Solid Wood — ${swC.length} item</div>
+          ${swC.map(c=>{const v=((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1)));
+            return `<div style="display:flex;justify-content:space-between;font-size:11px;padding:4px 0;border-bottom:.5px solid #d8d5cb;">
+              <span style="color:#5a5750;">${c.code} ${(c.name||'').slice(0,16)} ×${c.qty||1}</span>
+              <b style="color:${v>0?'#27500a':'#d8d5cb'}">${v>0?v.toFixed(4):'—'}</b>
+            </div>`;}).join('')}
+          <div style="margin-top:8px;padding:7px 10px;background:#fff;border-radius:7px;display:flex;justify-content:space-between;font-weight:700;">
+            <span style="font-size:11px;">Log Total (÷35%)</span>
+            <span style="color:#e65100;">${vol.log} m³</span>
           </div>
-          <div style="background:#F3E5F5;border:1px solid #CE93D8;border-radius:8px;padding:10px;">
-            <div style="font-size:10px;font-weight:700;color:#6A1B9A;margin-bottom:4px;">🔵 Non-Wood — ${nwC.length} item</div>
-            ${nwC.map(c=>`<div style="font-size:11px;padding:2px 0;color:#5a5750;border-bottom:.5px solid #d8d5cb;">${c.code} ${(c.name||'').slice(0,22)} ×${c.qty||1}</div>`).join('')||'<div style="font-size:11px;color:#8a8680;">—</div>'}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="background:#e3f2fd;border:1px solid #90caf9;border-radius:10px;padding:12px;">
+            <div style="font-size:10px;font-weight:700;color:#0c447c;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;">🔷 Plywood — ${pwC.length} item</div>
+            ${pwC.length?pwC.map(c=>{const v=((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1)));return`<div style="font-size:11px;padding:3px 0;border-bottom:.5px solid #bbdefb;display:flex;justify-content:space-between;"><span style="color:#5a5750;">${c.code} ×${c.qty||1}</span><b style="color:#0c447c;">${v.toFixed(4)}</b></div>`;}).join(''):'<div style="font-size:11px;color:#90caf9;">Tidak ada PW</div>'}
+          </div>
+          <div style="background:#f3e5f5;border:1px solid #ce93d8;border-radius:10px;padding:12px;flex:1;">
+            <div style="font-size:10px;font-weight:700;color:#6a1b9a;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;">🔵 Non-Wood — ${nwC.length} item</div>
+            ${nwC.length?nwC.map(c=>`<div style="font-size:11px;padding:3px 0;border-bottom:.5px solid #e1bee7;color:#5a5750;">${c.code} ${(c.name||'').slice(0,20)} ×${c.qty||1}</div>`).join(''):'<div style="font-size:11px;color:#ce93d8;">Tidak ada NW</div>'}
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Tab: BOM Reference -->
+    <!-- ── TAB: BOM REFERENCE ─────────────────────────────────────── -->
     <div class="dtab-content" id="dtab-bom">
-      <div style="background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;padding:10px;margin-bottom:10px;font-size:11px;color:#92400E;">💡 Gunakan sebagai referensi BOM untuk produk sejenis. Volume kayu = basis cost material utama.</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
-        <div style="background:#f5f4f0;border-radius:8px;padding:8px;"><div style="font-size:10px;color:#8a8680;margin-bottom:2px;">SW Log Volume</div><div style="font-size:16px;font-weight:700;color:#E65100;">${vol.log} m³</div></div>
-        <div style="background:#f5f4f0;border-radius:8px;padding:8px;"><div style="font-size:10px;color:#8a8680;margin-bottom:2px;">Plywood</div><div style="font-size:16px;font-weight:700;color:#0C447C;">${vol.ply} lbr</div></div>
-        <div style="background:#f5f4f0;border-radius:8px;padding:8px;"><div style="font-size:10px;color:#8a8680;margin-bottom:2px;">Komponen</div><div style="font-size:16px;font-weight:700;">${(p.komponen||[]).length}</div></div>
+      <div style="background:#FEF3C7;border:1.5px solid #F59E0B;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:11px;color:#92400E;line-height:1.5;">
+        💡 Gunakan sebagai referensi BOM untuk produk sejenis. Volume kayu = basis perhitungan cost material utama untuk penawaran ke buyer.
       </div>
-      <div style="background:#f5f4f0;border-radius:8px;padding:10px;">
-        <div style="font-size:10px;font-weight:700;color:#8a8680;text-transform:uppercase;margin-bottom:6px;">Estimasi Cost Material</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-          <div style="background:#fff;border-radius:6px;padding:6px;"><div style="font-size:10px;color:#8a8680;margin-bottom:2px;">Harga Kayu /m³</div><input id="hk" type="number" value="4500000" style="width:100%;padding:3px 6px;border:1px solid #d8d5cb;border-radius:5px;font-size:11px;font-family:inherit;" oninput="calcEst()"></div>
-          <div style="background:#fff;border-radius:6px;padding:6px;"><div style="font-size:10px;color:#8a8680;margin-bottom:2px;">PW /lembar</div><input id="hp" type="number" value="220000" style="width:100%;padding:3px 6px;border:1px solid #d8d5cb;border-radius:5px;font-size:11px;font-family:inherit;" oninput="calcEst()"></div>
-          <div style="background:#EAF3DE;border-radius:6px;padding:6px;"><div style="font-size:10px;color:#8a8680;margin-bottom:2px;">Est. Material</div><div id="est-cost" style="font-size:14px;font-weight:700;color:#27500A;">—</div></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">
+        <div style="background:#f5f4f0;border-radius:10px;padding:10px 12px;text-align:center;">
+          <div style="font-size:9px;color:#a09888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">SW Log Volume</div>
+          <div style="font-size:20px;font-weight:800;color:#e65100;">${vol.log}</div>
+          <div style="font-size:9px;color:#a09888;">m³</div>
+        </div>
+        <div style="background:#f5f4f0;border-radius:10px;padding:10px 12px;text-align:center;">
+          <div style="font-size:9px;color:#a09888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Plywood</div>
+          <div style="font-size:20px;font-weight:800;color:#0c447c;">${vol.ply}</div>
+          <div style="font-size:9px;color:#a09888;">lembar</div>
+        </div>
+        <div style="background:#f5f4f0;border-radius:10px;padding:10px 12px;text-align:center;">
+          <div style="font-size:9px;color:#a09888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Komponen</div>
+          <div style="font-size:20px;font-weight:800;color:#1a1917;">${(p.komponen||[]).length}</div>
+          <div style="font-size:9px;color:#a09888;">item</div>
         </div>
       </div>
-      <div style="display:flex;gap:6px;margin-top:8px;">
-        <button onclick="exportBomCSV('${sku}')" style="flex:1;padding:7px;background:#EAF3DE;border:1px solid #97C459;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;color:#27500A;font-family:inherit;">📊 Export BOM CSV</button>
+      <div style="background:#f5f4f0;border-radius:10px;padding:12px;margin-bottom:10px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#a09888;margin-bottom:8px;">Estimasi Cost Material</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:end;">
+          <div style="background:#fff;border-radius:8px;padding:8px;">
+            <div style="font-size:10px;color:#a09888;margin-bottom:3px;">Harga Kayu /m³</div>
+            <input id="hk" type="number" value="4500000" style="width:100%;padding:4px 8px;border:1.5px solid #d8d5cb;border-radius:6px;font-size:12px;font-family:inherit;font-weight:600;" oninput="calcEst()">
+          </div>
+          <div style="background:#fff;border-radius:8px;padding:8px;">
+            <div style="font-size:10px;color:#a09888;margin-bottom:3px;">Plywood /lbr</div>
+            <input id="hp" type="number" value="220000" style="width:100%;padding:4px 8px;border:1.5px solid #d8d5cb;border-radius:6px;font-size:12px;font-family:inherit;font-weight:600;" oninput="calcEst()">
+          </div>
+          <div style="background:#eaf3de;border-radius:8px;padding:8px;">
+            <div style="font-size:10px;color:#5a8a3a;margin-bottom:3px;">Est. Material</div>
+            <div id="est-cost" style="font-size:16px;font-weight:800;color:#27500a;">—</div>
+          </div>
+        </div>
       </div>
+      <button onclick="exportBomCSV('${sku}')" style="width:100%;padding:9px;background:#eaf3de;border:1.5px solid #97c459;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;color:#27500a;font-family:inherit;">📊 Export BOM CSV</button>
     </div>
 
-    <!-- Tab: Produk Mirip -->
+    <!-- ── TAB: PRODUK MIRIP ──────────────────────────────────────── -->
     <div class="dtab-content" id="dtab-similar">
-      <div style="font-size:11px;color:#8a8680;margin-bottom:8px;">Produk dengan kategori sama — gunakan sebagai referensi BOM:</div>
+      <div style="font-size:11px;color:#a09888;margin-bottom:10px;">Produk kategori sama — gunakan sebagai referensi BOM :</div>
       ${_all.filter(x=>x.sku!==sku&&x.kategori===p.kategori).slice(0,4).map(x=>{
-        const xvol=calcVol(x.komponen);
-        const xthumb = x.thumbnail ? `<img src="${x.thumbnail}" style="width:52px;height:42px;object-fit:cover;border-radius:5px;margin-right:8px;flex-shrink:0;">` : `<div style="width:52px;height:42px;background:#f5f4f0;border-radius:5px;margin-right:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;">${CAT_ICON[x.kategori]||'📦'}</div>`;
-        return `<div style="display:flex;align-items:center;padding:8px;background:#f5f4f0;border-radius:8px;margin-bottom:6px;cursor:pointer;" onclick="showDetail('${x.sku}')">
-          ${xthumb}
-          <div style="flex:1;">
-            <div style="display:flex;align-items:center;gap:5px;"><span style="font-family:monospace;font-size:10px;background:#fff;padding:1px 5px;border-radius:4px;">${x.sku}</span><span style="font-size:11px;font-weight:600;">${x.nama||'—'}</span></div>
-            <div style="font-size:10px;color:#8a8680;">${x.panjang||0}×${x.lebar||0}×${x.tinggi||0} cm · Log: ${xvol.log} m³</div>
+        const xv=calcVol(x.komponen);
+        const ximg=x.thumbnail?`<img src="${x.thumbnail}" style="width:54px;height:46px;object-fit:cover;border-radius:8px;flex-shrink:0;">`:
+          `<div style="width:54px;height:46px;background:#f5f4f0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">${CAT_ICON[x.kategori]||'📦'}</div>`;
+        return `<div onclick="showDetail('${x.sku}')" style="display:flex;align-items:center;gap:10px;padding:10px;background:#f5f4f0;border-radius:10px;margin-bottom:6px;cursor:pointer;border:1px solid transparent;transition:all .15s;" onmouseover="this.style.borderColor='#b8d9b4';this.style.background='#f5faf4'" onmouseout="this.style.borderColor='transparent';this.style.background='#f5f4f0'">
+          ${ximg}
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;">
+              <span style="font-family:monospace;font-size:10px;background:#fff;padding:1px 5px;border-radius:4px;color:#5a5750;">${x.sku}</span>
+            </div>
+            <div style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${x.nama||'—'}</div>
+            <div style="font-size:10px;color:#a09888;">${x.panjang||0}×${x.lebar||0}×${x.tinggi||0} cm · Log: ${xv.log} m³ · ${(x.komponen||[]).length} komp</div>
           </div>
-          <span style="color:#8a8680;">›</span>
+          <span style="color:#b8d9b4;font-size:18px;">›</span>
         </div>`;
-      }).join('')||'<div style="padding:16px;text-align:center;color:#8a8680;font-size:12px;">Belum ada produk sejenis lainnya.</div>'}
+      }).join('')||'<div style="padding:24px;text-align:center;color:#a09888;font-size:12px;background:#f5f4f0;border-radius:10px;">Belum ada produk sejenis lainnya di sistem.</div>'}
     </div>`;
 
-  document.getElementById('modal-calc-btn').onclick = ()=>window.location.href='app.html?sku='+sku;
+  document.getElementById('modal-calc-btn').onclick   document.getElementById('modal-calc-btn').onclick = ()=>window.location.href='app.html?sku='+sku;
   document.getElementById('modal-ai-btn').onclick   = ()=>window.location.href='ai-asisten.html?sku='+sku;
   document.getElementById('modal-del-btn').onclick  = ()=>{closeModal();deleteProduct(sku);};
   document.getElementById('detail-modal').classList.add('show');
