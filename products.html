@@ -346,9 +346,13 @@ window.renderProducts = function() {
     const upd  = p.updatedAt ? new Date(p.updatedAt.seconds*1000).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'2-digit'}) : '—';
 
     return `<div class="prod-card" onclick="showDetail('${p.sku}')">
-      <div class="pc-hdr">
+      ${p.thumbnail ? `<div style="height:140px;overflow:hidden;background:#f5f4f0;border-bottom:1px solid #d8d5cb;position:relative;">
+          <img src="${p.thumbnail}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" onerror="this.parentNode.style.display='none'">
+          <span style="position:absolute;top:8px;right:8px;" class="pc-status ${stc}">${stl}</span>
+        </div>` : ''}
+      <div class="pc-hdr" ${p.thumbnail ? 'style="background:#fff;"' : ''}>
         <span class="pc-sku">${p.sku}</span>
-        <span class="pc-status ${stc}">${stl}</span>
+        ${!p.thumbnail ? `<span class="pc-status ${stc}">${stl}</span>` : ''}
       </div>
       <div class="pc-body">
         <div class="pc-nama">${icon} ${p.nama||'—'}</div>
@@ -385,6 +389,16 @@ window.showDetail = function(sku) {
   const CAT_ICON = {bed:'🛏️',lemari:'🗄️',kursi:'🪑',sofa:'🛋️',meja:'🪵'};
 
   document.getElementById('modal-title').innerHTML = `<span style="font-family:monospace;font-size:11px;background:#f0efe9;padding:2px 7px;border-radius:4px;">${p.sku}</span> <span style="margin-left:8px;">${CAT_ICON[p.kategori]||'📦'} ${p.nama||'—'}</span>`;
+  // Show thumbnail in modal if available
+  var thumbEl = document.getElementById('modal-thumb');
+  if (thumbEl) {
+    if (p.thumbnail) {
+      thumbEl.src = p.thumbnail;
+      thumbEl.style.display = 'block';
+    } else {
+      thumbEl.style.display = 'none';
+    }
+  }
 
   const kompRows = (p.komponen||[]).map((c,i) => {
     const type = (c.type||'SW').toUpperCase();
