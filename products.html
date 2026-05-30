@@ -139,6 +139,16 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0efe9;color:#1a191
 .spinner{display:inline-block;width:24px;height:24px;border:3px solid #d8d5cb;border-top-color:#2d5a27;border-radius:50%;animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* Image search match card highlight */
+.prod-card.img-match{border:2px solid #2d5a27;box-shadow:0 0 0 3px rgba(45,90,39,.15);}
+.match-score{position:absolute;bottom:8px;right:8px;background:#2d5a27;color:#fff;
+  font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;}
+.no-match{grid-column:1/-1;text-align:center;padding:40px 20px;}
+
+/* Pulse animation for image search button when active */
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(45,90,39,.4);}50%{box-shadow:0 0 0 6px rgba(45,90,39,0);}}
+.img-search-active{animation:pulse 1.5s infinite;}
+
 @media(max-width:640px){
   .prod-grid{grid-template-columns:1fr 1fr;}
   .group-tabs{gap:4px;}
@@ -170,9 +180,42 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0efe9;color:#1a191
   <div class="search-wrap">
     <input type="text" class="search-input" id="search-input"
       placeholder="🔍  Cari nama produk, SKU, kategori, atau jenis kayu..."
-      oninput="handleSearch(this.value)" autocomplete="off">
-    <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
-    <span class="search-icon" id="search-icon">🔍</span>
+      oninput="handleSearch(this.value)" autocomplete="off"
+      style="padding-right:90px;">
+    <button class="search-clear" id="search-clear" onclick="clearSearch()" style="right:52px;">✕</button>
+    <span class="search-icon" id="search-icon" style="right:52px;">🔍</span>
+    <!-- Image Search Button -->
+    <button id="img-search-btn" onclick="openImgSearch()"
+      title="Cari dengan foto/gambar"
+      style="position:absolute;right:8px;top:50%;transform:translateY(-50%);
+             background:#2d5a27;border:none;border-radius:8px;
+             width:36px;height:36px;cursor:pointer;display:flex;
+             align-items:center;justify-content:center;font-size:17px;
+             transition:all .2s;">
+      📷
+    </button>
+    <input type="file" id="img-search-input" accept="image/*"
+      style="display:none" onchange="handleImgSearch(event)">
+  </div>
+
+  <!-- Image Search Result Bar (hidden by default) -->
+  <div id="img-search-bar" style="display:none;max-width:600px;margin:8px auto 0;">
+    <div style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
+                border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
+      <img id="img-search-preview" style="width:40px;height:40px;object-fit:cover;
+           border-radius:6px;flex-shrink:0;">
+      <div style="flex:1;min-width:0;">
+        <div id="img-search-status" style="font-size:11px;color:#fff;font-weight:600;">
+          🔍 Menganalisis gambar...
+        </div>
+        <div id="img-search-detail" style="font-size:10px;color:rgba(255,255,255,.7);margin-top:1px;"></div>
+      </div>
+      <button onclick="clearImgSearch()"
+        style="background:rgba(255,255,255,.2);border:none;border-radius:6px;
+               color:#fff;padding:3px 8px;cursor:pointer;font-size:11px;flex-shrink:0;">
+        ✕ Hapus
+      </button>
+    </div>
   </div>
 
   <!-- GROUP TABS in hero -->
@@ -652,6 +695,257 @@ window.exportBomCSV = sku => {
   const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['\uFEFF'+lines.join(NL)],{type:'text/csv'})); a.download='BOM_'+sku+'.csv'; a.click();
   showToast('📊 BOM CSV exported!');
 };
+
+// ── IMAGE SEARCH ──────────────────────────────────────────────────────
+let _imgSearchActive = false;
+let _imgSearchResults = [];
+
+window.openImgSearch = function() {
+  document.getElementById('img-search-input').click();
+};
+
+window.handleImgSearch = async function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  // Show preview
+  const reader = new FileReader();
+  reader.onload = async function(ev) {
+    const base64data = ev.target.result;
+
+    // Show preview in bar
+    document.getElementById('img-search-preview').src = base64data;
+    document.getElementById('img-search-bar').style.display = 'block';
+    document.getElementById('img-search-status').textContent = '🤖 AI sedang menganalisis gambar...';
+    document.getElementById('img-search-detail').textContent = 'Mendeteksi tipe furniture & karakteristik...';
+    document.getElementById('img-search-btn').classList.add('img-search-active');
+
+    try {
+      // Call Claude AI to analyze the image
+      const base64 = base64data.split(',')[1];
+      const mime   = base64data.split(';')[0].split(':')[1] || 'image/jpeg';
+
+      const resp = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          imageData: base64,
+          mimeType:  mime,
+          imageCount: 1,
+          searchMode: true  // tell API we want search-focused response
+        })
+      });
+
+      if (!resp.ok) throw new Error('API error '+resp.status);
+      const data = await resp.json();
+      const r    = data.result;
+
+      if (!r) throw new Error('Tidak ada hasil analisis');
+
+      // Extract search criteria from AI result
+      const criteria = {
+        furniture_type: r.furniture_type || '',
+        style:          r.style || '',
+        panjang:        r.dimensions?.panjang || 0,
+        lebar:          r.dimensions?.lebar   || 0,
+        tinggi:         r.dimensions?.tinggi  || 0,
+        kayu:           r.wood_recommendation || '',
+        shape:          r.dimensions?.shape   || 'rectangular'
+      };
+
+      document.getElementById('img-search-status').textContent =
+        '✅ Terdeteksi: ' + (r.furniture_name_id || r.furniture_type || 'Furniture');
+      document.getElementById('img-search-detail').textContent =
+        (criteria.panjang?criteria.panjang+'×'+criteria.lebar+'×'+criteria.tinggi+' cm · ':'') +
+        (criteria.style||'') + (r.confidence?' · '+r.confidence+'% confidence':'');
+
+      // Find matching products in Firebase
+      findSimilarProducts(criteria, r);
+
+    } catch(err) {
+      console.log('Image search error:', err);
+      // Fallback: search by detected furniture type from filename
+      document.getElementById('img-search-status').textContent = '⚠️ Coba pencarian manual...';
+      document.getElementById('img-search-detail').textContent = err.message;
+
+      // Still try to filter by what we can detect from filename
+      const fname = file.name.toLowerCase();
+      let keyword = '';
+      if(/chair|kursi/.test(fname))  keyword = 'kursi';
+      if(/table|meja/.test(fname))   keyword = 'meja';
+      if(/bed|tidur/.test(fname))    keyword = 'bed';
+      if(/sofa/.test(fname))         keyword = 'sofa';
+      if(/lemari|cabinet/.test(fname)) keyword = 'lemari';
+
+      if (keyword) {
+        handleSearch(keyword);
+        document.getElementById('search-input').value = keyword;
+      }
+    }
+    document.getElementById('img-search-btn').classList.remove('img-search-active');
+  };
+  reader.readAsDataURL(file);
+  // Reset input for re-use
+  e.target.value = '';
+};
+
+function findSimilarProducts(criteria, aiResult) {
+  if (!_all.length) return;
+
+  // Score each product for similarity
+  const scored = _all.map(p => {
+    let score = 0;
+    const maxScore = 100;
+
+    // 1. Furniture type match (40 pts)
+    if (criteria.furniture_type && p.kategori) {
+      const typeMap = {meja:'meja',table:'meja',bed:'bed',tidur:'bed',chair:'kursi',kursi:'kursi',sofa:'sofa',lemari:'lemari',cabinet:'lemari',credenza:'lemari'};
+      const mapped = typeMap[criteria.furniture_type] || criteria.furniture_type;
+      if (p.kategori === mapped) score += 40;
+      else if (p.kategori === criteria.furniture_type) score += 40;
+    }
+
+    // 2. Style match (20 pts)
+    if (criteria.style && p.style) {
+      const ps = p.style.toLowerCase(), cs = criteria.style.toLowerCase();
+      if (ps.includes(cs) || cs.includes(ps)) score += 20;
+      else if (ps.split(/[\s,\/]+/).some(w=>cs.includes(w))) score += 10;
+    }
+
+    // 3. Dimension similarity (25 pts)
+    if (criteria.panjang > 0 && p.panjang > 0) {
+      const diffPct = Math.abs(p.panjang - criteria.panjang) / criteria.panjang;
+      if (diffPct < 0.1) score += 10;      // within 10%
+      else if (diffPct < 0.25) score += 6; // within 25%
+      else if (diffPct < 0.5) score += 3;  // within 50%
+    }
+    if (criteria.tinggi > 0 && p.tinggi > 0) {
+      const diffPct = Math.abs(p.tinggi - criteria.tinggi) / criteria.tinggi;
+      if (diffPct < 0.1) score += 10;
+      else if (diffPct < 0.25) score += 6;
+      else if (diffPct < 0.5) score += 3;
+    }
+    if (criteria.lebar > 0 && p.lebar > 0) {
+      const diffPct = Math.abs(p.lebar - criteria.lebar) / criteria.lebar;
+      if (diffPct < 0.1) score += 5;
+      else if (diffPct < 0.25) score += 3;
+    }
+
+    // 4. Wood type match (15 pts)
+    if (criteria.kayu && p.kayu) {
+      const pk = p.kayu.toLowerCase(), ck = criteria.kayu.toLowerCase();
+      if (pk.includes(ck.split(' ')[0]) || ck.includes(pk.split(' ')[0])) score += 15;
+    }
+
+    return { product: p, score: Math.min(100, score) };
+  });
+
+  // Sort by score
+  scored.sort((a,b) => b.score - a.score);
+
+  // Show only products with score > 0
+  const matches = scored.filter(s => s.score > 0);
+  const noMatch = scored.filter(s => s.score === 0);
+
+  _imgSearchActive = true;
+  _imgSearchResults = matches.map(m => ({sku: m.product.sku, score: m.score}));
+
+  // Update status
+  document.getElementById('img-search-status').textContent =
+    matches.length > 0
+      ? '✅ Ditemukan '+matches.length+' produk mirip'
+      : '🔍 Tidak ada produk serupa di sistem';
+  document.getElementById('img-search-detail').textContent =
+    matches.length > 0
+      ? 'Diurutkan berdasarkan kemiripan tipe, dimensi & material'
+      : 'Coba tambah produk serupa via AI Asisten';
+
+  renderImgSearchResults(scored);
+}
+
+function renderImgSearchResults(scored) {
+  // Show all 3 groups with image search ranking
+  const matches = scored.filter(s => s.score > 0);
+  const nomatches = scored.filter(s => s.score === 0);
+
+  // Temporarily override _all ordering
+  const sortedAll = [
+    ...matches.map(m => m.product),
+    ...nomatches.map(m => m.product)
+  ];
+
+  // Re-render with scores
+  ['pra','produksi','final'].forEach(grp => {
+    const statuses = GRP_STATUS[grp];
+    const grpItems = sortedAll.filter(p => statuses.includes(p.status||'draft'));
+    const grid = document.getElementById('grid-'+grp);
+
+    if (!grpItems.length) {
+      grid.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-sub">Tidak ada produk</div></div>';
+      return;
+    }
+
+    grid.innerHTML = grpItems.map(p => {
+      const scoreEntry = scored.find(s => s.product.sku === p.sku);
+      const score = scoreEntry ? scoreEntry.score : 0;
+      const vol  = calcVol(p.komponen);
+      const st   = p.status||'draft';
+      const icon = CAT_ICON[p.kategori]||'📦';
+      const dim  = `${p.panjang||0}×${p.lebar||0}×${p.tinggi||0} cm`;
+      const kc   = (p.komponen||[]).length;
+      const upd  = p.updatedAt ? new Date(p.updatedAt.seconds*1000).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'2-digit'}) : '—';
+
+      const scoreBar = score > 0 ? `
+        <div style="padding:4px 10px;background:${score>=70?'#eaf3de':score>=40?'#fff8e1':'#f5f4f0'};border-top:1px solid #e8e6df;display:flex;align-items:center;gap:6px;">
+          <div style="flex:1;height:4px;background:#e8e6df;border-radius:2px;overflow:hidden;">
+            <div style="width:${score}%;height:100%;background:${score>=70?'#2d5a27':score>=40?'#f59e0b':'#d8d5cb'};border-radius:2px;"></div>
+          </div>
+          <span style="font-size:9px;font-weight:700;color:${score>=70?'#27500a':score>=40?'#92400e':'#8a8680'};">${score}% mirip</span>
+        </div>` : '';
+
+      const imgHtml = p.thumbnail
+        ? `<img src="${p.thumbnail}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">`
+        : `<div class="card-img-placeholder">${icon}</div>`;
+
+      return `<div class="prod-card${score>0?' img-match':''}" onclick="showDetail('${p.sku}')" style="${score>=70?'border-color:#2d5a27;':score>=40?'border-color:#f59e0b;':'opacity:.65;'}">
+        <div class="card-img">
+          ${imgHtml}
+          <div class="card-img-overlay"><span class="pc-status ${ST_CLASS[st]||'st-draft'}">${ST_LABEL[st]||'Draft'}</span></div>
+          <span class="cat-badge">${icon} ${p.kategori||'—'}</span>
+          ${score>0?`<span class="match-score">${score}% ≈</span>`:''}
+        </div>
+        <div class="card-body">
+          <div class="card-sku">${p.sku}</div>
+          <div class="card-nama">${p.nama||'—'}</div>
+          <div class="card-dim">📐 ${dim}</div>
+          <div class="card-stats">
+            <div class="cs-item"><div class="cs-val" style="color:#2d5a27;">${vol.net}</div><div class="cs-lbl">Vol m³</div></div>
+            <div class="cs-item"><div class="cs-val" style="color:#1565c0;">${vol.log}</div><div class="cs-lbl">Log m³</div></div>
+            <div class="cs-item"><div class="cs-val" style="color:#8a8680;">${kc}</div><div class="cs-lbl">Komp</div></div>
+          </div>
+        </div>
+        ${scoreBar}
+        <div class="card-foot" onclick="event.stopPropagation()">
+          <a class="cf-btn grn" href="app.html?sku=${p.sku}">📐 Kalk</a>
+          <a class="cf-btn blu" href="ai-asisten.html?sku=${p.sku}">🤖 Edit</a>
+          <button class="cf-btn red" onclick="deleteProduct('${p.sku}')">🗑</button>
+        </div>
+      </div>`;
+    }).join('');
+  });
+}
+
+window.clearImgSearch = function() {
+  _imgSearchActive = false;
+  _imgSearchResults = [];
+  document.getElementById('img-search-bar').style.display = 'none';
+  document.getElementById('img-search-btn').classList.remove('img-search-active');
+  // Reset to normal render
+  renderAll();
+  showToast('🔄 Pencarian gambar dibersihkan');
+};
+
+// ── IMAGE SEARCH END ───────────────────────────────────────────────────
 
 // Init
 load();
