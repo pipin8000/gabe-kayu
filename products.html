@@ -333,6 +333,113 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0efe9;color:#1a191
   </div>
 </div>
 
+<!-- AI AGENT MODAL — muncul saat tidak ada hasil -->
+<div id="agent-modal-ov" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:600;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:20px;width:100%;max-width:460px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.35);">
+
+    <!-- Agent Header -->
+    <div style="background:linear-gradient(135deg,#1a3a1a 0%,#2d5a27 100%);padding:20px 22px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+        <div style="width:42px;height:42px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🤖</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#fff;">AI Agent — Gabe Hub</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.7);">Produk tidak ditemukan di sistem</div>
+        </div>
+      </div>
+      <!-- Detected info -->
+      <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:10px 12px;">
+        <div style="display:flex;gap:10px;align-items:center;">
+          <img id="agent-thumb" style="width:52px;height:52px;object-fit:cover;border-radius:8px;flex-shrink:0;background:#f5f4f0;">
+          <div>
+            <div id="agent-detected" style="font-size:12px;font-weight:700;color:#fff;margin-bottom:2px;">—</div>
+            <div id="agent-dims" style="font-size:10px;color:rgba(255,255,255,.7);"></div>
+            <div id="agent-conf" style="font-size:10px;color:rgba(151,196,89,.9);margin-top:1px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agent Message -->
+    <div style="padding:16px 22px 8px;">
+      <div style="font-size:13px;font-weight:600;color:#1a1917;margin-bottom:4px;">
+        Produk ini belum ada di database Gabe Hub.
+      </div>
+      <div style="font-size:12px;color:#5a5750;line-height:1.6;">
+        Apa yang ingin dilakukan dengan gambar ini?
+      </div>
+    </div>
+
+    <!-- Action Options -->
+    <div style="padding:8px 22px 20px;display:flex;flex-direction:column;gap:8px;">
+
+      <!-- Option 1: Transfer ke Kalkulator -->
+      <button onclick="agentAction('calculator')"
+        style="display:flex;align-items:center;gap:12px;padding:12px 14px;
+               background:#f5faf4;border:1.5px solid #b8d9b4;border-radius:12px;
+               cursor:pointer;font-family:inherit;text-align:left;width:100%;
+               transition:all .15s;"
+        onmouseover="this.style.background='#eaf3de';this.style.borderColor='#97c459'"
+        onmouseout="this.style.background='#f5faf4';this.style.borderColor='#b8d9b4'">
+        <div style="width:38px;height:38px;background:#eaf3de;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📐</div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#27500a;">Transfer ke Kalkulator</div>
+          <div style="font-size:10px;color:#5a8a5a;margin-top:1px;">Hitung volume kayu & buat cutting list baru berdasarkan gambar ini</div>
+        </div>
+        <span style="margin-left:auto;color:#97c459;font-size:16px;">›</span>
+      </button>
+
+      <!-- Option 2: Simpan ke Arsip GabeHub -->
+      <button onclick="agentAction('archive')"
+        style="display:flex;align-items:center;gap:12px;padding:12px 14px;
+               background:#f5f4ff;border:1.5px solid #c4b5fd;border-radius:12px;
+               cursor:pointer;font-family:inherit;text-align:left;width:100%;
+               transition:all .15s;"
+        onmouseover="this.style.background='#ede9fe';this.style.borderColor='#a78bfa'"
+        onmouseout="this.style.background='#f5f4ff';this.style.borderColor='#c4b5fd'">
+        <div style="width:38px;height:38px;background:#ede9fe;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📁</div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#4c1d95;">Simpan ke Arsip GabeHub</div>
+          <div style="font-size:10px;color:#7c3aed;margin-top:1px;">Simpan sebagai produk Draft baru — bisa diproses nanti di AI Asisten</div>
+        </div>
+        <span style="margin-left:auto;color:#a78bfa;font-size:16px;">›</span>
+      </button>
+
+      <!-- Option 3: Analisis Detail di AI Asisten -->
+      <button onclick="agentAction('ai')"
+        style="display:flex;align-items:center;gap:12px;padding:12px 14px;
+               background:#FEF3C7;border:1.5px solid #F59E0B;border-radius:12px;
+               cursor:pointer;font-family:inherit;text-align:left;width:100%;
+               transition:all .15s;"
+        onmouseover="this.style.background='#fde68a';this.style.borderColor='#d97706'"
+        onmouseout="this.style.background='#FEF3C7';this.style.borderColor='#F59E0B'">
+        <div style="width:38px;height:38px;background:#fde68a;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">🤖</div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#92400e;">Analisis Detail di AI Asisten</div>
+          <div style="font-size:10px;color:#b45309;margin-top:1px;">Buka AI Asisten dengan gambar ini untuk analisis komponen & exploded view</div>
+        </div>
+        <span style="margin-left:auto;color:#F59E0B;font-size:16px;">›</span>
+      </button>
+
+      <!-- Option 4: Delete / Hapus -->
+      <button onclick="agentAction('delete')"
+        style="display:flex;align-items:center;gap:12px;padding:10px 14px;
+               background:#fff;border:1.5px solid #e8e6df;border-radius:12px;
+               cursor:pointer;font-family:inherit;text-align:left;width:100%;
+               transition:all .15s;"
+        onmouseover="this.style.background='#fceaea';this.style.borderColor='#f5c2c2'"
+        onmouseout="this.style.background='#fff';this.style.borderColor='#e8e6df'">
+        <div style="width:38px;height:38px;background:#fceaea;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">🗑️</div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#8b2020;">Hapus / Batalkan</div>
+          <div style="font-size:10px;color:#b45309;margin-top:1px;">Tutup dan batalkan pencarian gambar ini</div>
+        </div>
+        <span style="margin-left:auto;color:#f5c2c2;font-size:16px;">›</span>
+      </button>
+
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script type="module">
@@ -858,7 +965,13 @@ function findSimilarProducts(criteria, aiResult) {
   document.getElementById('img-search-detail').textContent =
     matches.length > 0
       ? 'Diurutkan berdasarkan kemiripan tipe, dimensi & material'
-      : 'Coba tambah produk serupa via AI Asisten';
+      : 'AI Agent akan membantu...';
+
+  if (matches.length === 0) {
+    // No match — trigger AI Agent
+    const previewUrl = document.getElementById('img-search-preview').src;
+    setTimeout(() => showAgentModal(aiResult, previewUrl), 800);
+  }
 
   renderImgSearchResults(scored);
 }
@@ -934,6 +1047,120 @@ function renderImgSearchResults(scored) {
     }).join('');
   });
 }
+
+// ── AI AGENT ──────────────────────────────────────────────────────────
+let _agentData = null; // stores { aiResult, base64, mime, previewUrl }
+
+function showAgentModal(aiResult, previewUrl) {
+  _agentData = { aiResult, previewUrl };
+
+  // Fill agent info
+  const r = aiResult || {};
+  const name  = r.furniture_name_id || r.furniture_type || 'Furniture';
+  const dims  = r.dimensions ? (r.dimensions.panjang||0)+'×'+(r.dimensions.lebar||0)+'×'+(r.dimensions.tinggi||0)+' cm' : '—';
+  const conf  = r.confidence ? r.confidence+'% confidence · '+( r.image_type||'') : '';
+
+  document.getElementById('agent-thumb').src     = previewUrl || '';
+  document.getElementById('agent-detected').textContent = '🪑 '+name;
+  document.getElementById('agent-dims').textContent     = '📐 '+dims+(r.wood_recommendation?' · 🪵 '+r.wood_recommendation:'');
+  document.getElementById('agent-conf').textContent     = conf ? '✅ '+conf : '';
+
+  document.getElementById('agent-modal-ov').style.display = 'flex';
+}
+
+window.agentAction = async function(action) {
+  const modal = document.getElementById('agent-modal-ov');
+  const r     = _agentData?.aiResult || {};
+  const prev  = _agentData?.previewUrl || '';
+
+  switch(action) {
+
+    case 'calculator': {
+      // Save image to sessionStorage and redirect to app.html
+      const info = {
+        from:      'image-search',
+        nama:      r.furniture_name_id || r.furniture_type || '',
+        kategori:  r.furniture_type || 'meja',
+        panjang:   r.dimensions?.panjang || 0,
+        lebar:     r.dimensions?.lebar   || 0,
+        tinggi:    r.dimensions?.tinggi  || 0,
+        kayu:      r.wood_recommendation || '',
+        style:     r.style || '',
+        thumbnail: prev
+      };
+      sessionStorage.setItem('calc_prefill', JSON.stringify(info));
+      showToast('📐 Membuka Kalkulator...');
+      setTimeout(() => window.location.href='app.html', 600);
+      break;
+    }
+
+    case 'archive': {
+      // Save as Draft product in Firebase
+      const sku = 'ARSIP-'+Date.now();
+      const product = {
+        sku:       sku,
+        nama:      r.furniture_name_id || r.furniture_type || 'Produk Baru',
+        kategori:  r.furniture_type   || 'meja',
+        style:     r.style            || '',
+        panjang:   r.dimensions?.panjang || 0,
+        lebar:     r.dimensions?.lebar   || 0,
+        tinggi:    r.dimensions?.tinggi  || 0,
+        kayu:      r.wood_recommendation || '',
+        finishing: '',
+        status:    'draft',
+        ket:       'Disimpan dari image search · Confidence: '+(r.confidence||0)+'%',
+        thumbnail: prev,
+        komponen:  (r.components||[]).map((c,i)=>({
+          code:  c.code || 'C-'+String(i+1).padStart(2,'0'),
+          name:  c.name || 'Komponen '+(i+1),
+          type:  c.type || 'SW',
+          qty:   c.qty  || 1,
+          p:     c.p    || 0,
+          l:     c.l    || 0,
+          t:     c.t    || 0,
+          shape: c.shape|| 'rectangular'
+        })),
+        updatedAt:  null,
+        updatedBy:  'image-search-agent'
+      };
+      try {
+        await setDoc(doc(db,'products',sku), Object.assign({},product,{updatedAt:serverTimestamp()}));
+        _all.push(product);
+        updateCounts(); renderAll();
+        modal.style.display = 'none';
+        clearImgSearch();
+        showToast('📁 Disimpan ke arsip sebagai '+sku);
+        // Switch to Pra Produksi tab where it was saved
+        const praBtn = document.querySelector('.gtab');
+        if(praBtn) switchGroup('pra', praBtn);
+      } catch(e) {
+        showToast('❌ Gagal simpan: '+e.message);
+      }
+      break;
+    }
+
+    case 'ai': {
+      // Store image data in sessionStorage and redirect to ai-asisten
+      sessionStorage.setItem('ai_prefill_image', prev);
+      sessionStorage.setItem('ai_prefill_result', JSON.stringify(r));
+      showToast('🤖 Membuka AI Asisten...');
+      setTimeout(() => window.location.href='ai-asisten.html', 600);
+      break;
+    }
+
+    case 'delete': {
+      modal.style.display = 'none';
+      clearImgSearch();
+      showToast('🗑️ Pencarian gambar dibatalkan');
+      break;
+    }
+  }
+};
+
+// Close agent modal on overlay click
+document.getElementById('agent-modal-ov').addEventListener('click', function(e){
+  if(e.target === this) { this.style.display='none'; clearImgSearch(); }
+});
 
 window.clearImgSearch = function() {
   _imgSearchActive = false;
