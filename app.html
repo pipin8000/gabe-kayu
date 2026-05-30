@@ -2194,783 +2194,241 @@ function showAiResult(r) {
 }
 
 function buildCompIllustration(c, i) {
-  var p    = +(c.p || c.P || 60);
-  var l    = +(c.l || c.L || 30);
-  var t    = +(c.t || c.T || 4);
-  var qty  = c.qty || 1;
-  var type = (c.type || 'SW').toUpperCase();
-  var shape = (c.shape || 'rectangular').toLowerCase();
-  var diam = +(c.diameter || p);
-  var cname = (c.name || '').toLowerCase();
+  var p    = +(c.p||0), l = +(c.l||0), t = +(c.t||0);
+  var qty  = c.qty||1;
+  var type = (c.type||'SW').toUpperCase();
+  var name = (c.name||'').toLowerCase();
+  var shape = (c.shape||'').toLowerCase();
 
-  // Auto-detect shape from name if AI didn't set it correctly
-  if (!c.shape || c.shape === 'rectangular') {
-    if (/bundar|round|circle|bulat|marble top/.test(cname)) shape = 'round';
-    else if (/top panel|bottom panel|shelf|rak|seat board|alas|back panel/.test(cname)) shape = 'panel_wide';
-    else if (/side panel|vertical|pintu|door|divider/.test(cname)) shape = 'panel_tall';
-    else if (/leg|kaki|stile|stretcher|rail|sabuk|frame/.test(cname)) shape = 'plank';
-    else if (p > l * 2.5) shape = 'plank';
-    else if (l > p * 1.5) shape = 'panel_tall';
-    else if (p > l * 1.3 && t < 6) shape = 'panel_wide';
+  // ── Smart shape detection from component name ──────────────────────
+  var detectedShape = shape;
+  if (!detectedShape || detectedShape === 'rectangular') {
+    // Curved / Rail atas
+    if (/top.?rail|curved|rail.?atas|sandaran.?atas|back.?top|rangka.?atas|bow|arc/.test(name))
+      detectedShape = 'curved_rail';
+    // Round / Bundar
+    else if (/bundar|round|circle|bulat|diameter|ø/.test(name))
+      detectedShape = 'round';
+    // Cane / Rotan / Mesh panel
+    else if (/cane|rotan|anyaman|weave|mesh|rattan|webbing/.test(name))
+      detectedShape = 'cane_panel';
+    // Angled Leg
+    else if (/kaki|leg|foot/.test(name) && /miring|sudut|derajat|angle|angled/.test(name))
+      detectedShape = 'angled_leg';
+    // Regular Leg
+    else if (/kaki.*(depan|belakang|front|rear|back)|^kaki$|front.?leg|rear.?leg|back.?leg/.test(name))
+      detectedShape = 'leg';
+    // Armrest
+    else if (/arm.?rest|armrest|sandaran.?tangan|tangan/.test(name))
+      detectedShape = 'armrest';
+    // Side panel/frame
+    else if (/samping|side|stile|upright|rangka.?samping/.test(name))
+      detectedShape = 'panel_tall';
+    // Seat board
+    else if (/seat|dudukan|alas|bottom|top.?panel|atas|bawah/.test(name) && !/rail|frame/.test(name))
+      detectedShape = 'panel_wide';
+    // Shelf / horizontal panel
+    else if (/shelf|rak|plat|board|panel/.test(name) && p > l)
+      detectedShape = 'panel_wide';
+    // Rail / horizontal bar
+    else if (/rail|stretcher|sabuk|lintel|cross|brace/.test(name))
+      detectedShape = 'plank';
+    // Hardware / joinery / connector
+    else if (/mortise|tenon|dowel|screw|hardware|connector|joinery|fitting|sambungan/.test(name))
+      detectedShape = 'joinery';
+    // Beading / strip
+    else if (/beading|strip|trim|moulding|molding|list/.test(name))
+      detectedShape = 'beading';
+    // Auto-detect from proportions if still unknown
+    else if (p > 0 && l > 0) {
+      if (p > l * 3) detectedShape = 'plank';
+      else if (l > p * 1.8) detectedShape = 'panel_tall';
+      else if (p > l * 1.5) detectedShape = 'panel_wide';
+      else detectedShape = 'plank';
+    } else {
+      detectedShape = 'plank';
+    }
   }
 
-  // Color palette by type
+  // ── Color palette ──────────────────────────────────────────────────
   var PAL = {
-    SW:     { fill:'#C8A97A', stroke:'#7A5830', bg:'#FAF5EE', grain:true },
-    PW:     { fill:'#9EC0DC', stroke:'#1565C0', bg:'#EDF4FB', grain:false },
-    NW:     { fill:'#B8A8DC', stroke:'#5E35B1', bg:'#F3EEF9', grain:false },
-    MARBLE: { fill:'#CCCCDA', stroke:'#7070A0', bg:'#F4F4F8', grain:false },
-    METAL:  { fill:'#909098', stroke:'#404050', bg:'#F0F0F2', grain:false }
+    SW:     {fill:'#C8A97A', stroke:'#7A5830', bg:'#FAF5EE'},
+    PW:     {fill:'#9EC0DC', stroke:'#1565C0', bg:'#EDF4FB'},
+    NW:     {fill:'#B8A8DC', stroke:'#5E35B1', bg:'#F3EEF9'},
+    MARBLE: {fill:'#CCCCDA', stroke:'#7070A0', bg:'#F4F4F8'},
+    METAL:  {fill:'#909098', stroke:'#404050', bg:'#F0F0F2'}
   };
   var col = PAL[type] || PAL.SW;
+  var W = 150, H = 90;
 
-  var W = 160, H = 100;
   var svg = '<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'">';
   svg += '<rect width="'+W+'" height="'+H+'" fill="'+col.bg+'"/>';
 
-  // ─── ROUND ────────────────────────────────────────────────────────
-  if (shape === 'round') {
-    var cx = W/2, cy = 42;
-    var rx = Math.min(65, Math.max(20, (diam/180)*120));
-    var ry = Math.round(rx * 0.3 + 3);
-    var td = Math.min(12, Math.max(3, t * 1.5));
-    // Shadow
-    svg += '<ellipse cx="'+cx+'" cy="'+(cy+ry+4)+'" rx="'+(rx*.9)+'" ry="'+(ry*.4)+'" fill="#000" opacity=".07"/>';
-    // Thickness side
-    svg += '<ellipse cx="'+cx+'" cy="'+(cy+td)+'" rx="'+rx+'" ry="'+ry+'" fill="'+col.fill+'" opacity=".6"/>';
-    // Top face
-    svg += '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="'+col.fill+'" opacity=".9"/>';
-    svg += '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".7"/>';
-    // Rings
-    svg += '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(rx*.7)+'" ry="'+(ry*.7)+'" fill="none" stroke="'+col.stroke+'" stroke-width=".4" opacity=".25" stroke-dasharray="3,3"/>';
-    svg += '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(rx*.4)+'" ry="'+(ry*.4)+'" fill="none" stroke="'+col.stroke+'" stroke-width=".3" opacity=".18" stroke-dasharray="2,3"/>';
-    // Diameter line + label
-    svg += '<line x1="'+(cx-rx)+'" y1="'+cy+'" x2="'+(cx+rx)+'" y2="'+cy+'" stroke="'+col.stroke+'" stroke-width=".4" opacity=".25"/>';
-    svg += '<text x="'+cx+'" y="88" text-anchor="middle" font-size="9" fill="'+col.stroke+'" font-weight="600">Ø'+diam+' cm  t='+t+' cm</text>';
+  var dimLabel = '';
 
-  // ─── PANEL TALL ───────────────────────────────────────────────────
-  } else if (shape === 'panel_tall') {
-    var pw = Math.min(58, Math.max(14, (l/120)*90));
-    var ph = Math.min(72, Math.max(22, (p/200)*110));
-    var px = W/2-pw/2, py = (H-12)/2-ph/2;
-    // Shadow
-    svg += '<rect x="'+(px+3)+'" y="'+(py+3)+'" width="'+pw+'" height="'+ph+'" rx="2" fill="#000" opacity=".08"/>';
-    // Body
-    svg += '<rect x="'+px+'" y="'+py+'" width="'+pw+'" height="'+ph+'" rx="2" fill="'+col.fill+'" opacity=".85"/>';
-    svg += '<rect x="'+px+'" y="'+py+'" width="'+pw+'" height="'+ph+'" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".9" opacity=".6"/>';
-    // Grain
-    if(col.grain) for(var g=1;g<4;g++) {
-      svg += '<line x1="'+(px+3)+'" y1="'+(py+ph*g/4)+'" x2="'+(px+pw-3)+'" y2="'+(py+ph*g/4)+'" stroke="'+col.stroke+'" stroke-width=".35" opacity=".18"/>';
-    }
-    // Dimension lines
-    svg += '<line x1="'+(px+pw+2)+'" y1="'+py+'" x2="'+(px+pw+2)+'" y2="'+(py+ph)+'" stroke="'+col.stroke+'" stroke-width=".4" opacity=".3"/>';
-    svg += '<text x="'+W/2+'" y="89" text-anchor="middle" font-size="9" fill="'+col.stroke+'" font-weight="600">'+p+'×'+l+'×'+t+' cm</text>';
+  switch(detectedShape) {
 
-  // ─── PANEL WIDE ───────────────────────────────────────────────────
-  } else if (shape === 'panel_wide') {
-    var bw = Math.min(128, Math.max(40, (p/200)*140));
-    var bd = Math.min(46, Math.max(14, (l/100)*60));
-    var bh = Math.min(14, Math.max(4,  (t/6)*12));
-    var bx = W/2-bw/2, by = (H-12)/2-bd/2-bh/2;
-    var sk = bd*0.45; // skew
-    // Isometric: top face
-    svg += '<polygon points="'+bx+','+(by+bh)+' '+(bx+bw)+','+(by+bh)+' '+(bx+bw+sk)+','+by+' '+(bx+sk)+','+by+'"';
-    svg += ' fill="'+col.fill+'" opacity=".75" stroke="'+col.stroke+'" stroke-width=".7" stroke-linejoin="round"/>';
-    // Front face
-    svg += '<rect x="'+bx+'" y="'+(by+bh)+'" width="'+bw+'" height="'+bh+'" fill="'+col.fill+'" opacity=".9"';
-    svg += ' stroke="'+col.stroke+'" stroke-width=".7"/>';
-    // Side face
-    svg += '<polygon points="'+(bx+bw)+','+(by+bh)+' '+(bx+bw+sk)+','+by+' '+(bx+bw+sk)+','+(by+bh)+' '+(bx+bw)+','+(by+bh*2)+'"';
-    svg += ' fill="'+col.fill+'" opacity=".7" stroke="'+col.stroke+'" stroke-width=".7" stroke-linejoin="round"/>';
-    // Grain lines on top
-    if(col.grain) for(var g2=1;g2<3;g2++){
-      svg += '<line x1="'+(bx+bw*g2/3)+'" y1="'+(by+bh)+'" x2="'+(bx+sk+bw*g2/3)+'" y2="'+by+'" stroke="'+col.stroke+'" stroke-width=".35" opacity=".2"/>';
+    case 'curved_rail': {
+      // Curved arc shape like a top rail / back frame
+      var rx = Math.min(62, Math.max(28, (p||80)*0.65));
+      var ry = Math.min(22, Math.max(8, (t||5)*2.5));
+      var cy = 50, cx = 75;
+      svg += '<path d="M'+(cx-rx)+','+cy+' Q'+cx+','+(cy-rx*0.5)+' '+(cx+rx)+','+cy+'" fill="none" stroke="'+col.stroke+'" stroke-width="'+(ry*2)+'" stroke-linecap="round" opacity=".8"/>';
+      svg += '<path d="M'+(cx-rx)+','+cy+' Q'+cx+','+(cy-rx*0.5)+' '+(cx+rx)+','+cy+'" fill="none" stroke="'+col.fill+'" stroke-width="'+(ry*2-3)+'" stroke-linecap="round" opacity=".6"/>';
+      // grain lines
+      for(var g=0;g<3;g++){
+        var gx = cx-rx+rx*g*0.7;
+        svg += '<circle cx="'+Math.round(gx)+'" cy="'+(cy-rx*0.18)+'" r="1" fill="'+col.stroke+'" opacity=".2"/>';
+      }
+      dimLabel = (p||'?')+'×'+( t||'?')+' cm (curved)';
+      break;
     }
-    svg += '<text x="'+W/2+'" y="89" text-anchor="middle" font-size="9" fill="'+col.stroke+'" font-weight="600">'+p+'×'+l+'×'+t+' cm</text>';
 
-  // ─── PLANK / RAIL / LEG ───────────────────────────────────────────
-  } else {
-    var rw = Math.min(136, Math.max(28, (p/200)*145));
-    var rt = Math.min(28,  Math.max(6,  (t/12)*26 + 6));
-    var rx2 = W/2-rw/2, ry2 = (H-12)/2-rt/2;
-    // Shadow
-    svg += '<rect x="'+(rx2+3)+'" y="'+(ry2+3)+'" width="'+rw+'" height="'+rt+'" rx="3" fill="#000" opacity=".08"/>';
-    // Body
-    svg += '<rect x="'+rx2+'" y="'+ry2+'" width="'+rw+'" height="'+rt+'" rx="3" fill="'+col.fill+'" opacity=".85"/>';
-    svg += '<rect x="'+rx2+'" y="'+ry2+'" width="'+rw+'" height="'+rt+'" rx="3" fill="none" stroke="'+col.stroke+'" stroke-width=".9" opacity=".6"/>';
-    // End grain caps
-    svg += '<rect x="'+rx2+'" y="'+ry2+'" width="8" height="'+rt+'" rx="3" fill="'+col.stroke+'" opacity=".12"/>';
-    svg += '<rect x="'+(rx2+rw-8)+'" y="'+ry2+'" width="8" height="'+rt+'" rx="3" fill="'+col.stroke+'" opacity=".12"/>';
-    // Grain lines
-    if(col.grain) for(var g3=1;g3<5;g3++){
-      svg += '<line x1="'+(rx2+rw*g3/5)+'" y1="'+ry2+'" x2="'+(rx2+rw*g3/5)+'" y2="'+(ry2+rt)+'" stroke="'+col.stroke+'" stroke-width=".35" opacity=".15"/>';
+    case 'round': {
+      var diam = c.diameter || p || 60;
+      var rx2 = Math.min(52, Math.max(18, diam*0.42));
+      var ry2 = Math.round(rx2*0.28+3);
+      var td  = Math.min(10, Math.max(3, (t||3)*1.5));
+      svg += '<ellipse cx="75" cy="'+(40+td)+'" rx="'+rx2+'" ry="'+ry2+'" fill="'+col.fill+'" opacity=".5"/>';
+      svg += '<ellipse cx="75" cy="40" rx="'+rx2+'" ry="'+ry2+'" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<ellipse cx="75" cy="40" rx="'+rx2+'" ry="'+ry2+'" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".7"/>';
+      svg += '<ellipse cx="75" cy="40" rx="'+(rx2*.7)+'" ry="'+(ry2*.7)+'" fill="none" stroke="'+col.stroke+'" stroke-width=".4" opacity=".25" stroke-dasharray="3,2"/>';
+      dimLabel = 'Ø'+(c.diameter||p||'?')+' t'+(t||'?')+' cm';
+      break;
     }
-    svg += '<text x="'+W/2+'" y="89" text-anchor="middle" font-size="9" fill="'+col.stroke+'" font-weight="600">'+p+'×'+l+'×'+t+' cm</text>';
+
+    case 'cane_panel': {
+      // Cane weave pattern - grid dots
+      var cw = Math.min(100, Math.max(40, (p||60)*0.7));
+      var ch = Math.min(55, Math.max(25, (l||40)*0.55));
+      var cx3 = 75, cy3 = 42;
+      var cx4 = cx3-cw/2, cy4 = cy3-ch/2;
+      svg += '<rect x="'+cx4+'" y="'+cy4+'" width="'+cw+'" height="'+ch+'" rx="4" fill="'+col.fill+'" opacity=".2"/>';
+      svg += '<rect x="'+cx4+'" y="'+cy4+'" width="'+cw+'" height="'+ch+'" rx="4" fill="none" stroke="'+col.stroke+'" stroke-width="1" opacity=".6"/>';
+      // Weave grid
+      var cols2 = Math.round(cw/8), rows = Math.round(ch/8);
+      for(var ri=0;ri<rows;ri++){
+        for(var ci2=0;ci2<cols2;ci2++){
+          var gx2 = cx4+4+ci2*8, gy2 = cy4+4+ri*8;
+          if((ri+ci2)%2===0){
+            svg += '<rect x="'+gx2+'" y="'+gy2+'" width="5" height="5" rx="1" fill="'+col.stroke+'" opacity=".2"/>';
+          }
+        }
+      }
+      dimLabel = (p||'?')+'×'+(l||'?')+' cm (NW)';
+      break;
+    }
+
+    case 'angled_leg': {
+      // Angled leg - parallelogram
+      var lh = Math.min(65, Math.max(28, (p||45)*0.72));
+      var lw = Math.min(18, Math.max(8, (t||4)*3));
+      var angle = 12; // degrees tilt
+      var ox = Math.round(lh * Math.tan(angle*Math.PI/180));
+      var bx = 75, by = 75;
+      svg += '<polygon points="'+(bx-lw/2+ox)+','+(by-lh)+' '+(bx+lw/2+ox)+','+(by-lh)+' '+(bx+lw/2)+','+by+' '+(bx-lw/2)+','+by+'" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<polygon points="'+(bx-lw/2+ox)+','+(by-lh)+' '+(bx+lw/2+ox)+','+(by-lh)+' '+(bx+lw/2)+','+by+' '+(bx-lw/2)+','+by+'" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".7"/>';
+      // Grain
+      for(var gl=1;gl<4;gl++){
+        var gy3 = by-lh*gl/4;
+        svg += '<line x1="'+(bx-lw/2+ox*gl/4)+'" y1="'+gy3+'" x2="'+(bx+lw/2+ox*gl/4)+'" y2="'+gy3+'" stroke="'+col.stroke+'" stroke-width=".4" opacity=".15"/>';
+      }
+      svg += '<text x="75" y="82" text-anchor="middle" font-size="8" fill="'+col.stroke+'" opacity=".5">8-10°</text>';
+      dimLabel = (p||'?')+'×'+(l||'?')+'×'+(t||'?')+' cm';
+      break;
+    }
+
+    case 'leg': {
+      // Straight leg - tall rectangle
+      var lh2 = Math.min(65, Math.max(25, (p||45)*0.72));
+      var lw2 = Math.min(20, Math.max(8, (t||4)*3.5));
+      var lx = 75-lw2/2, ly = 75-lh2;
+      svg += '<rect x="'+lx+'" y="'+ly+'" width="'+lw2+'" height="'+lh2+'" rx="2" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<rect x="'+lx+'" y="'+ly+'" width="'+lw2+'" height="'+lh2+'" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".7"/>';
+      for(var gl2=1;gl2<4;gl2++) svg += '<line x1="'+(lx+2)+'" y1="'+(ly+lh2*gl2/4)+'" x2="'+(lx+lw2-2)+'" y2="'+(ly+lh2*gl2/4)+'" stroke="'+col.stroke+'" stroke-width=".35" opacity=".18"/>';
+      dimLabel = (p||'?')+'×'+(l||'?')+'×'+(t||'?')+' cm';
+      break;
+    }
+
+    case 'armrest': {
+      // Armrest - gentle S-curve horizontal
+      var aw = Math.min(110, Math.max(50, (p||55)*0.82));
+      var ah = Math.min(14, Math.max(7, (t||3.5)*2.5));
+      var ax = 75-aw/2, ay = 40-ah/2;
+      svg += '<path d="M'+ax+','+(ay+ah)+' C'+(ax+aw*0.25)+','+(ay+ah*1.3)+' '+(ax+aw*0.75)+','+(ay-ah*0.3)+' '+(ax+aw)+','+(ay+ah)+'" fill="'+col.fill+'" opacity=".7"/>';
+      svg += '<path d="M'+ax+','+ay+' C'+(ax+aw*0.25)+','+(ay-ah*0.3)+' '+(ax+aw*0.75)+','+(ay+ah*1.3)+' '+(ax+aw)+','+ay+'" fill="none" stroke="'+col.stroke+'" stroke-width="'+ah+'" stroke-linecap="round" opacity=".6"/>';
+      dimLabel = (p||'?')+'×'+(l||'?')+' cm';
+      break;
+    }
+
+    case 'panel_tall': {
+      var ph = Math.min(65, Math.max(22, (p||60)*0.58));
+      var pw = Math.min(42, Math.max(12, (l||15)*0.55));
+      var px = 75-pw/2, py = 75-ph;
+      svg += '<rect x="'+(px+2)+'" y="'+(py+2)+'" width="'+pw+'" height="'+ph+'" rx="2" fill="#000" opacity=".06"/>';
+      svg += '<rect x="'+px+'" y="'+py+'" width="'+pw+'" height="'+ph+'" rx="2" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<rect x="'+px+'" y="'+py+'" width="'+pw+'" height="'+ph+'" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".9" opacity=".6"/>';
+      for(var g2=1;g2<4;g2++) svg += '<line x1="'+(px+3)+'" y1="'+(py+ph*g2/4)+'" x2="'+(px+pw-3)+'" y2="'+(py+ph*g2/4)+'" stroke="'+col.stroke+'" stroke-width=".35" opacity=".18"/>';
+      dimLabel = (p||'?')+'×'+(l||'?')+'×'+(t||'?')+' cm';
+      break;
+    }
+
+    case 'panel_wide': {
+      var bw = Math.min(120, Math.max(40, (p||60)*0.75));
+      var bd = Math.min(40, Math.max(14, (l||30)*0.52));
+      var bh = Math.min(12, Math.max(4,  (t||3)*2.8));
+      var bx2 = 75-bw/2, by2 = 42-bd/2, sk = bd*0.4;
+      svg += '<polygon points="'+bx2+','+(by2+bh)+' '+(bx2+bw)+','+(by2+bh)+' '+(bx2+bw+sk)+','+by2+' '+(bx2+sk)+','+by2+'" fill="'+col.fill+'" opacity=".72" stroke="'+col.stroke+'" stroke-width=".7" stroke-linejoin="round"/>';
+      svg += '<rect x="'+bx2+'" y="'+(by2+bh)+'" width="'+bw+'" height="'+bh+'" fill="'+col.fill+'" opacity=".9" stroke="'+col.stroke+'" stroke-width=".7"/>';
+      svg += '<polygon points="'+(bx2+bw)+','+(by2+bh)+' '+(bx2+bw+sk)+','+by2+' '+(bx2+bw+sk)+','+(by2+bh)+' '+(bx2+bw)+','+(by2+bh*2)+'" fill="'+col.fill+'" opacity=".68" stroke="'+col.stroke+'" stroke-width=".7" stroke-linejoin="round"/>';
+      dimLabel = (p||'?')+'×'+(l||'?')+'×'+(t||'?')+' cm';
+      break;
+    }
+
+    case 'joinery': {
+      // Mortise & tenon connector visualization
+      svg += '<rect x="52" y="32" width="46" height="16" rx="2" fill="'+col.fill+'" opacity=".7"/>';
+      svg += '<rect x="52" y="32" width="46" height="16" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".6"/>';
+      // Tenon tab
+      svg += '<rect x="85" y="26" width="13" height="28" rx="2" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<rect x="85" y="26" width="13" height="28" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".7"/>';
+      svg += '<text x="75" y="75" text-anchor="middle" font-size="8" fill="'+col.stroke+'" opacity=".5">Mortise & Tenon</text>';
+      dimLabel = '×'+(qty)+' pcs';
+      break;
+    }
+
+    case 'beading': {
+      // Thin beading/strip
+      var bew = Math.min(120, Math.max(50, (p||50)*0.78));
+      var beh = Math.min(8, Math.max(3, (t||1.5)*3));
+      svg += '<rect x="'+(75-bew/2)+'" y="'+(42-beh/2)+'" width="'+bew+'" height="'+beh+'" rx="'+( beh/2)+'" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<rect x="'+(75-bew/2)+'" y="'+(42-beh/2)+'" width="'+bew+'" height="'+beh+'" rx="'+( beh/2)+'" fill="none" stroke="'+col.stroke+'" stroke-width=".7" opacity=".6"/>';
+      dimLabel = (p||'?')+'×'+(t||'?')+' cm (strip)';
+      break;
+    }
+
+    default: {
+      // Standard plank
+      var rw = Math.min(128, Math.max(28, (p||80)*0.72));
+      var rt = Math.min(26, Math.max(6,  (t||4)*3.2+5));
+      var rx3 = 75-rw/2, ry3 = 42-rt/2;
+      svg += '<rect x="'+(rx3+2)+'" y="'+(ry3+2)+'" width="'+rw+'" height="'+rt+'" rx="2" fill="#000" opacity=".07"/>';
+      svg += '<rect x="'+rx3+'" y="'+ry3+'" width="'+rw+'" height="'+rt+'" rx="2" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<rect x="'+rx3+'" y="'+ry3+'" width="'+rw+'" height="'+rt+'" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".9" opacity=".6"/>';
+      svg += '<rect x="'+rx3+'" y="'+ry3+'" width="9" height="'+rt+'" rx="2" fill="'+col.stroke+'" opacity=".1"/>';
+      svg += '<rect x="'+(rx3+rw-9)+'" y="'+ry3+'" width="9" height="'+rt+'" rx="2" fill="'+col.stroke+'" opacity=".1"/>';
+      for(var g3=1;g3<5;g3++) svg += '<line x1="'+(rx3+rw*g3/5)+'" y1="'+ry3+'" x2="'+(rx3+rw*g3/5)+'" y2="'+(ry3+rt)+'" stroke="'+col.stroke+'" stroke-width=".35" opacity=".14"/>';
+      dimLabel = (p||'?')+'×'+(l||'?')+'×'+(t||'?')+' cm';
+    }
+  }
+
+  // Dimension label at bottom
+  if (dimLabel) {
+    svg += '<text x="75" y="84" text-anchor="middle" font-size="8.5" fill="'+col.stroke+'" font-weight="600" opacity=".65">'+dimLabel+'</text>';
   }
 
   svg += '</svg>';
   return svg;
 }
 
-
-
-
-// ── GET TABLE ROWS ────────────────────────────────────────────────
-function getTableRows() {
-  var rows = [];
-  var tbody = document.getElementById('cut-body');
-  if (!tbody) return rows;
-  tbody.querySelectorAll('tr').forEach(function(tr) {
-    var tds = tr.querySelectorAll('td');
-    var inps = tr.querySelectorAll('.num-input, input[type="number"]');
-    if (tds.length < 4) return;
-    var codeEl  = tds[0];
-    var nameEl  = tds[1];
-    var typeEl  = tr.querySelector('.tag');
-    var type    = typeEl ? typeEl.textContent.trim() : 'SW';
-    var qty     = +(inps[0] ? inps[0].value : 1) || 1;
-    var p       = +(inps[1] ? inps[1].value : 0) || 0;
-    var l       = +(inps[2] ? inps[2].value : 0) || 0;
-    var t       = +(inps[3] ? inps[3].value : 0) || 0;
-    var volTot  = ((p/100)*(l/100)*(t/100)*qty).toFixed(4);
-    var volLog  = type==='SW' ? ((p/100)*(l/100)*(t/100)*qty/0.35).toFixed(4) : '';
-    var code    = codeEl.textContent.trim();
-    var name    = nameEl.querySelector('input') ? nameEl.querySelector('input').value : nameEl.textContent.trim();
-    if (!code) return;
-    rows.push({ code:code, name:name, type:type, qty:qty, p:p, l:l, t:t, volTot:volTot, volLog:volLog });
-  });
-  return rows;
-}
-
-// ── SAVE IDENTITAS PRODUK ─────────────────────────────────────────
-window.saveIdentitas = async function() {
-  var sku = document.getElementById('p-sku').value.trim();
-  if (!sku) { showToast('⚠️ SKU / Product ID wajib diisi!'); return; }
-
-  var identitas = {
-    sku:       sku,
-    nama:      document.getElementById('p-nama').value.trim(),
-    kategori:  document.getElementById('p-kategori').value,
-    style:     document.getElementById('p-style').value.trim(),
-    panjang:   +document.getElementById('p-panjang').value || 0,
-    lebar:     +document.getElementById('p-lebar').value  || 0,
-    tinggi:    +document.getElementById('p-tinggi').value || 0,
-    kayu:      document.getElementById('p-kayu').value.trim(),
-    finishing: document.getElementById('p-finishing').value.trim(),
-    ket:       document.getElementById('p-ket').value.trim(),
-    komponen:  getTableRows(),
-    confidence: _aiResult ? (_aiResult.confidence||0) : 0,
-    updatedAt:  serverTimestamp(),
-    updatedBy:  CU.email || 'unknown'
-  };
-
-  var btn = document.querySelector('[onclick*="saveIdentitas"]');
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Menyimpan...'; }
-
-  try {
-    await setDoc(doc(db, 'products', sku), identitas);
-    var statusEl = document.getElementById('id-status');
-    if (statusEl) {
-      statusEl.textContent = '✅ Tersimpan';
-      statusEl.className = 'badge badge-done';
-    }
-    showToast('✅ Identitas produk ' + sku + ' tersimpan ke Firebase!');
-    // Reload product list
-    await loadProductList();
-  } catch(e) {
-    showToast('❌ Gagal simpan: ' + e.message);
-    console.error('saveIdentitas error:', e);
-  } finally {
-    if (btn) { btn.disabled = false; btn.innerHTML = '💾 Simpan Identitas Produk'; }
-  }
-};
-
-// ── UPDATE SYNC STATUS ────────────────────────────────────────────
-function updateSyncStatus() {
-  var syncDiv = document.getElementById('sync-content');
-  if (!syncDiv) return;
-  var rows = document.querySelectorAll('#cut-body tr');
-  if (!rows.length) {
-    syncDiv.innerHTML = '<div style="text-align:center;padding:20px;color:#8a8680;">Belum ada data untuk disync.</div>';
-    return;
-  }
-  var html = '<div style="margin-bottom:8px;font-size:12px;font-weight:700;color:#1a1917;">Status Sync ke Master Data ERP</div>';
-  rows.forEach(function(tr) {
-    var tds = tr.querySelectorAll('td');
-    if (tds.length < 2) return;
-    var typeEl = tr.querySelector('.tag');
-    var type = typeEl ? typeEl.textContent.trim() : 'SW';
-    var name = tds[1].textContent.trim() || '—';
-    var code = tds[0].textContent.trim() || '—';
-    var inMat = _mats && _mats.some(function(m){ return m.id===code || m.cat===type; });
-    html += '<div style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;background:var(--bg2);margin-bottom:4px;">';
-    html += '<div style="width:7px;height:7px;border-radius:50%;flex-shrink:0;background:'+(inMat?'#639922':'#1565c0')+';"></div>';
-    html += '<span style="flex:1;font-size:11px;">'+name+' <span style="color:#8a8680;font-size:10px;">('+type+')</span></span>';
-    html += '<span style="font-size:10px;color:'+(inMat?'#2d5a27':'#1565c0')+';font-weight:600;">'+(inMat?'✅ Sudah di Master':'🆕 Akan ditambahkan')+'</span>';
-    html += '</div>';
-  });
-  html += '<button onclick="syncToERP()" style="margin-top:8px;width:100%;padding:8px;background:#2d5a27;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">🔄 Sync Sekarang ke ERP Master Data</button>';
-  syncDiv.innerHTML = html;
-}
-
-// Register bridge aliases for HTML inline handlers
-window._handleFileSelect = window.handleFileSelect;
-window._handleDrop = window.handleDrop;
-window._removeImage = window.removeImage;
-window._analyzeImage = window.analyzeImage;
-window._addImgSlot = window.addImgSlot;
-window._openGPhotoLink = window.openGPhotoLink;
-window._addImgFromUrl = window.addImgFromUrl;
-window._switchTab = window.switchTab;
-window._exportCSV = window.exportCSV;
-window._exportExcel = window.exportExcel;
-window._exportPDF = window.exportPDF;
-window._exportJSON = window.exportJSON;
-window._downloadTemplate = window.downloadTemplate;
-window._openImportModal = window.openImportModal;
-window._closeModal = window.closeModal;
-window._handleImpDrop = window.handleImpDrop;
-window._readImpFile = window.readImpFile;
-window._applyImport = window.applyImport;
-window._syncToERP = window.syncToERP;
-window._saveIdentitas = window.saveIdentitas;
-window._resetAll = window.resetAll;
-window._updateStats = window.updateStats;
-window._addRow = window.addRow;
-window._loadProduct = window.loadProduct;
-window._printExploded = window.printExploded;
-window._downloadExplodedSVG = window.downloadExplodedSVG;
-window._updateSyncStatus = updateSyncStatus;
-</script>
-
-<!-- Bridge: non-module inline handlers -->
-<script>
-function handleFileSelect(e){ if(window._handleFileSelect) window._handleFileSelect(e); }
-function handleDrop(e){ if(window._handleDrop) window._handleDrop(e); else e.preventDefault(); }
-function removeImage(){ if(window._removeImage) window._removeImage(); }
-function analyzeImage(){ if(window._analyzeImage) window._analyzeImage(); }
-function addImgSlot(){ if(window._addImgSlot) window._addImgSlot(); }
-function openGPhotoLink(){ if(window._openGPhotoLink) window._openGPhotoLink(); }
-function addImgFromUrl(){ if(window._addImgFromUrl) window._addImgFromUrl(); }
-function switchTab(t,b){ if(window._switchTab) window._switchTab(t,b); }
-function exportCSV(){ if(window._exportCSV) window._exportCSV(); }
-function exportExcel(){ if(window._exportExcel) window._exportExcel(); }
-function exportPDF(){ if(window._exportPDF) window._exportPDF(); }
-function exportJSON(){ if(window._exportJSON) window._exportJSON(); }
-function downloadTemplate(){ if(window._downloadTemplate) window._downloadTemplate(); }
-function openImportModal(){ if(window._openImportModal) window._openImportModal(); }
-function closeModal(id){ if(window._closeModal) window._closeModal(id); }
-function handleImpDrop(e){ if(window._handleImpDrop) window._handleImpDrop(e); }
-function readImpFile(e){ if(window._readImpFile) window._readImpFile(e); }
-function applyImport(){ if(window._applyImport) window._applyImport(); }
-function syncToERP(){ if(window._syncToERP) window._syncToERP(); }
-function saveIdentitas(){ if(window._saveIdentitas) window._saveIdentitas(); }
-function resetAll(){ if(window._resetAll) window._resetAll(); }
-function updateStats(){ if(window._updateStats) window._updateStats(); }
-function addRow(){ if(window._addRow) window._addRow(); }
-function loadProduct(sku){ if(window._loadProduct) window._loadProduct(sku); }
-function printExploded(){ if(window._printExploded) window._printExploded(); }
-function downloadExplodedSVG(){ if(window._downloadExplodedSVG) window._downloadExplodedSVG(); }
-
-// ── Generate Exploded View ────────────────────────────────────────────
-function generateAiExploded(comps, r) {
-  if (!comps || !comps.length) return;
-  var wrap = document.getElementById('ai-exploded-wrap');
-  var svgEl = document.getElementById('ai-exploded-svg');
-  if (!wrap || !svgEl) return;
-
-  var GAP = 38;
-  var svgH = Math.max(260, comps.length * GAP + 70);
-  var CX = 170; // center x for shapes
-  var maxW = 200;
-  var colRight = CX + maxW/2 + 16;
-
-  // Type colors
-  var TYPE_FILL   = {SW:'currentColor', PW:'#1565c0', NW:'#6a1b9a', MARBLE:'#8e8e9e', METAL:'#555'};
-  var TYPE_OP     = {SW:'.6', PW:'.25', NW:'.25', MARBLE:'.35', METAL:'.45'};
-  var TYPE_STROKE = {SW:'currentColor', PW:'#1565c0', NW:'#6a1b9a', MARBLE:'#8e8e9e', METAL:'#555'};
-
-  var svg = '<svg width="100%" viewBox="0 0 500 '+svgH+'" style="font-family:sans-serif;">';
-
-  // Title
-  svg += '<text x="250" y="13" text-anchor="middle" font-size="9" fill="currentColor" opacity=".5" font-weight="700">';
-  svg += (r.furniture_name_id || 'Furniture').slice(0,40) + ' — AI Generated Exploded View';
-  svg += '</text>';
-
-  var startY = 26;
-
-  comps.forEach(function(c, i) {
-    var y = startY + i * GAP;
-    var type = (c.type || 'SW').toUpperCase();
-    var shape = (c.shape || 'rectangular').toLowerCase();
-    var p = c.p || 80;
-    var l = c.l || 20;
-    var t = c.t || 4;
-    var qty = c.qty || 1;
-    var code = c.code || ('C-'+String(i+1).padStart(2,'0'));
-    var name = (c.name || 'Komponen').slice(0,24);
-    var fill   = TYPE_FILL[type]   || 'currentColor';
-    var op     = TYPE_OP[type]     || '.5';
-    var stroke = TYPE_STROKE[type] || 'currentColor';
-
-    // Scale width proportionally, max 200px
-    var refDim = shape === 'round' ? (c.diameter || p) : p;
-    var w = Math.min(maxW, Math.max(28, (refDim / 180) * maxW));
-    var h = Math.min(24, Math.max(8, (t / 20) * 40 + 8));
-    var x = CX - w/2;
-
-    // Dashed connector line between components
-    if (i > 0) {
-      svg += '<line x1="'+CX+'" y1="'+(y-GAP+12)+'" x2="'+CX+'" y2="'+y+'"';
-      svg += ' stroke="currentColor" stroke-width=".5" stroke-dasharray="3,3" opacity=".15"/>';
-    }
-
-    // Draw shape
-    if (shape === 'round' || shape === 'circular') {
-      // Ellipse for round/circular components (top view)
-      var rx = w/2;
-      var ry = Math.min(h, rx * 0.3 + 4);
-      svg += '<ellipse cx="'+CX+'" cy="'+(y+h/2)+'" rx="'+rx+'" ry="'+ry+'"';
-      svg += ' fill="'+fill+'" opacity="'+op+'"/>';
-      svg += '<ellipse cx="'+CX+'" cy="'+(y+h/2)+'" rx="'+rx+'" ry="'+ry+'"';
-      svg += ' fill="none" stroke="'+stroke+'" stroke-width=".8" opacity=".6"/>';
-      // Inner ring hint
-      svg += '<ellipse cx="'+CX+'" cy="'+(y+h/2)+'" rx="'+(rx*0.85)+'" ry="'+(ry*0.85)+'"';
-      svg += ' fill="none" stroke="'+stroke+'" stroke-width=".4" opacity=".3" stroke-dasharray="3,2"/>';
-    } else if (shape === 'panel') {
-      // Tall narrow rect for panels
-      var pw = Math.min(60, Math.max(15, (l/80)*60));
-      var ph = Math.min(30, Math.max(14, (t/8)*20+10));
-      var px = CX - pw/2;
-      svg += '<rect x="'+px+'" y="'+y+'" width="'+pw+'" height="'+ph+'" rx="2"';
-      svg += ' fill="'+fill+'" opacity="'+op+'"/>';
-      svg += '<rect x="'+px+'" y="'+y+'" width="'+pw+'" height="'+ph+'" rx="2"';
-      svg += ' fill="none" stroke="'+stroke+'" stroke-width=".7" opacity=".5"/>';
-      h = ph;
-    } else {
-      // Default: rectangle
-      svg += '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="2"';
-      svg += ' fill="'+fill+'" opacity="'+op+'"/>';
-      if (type !== 'SW') {
-        svg += '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="2"';
-        svg += ' fill="none" stroke="'+stroke+'" stroke-width=".8" opacity=".55"/>';
-      }
-    }
-
-    // Code label (left)
-    svg += '<text x="'+(x-5)+'" y="'+(y+h/2+3)+'"';
-    svg += ' text-anchor="end" font-size="8" fill="currentColor" opacity=".65" font-family="monospace">'+code+'</text>';
-
-    // Connector line to right labels
-    svg += '<line x1="'+(x+w)+'" y1="'+(y+h/2)+'" x2="'+(colRight-2)+'" y2="'+(y+h/2)+'"';
-    svg += ' stroke="currentColor" stroke-width=".5" opacity=".2" stroke-dasharray="2,1"/>';
-
-    // Component name
-    svg += '<text x="'+colRight+'" y="'+(y+h/2-2)+'"';
-    svg += ' font-size="9.5" fill="currentColor" opacity=".85" font-weight="600">'+name+'</text>';
-
-    // Dimensions (real values from AI)
-    var dimStr;
-    if (shape === 'round' || shape === 'circular') {
-      dimStr = qty+'× Ø'+(c.diameter||p)+'cm · t='+t+'cm · '+type;
-    } else {
-      dimStr = qty+'× '+p+'×'+l+'×'+t+'cm · '+type;
-    }
-    svg += '<text x="'+colRight+'" y="'+(y+h/2+10)+'"';
-    svg += ' font-size="7.5" fill="currentColor" opacity=".5">'+dimStr+'</text>';
-  });
-
-  // Confidence footer
-  var conf = r.confidence || 0;
-  svg += '<rect x="60" y="'+(svgH-12)+'" width="220" height="3" rx="1.5" fill="currentColor" opacity=".08"/>';
-  svg += '<rect x="60" y="'+(svgH-12)+'" width="'+Math.round(220*conf/100)+'" height="3" rx="1.5" fill="#2d5a27" opacity=".45"/>';
-  svg += '<text x="290" y="'+(svgH-7)+'" font-size="7" fill="currentColor" opacity=".4">'+conf+'% confidence · AI Generated</text>';
-  svg += '</svg>';
-
-  svgEl.innerHTML = svg;
-  wrap.style.display = 'block';
-}
-
-window.printAiExploded = function() {
-  var svg = document.getElementById('ai-exploded-svg');
-  if (!svg || !svg.innerHTML) { showToast('⚠️ Belum ada exploded view!'); return; }
-  var r = window._aiResult || {};
-  var w = window.open('', '_blank');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Exploded View</title><style>body{font-family:sans-serif;padding:20px;}@media print{button{display:none}}</style></head><body>' +
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">' +
-    '<div><b style="font-size:15px;">PT. Gabe International — Exploded View</b><br>' +
-    '<span style="font-size:12px;color:#8a8680;">' + (r.furniture_name_id || 'Furniture') + ' · AI Generated</span></div>' +
-    '<button onclick="window.print()" style="padding:7px 14px;background:#2d5a27;color:#fff;border:none;border-radius:7px;cursor:pointer;">🖨️ Print</button></div>' +
-    '<div style="border:1px solid #e8e6df;border-radius:8px;padding:12px;">' + svg.innerHTML + '</div>' +
-    '</body></html>');
-  w.document.close();
-};
-
-window.downloadAiExplodedSVG = function() {
-  var svg = document.getElementById('ai-exploded-svg');
-  if (!svg || !svg.innerHTML) { showToast('⚠️ Belum ada exploded view!'); return; }
-  var r = window._aiResult || {};
-  var name = (r.furniture_name_id || 'exploded').replace(/\s+/g, '_');
-  var blob = new Blob([svg.innerHTML], {type: 'image/svg+xml'});
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'ExplodedView_' + name + '.svg';
-  a.click();
-  showToast('💾 SVG didownload!');
-};
-
-// ── Apply to Calculator ────────────────────────────────────────────────
-window.applyAiResult = function() {
-  if (!_aiResult) return;
-  var r = _aiResult;
-
-  // 1. Set furniture type tab
-  var typeMap = { bed:'bed', lemari:'lemari', kursi:'kursi', sofa:'sofa', meja:'meja' };
-  var ftype = typeMap[r.furniture_type];
-  if (ftype && typeof ST !== 'undefined') {
-    ST.ftype = ftype;
-    ST.sidx = 0;
-    if (typeof TMPL !== 'undefined' && TMPL[ftype]) {
-      ST.dims = Object.assign({}, TMPL[ftype].sub[0].d || {});
-    }
-    if (typeof buildFTabs === 'function') buildFTabs();
-    if (typeof buildCP === 'function') buildCP();
-
-    // 2. Apply dimensions
-    setTimeout(function() {
-      var dims = r.dimensions || {};
-      var fieldMap = {
-        panjang: ['inp-p','inp-P'],
-        lebar:   ['inp-l','inp-L'],
-        tinggi:  ['inp-t','inp-T','inp-h','inp-H'],
-        tinggi_headboard: ['inp-hh','inp-HH'],
-        tinggi_footboard: ['inp-hf','inp-HF'],
-      };
-      Object.keys(dims).forEach(function(key) {
-        var val = dims[key];
-        if (!val) return;
-        var ids = fieldMap[key] || [];
-        ids.forEach(function(id) {
-          var el = document.getElementById(id);
-          if (el) { el.value = val; ST.dims[key] = val; }
-        });
-        // Also update ST.dims directly
-        ST.dims[key] = val;
-      });
-
-      // 3. Set wood type
-      if (r.wood_recommendation && typeof MM !== 'undefined') {
-        var woodName = r.wood_recommendation.toLowerCase();
-        var found = MM.find(function(m) {
-          return m.n && m.n.toLowerCase().includes(woodName);
-        });
-        if (found && typeof ST !== 'undefined') {
-          ST.dw = found.id;
-          if (typeof buildDWS === 'function') buildDWS();
-        }
-      }
-
-      // 4. Re-render
-      if (typeof render === 'function') render();
-      if (typeof buildWA === 'function') {
-        var comps = typeof TMPL !== 'undefined' && TMPL[ST.ftype] ? TMPL[ST.ftype].comps : [];
-        if (comps && comps.length) buildWA(comps);
-      }
-
-      if (typeof showToast === 'function') {
-        showToast('✅ Data AI diterapkan! Cek & sesuaikan dimensi jika perlu.');
-      }
-    }, 200);
-  } else {
-    if (typeof showToast === 'function') {
-      showToast('⚠️ Tipe furniture tidak dikenali. Pilih manual di tab furnitur.');
-    }
-  }
-};
-</script>
-
-
-
-<!-- IMPORT CUTTING LIST MODAL -->
-<div class="imp-modal-ov" id="imp-modal">
-  <div class="imp-modal">
-    <div class="imp-modal-hdr">
-      <h3>📥 Import Cutting List</h3>
-      <button class="imp-modal-x" onclick="closeImpModal()">✕</button>
-    </div>
-    <div class="imp-modal-body">
-      <div style="background:#fff8e8;border:1px solid #f0c060;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#7a5a10;">
-        <b>Format CSV:</b> Kode, Nama Komponen, Tipe(SW/PW/NW), Material ID, Qty, P(cm), L(cm), T(cm)<br>
-        <span style="color:#8a8680;">Contoh: KR-01, Kaki Depan, SW, SW-005, 2, 45, 4, 4</span>
-      </div>
-      <div class="imp-drop" id="imp-drop-zone"
-           onclick="document.getElementById('imp-file-input').click()"
-           ondragover="event.preventDefault();this.style.borderColor='#2d5a27'"
-           ondragleave="this.style.borderColor='#d8d5cb'"
-           ondrop="handleImpDrop(event)">
-        <div style="font-size:28px;margin-bottom:6px;">📂</div>
-        <div style="font-size:13px;font-weight:600;margin-bottom:2px;">Klik atau drag & drop file</div>
-        <div style="font-size:11px;color:#8a8680;">CSV atau Excel (.xlsx)</div>
-      </div>
-      <input type="file" id="imp-file-input" accept=".csv,.xlsx,.xls" style="display:none" onchange="readImpFile(event)">
-      <div class="imp-preview" id="imp-preview-tbl">
-        <div id="imp-preview-count" style="font-size:11px;font-weight:700;color:#2d5a27;margin-bottom:6px;"></div>
-        <table id="imp-preview-table">
-          <thead><tr><th>Kode</th><th>Nama</th><th>Tipe</th><th>Qty</th><th>P</th><th>L</th><th>T</th></tr></thead>
-          <tbody id="imp-preview-body"></tbody>
-        </table>
-      </div>
-    </div>
-    <div class="imp-modal-footer">
-      <button onclick="closeImpModal()" style="padding:7px 16px;background:#f0efe9;border:1.5px solid #d8d5cb;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;">Batal</button>
-      <button id="imp-apply-btn" onclick="applyImport()" disabled style="padding:7px 16px;background:#2d5a27;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;opacity:.5;">📥 Terapkan ke Kalkulator</button>
-    </div>
-  </div>
-</div>
-
-
-
-<script>
-// ═══ EXPORT / IMPORT CUTTING LIST ═══════════════════════════════════
-
-function getCuttingData() {
-  var rows = [];
-  var tbody = document.getElementById('cl-body');
-  if (!tbody) return rows;
-  var trs = tbody.querySelectorAll('tr');
-  trs.forEach(function(tr) {
-    var tds = tr.querySelectorAll('td');
-    if (tds.length < 8) return;
-    var sel = tr.querySelector('select.msel');
-    var matId = sel ? sel.value : 'TBD';
-    var matName = '';
-    if (sel) {
-      var opt = sel.querySelector('option[value="'+matId+'"]');
-      matName = opt ? opt.textContent : matId;
-    }
-    rows.push({
-      kode:     tds[0] ? tds[0].textContent.trim() : '',
-      nama:     tds[0] ? tds[0].title || tds[0].textContent.trim() : '',
-      tipe:     tds[1] ? tds[1].textContent.trim() : '',
-      material: matId,
-      mat_nama: matName,
-      qty:      tds[3] ? tds[3].textContent.trim() : '1',
-      p:        tds[4] ? tds[4].textContent.trim() : '0',
-      l:        tds[5] ? tds[5].textContent.trim() : '0',
-      t:        tds[6] ? tds[6].textContent.trim() : '0',
-      vol_pcs:  tds[7] ? tds[7].textContent.trim() : '0',
-      vol_tot:  tds[8] ? tds[8].textContent.trim() : '0',
-      vol_log:  tds[9] ? tds[9].textContent.trim() : '0'
-    });
-  });
-  return rows;
-}
-
-function dlBlob(data, name, mime) {
-  var b = new Blob([data], {type: mime});
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(b);
-  a.download = name;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-}
-
-function todayStr() {
-  return new Date().toISOString().split('T')[0];
-}
-
-// ── EXPORT CSV ───────────────────────────────────────────────────────
-window.exportCuttingCSV = function() {
-  var rows = getCuttingData();
-  if (!rows.length) { showToast('⚠️ Tidak ada data cutting list!'); return; }
-
-  var ftypeLabel = typeof ST !== 'undefined' ? (ST.ftype || 'furniture') : 'furniture';
-  var ref = typeof ST !== 'undefined' ? (ST.ref || '') : '';
-
-  var NL = String.fromCharCode(10);
-  var headerRows = [
-    'Ref,' + ref,
-    'Furniture Type,' + ftypeLabel,
-    'Export Date,' + todayStr(),
-    'Generated by,Gabe International Hub',
-    '',
-    'Kode,Nama Komponen,Tipe Material,Material ID,Nama Material,Qty,P (cm),L (cm),T (cm),Vol/pcs (m3),Vol Total (m3),Vol Log (m3)'
-  ];
-  var csv = headerRows.join(NL) + NL;
-    rows.forEach(function(r) {
-    csv += [
-      r.kode,
-      '"'+r.nama+'"',
-      r.tipe,
-      r.material,
-      '"'+r.mat_nama+'"',
-      r.qty, r.p, r.l, r.t,
-      r.vol_pcs, r.vol_tot, r.vol_log
-    ].join(',') + NL;
-  });
-
-  dlBlob('﻿' + csv, 'CuttingList_' + ftypeLabel + '_' + todayStr() + '.csv', 'text/csv;charset=utf-8');
-  showToast('📊 Cutting List diexport ke CSV! (' + rows.length + ' komponen)');
-};
-
-// ── EXPORT EXCEL ─────────────────────────────────────────────────────
-window.exportCuttingExcel = function() {
-  var rows = getCuttingData();
-  if (!rows.length) { showToast('⚠️ Tidak ada data!'); return; }
-
-  var ftypeLabel = typeof ST !== 'undefined' ? (ST.ftype || 'furniture') : 'furniture';
-  var ref = typeof ST !== 'undefined' ? (ST.ref || '') : '';
-
-  var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">';
-  html += '<head><meta charset="UTF-8"></head><body>';
-
-  // Info header
-  html += '<table>';
-  html += '<tr><td style="font-weight:bold;background:#1a3a1a;color:#fff" colspan="12">PT. Gabe International — Cutting List</td></tr>';
-  html += '<tr><td>Referensi</td><td>'+ref+'</td></tr>';
-  html += '<tr><td>Furniture</td><td>'+ftypeLabel+'</td></tr>';
-  html += '<tr><td>Tanggal</td><td>'+todayStr()+'</td></tr>';
-  html += '<tr><td colspan="12"></td></tr>';
-
-  // Table header
-  html += '<tr style="background:#2d5a27;color:#fff;font-weight:bold;">';
-  ['Kode','Nama Komponen','Tipe','Material ID','Nama Material','Qty','P (cm)','L (cm)','T (cm)','Vol/pcs m³','Vol Total m³','Vol Log m³']
-    .forEach(function(h) { html += '<th>'+h+'</th>'; });
-  html += '</tr>';
-
-  // Data rows
-  rows.forEach(function(r, i) {
-    var bg = i % 2 === 0 ? '#f5f4f0' : '#ffffff';
-    var typeColor = r.tipe === 'SW' ? '#e65100' : r.tipe === 'PW' ? '#1565c0' : '#6a1b9a';
-    html += '<tr style="background:'+bg+'">';
-    html += '<td style="font-family:monospace;font-size:11px;">'+r.kode+'</td>';
-    html += '<td style="font-weight:600;">'+r.nama+'</td>';
-    html += '<td style="color:'+typeColor+';font-weight:700;">'+r.tipe+'</td>';
-    html += '<td style="font-family:monospace;">'+r.material+'</td>';
-    html += '<td>'+r.mat_nama+'</td>';
-    html += '<td style="text-align:center;">'+r.qty+'</td>';
-    html += '<td style="text-align:right;">'+r.p+'</td>';
-    html += '<td style="text-align:right;">'+r.l+'</td>';
-    html += '<td style="text-align:right;">'+r.t+'</td>';
-    html += '<td style="text-align:right;">'+r.vol_pcs+'</td>';
-    html += '<td style="text-align:right;font-weight:600;color:#2d5a27;">'+r.vol_tot+'</td>';
-    html += '<td style="text-align:right;color:#e65100;">'+r.vol_log+'</td>';
-    html += '</tr>';
-  });
-  html += '</table></body></html>';
-
-  dlBlob(html, 'CuttingList_' + ftypeLabel + '_' + todayStr() + '.xls', 'application/vnd.ms-excel');
-  showToast('📗 Excel diexport!');
-};
-
-// ── DOWNLOAD TEMPLATE ────────────────────────────────────────────────
-window.downloadCuttingTemplate = function() {
-  var NL = String.fromCharCode(10);
-  var lines = [
-    'Kode,Nama Komponen,Tipe Material,Material ID,Qty,P (cm),L (cm),T (cm)',
-    'KR-01,Kaki Depan,SW,SW-005,2,45,4,4',
-    'KR-02,Kaki Belakang,SW,SW-005,2,60,4,4',
-    'KR-03,Front Rail,SW,SW-005,1,37,6,3',
-    'KR-08,Panel Dudukan,PW,PW-001,1,39,39,1.8'
-  ];
-  var csv = lines.join(NL);
-  dlBlob('\uFEFF' + csv, 'Template_CuttingList.csv', 'text/csv;charset=utf-8');
-  showToast('Template CSV didownload!');
-};
-
-// ── IMPORT FUNCTIONS ─────────────────────────────────────────────────
-var _impRows = [];
-
-window.openImportCutting = function() {
-  _impRows = [];
-  document.getElementById('imp-preview-tbl').style.display = 'none';
-  document.getElementById('imp-apply-btn').disabled = true;
-  document.getElementById('imp-apply-btn').style.opacity = '0.5';
-  document.getElementById('imp-file-input').value = '';
-  document.getElementById('imp-modal').classList.add('show');
-};
-
-window.closeImpModal = function() {
-  document.getElementById('imp-modal').classList.remove('show');
-};
-
-window.handleImpDrop = function(e) {
-  e.preventDefault();
-  document.getElementById('imp-drop-zone').style.borderColor = '#d8d5cb';
-  if (e.dataTransfer.files[0]) readImpFileObj(e.dataTransfer.files[0]);
-};
-
-window.readImpFile = function(e) {
-  if (e.target.files[0]) readImpFileObj(e.target.files[0]);
-};
-
-function readImpFileObj(file) {
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var text = e.target.result;
-    var lines = text.split(String.fromCharCode(10)).filter(function(l) {
-      return l.trim() && !l.startsWith('#') && !l.startsWith('Ref') &&
-             !l.startsWith('Furniture') && !l.startsWith('Tanggal') &&
-             !l.startsWith('Export') && !l.startsWith('Generated') &&
-             !l.startsWith('Kode,Nama') && l.trim() !== '';
-    });
-    _impRows = [];
-    lines.forEach(function(line) {
-      var cols = line.split(',').map(function(c) { return c.replace(/^"|"$/g,'').trim(); });
-      if (cols.length < 6 || !cols[0]) return;
-      _impRows.push({
-        kode: cols[0],
-        nama: cols[1] || cols[0],
-        tipe: (cols[2] || 'SW').toUpperCase(),
-        material: cols[3] || 'TBD',
-        qty: parseFloat(cols[4] || cols[5]) || 1,
-        p: parseFloat(cols[5] || cols[6]) || 0,
-        l: parseFloat(cols[6] || cols[7]) || 0,
-        t: parseFloat(cols[7] || cols[8]) || 0
-      });
-    });
-    showImpPreview();
-  };
-  reader.readAsText(file, 'UTF-8');
-}
-
-function showImpPreview() {
-  var tbody = document.getElementById('imp-preview-body');
-  tbody.innerHTML = '';
-  _impRows.forEach(function(r) {
-    var tr = document.createElement('tr');
-    var typeColor = r.tipe==='SW'?'#e65100':r.tipe==='PW'?'#1565c0':'#6a1b9a';
-    tr.innerHTML =
-      '<td style="font-family:monospace;">'+r.kode+'</td>'+
-      '<td style="font-weight:600;">'+r.nama+'</td>'+
-      '<td style="color:'+typeColor+';font-weight:700;">'+r.tipe+'</td>'+
-      '<td style="text-align:center;">'+r.qty+'</td>'+
-      '<td style="text-align:right;">'+r.p+'</td>'+
-      '<td style="text-align:right;">'+r.l+'</td>'+
-      '<td style="text-align:right;">'+r.t+'</td>';
-    tbody.appendChild(tr);
-  });
-  document.getElementById('imp-preview-count').textContent = '✅ ' + _impRows.length + ' komponen siap diimport:';
-  document.getElementById('imp-preview-tbl').style.display = 'block';
-  if (_impRows.length) {
-    document.getElementById('imp-apply-btn').disabled = false;
-    document.getElementById('imp-apply-btn').style.opacity = '1';
-  }
-}
-
-window.applyImport = function() {
-  if (!_impRows.length) return;
-  if (typeof ST === 'undefined') { showToast('⚠️ Kalkulator belum siap!'); return; }
-  ST.overrides = ST.overrides || {};
-  _impRows.forEach(function(r) {
-    ST.overrides[r.kode] = { p: r.p, l: r.l, t: r.t, qty: r.qty, mat: r.material };
-  });
-  if (typeof render === 'function') render();
-  closeImpModal();
-  showToast('✅ ' + _impRows.length + ' komponen diimport! Cek cutting list.');
-};
-</script>
-
-</body>
-</html>
+>
