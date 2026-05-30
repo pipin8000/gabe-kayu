@@ -808,118 +808,237 @@ function buildComponentCards(comps){
 }
 
 function buildCompIllustration(c, i) {
-  var p    = +(c.p || c.P || 60);
-  var l    = +(c.l || c.L || 30);
-  var t    = +(c.t || c.T || 4);
-  var qty  = c.qty || 1;
-  var type = (c.type || 'SW').toUpperCase();
-  var shape = (c.shape || 'rectangular').toLowerCase();
-  var diam = +(c.diameter || p);
-  var cname = (c.name || '').toLowerCase();
+  var p    = +(c.p||0), l = +(c.l||0), t = +(c.t||0);
+  var qty  = c.qty||1;
+  var type = (c.type||'SW').toUpperCase();
+  var name = (c.name||'').toLowerCase();
+  var shape = (c.shape||'').toLowerCase();
 
-  // Auto-detect shape from name if AI didn't set it correctly
-  if (!c.shape || c.shape === 'rectangular') {
-    if (/bundar|round|circle|bulat|marble top/.test(cname)) shape = 'round';
-    else if (/top panel|bottom panel|shelf|rak|seat board|alas|back panel/.test(cname)) shape = 'panel_wide';
-    else if (/side panel|vertical|pintu|door|divider/.test(cname)) shape = 'panel_tall';
-    else if (/leg|kaki|stile|stretcher|rail|sabuk|frame/.test(cname)) shape = 'plank';
-    else if (p > l * 2.5) shape = 'plank';
-    else if (l > p * 1.5) shape = 'panel_tall';
-    else if (p > l * 1.3 && t < 6) shape = 'panel_wide';
+  // ── Smart shape detection from component name ──────────────────────
+  var detectedShape = shape;
+  if (!detectedShape || detectedShape === 'rectangular') {
+    // Curved / Rail atas
+    if (/top.?rail|curved|rail.?atas|sandaran.?atas|back.?top|rangka.?atas|bow|arc/.test(name))
+      detectedShape = 'curved_rail';
+    // Round / Bundar
+    else if (/bundar|round|circle|bulat|diameter|ø/.test(name))
+      detectedShape = 'round';
+    // Cane / Rotan / Mesh panel
+    else if (/cane|rotan|anyaman|weave|mesh|rattan|webbing/.test(name))
+      detectedShape = 'cane_panel';
+    // Angled Leg
+    else if (/kaki|leg|foot/.test(name) && /miring|sudut|derajat|angle|angled/.test(name))
+      detectedShape = 'angled_leg';
+    // Regular Leg
+    else if (/kaki.*(depan|belakang|front|rear|back)|^kaki$|front.?leg|rear.?leg|back.?leg/.test(name))
+      detectedShape = 'leg';
+    // Armrest
+    else if (/arm.?rest|armrest|sandaran.?tangan|tangan/.test(name))
+      detectedShape = 'armrest';
+    // Side panel/frame
+    else if (/samping|side|stile|upright|rangka.?samping/.test(name))
+      detectedShape = 'panel_tall';
+    // Seat board
+    else if (/seat|dudukan|alas|bottom|top.?panel|atas|bawah/.test(name) && !/rail|frame/.test(name))
+      detectedShape = 'panel_wide';
+    // Shelf / horizontal panel
+    else if (/shelf|rak|plat|board|panel/.test(name) && p > l)
+      detectedShape = 'panel_wide';
+    // Rail / horizontal bar
+    else if (/rail|stretcher|sabuk|lintel|cross|brace/.test(name))
+      detectedShape = 'plank';
+    // Hardware / joinery / connector
+    else if (/mortise|tenon|dowel|screw|hardware|connector|joinery|fitting|sambungan/.test(name))
+      detectedShape = 'joinery';
+    // Beading / strip
+    else if (/beading|strip|trim|moulding|molding|list/.test(name))
+      detectedShape = 'beading';
+    // Auto-detect from proportions if still unknown
+    else if (p > 0 && l > 0) {
+      if (p > l * 3) detectedShape = 'plank';
+      else if (l > p * 1.8) detectedShape = 'panel_tall';
+      else if (p > l * 1.5) detectedShape = 'panel_wide';
+      else detectedShape = 'plank';
+    } else {
+      detectedShape = 'plank';
+    }
   }
 
-  // Color palette by type
+  // ── Color palette ──────────────────────────────────────────────────
   var PAL = {
-    SW:     { fill:'#C8A97A', stroke:'#7A5830', bg:'#FAF5EE', grain:true },
-    PW:     { fill:'#9EC0DC', stroke:'#1565C0', bg:'#EDF4FB', grain:false },
-    NW:     { fill:'#B8A8DC', stroke:'#5E35B1', bg:'#F3EEF9', grain:false },
-    MARBLE: { fill:'#CCCCDA', stroke:'#7070A0', bg:'#F4F4F8', grain:false },
-    METAL:  { fill:'#909098', stroke:'#404050', bg:'#F0F0F2', grain:false }
+    SW:     {fill:'#C8A97A', stroke:'#7A5830', bg:'#FAF5EE'},
+    PW:     {fill:'#9EC0DC', stroke:'#1565C0', bg:'#EDF4FB'},
+    NW:     {fill:'#B8A8DC', stroke:'#5E35B1', bg:'#F3EEF9'},
+    MARBLE: {fill:'#CCCCDA', stroke:'#7070A0', bg:'#F4F4F8'},
+    METAL:  {fill:'#909098', stroke:'#404050', bg:'#F0F0F2'}
   };
   var col = PAL[type] || PAL.SW;
+  var W = 150, H = 90;
 
-  var W = 160, H = 100;
   var svg = '<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'">';
   svg += '<rect width="'+W+'" height="'+H+'" fill="'+col.bg+'"/>';
 
-  // ─── ROUND ────────────────────────────────────────────────────────
-  if (shape === 'round') {
-    var cx = W/2, cy = 42;
-    var rx = Math.min(65, Math.max(20, (diam/180)*120));
-    var ry = Math.round(rx * 0.3 + 3);
-    var td = Math.min(12, Math.max(3, t * 1.5));
-    // Shadow
-    svg += '<ellipse cx="'+cx+'" cy="'+(cy+ry+4)+'" rx="'+(rx*.9)+'" ry="'+(ry*.4)+'" fill="#000" opacity=".07"/>';
-    // Thickness side
-    svg += '<ellipse cx="'+cx+'" cy="'+(cy+td)+'" rx="'+rx+'" ry="'+ry+'" fill="'+col.fill+'" opacity=".6"/>';
-    // Top face
-    svg += '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="'+col.fill+'" opacity=".9"/>';
-    svg += '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".7"/>';
-    // Rings
-    svg += '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(rx*.7)+'" ry="'+(ry*.7)+'" fill="none" stroke="'+col.stroke+'" stroke-width=".4" opacity=".25" stroke-dasharray="3,3"/>';
-    svg += '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(rx*.4)+'" ry="'+(ry*.4)+'" fill="none" stroke="'+col.stroke+'" stroke-width=".3" opacity=".18" stroke-dasharray="2,3"/>';
-    // Diameter line + label
-    svg += '<line x1="'+(cx-rx)+'" y1="'+cy+'" x2="'+(cx+rx)+'" y2="'+cy+'" stroke="'+col.stroke+'" stroke-width=".4" opacity=".25"/>';
-    svg += '<text x="'+cx+'" y="88" text-anchor="middle" font-size="9" fill="'+col.stroke+'" font-weight="600">Ø'+diam+' cm  t='+t+' cm</text>';
+  var dimLabel = '';
 
-  // ─── PANEL TALL ───────────────────────────────────────────────────
-  } else if (shape === 'panel_tall') {
-    var pw = Math.min(58, Math.max(14, (l/120)*90));
-    var ph = Math.min(72, Math.max(22, (p/200)*110));
-    var px = W/2-pw/2, py = (H-12)/2-ph/2;
-    // Shadow
-    svg += '<rect x="'+(px+3)+'" y="'+(py+3)+'" width="'+pw+'" height="'+ph+'" rx="2" fill="#000" opacity=".08"/>';
-    // Body
-    svg += '<rect x="'+px+'" y="'+py+'" width="'+pw+'" height="'+ph+'" rx="2" fill="'+col.fill+'" opacity=".85"/>';
-    svg += '<rect x="'+px+'" y="'+py+'" width="'+pw+'" height="'+ph+'" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".9" opacity=".6"/>';
-    // Grain
-    if(col.grain) for(var g=1;g<4;g++) {
-      svg += '<line x1="'+(px+3)+'" y1="'+(py+ph*g/4)+'" x2="'+(px+pw-3)+'" y2="'+(py+ph*g/4)+'" stroke="'+col.stroke+'" stroke-width=".35" opacity=".18"/>';
-    }
-    // Dimension lines
-    svg += '<line x1="'+(px+pw+2)+'" y1="'+py+'" x2="'+(px+pw+2)+'" y2="'+(py+ph)+'" stroke="'+col.stroke+'" stroke-width=".4" opacity=".3"/>';
-    svg += '<text x="'+W/2+'" y="89" text-anchor="middle" font-size="9" fill="'+col.stroke+'" font-weight="600">'+p+'×'+l+'×'+t+' cm</text>';
+  switch(detectedShape) {
 
-  // ─── PANEL WIDE ───────────────────────────────────────────────────
-  } else if (shape === 'panel_wide') {
-    var bw = Math.min(128, Math.max(40, (p/200)*140));
-    var bd = Math.min(46, Math.max(14, (l/100)*60));
-    var bh = Math.min(14, Math.max(4,  (t/6)*12));
-    var bx = W/2-bw/2, by = (H-12)/2-bd/2-bh/2;
-    var sk = bd*0.45; // skew
-    // Isometric: top face
-    svg += '<polygon points="'+bx+','+(by+bh)+' '+(bx+bw)+','+(by+bh)+' '+(bx+bw+sk)+','+by+' '+(bx+sk)+','+by+'"';
-    svg += ' fill="'+col.fill+'" opacity=".75" stroke="'+col.stroke+'" stroke-width=".7" stroke-linejoin="round"/>';
-    // Front face
-    svg += '<rect x="'+bx+'" y="'+(by+bh)+'" width="'+bw+'" height="'+bh+'" fill="'+col.fill+'" opacity=".9"';
-    svg += ' stroke="'+col.stroke+'" stroke-width=".7"/>';
-    // Side face
-    svg += '<polygon points="'+(bx+bw)+','+(by+bh)+' '+(bx+bw+sk)+','+by+' '+(bx+bw+sk)+','+(by+bh)+' '+(bx+bw)+','+(by+bh*2)+'"';
-    svg += ' fill="'+col.fill+'" opacity=".7" stroke="'+col.stroke+'" stroke-width=".7" stroke-linejoin="round"/>';
-    // Grain lines on top
-    if(col.grain) for(var g2=1;g2<3;g2++){
-      svg += '<line x1="'+(bx+bw*g2/3)+'" y1="'+(by+bh)+'" x2="'+(bx+sk+bw*g2/3)+'" y2="'+by+'" stroke="'+col.stroke+'" stroke-width=".35" opacity=".2"/>';
+    case 'curved_rail': {
+      // Curved arc shape like a top rail / back frame
+      var rx = Math.min(62, Math.max(28, (p||80)*0.65));
+      var ry = Math.min(22, Math.max(8, (t||5)*2.5));
+      var cy = 50, cx = 75;
+      svg += '<path d="M'+(cx-rx)+','+cy+' Q'+cx+','+(cy-rx*0.5)+' '+(cx+rx)+','+cy+'" fill="none" stroke="'+col.stroke+'" stroke-width="'+(ry*2)+'" stroke-linecap="round" opacity=".8"/>';
+      svg += '<path d="M'+(cx-rx)+','+cy+' Q'+cx+','+(cy-rx*0.5)+' '+(cx+rx)+','+cy+'" fill="none" stroke="'+col.fill+'" stroke-width="'+(ry*2-3)+'" stroke-linecap="round" opacity=".6"/>';
+      // grain lines
+      for(var g=0;g<3;g++){
+        var gx = cx-rx+rx*g*0.7;
+        svg += '<circle cx="'+Math.round(gx)+'" cy="'+(cy-rx*0.18)+'" r="1" fill="'+col.stroke+'" opacity=".2"/>';
+      }
+      dimLabel = (p||'?')+'×'+( t||'?')+' cm (curved)';
+      break;
     }
-    svg += '<text x="'+W/2+'" y="89" text-anchor="middle" font-size="9" fill="'+col.stroke+'" font-weight="600">'+p+'×'+l+'×'+t+' cm</text>';
 
-  // ─── PLANK / RAIL / LEG ───────────────────────────────────────────
-  } else {
-    var rw = Math.min(136, Math.max(28, (p/200)*145));
-    var rt = Math.min(28,  Math.max(6,  (t/12)*26 + 6));
-    var rx2 = W/2-rw/2, ry2 = (H-12)/2-rt/2;
-    // Shadow
-    svg += '<rect x="'+(rx2+3)+'" y="'+(ry2+3)+'" width="'+rw+'" height="'+rt+'" rx="3" fill="#000" opacity=".08"/>';
-    // Body
-    svg += '<rect x="'+rx2+'" y="'+ry2+'" width="'+rw+'" height="'+rt+'" rx="3" fill="'+col.fill+'" opacity=".85"/>';
-    svg += '<rect x="'+rx2+'" y="'+ry2+'" width="'+rw+'" height="'+rt+'" rx="3" fill="none" stroke="'+col.stroke+'" stroke-width=".9" opacity=".6"/>';
-    // End grain caps
-    svg += '<rect x="'+rx2+'" y="'+ry2+'" width="8" height="'+rt+'" rx="3" fill="'+col.stroke+'" opacity=".12"/>';
-    svg += '<rect x="'+(rx2+rw-8)+'" y="'+ry2+'" width="8" height="'+rt+'" rx="3" fill="'+col.stroke+'" opacity=".12"/>';
-    // Grain lines
-    if(col.grain) for(var g3=1;g3<5;g3++){
-      svg += '<line x1="'+(rx2+rw*g3/5)+'" y1="'+ry2+'" x2="'+(rx2+rw*g3/5)+'" y2="'+(ry2+rt)+'" stroke="'+col.stroke+'" stroke-width=".35" opacity=".15"/>';
+    case 'round': {
+      var diam = c.diameter || p || 60;
+      var rx2 = Math.min(52, Math.max(18, diam*0.42));
+      var ry2 = Math.round(rx2*0.28+3);
+      var td  = Math.min(10, Math.max(3, (t||3)*1.5));
+      svg += '<ellipse cx="75" cy="'+(40+td)+'" rx="'+rx2+'" ry="'+ry2+'" fill="'+col.fill+'" opacity=".5"/>';
+      svg += '<ellipse cx="75" cy="40" rx="'+rx2+'" ry="'+ry2+'" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<ellipse cx="75" cy="40" rx="'+rx2+'" ry="'+ry2+'" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".7"/>';
+      svg += '<ellipse cx="75" cy="40" rx="'+(rx2*.7)+'" ry="'+(ry2*.7)+'" fill="none" stroke="'+col.stroke+'" stroke-width=".4" opacity=".25" stroke-dasharray="3,2"/>';
+      dimLabel = 'Ø'+(c.diameter||p||'?')+' t'+(t||'?')+' cm';
+      break;
     }
-    svg += '<text x="'+W/2+'" y="89" text-anchor="middle" font-size="9" fill="'+col.stroke+'" font-weight="600">'+p+'×'+l+'×'+t+' cm</text>';
+
+    case 'cane_panel': {
+      // Cane weave pattern - grid dots
+      var cw = Math.min(100, Math.max(40, (p||60)*0.7));
+      var ch = Math.min(55, Math.max(25, (l||40)*0.55));
+      var cx3 = 75, cy3 = 42;
+      var cx4 = cx3-cw/2, cy4 = cy3-ch/2;
+      svg += '<rect x="'+cx4+'" y="'+cy4+'" width="'+cw+'" height="'+ch+'" rx="4" fill="'+col.fill+'" opacity=".2"/>';
+      svg += '<rect x="'+cx4+'" y="'+cy4+'" width="'+cw+'" height="'+ch+'" rx="4" fill="none" stroke="'+col.stroke+'" stroke-width="1" opacity=".6"/>';
+      // Weave grid
+      var cols2 = Math.round(cw/8), rows = Math.round(ch/8);
+      for(var ri=0;ri<rows;ri++){
+        for(var ci2=0;ci2<cols2;ci2++){
+          var gx2 = cx4+4+ci2*8, gy2 = cy4+4+ri*8;
+          if((ri+ci2)%2===0){
+            svg += '<rect x="'+gx2+'" y="'+gy2+'" width="5" height="5" rx="1" fill="'+col.stroke+'" opacity=".2"/>';
+          }
+        }
+      }
+      dimLabel = (p||'?')+'×'+(l||'?')+' cm (NW)';
+      break;
+    }
+
+    case 'angled_leg': {
+      // Angled leg - parallelogram
+      var lh = Math.min(65, Math.max(28, (p||45)*0.72));
+      var lw = Math.min(18, Math.max(8, (t||4)*3));
+      var angle = 12; // degrees tilt
+      var ox = Math.round(lh * Math.tan(angle*Math.PI/180));
+      var bx = 75, by = 75;
+      svg += '<polygon points="'+(bx-lw/2+ox)+','+(by-lh)+' '+(bx+lw/2+ox)+','+(by-lh)+' '+(bx+lw/2)+','+by+' '+(bx-lw/2)+','+by+'" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<polygon points="'+(bx-lw/2+ox)+','+(by-lh)+' '+(bx+lw/2+ox)+','+(by-lh)+' '+(bx+lw/2)+','+by+' '+(bx-lw/2)+','+by+'" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".7"/>';
+      // Grain
+      for(var gl=1;gl<4;gl++){
+        var gy3 = by-lh*gl/4;
+        svg += '<line x1="'+(bx-lw/2+ox*gl/4)+'" y1="'+gy3+'" x2="'+(bx+lw/2+ox*gl/4)+'" y2="'+gy3+'" stroke="'+col.stroke+'" stroke-width=".4" opacity=".15"/>';
+      }
+      svg += '<text x="75" y="82" text-anchor="middle" font-size="8" fill="'+col.stroke+'" opacity=".5">8-10°</text>';
+      dimLabel = (p||'?')+'×'+(l||'?')+'×'+(t||'?')+' cm';
+      break;
+    }
+
+    case 'leg': {
+      // Straight leg - tall rectangle
+      var lh2 = Math.min(65, Math.max(25, (p||45)*0.72));
+      var lw2 = Math.min(20, Math.max(8, (t||4)*3.5));
+      var lx = 75-lw2/2, ly = 75-lh2;
+      svg += '<rect x="'+lx+'" y="'+ly+'" width="'+lw2+'" height="'+lh2+'" rx="2" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<rect x="'+lx+'" y="'+ly+'" width="'+lw2+'" height="'+lh2+'" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".7"/>';
+      for(var gl2=1;gl2<4;gl2++) svg += '<line x1="'+(lx+2)+'" y1="'+(ly+lh2*gl2/4)+'" x2="'+(lx+lw2-2)+'" y2="'+(ly+lh2*gl2/4)+'" stroke="'+col.stroke+'" stroke-width=".35" opacity=".18"/>';
+      dimLabel = (p||'?')+'×'+(l||'?')+'×'+(t||'?')+' cm';
+      break;
+    }
+
+    case 'armrest': {
+      // Armrest - gentle S-curve horizontal
+      var aw = Math.min(110, Math.max(50, (p||55)*0.82));
+      var ah = Math.min(14, Math.max(7, (t||3.5)*2.5));
+      var ax = 75-aw/2, ay = 40-ah/2;
+      svg += '<path d="M'+ax+','+(ay+ah)+' C'+(ax+aw*0.25)+','+(ay+ah*1.3)+' '+(ax+aw*0.75)+','+(ay-ah*0.3)+' '+(ax+aw)+','+(ay+ah)+'" fill="'+col.fill+'" opacity=".7"/>';
+      svg += '<path d="M'+ax+','+ay+' C'+(ax+aw*0.25)+','+(ay-ah*0.3)+' '+(ax+aw*0.75)+','+(ay+ah*1.3)+' '+(ax+aw)+','+ay+'" fill="none" stroke="'+col.stroke+'" stroke-width="'+ah+'" stroke-linecap="round" opacity=".6"/>';
+      dimLabel = (p||'?')+'×'+(l||'?')+' cm';
+      break;
+    }
+
+    case 'panel_tall': {
+      var ph = Math.min(65, Math.max(22, (p||60)*0.58));
+      var pw = Math.min(42, Math.max(12, (l||15)*0.55));
+      var px = 75-pw/2, py = 75-ph;
+      svg += '<rect x="'+(px+2)+'" y="'+(py+2)+'" width="'+pw+'" height="'+ph+'" rx="2" fill="#000" opacity=".06"/>';
+      svg += '<rect x="'+px+'" y="'+py+'" width="'+pw+'" height="'+ph+'" rx="2" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<rect x="'+px+'" y="'+py+'" width="'+pw+'" height="'+ph+'" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".9" opacity=".6"/>';
+      for(var g2=1;g2<4;g2++) svg += '<line x1="'+(px+3)+'" y1="'+(py+ph*g2/4)+'" x2="'+(px+pw-3)+'" y2="'+(py+ph*g2/4)+'" stroke="'+col.stroke+'" stroke-width=".35" opacity=".18"/>';
+      dimLabel = (p||'?')+'×'+(l||'?')+'×'+(t||'?')+' cm';
+      break;
+    }
+
+    case 'panel_wide': {
+      var bw = Math.min(120, Math.max(40, (p||60)*0.75));
+      var bd = Math.min(40, Math.max(14, (l||30)*0.52));
+      var bh = Math.min(12, Math.max(4,  (t||3)*2.8));
+      var bx2 = 75-bw/2, by2 = 42-bd/2, sk = bd*0.4;
+      svg += '<polygon points="'+bx2+','+(by2+bh)+' '+(bx2+bw)+','+(by2+bh)+' '+(bx2+bw+sk)+','+by2+' '+(bx2+sk)+','+by2+'" fill="'+col.fill+'" opacity=".72" stroke="'+col.stroke+'" stroke-width=".7" stroke-linejoin="round"/>';
+      svg += '<rect x="'+bx2+'" y="'+(by2+bh)+'" width="'+bw+'" height="'+bh+'" fill="'+col.fill+'" opacity=".9" stroke="'+col.stroke+'" stroke-width=".7"/>';
+      svg += '<polygon points="'+(bx2+bw)+','+(by2+bh)+' '+(bx2+bw+sk)+','+by2+' '+(bx2+bw+sk)+','+(by2+bh)+' '+(bx2+bw)+','+(by2+bh*2)+'" fill="'+col.fill+'" opacity=".68" stroke="'+col.stroke+'" stroke-width=".7" stroke-linejoin="round"/>';
+      dimLabel = (p||'?')+'×'+(l||'?')+'×'+(t||'?')+' cm';
+      break;
+    }
+
+    case 'joinery': {
+      // Mortise & tenon connector visualization
+      svg += '<rect x="52" y="32" width="46" height="16" rx="2" fill="'+col.fill+'" opacity=".7"/>';
+      svg += '<rect x="52" y="32" width="46" height="16" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".6"/>';
+      // Tenon tab
+      svg += '<rect x="85" y="26" width="13" height="28" rx="2" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<rect x="85" y="26" width="13" height="28" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".7"/>';
+      svg += '<text x="75" y="75" text-anchor="middle" font-size="8" fill="'+col.stroke+'" opacity=".5">Mortise & Tenon</text>';
+      dimLabel = '×'+(qty)+' pcs';
+      break;
+    }
+
+    case 'beading': {
+      // Thin beading/strip
+      var bew = Math.min(120, Math.max(50, (p||50)*0.78));
+      var beh = Math.min(8, Math.max(3, (t||1.5)*3));
+      svg += '<rect x="'+(75-bew/2)+'" y="'+(42-beh/2)+'" width="'+bew+'" height="'+beh+'" rx="'+( beh/2)+'" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<rect x="'+(75-bew/2)+'" y="'+(42-beh/2)+'" width="'+bew+'" height="'+beh+'" rx="'+( beh/2)+'" fill="none" stroke="'+col.stroke+'" stroke-width=".7" opacity=".6"/>';
+      dimLabel = (p||'?')+'×'+(t||'?')+' cm (strip)';
+      break;
+    }
+
+    default: {
+      // Standard plank
+      var rw = Math.min(128, Math.max(28, (p||80)*0.72));
+      var rt = Math.min(26, Math.max(6,  (t||4)*3.2+5));
+      var rx3 = 75-rw/2, ry3 = 42-rt/2;
+      svg += '<rect x="'+(rx3+2)+'" y="'+(ry3+2)+'" width="'+rw+'" height="'+rt+'" rx="2" fill="#000" opacity=".07"/>';
+      svg += '<rect x="'+rx3+'" y="'+ry3+'" width="'+rw+'" height="'+rt+'" rx="2" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<rect x="'+rx3+'" y="'+ry3+'" width="'+rw+'" height="'+rt+'" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".9" opacity=".6"/>';
+      svg += '<rect x="'+rx3+'" y="'+ry3+'" width="9" height="'+rt+'" rx="2" fill="'+col.stroke+'" opacity=".1"/>';
+      svg += '<rect x="'+(rx3+rw-9)+'" y="'+ry3+'" width="9" height="'+rt+'" rx="2" fill="'+col.stroke+'" opacity=".1"/>';
+      for(var g3=1;g3<5;g3++) svg += '<line x1="'+(rx3+rw*g3/5)+'" y1="'+ry3+'" x2="'+(rx3+rw*g3/5)+'" y2="'+(ry3+rt)+'" stroke="'+col.stroke+'" stroke-width=".35" opacity=".14"/>';
+      dimLabel = (p||'?')+'×'+(l||'?')+'×'+(t||'?')+' cm';
+    }
+  }
+
+  // Dimension label at bottom
+  if (dimLabel) {
+    svg += '<text x="75" y="84" text-anchor="middle" font-size="8.5" fill="'+col.stroke+'" font-weight="600" opacity=".65">'+dimLabel+'</text>';
   }
 
   svg += '</svg>';
@@ -957,14 +1076,41 @@ function getTableRows() {
 }
 
 // ── SAVE IDENTITAS PRODUK ─────────────────────────────────────────
+// ── COMPRESS IMAGE TO THUMBNAIL ─────────────────────────────────
+function compressToThumbnail(base64data, maxW, maxH) {
+  return new Promise(function(resolve) {
+    if (!base64data) { resolve(null); return; }
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      var ratio = Math.min(maxW/img.width, maxH/img.height);
+      canvas.width  = Math.round(img.width  * ratio);
+      canvas.height = Math.round(img.height * ratio);
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      resolve(canvas.toDataURL('image/jpeg', 0.7));
+    };
+    img.onerror = function() { resolve(null); };
+    img.src = base64data;
+  });
+}
+
 window.saveIdentitas = async function() {
   var sku = document.getElementById('p-sku').value.trim();
   if (!sku) { showToast('⚠️ SKU / Product ID wajib diisi!'); return; }
+
+  // Compress image to thumbnail for storage
+  var thumbnail = null;
+  if (_imgData) {
+    try { thumbnail = await compressToThumbnail(_imgData, 320, 240); } 
+    catch(e) { console.log('Thumb error:', e); }
+  }
 
   var identitas = {
     sku:       sku,
     nama:      document.getElementById('p-nama').value.trim(),
     status:    'draft',
+    thumbnail: thumbnail,
     kategori:  document.getElementById('p-kategori').value,
     style:     document.getElementById('p-style').value.trim(),
     panjang:   +document.getElementById('p-panjang').value || 0,
