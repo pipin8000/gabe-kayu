@@ -3,705 +3,2433 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Master Produk — Gabe International Hub</title>
+<script src="lang.js"></script>
+<title>Wood Volume Calculator — Gabe International Hub</title>
 <style>
+:root{--bg:#f5f4f0;--s:#fff;--s2:#f0efe9;--s3:#e8e6df;--b:#d8d5cb;--b2:#c4c0b2;--t:#1a1917;--t2:#5a5750;--t3:#8a8680;--ac:#2d5a27;--ac2:#3d7a35;--acb:#eaf3e8;--act:#1e4219;--am:#92580a;--amb:#fef3e0;--amt:#6b3e04;--bl:#1a4a7a;--blb:#e8f0fb;--blt:#102d4e;--rd:#8b2020;--rdb:#fceaea;--pu:#5c2d91;--pub:#f3eafb;--sh:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);--r:8px;--rl:12px;--rxl:16px;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f0;color:#1a1917;min-height:100vh;}
-
-/* TOPBAR */
-.topbar{background:#1a3a1a;color:#fff;padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--t);font-size:14px;line-height:1.5;min-height:100vh;}
+.topbar{background:var(--ac);color:#fff;padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.2);}
 .topbar-brand{display:flex;align-items:center;gap:10px;}
-.back-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:5px 12px;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;cursor:pointer;}
-.topbar-nav{display:flex;align-items:center;gap:6px;}
-.topbar-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;text-decoration:none;cursor:pointer;}
-.topbar-btn.active{background:rgba(255,255,255,.25);}
-
-/* SEARCH HERO */
-.search-hero{background:linear-gradient(135deg,#1a3a1a 0%,#2d5a27 100%);padding:32px 20px;text-align:center;}
-.search-title{font-size:22px;font-weight:700;color:#fff;margin-bottom:4px;}
-.search-sub{font-size:13px;color:rgba(255,255,255,.7);margin-bottom:20px;}
-
-/* SEARCH BOX */
-.search-wrap{max-width:640px;margin:0 auto;position:relative;}
-.search-input{width:100%;padding:14px 48px 14px 18px;border:none;border-radius:12px;font-size:14px;font-family:inherit;box-shadow:0 4px 20px rgba(0,0,0,.2);outline:none;background:#fff;color:#1a1917;}
-.search-input:focus{box-shadow:0 4px 24px rgba(0,0,0,.3);}
-.search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none;}
-.search-clear{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:16px;cursor:pointer;color:#8a8680;display:none;background:none;border:none;padding:4px;}
-
-/* FILTER CHIPS */
-.filter-row{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
-.fchip{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;transition:all .15s;}
-.fchip:hover,.fchip.active{background:#fff;color:#1a3a1a;border-color:#fff;}
-.fchip .cnt{font-size:10px;opacity:.7;margin-left:4px;}
-
-/* MAIN CONTENT */
-.main{max-width:1300px;margin:0 auto;padding:20px 16px 60px;}
-
-/* RESULTS INFO */
-.results-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
-.results-count{font-size:13px;color:#5a5750;font-weight:500;}
-.results-sort{display:flex;align-items:center;gap:6px;}
-.sort-sel{padding:6px 10px;border:1.5px solid #d8d5cb;border-radius:8px;font-size:12px;font-family:inherit;background:#fff;cursor:pointer;}
-.new-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:#2d5a27;color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;}
-
-/* PRODUCT GRID */
-.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
-
-/* PRODUCT CARD */
-.prod-card{background:#fff;border:1px solid #d8d5cb;border-radius:14px;overflow:hidden;cursor:pointer;transition:all .2s;}
-.prod-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.1);transform:translateY(-2px);}
-.pc-hdr{padding:10px 14px;background:#f5f4f0;border-bottom:1px solid #e8e6df;display:flex;align-items:center;justify-content:space-between;}
-.pc-sku{font-family:monospace;font-size:11px;font-weight:700;background:#fff;padding:2px 8px;border-radius:5px;border:1px solid #d8d5cb;}
-.pc-status{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;}
-.pc-body{padding:12px 14px;}
-.pc-nama{font-size:14px;font-weight:700;margin-bottom:4px;color:#1a1917;}
-.pc-dim{font-size:11px;color:#8a8680;margin-bottom:8px;}
-.pc-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
-.tag{font-size:10px;padding:2px 8px;border-radius:20px;}
-.tag-kayu{background:#faf5ee;color:#7a5830;border:1px solid #e0c8a0;}
-.tag-kat{background:#f0efe9;color:#5a5750;border:1px solid #d8d5cb;}
-.tag-komp{background:#eaf3de;color:#27500a;border:1px solid #b0d890;}
-.pc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:8px;background:#f5f4f0;border-radius:8px;margin-bottom:8px;}
-.pcs-item{text-align:center;}
-.pcs-val{font-size:13px;font-weight:700;}
-.pcs-lbl{font-size:9px;color:#8a8680;text-transform:uppercase;}
-.pc-meta{font-size:10px;color:#8a8680;}
-.pc-foot{padding:8px 14px;border-top:1px solid #e8e6df;display:flex;gap:6px;}
-.pc-btn{flex:1;padding:6px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid;font-family:inherit;text-align:center;text-decoration:none;display:block;}
-.pc-btn.grn{background:#eaf3de;border-color:#97c459;color:#27500a;}
-.pc-btn.blu{background:#e6f1fb;border-color:#85b7eb;color:#0c447c;}
-.pc-btn.red{background:#fceaea;border-color:#f5c2c2;color:#8b2020;}
-
-/* STATUS BADGES */
-.st-draft{background:#f1f5f9;color:#334155;}
-.st-progress{background:#fef3c7;color:#92400e;}
-.st-review{background:#dbeafe;color:#1e3a8a;}
-.st-final{background:#dcfce7;color:#14532d;}
-.st-invoiced{background:#ede9fe;color:#4c1d95;}
-
-/* EMPTY STATE */
-.empty{text-align:center;padding:60px 20px;grid-column:1/-1;}
-.empty-icon{font-size:52px;margin-bottom:12px;opacity:.3;}
-.empty-title{font-size:16px;font-weight:700;color:#5a5750;margin-bottom:6px;}
-.empty-sub{font-size:12px;color:#8a8680;margin-bottom:16px;}
-
-/* DETAIL MODAL */
-.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-end;justify-content:center;z-index:500;padding:0;}
-.modal-ov.show{display:flex;}
-.modal{background:#fff;width:100%;max-width:860px;max-height:90vh;border-radius:16px 16px 0 0;overflow:hidden;display:flex;flex-direction:column;}
-@media(min-width:640px){
-  .modal-ov{align-items:center;padding:20px;}
-  .modal{border-radius:16px;max-height:85vh;}
-}
-.modal-hdr{padding:14px 18px;border-bottom:1px solid #d8d5cb;display:flex;align-items:center;justify-content:space-between;background:#f5f4f0;flex-shrink:0;}
-.modal-title{font-size:14px;font-weight:700;}
-.modal-x{width:28px;height:28px;border:none;background:#e8e6df;border-radius:50%;cursor:pointer;font-size:14px;flex-shrink:0;}
-.modal-body{padding:18px;overflow-y:auto;flex:1;}
-.modal-foot{padding:12px 18px;border-top:1px solid #d8d5cb;display:flex;gap:8px;justify-content:flex-end;background:#fafaf8;flex-shrink:0;}
-.mf-btn{padding:8px 18px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:inherit;}
-
-/* CUTTING TABLE */
-.cut-tbl{width:100%;border-collapse:collapse;font-size:11px;}
-.cut-tbl th{padding:6px 10px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#8a8680;border-bottom:1.5px solid #d8d5cb;background:#f5f4f0;}
-.cut-tbl td{padding:6px 10px;border-bottom:1px solid #e8e6df;}
-.cut-tbl tr:hover td{background:#f5f4f0;}
-.t-sw{background:#eaf3de;color:#27500a;font-size:10px;padding:1px 6px;border-radius:20px;font-weight:700;}
-.t-pw{background:#e3f2fd;color:#0c447c;font-size:10px;padding:1px 6px;border-radius:20px;font-weight:700;}
-.t-nw{background:#f3e5f5;color:#3c3489;font-size:10px;padding:1px 6px;border-radius:20px;font-weight:700;}
-
-/* STATS TOP */
-.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px;}
-.stat-c{background:#fff;border:1px solid #d8d5cb;border-radius:10px;padding:10px 14px;}
-.stat-v{font-size:22px;font-weight:700;margin-bottom:2px;}
-.stat-l{font-size:10px;color:#8a8680;text-transform:uppercase;letter-spacing:.04em;}
-
-/* LOADING */
-.spinner{display:inline-block;width:28px;height:28px;border:3px solid #d8d5cb;border-top-color:#2d5a27;border-radius:50%;animation:spin .7s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-state{grid-column:1/-1;text-align:center;padding:60px;color:#8a8680;}
-
-/* TOAST */
-#toast{position:fixed;bottom:20px;right:20px;background:#2d5a27;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:all .22s;z-index:999;pointer-events:none;}
+.tlogo{width:30px;height:30px;background:rgba(255,255,255,.2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.bname{font-size:15px;font-weight:600;}.bsub{font-size:11px;opacity:.7;}
+.topbar-right{display:flex;align-items:center;gap:8px;}
+.vbadge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:500;}
+.tsbadge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:3px 10px;font-size:10px;font-family:'Courier New',monospace;color:rgba(255,255,255,.85);}
+.app{max-width:1280px;margin:0 auto;padding:18px 14px 60px;}
+.mgrid{display:grid;grid-template-columns:310px 1fr;gap:16px;align-items:start;}
+@media(max-width:960px){.mgrid{grid-template-columns:1fr;}}
+.ftabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.ftab{display:flex;align-items:center;gap:7px;padding:8px 15px;border:1.5px solid var(--b);background:var(--s);border-radius:var(--rl);cursor:pointer;font-size:13px;font-weight:500;color:var(--t2);transition:all .15s;box-shadow:0 1px 2px rgba(0,0,0,.06);}
+.ftab:hover{border-color:var(--b2);background:var(--s2);}
+.ftab.active{border-color:var(--ac);background:var(--acb);color:var(--act);box-shadow:0 0 0 3px rgba(45,90,39,.1);}
+.card{background:var(--s);border:1px solid var(--b);border-radius:var(--rxl);box-shadow:var(--sh);overflow:hidden;}
+.chdr{padding:11px 15px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;background:var(--s2);}
+.chdr h3{font-size:13px;font-weight:600;}
+.cbody{padding:15px;}
+.stitle{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:7px;display:flex;align-items:center;gap:5px;}
+.stitle::after{content:'';flex:1;height:1px;background:var(--b);}
+.csec{margin-bottom:14px;}
+.fg{margin-bottom:9px;}
+.fg label{display:block;font-size:11px;font-weight:600;color:var(--t2);margin-bottom:3px;}
+.fc{width:100%;padding:7px 9px;border:1px solid var(--b);border-radius:var(--r);background:var(--s);color:var(--t);font-size:13px;font-family:inherit;}
+.fc:focus{outline:none;border-color:var(--ac2);box-shadow:0 0 0 3px rgba(45,90,39,.12);}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.pgroup{background:var(--s2);border:1px solid var(--b);border-radius:var(--r);padding:9px 11px;}
+.prow{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.prow:last-child{margin-bottom:0;}
+.plbl{font-size:12px;color:var(--t2);}
+.pinp{width:70px;padding:4px 7px;border:1px solid var(--b);border-radius:var(--r);background:var(--s);color:var(--t);font-size:13px;font-weight:600;text-align:center;}
+.pinp:focus{outline:none;border-color:var(--ac2);}
+input[type=range]{accent-color:var(--ac);}
+.mgridm{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:9px;margin-bottom:14px;}
+.mc{background:var(--s);border:1px solid var(--b);border-radius:var(--rl);padding:11px 13px;}
+.mc.hi{background:var(--acb);border-color:var(--ac2);}
+.mc.warn{background:var(--amb);border-color:#d4900f;}
+.mc.info{background:var(--blb);border-color:#3a7abf;}
+.mc.pu{background:var(--pub);border-color:#8a55c5;}
+.mlbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--t3);margin-bottom:4px;}
+.mval{font-size:18px;font-weight:700;line-height:1;margin-bottom:2px;}
+.mc.hi .mval{color:var(--ac);}
+.mc.warn .mval{color:var(--am);}
+.mc.info .mval{color:var(--bl);}
+.mc.pu .mval{color:var(--pu);}
+.msub{font-size:10px;color:var(--t3);}
+.fstrip{background:var(--s2);border:1px solid var(--b);border-radius:var(--r);padding:9px 13px;display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:13px;margin-bottom:14px;}
+.fstep{color:var(--t2);}.fop{color:var(--t3);font-weight:700;}
+.fpct{color:var(--am);font-weight:700;background:var(--amb);padding:2px 7px;border-radius:20px;}
+.frdm{color:var(--rd);font-weight:700;background:var(--rdb);padding:2px 7px;border-radius:20px;}
+.fres{color:var(--ac);font-weight:700;background:var(--acb);padding:3px 11px;border-radius:20px;font-size:14px;}
+.tbtns{display:flex;gap:4px;flex-wrap:wrap;}
+.tbtn{padding:5px 12px;border:1px solid var(--b);border-radius:20px;background:var(--s);color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;}
+.tbtn.active{background:var(--ac);border-color:var(--ac);color:#fff;}
+.tbtn:hover:not(.active){background:var(--s2);}
+.tcont{display:none;}.tcont.active{display:block;}
+.twrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--b);margin-bottom:5px;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+thead tr{background:var(--s2);}
+thead th{padding:8px 6px;text-align:center;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--t2);border-bottom:1.5px solid var(--b);white-space:nowrap;}
+thead th:first-child{text-align:left;padding-left:11px;}
+tbody tr:nth-child(even){background:var(--s2);}
+tbody tr:hover{background:var(--acb);}
+tbody td{padding:6px 5px;border-bottom:1px solid var(--b);}
+tbody td:first-child{padding-left:11px;}
+.grph{background:var(--s3)!important;}
+.grph td{padding:5px 11px!important;font-size:10px!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.07em!important;}
+tfoot td{padding:8px 6px;font-weight:700;background:var(--s2);border-top:2px solid var(--b2);font-size:12px;}
+.tcode{font-family:'Courier New',monospace;font-size:10px;color:var(--t3);text-align:center!important;}
+.tvol{font-family:'Courier New',monospace;font-size:10px;text-align:center!important;}
+.tvol.b{font-weight:700;color:var(--ac);}
+.tnum{text-align:center!important;}
+.msel{font-size:10px;padding:3px 4px;border:1px solid var(--b);border-radius:5px;background:var(--s);color:var(--t);cursor:pointer;width:100%;max-width:125px;}
+.msel:focus{outline:none;border-color:var(--ac2);}
+.pill{display:inline-block;padding:2px 6px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap;}
+.psw{background:var(--amb);color:var(--amt);border:1px solid #d4900f;}
+.pply{background:var(--blb);color:var(--blt);border:1px solid #3a7abf;}
+.pnw{background:var(--pub);color:var(--pu);border:1px solid #8a55c5;}
+.ptbd{background:var(--s3);color:var(--t3);border:1px solid var(--b);}
+/* Material Master */
+.mmgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:9px;margin-bottom:16px;}
+.mmcard{background:var(--s);border:1px solid var(--b);border-radius:var(--rl);padding:11px 13px;}
+.mmchdr{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
+.mmid{font-family:'Courier New',monospace;font-size:10px;color:var(--t3);background:var(--s2);padding:1px 5px;border-radius:4px;}
+.mmname{font-size:12px;font-weight:600;flex:1;}
+.mmmeta{display:grid;grid-template-columns:1fr 1fr;gap:3px;font-size:11px;color:var(--t2);margin-bottom:7px;}
+.mmpr{display:flex;align-items:center;gap:5px;padding-top:7px;border-top:1px solid var(--b);}
+.mmpinp{flex:1;padding:3px 7px;border:1px solid var(--b);border-radius:var(--r);font-size:12px;font-weight:600;background:var(--s);color:var(--t);}
+.mmpinp:focus{outline:none;border-color:var(--ac2);}
+.mmsave{padding:3px 9px;background:var(--ac);color:#fff;border:none;border-radius:var(--r);font-size:11px;font-weight:600;cursor:pointer;}
+.mmsave:hover{background:var(--ac2);}
+.phpill{display:inline-block;padding:1px 5px;border-radius:20px;font-size:9px;font-weight:700;background:var(--s3);color:var(--t3);}
+/* History */
+.htbl{width:100%;border-collapse:collapse;font-size:11px;}
+.htbl th{padding:6px 9px;background:var(--s2);border-bottom:1px solid var(--b);text-align:left;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--t3);}
+.htbl td{padding:6px 9px;border-bottom:1px solid var(--b);}
+.htbl tr:hover td{background:var(--acb);}
+.href{font-family:'Courier New',monospace;font-size:10px;color:var(--bl);}
+.hts{font-family:'Courier New',monospace;font-size:10px;color:var(--t3);}
+/* BOM */
+.bgrp{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px;}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border:1.5px solid var(--b);border-radius:var(--r);background:var(--s);color:var(--t);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;}
+.btn:hover{background:var(--s2);}
+.btn.pr{background:var(--ac);border-color:var(--ac);color:#fff;}
+.btn.pr:hover{background:var(--ac2);}
+.bombox{background:#1a1917;color:#a8e6a3;border-radius:var(--r);padding:13px;font-family:'Courier New',monospace;font-size:11px;line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:420px;overflow-y:auto;border:1px solid #333;}
+.bombox::-webkit-scrollbar{width:5px;}
+.bombox::-webkit-scrollbar-track{background:#2a2927;}
+.bombox::-webkit-scrollbar-thumb{background:#555;border-radius:3px;}
+/* Wood assign */
+.wawrap{background:var(--s2);border:1px solid var(--b);border-radius:var(--rl);overflow:hidden;margin-top:3px;}
+.wahdr{padding:6px 11px;background:var(--s3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t2);display:flex;align-items:center;justify-content:space-between;}
+.warow{display:flex;align-items:center;gap:6px;padding:5px 10px;border-bottom:1px solid var(--b);font-size:11px;}
+.warow:last-child{border-bottom:none;}
+.wacode{font-family:'Courier New',monospace;font-size:10px;color:var(--t3);min-width:44px;}
+.waname{flex:1;font-size:11px;}
+.wasel{font-size:11px;padding:3px 5px;border:1px solid var(--b);border-radius:5px;background:var(--s);color:var(--t);max-width:130px;}
+.wahdr{padding:6px 11px;background:var(--s3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t2);display:flex;align-items:center;justify-content:space-between;}
+.wa-none-badge{font-size:9px;padding:1px 6px;border-radius:20px;background:#f3eafb;color:#5c2d91;font-weight:700;border:1px solid #d0a0e8;}
+/* Audit */
+.astrip{background:var(--s2);border:1px solid var(--b);border-radius:var(--r);padding:7px 13px;display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+.ait{font-size:11px;color:var(--t2);display:flex;align-items:center;gap:4px;}
+.ait strong{color:var(--t);font-family:'Courier New',monospace;font-size:10px;}
+/* Footer */
+.footer{margin-top:32px;padding-top:16px;border-top:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.fleft{font-size:11px;color:var(--t3);line-height:1.8;}
+.fright{display:flex;gap:5px;flex-wrap:wrap;}
+.tag{background:var(--s2);border:1px solid var(--b);border-radius:20px;padding:3px 9px;font-size:10px;color:var(--t3);font-weight:600;}
+.tag.g{background:var(--acb);border-color:var(--ac2);color:var(--act);}
+#toast{position:fixed;bottom:20px;right:20px;background:var(--ac);color:#fff;padding:9px 16px;border-radius:var(--rl);font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:all .22s;pointer-events:none;z-index:999;}
 #toast.show{opacity:1;transform:translateY(0);}
 
-@media(max-width:640px){
-  .stats-row{grid-template-columns:repeat(2,1fr);}
-  .prod-grid{grid-template-columns:1fr;}
-  .results-bar{flex-direction:column;align-items:flex-start;}
+/* ═══ SETTINGS MODAL ═══ */
+.settings-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:9999;padding:16px;}
+.settings-overlay.show{display:flex!important;}
+.settings-modal{background:#fff;border-radius:20px;width:100%;max-width:620px;max-height:90vh;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.3);display:flex;flex-direction:column;}
+.sm-hdr{padding:18px 22px;border-bottom:1px solid #d8d5cb;display:flex;align-items:center;justify-content:space-between;background:#f0efe9;}
+.sm-hdr h3{font-size:16px;font-weight:700;}
+.sm-close{width:30px;height:30px;border:none;background:#e8e6df;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;line-height:1;}
+.sm-close:hover{background:#d8d5cb;}
+.sm-tabs{display:flex;gap:4px;padding:10px 14px;border-bottom:1px solid #d8d5cb;background:#fafaf8;overflow-x:auto;flex-shrink:0;}
+.sm-tab{padding:6px 14px;border:1px solid #d8d5cb;border-radius:20px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;color:#5a5750;white-space:nowrap;transition:all .15s;}
+.sm-tab.active{background:#2d5a27;border-color:#2d5a27;color:#fff;}
+.sm-body{padding:20px;overflow-y:auto;flex:1;}
+.sm-section{margin-bottom:18px;}
+.sm-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8a8680;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.sm-section-title::after{content:'';flex:1;height:1px;background:#d8d5cb;}
+.sm-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.sm-fg{margin-bottom:10px;}
+.sm-fg label{display:block;font-size:12px;font-weight:600;color:#5a5750;margin-bottom:4px;}
+.sm-fc{width:100%;padding:8px 11px;border:1.5px solid #d8d5cb;border-radius:8px;font-size:13px;font-family:inherit;background:#fff;color:#1a1917;}
+.sm-fc:focus{outline:none;border-color:#2d5a27;box-shadow:0 0 0 3px rgba(45,90,39,.1);}
+.color-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.color-label{font-size:12px;font-weight:600;color:#5a5750;flex:1;}
+.color-inp{width:44px;height:36px;border:1.5px solid #d8d5cb;border-radius:8px;padding:2px;cursor:pointer;}
+.color-hex{width:90px;padding:6px 10px;border:1.5px solid #d8d5cb;border-radius:8px;font-size:12px;font-family:'Courier New',monospace;}
+.logo-preview{width:80px;height:80px;border:2px dashed #d8d5cb;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:32px;background:#f0efe9;cursor:pointer;overflow:hidden;flex-shrink:0;}
+.logo-preview img{width:100%;height:100%;object-fit:contain;}
+.logo-upload-wrap{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.logo-upload-info{font-size:11px;color:#8a8680;line-height:1.6;}
+.sm-footer{padding:14px 20px;border-top:1px solid #d8d5cb;display:flex;align-items:center;justify-content:space-between;background:#f0efe9;flex-shrink:0;}
+.preview-bar{background:#1a3a1a;color:#fff;padding:10px 16px;border-radius:10px;font-size:12px;font-weight:600;text-align:center;margin-bottom:12px;transition:background .3s;}
+.preset-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px;}
+.preset-btn{height:36px;border-radius:8px;border:2px solid transparent;cursor:pointer;transition:all .15s;font-size:9px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);}
+.preset-btn:hover{transform:scale(1.05);border-color:rgba(255,255,255,.5);}
+.sm-tcont{display:none;} .sm-tcont.active{display:block;}
+
+
+/* ═══════════════════════════════
+   RESPONSIVE — MOBILE FIRST
+   ═══════════════════════════════ */
+
+/* Tablet & below */
+@media (max-width: 960px) {
+  .mgrid { grid-template-columns: 1fr !important; }
 }
+
+/* Mobile */
+@media (max-width: 640px) {
+  /* Auth bar */
+  #auth-bar { height: auto !important; padding: 6px 10px !important; flex-wrap: wrap; gap: 6px; }
+  #auth-bar > div:first-child { font-size: 10px !important; }
+
+  /* Topbar */
+  .topbar { padding: 0 12px !important; height: 48px !important; }
+  .bname { font-size: 13px !important; }
+  .bsub { display: none; }
+  .tsbadge { display: none; }
+  .vbadge { font-size: 10px !important; padding: 2px 7px !important; }
+
+  /* App container */
+  .app { padding: 10px 10px 40px !important; }
+
+  /* Furniture tabs */
+  .ftabs { gap: 4px !important; margin-bottom: 12px !important; }
+  .ftab { padding: 7px 10px !important; font-size: 12px !important; gap: 5px !important; }
+  .ftab .icon { font-size: 15px !important; }
+
+  /* Main grid — stack */
+  .mgrid { grid-template-columns: 1fr !important; gap: 12px !important; }
+
+  /* Left panel */
+  .card { border-radius: 12px !important; }
+  .cbody { padding: 12px !important; }
+  .dgrid { grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
+  .fc { font-size: 13px !important; padding: 7px 9px !important; }
+  .pgroup { padding: 8px 10px !important; }
+  .prow { flex-wrap: wrap; gap: 6px; }
+  .plbl { min-width: 100px; }
+  .pinp { width: 60px !important; }
+
+  /* Metrics grid */
+  .mgridm { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+  .mval { font-size: 15px !important; }
+  .mlbl { font-size: 9px !important; }
+
+  /* Formula strip */
+  .fstrip { padding: 8px 10px !important; gap: 5px !important; font-size: 12px !important; }
+  .fres { font-size: 12px !important; padding: 3px 9px !important; }
+
+  /* Tab buttons */
+  .tbtns { gap: 3px !important; }
+  .tbtn { padding: 5px 9px !important; font-size: 11px !important; }
+
+  /* Cutting list table */
+  .twrap { border-radius: 6px !important; }
+  table { font-size: 11px !important; min-width: 600px !important; }
+  thead th { padding: 7px 5px !important; font-size: 9px !important; }
+  tbody td { padding: 6px 4px !important; }
+  .msel { font-size: 10px !important; max-width: 95px !important; }
+
+  /* Audit strip */
+  .astrip { gap: 8px !important; padding: 6px 10px !important; flex-wrap: wrap; }
+  .ait { font-size: 10px !important; }
+  .ait strong { font-size: 9px !important; }
+  #audit-strip button { margin-left: 0 !important; font-size: 10px !important; padding: 2px 8px !important; }
+
+  /* Card header */
+  .chdr { padding: 10px 12px !important; flex-wrap: wrap; gap: 6px; }
+  .chdr h3 { font-size: 12px !important; }
+
+  /* BOM buttons */
+  .bgrp { gap: 6px !important; }
+  .btn { padding: 6px 10px !important; font-size: 11px !important; }
+  .bombox { font-size: 10px !important; max-height: 300px !important; }
+
+  /* Material Master */
+  .mmgrid { grid-template-columns: 1fr !important; }
+  .mmmeta { grid-template-columns: 1fr 1fr !important; }
+
+  /* History table */
+  .htbl { font-size: 11px !important; }
+  .htbl th, .htbl td { padding: 6px 8px !important; }
+
+  /* WArow */
+  .warow { flex-wrap: wrap; padding: 6px 8px !important; }
+  .wasel { max-width: 120px !important; }
+
+  /* Footer */
+  .footer { flex-direction: column; gap: 8px !important; padding-top: 12px !important; }
+  .fright { flex-wrap: wrap; }
+
+  /* Settings Modal */
+  .settings-modal { max-height: 95vh !important; border-radius: 14px !important; }
+  .sm-hdr { padding: 14px 16px !important; }
+  .sm-hdr h3 { font-size: 14px !important; }
+  .sm-body { padding: 14px !important; }
+  .sm-row { grid-template-columns: 1fr !important; gap: 0 !important; }
+  .preset-grid { grid-template-columns: repeat(5, 1fr) !important; gap: 5px !important; }
+  .preset-btn { font-size: 8px !important; height: 30px !important; }
+  .color-row { flex-wrap: wrap; gap: 6px; }
+  .color-label { min-width: 140px; }
+  .sm-footer { padding: 10px 14px !important; flex-wrap: wrap; gap: 8px; }
+  .logo-upload-wrap { flex-wrap: wrap; }
+  .sm-tabs { padding: 8px 10px !important; }
+  .sm-tab { padding: 5px 10px !important; font-size: 11px !important; }
+}
+
+/* Very small screens */
+@media (max-width: 380px) {
+  .ftab span:not(.icon) { display: none; }
+  .ftab { padding: 8px !important; }
+  .mgridm { grid-template-columns: 1fr 1fr !important; }
+  .tbtns .tbtn:nth-child(n+4) { display: none; }
+}
+
+
+/* ═══ AI ASISTEN PANEL ═══ */
+.ai-panel{background:#fff;border:1.5px solid #2d5a27;border-radius:14px;margin-bottom:14px;overflow:hidden;}
+.ai-panel-hdr{padding:10px 16px;background:linear-gradient(135deg,#1a3a1a,#2d5a27);color:#fff;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;}
+.ai-panel-title{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;}
+.ai-panel-badge{font-size:9px;background:rgba(255,255,255,.25);padding:2px 8px;border-radius:20px;font-weight:700;letter-spacing:.05em;}
+.ai-panel-body{padding:14px;}
+.ai-panel-body.collapsed{display:none;}
+.ai-two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.ai-col-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#5a5750;margin-bottom:8px;}
+.ai-drop{border:2px dashed #b8d9b4;border-radius:10px;padding:18px;text-align:center;cursor:pointer;background:#f5faf4;transition:all .2s;}
+.ai-drop:hover{border-color:#2d5a27;background:#eaf3e8;}
+.ai-drop .di{font-size:28px;margin-bottom:4px;}
+.ai-drop .dt{font-size:12px;font-weight:600;color:#2d5a27;margin-bottom:2px;}
+.ai-drop .ds{font-size:11px;color:#8a8680;}
+.ai-chips{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-top:8px;}
+.ai-chip{font-size:10px;padding:2px 8px;border-radius:20px;background:#f0efe9;color:#5a5750;border:1px solid #d8d5cb;}
+.ai-prev-wrap{position:relative;margin-top:8px;display:none;}
+.ai-prev-wrap.show{display:block;}
+.ai-prev-img{width:100%;max-height:180px;object-fit:contain;border-radius:8px;border:1px solid #d8d5cb;background:#f5f4f0;}
+.ai-rm-btn{position:absolute;top:4px;right:4px;width:22px;height:22px;background:rgba(139,32,32,.85);color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:12px;line-height:22px;text-align:center;}
+.ai-analyze-btn{width:100%;margin-top:8px;padding:9px;background:#2d5a27;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:none;}
+.ai-analyze-btn:hover{background:#3d7a35;}
+.ai-loading{text-align:center;padding:24px;display:none;}
+.ai-loading.show{display:block;}
+.ai-spinner{width:30px;height:30px;border:3px solid #d8d5cb;border-top-color:#2d5a27;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px;}
+.ai-empty{text-align:center;padding:24px;color:#8a8680;}
+.ai-result{display:none;}
+.ai-result.show{display:block;}
+.ai-result-hdr{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#2d5a27;margin-bottom:8px;}
+.ai-fgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;}
+.ai-f{background:#fff;border-radius:7px;padding:7px 9px;border:1px solid #e8e6df;}
+.ai-fl{font-size:10px;color:#8a8680;font-weight:600;text-transform:uppercase;margin-bottom:2px;}
+.ai-fv{font-size:12px;font-weight:600;color:#1a1917;}
+.ai-fv-inp{width:100%;border:none;border-bottom:1px dashed #d8d5cb;outline:none;font-size:12px;font-weight:600;font-family:inherit;background:transparent;color:#1a1917;padding:0;}
+.ai-fv-inp:focus{border-bottom-color:#2d5a27;}
+.ai-conf{margin-bottom:8px;}
+.ai-conf-row{display:flex;justify-content:space-between;font-size:10px;color:#8a8680;margin-bottom:3px;}
+.ai-conf-bar{height:4px;background:#e8e6df;border-radius:2px;}
+.ai-conf-fill{height:100%;border-radius:2px;background:#2d5a27;transition:width .5s;}
+.ai-notes{font-size:11px;color:#5a5750;background:#fff;border-radius:7px;padding:8px 10px;margin-bottom:8px;border:1px solid #e8e6df;line-height:1.6;}
+.ai-comps{margin-bottom:8px;}
+.ai-comp-label{font-size:10px;font-weight:700;text-transform:uppercase;color:#8a8680;margin-bottom:4px;}
+.ai-comp-tags{display:flex;flex-wrap:wrap;gap:3px;}
+.ai-comp-tag{font-size:10px;background:#fff;border:1px solid #d8d5cb;border-radius:20px;padding:2px 8px;color:#5a5750;}
+.ai-apply-btn{width:100%;padding:10px;background:linear-gradient(135deg,#2d5a27,#3d7a35);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+.ai-apply-btn:hover{opacity:.9;}
+.ai-error-box{background:#fceaea;border:1px solid #f5c2c2;border-radius:8px;padding:10px;font-size:12px;color:#8b2020;display:none;margin-top:6px;}
+.ai-error-box.show{display:block;}
+@media(max-width:640px){.ai-two-col{grid-template-columns:1fr;}}
+
+
+/* ═══ EXPORT / IMPORT BAR ═══ */
+.ei-bar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#f5f4f0;border-top:1px solid #d8d5cb;flex-wrap:wrap;}
+.ei-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;}
+.ei-btn{display:inline-flex;align-items:center;gap:4px;padding:5px 11px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid;font-family:inherit;transition:all .15s;}
+.ei-btn.csv{color:#1a5c1a;border-color:#a0d0a0;background:#f0faf0;}
+.ei-btn.csv:hover{background:#dcf3dc;}
+.ei-btn.excel{color:#1a5a2a;border-color:#80c080;background:#e8f5e8;}
+.ei-btn.excel:hover{background:#d0ecd0;}
+.ei-btn.imp{color:#1a4a7a;border-color:#a0c0e0;background:#f0f4fb;}
+.ei-btn.imp:hover{background:#dce8f5;}
+.ei-btn.tmpl{color:#5a3a1a;border-color:#c0a060;background:#faf4e8;}
+.ei-btn.tmpl:hover{background:#f0e8d0;}
+.ei-sep{width:1px;height:18px;background:#d8d5cb;}
+.imp-modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:600;padding:16px;}
+.imp-modal-ov.show{display:flex;}
+.imp-modal{background:#fff;border-radius:16px;width:100%;max-width:540px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.imp-modal-hdr{padding:14px 18px;border-bottom:1px solid #d8d5cb;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;}
+.imp-modal-hdr h3{font-size:14px;font-weight:700;}
+.imp-modal-x{width:26px;height:26px;border:none;background:#e8e6df;border-radius:50%;cursor:pointer;font-size:14px;}
+.imp-modal-body{padding:16px 18px;}
+.imp-drop{border:2px dashed #d8d5cb;border-radius:10px;padding:24px;text-align:center;cursor:pointer;background:#fafaf8;transition:all .2s;}
+.imp-drop:hover{border-color:#2d5a27;background:#eaf3e8;}
+.imp-preview{margin-top:10px;background:#f5f4f0;border-radius:8px;padding:10px;font-size:11px;max-height:200px;overflow-y:auto;display:none;}
+.imp-preview table{width:100%;border-collapse:collapse;font-size:10px;}
+.imp-preview th{background:#2d5a27;color:#fff;padding:4px 6px;text-align:left;}
+.imp-preview td{padding:3px 6px;border-bottom:1px solid #e8e6df;}
+.imp-preview tr:hover td{background:#f0efe9;}
+.imp-modal-footer{padding:12px 18px;border-top:1px solid #d8d5cb;display:flex;gap:8px;justify-content:flex-end;}
+
+
+/* ─── MULTI IMAGE SLOTS ─── */
+.ai-img-slot{border:1.5px dashed #b8d9b4;border-radius:8px;height:76px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#f5faf4;position:relative;overflow:hidden;transition:all .2s;}
+.ai-img-slot:hover{border-color:#2d5a27;background:#eaf3e8;}
+.ai-img-slot.filled{border-color:#2d5a27;border-style:solid;background:#eaf3e8;}
+.ai-slot-empty{display:flex;flex-direction:column;align-items:center;color:#8a8680;font-size:18px;gap:2px;}
+.ai-slot-img{width:100%;height:100%;object-fit:cover;border-radius:6px;}
+.ai-slot-rm{position:absolute;top:3px;right:3px;width:18px;height:18px;background:rgba(139,32,32,.85);color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:11px;line-height:18px;text-align:center;z-index:2;}
+
+
+.prod-search-item:hover > div { background: #f5faf4 !important; }
+.prod-search-item:last-child > div { border-bottom: none !important; }
+.prod-srch-item:hover > div { background: #f5faf4 !important; }
+.prod-srch-item:last-child > div { border-bottom: none !important; }
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
+<div id="auth-bar" style="background:#1a3a1a;color:#fff;padding:0 12px;min-height:36px;display:flex;align-items:center;justify-content:space-between;font-size:12px;flex-wrap:wrap;gap:4px;">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span style="opacity:.7">🌿 GABE INTERNATIONAL HUB</span>
+    <span style="background:rgba(255,255,255,.15);padding:2px 8px;border-radius:20px;font-size:10px;">🪵 Wood Volume Calculator</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span id="user-role-badge" style="font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.15);"></span>
+    <span id="user-name-bar" style="opacity:.8"></span>
+    <button id="settings-btn" onclick="showSettingsModal()" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:#fff;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px;">⚙️ Pengaturan</button>
+    <a href="materials.html" id="materials-link" style="display:none;background:rgba(255,255,255,.15);color:#fff;padding:3px 10px;border-radius:6px;text-decoration:none;font-size:11px;">🪵 Material</a>
+    <a href="vendors.html" id="vendors-link" style="display:none;background:rgba(255,255,255,.15);color:#fff;padding:3px 10px;border-radius:6px;text-decoration:none;font-size:11px;">🏪 Vendor</a>
+    <a href="products.html" style="background:rgba(255,255,255,.15);color:#fff;padding:3px 10px;border-radius:6px;text-decoration:none;font-size:11px;">📦 Produk</a>
+    <a href="ai-asisten.html" style="background:rgba(255,255,255,.2);color:#fff;padding:3px 10px;border-radius:6px;text-decoration:none;font-size:11px;border:1px solid rgba(255,255,255,.3);">🤖 AI Asisten</a>
+    <a href="admin.html" id="admin-link" style="display:none;background:rgba(255,255,255,.15);color:#fff;padding:3px 10px;border-radius:6px;text-decoration:none;font-size:11px;">👥 Users</a>
+    <span id="lang-toggle-wrap"></span>
+    <button onclick="doLogout()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px;" data-i18n="nav_logout">Keluar</button>
+  </div>
+</div>
 <nav class="topbar">
   <div class="topbar-brand">
-    <a href="app.html" class="back-btn">← Kalkulator</a>
-    <div style="font-size:14px;font-weight:700;">📦 Master Produk</div>
+    <div class="tlogo">🪵</div>
+    <div><div class="bname">Wood Volume Calculator</div><div class="bsub">Jepara ERP Suite — v2.0</div></div>
   </div>
-  <div class="topbar-nav">
-    <span id="user-name" style="font-size:11px;opacity:.7;"></span>
-    <a href="ai-asisten.html" class="topbar-btn">🤖 AI Asisten</a>
-    <a href="materials.html" class="topbar-btn">🪵 Material</a>
-    <a href="vendors.html" class="topbar-btn">🏪 Vendor</a>
-    <button class="topbar-btn" onclick="doLogout()">Keluar</button>
+  <div class="topbar-right">
+    <div class="tsbadge" id="ts-now">—</div>
+    <span class="vbadge">v2.0 · 2026</span>
   </div>
 </nav>
+<div class="app">
+  <div class="ftabs" id="ftabs"></div>
+  <!-- ══ AI ASISTEN ══ -->
+  <div class="ai-panel" id="ai-panel">
+    <div class="ai-panel-hdr" onclick="toggleAiPanel()">
+      <div class="ai-panel-title">
+        🤖 AI Asisten — Analisis Gambar Furniture
+        <span class="ai-panel-badge">POWERED BY CLAUDE AI</span>
+      </div>
+      <span id="ai-arrow" style="font-size:12px;transition:transform .3s;">▲</span>
+    </div>
+    <div class="ai-panel-body" id="ai-body">
+      <div class="ai-two-col">
 
-<!-- SEARCH HERO -->
-<div class="search-hero">
-  <div class="search-title">📦 Master Produk Gabe International</div>
-  <div class="search-sub">Cari dan kelola semua identitas produk yang tersimpan</div>
-  <div class="search-wrap">
-    <input type="text" class="search-input" id="search-input"
-      placeholder="🔍  Cari berdasarkan Nama, SKU / Kode, atau Kategori..."
-      oninput="handleSearch(this.value)" autocomplete="off">
-    <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
-    <span class="search-icon" id="search-icon">🔍</span>
-  </div>
-  <!-- Filter chips -->
-  <div class="filter-row">
-    <span class="fchip active" onclick="setFilter('', this)">Semua <span class="cnt" id="cnt-all">0</span></span>
-    <span class="fchip" onclick="setFilter('bed', this)">🛏️ Bed <span class="cnt" id="cnt-bed">0</span></span>
-    <span class="fchip" onclick="setFilter('lemari', this)">🗄️ Lemari <span class="cnt" id="cnt-lemari">0</span></span>
-    <span class="fchip" onclick="setFilter('kursi', this)">🪑 Kursi <span class="cnt" id="cnt-kursi">0</span></span>
-    <span class="fchip" onclick="setFilter('sofa', this)">🛋️ Sofa <span class="cnt" id="cnt-sofa">0</span></span>
-    <span class="fchip" onclick="setFilter('meja', this)">🪵 Meja <span class="cnt" id="cnt-meja">0</span></span>
-  </div>
-</div>
+        <!-- Kolom Kiri: Upload -->
+        <div>
+          <div class="ai-col-title" style="margin-bottom:6px;">📸 Upload Gambar / Foto</div>
 
-<!-- MAIN -->
-<div class="main">
+          <!-- Drag & drop zone (shows when empty) -->
+          <div id="ai-drop-zone"
+               style="border:2px dashed #b8d9b4;border-radius:10px;padding:16px;text-align:center;cursor:pointer;background:#f5faf4;margin-bottom:6px;transition:all .2s;"
+               onclick="addImgSlot()"
+               ondragover="event.preventDefault();this.style.borderColor='#2d5a27';this.style.background='#eaf3e8'"
+               ondragleave="this.style.borderColor='#b8d9b4';this.style.background='#f5faf4'"
+               ondrop="handleDropZone(event)">
+            <div style="font-size:28px;margin-bottom:4px;">📸</div>
+            <div style="font-size:12px;font-weight:700;color:#2d5a27;">Klik atau drag & drop gambar</div>
+            <div style="font-size:10px;color:#8a8680;margin-top:2px;">Foto · Sketsa · Blueprint · Katalog</div>
+          </div>
+          <!-- Dynamic image gallery -->
+          <div id="ai-img-gallery" style="display:none;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:6px;"></div>
 
-  <!-- STATS -->
-  <div class="stats-row" id="stats-row" style="display:none;">
-    <div class="stat-c"><div class="stat-v" id="s-total" style="color:#1a1917;">0</div><div class="stat-l">Total Produk</div></div>
-    <div class="stat-c"><div class="stat-v" id="s-bed" style="color:#1e3a8a;">0</div><div class="stat-l">Bed</div></div>
-    <div class="stat-c"><div class="stat-v" id="s-lemari" style="color:#713f12;">0</div><div class="stat-l">Lemari</div></div>
-    <div class="stat-c"><div class="stat-v" id="s-kursi" style="color:#14532d;">0</div><div class="stat-l">Kursi</div></div>
-    <div class="stat-c"><div class="stat-v" id="s-meja" style="color:#3730a3;">0</div><div class="stat-l">Meja</div></div>
-  </div>
+          <!-- Add more / Google Photos row -->
+          <div style="display:flex;gap:5px;margin-bottom:6px;">
+            <button onclick="addImgSlot()" style="flex:1;padding:6px;border:1.5px dashed #b8d9b4;border-radius:8px;background:#f5faf4;color:#2d5a27;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">
+              ➕ Tambah Foto
+            </button>
+            <button onclick="openGPhotoLink()" style="flex:1;padding:6px;border:1.5px dashed #85b7eb;border-radius:8px;background:#e8f0fb;color:#0c447c;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">
+              🔗 Link URL/GPhoto
+            </button>
+          </div>
 
-  <!-- RESULTS BAR -->
-  <div class="results-bar">
-    <div class="results-count" id="results-count">Memuat data...</div>
-    <div class="results-sort">
-      <select class="sort-sel" id="sort-sel" onchange="renderProducts()">
-        <option value="updated">Terbaru</option>
-        <option value="sku">SKU A-Z</option>
-        <option value="nama">Nama A-Z</option>
-        <option value="kategori">Kategori</option>
-      </select>
-      <a href="ai-asisten.html" class="new-btn">➕ Produk Baru</a>
+          <!-- URL input (hidden by default) -->
+          <div id="url-input-wrap" style="display:none;margin-bottom:6px;background:#f0f4fb;border:1px solid #85b7eb;border-radius:8px;padding:8px;">
+            <div style="font-size:10px;color:#0c447c;font-weight:700;margin-bottom:5px;">🔗 Tambah Gambar via URL</div>
+            <div style="display:flex;gap:4px;margin-bottom:4px;">
+              <input type="text" id="url-img-input" placeholder="https://... (URL langsung ke file .jpg/.png)" style="flex:1;padding:5px 8px;border:1.5px solid #85b7eb;border-radius:7px;font-size:11px;font-family:inherit;">
+              <button onclick="addImgFromUrl()" style="padding:5px 10px;background:#1565c0;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;">➕</button>
+              <button onclick="document.getElementById('url-input-wrap').style.display='none'" style="padding:5px 8px;background:#fff;border:1.5px solid #85b7eb;border-radius:7px;font-size:11px;cursor:pointer;color:#5a5750;">✕</button>
+            </div>
+            <div style="font-size:10px;color:#5a5750;line-height:1.6;">
+              ✅ <b>URL langsung:</b> link yang berakhir .jpg/.png/.webp<br>
+              ✅ <b>Google Drive:</b> Upload foto → klik kanan → <i>Get link</i> → paste<br>
+              ⚠️ <b>Google Photos:</b> tidak support akses langsung (CORS). Gunakan <b>Tambah Foto</b> untuk upload dari device.
+            </div>
+          </div>
+
+          <!-- Image count indicator -->
+          <div id="img-count-bar" style="font-size:10px;color:#8a8680;margin-bottom:5px;display:none;">
+            <span id="img-count-txt">0 gambar</span>
+            <span style="margin-left:6px;color:#2d5a27;font-weight:600;">— Semua akan dianalisis AI</span>
+          </div>
+
+          <button class="ai-analyze-btn" id="ai-btn" onclick="analyzeImage()" style="display:none;">
+            🔍 Analisis dengan AI
+          </button>
+        </div>
+
+        <!-- Kolom Kanan: Hasil -->
+        <div>
+          <div class="ai-col-title">📊 Hasil Analisis AI</div>
+
+          <div class="ai-loading" id="ai-loading">
+            <div class="ai-spinner"></div>
+            <div style="font-size:12px;color:#5a5750;">🤖 AI sedang menganalisis...</div>
+            <div style="font-size:11px;color:#8a8680;margin-top:4px;">Mendeteksi tipe, dimensi & komponen</div>
+          </div>
+
+          <div class="ai-empty" id="ai-empty">
+            <div style="font-size:32px;margin-bottom:6px;">🖼️</div>
+            <div style="font-size:12px;">Upload gambar furniture untuk<br>deteksi otomatis oleh AI</div>
+          </div>
+
+          <div class="ai-error-box" id="ai-error"></div>
+
+          <div class="ai-result" id="ai-result">
+            <div class="ai-result-hdr">✅ Terdeteksi</div>
+            <div class="ai-fgrid">
+              <div class="ai-f"><div class="ai-fl">Tipe Furniture</div><div class="ai-fv" id="ai-r-type">—</div></div>
+              <div class="ai-f"><div class="ai-fl">Ukuran Standar</div><div class="ai-fv" id="ai-r-size">—</div></div>
+              <div class="ai-f"><div class="ai-fl">Panjang (cm)</div><input class="ai-fv-inp" id="ai-r-p" type="number" value="0"></div>
+              <div class="ai-f"><div class="ai-fl">Lebar (cm)</div><input class="ai-fv-inp" id="ai-r-l" type="number" value="0"></div>
+              <div class="ai-f"><div class="ai-fl">Tinggi (cm)</div><input class="ai-fv-inp" id="ai-r-t" type="number" value="0"></div>
+              <div class="ai-f"><div class="ai-fl">Rekomendasi Kayu</div><div class="ai-fv" id="ai-r-wood" style="font-size:11px;">—</div></div>
+            </div>
+            <div class="ai-conf">
+              <div class="ai-conf-row"><span>Tingkat Keyakinan AI</span><span id="ai-pct">0%</span></div>
+              <div class="ai-conf-bar"><div class="ai-conf-fill" id="ai-fill" style="width:0%"></div></div>
+            </div>
+            <div class="ai-notes" id="ai-notes"></div>
+            <div class="ai-comps" id="ai-comps" style="display:none">
+              <div class="ai-comp-label">Komponen Terdeteksi</div>
+              <div class="ai-comp-tags" id="ai-comp-tags"></div>
+            </div>
+            <!-- Component Cards Grid -->
+            <div id="ai-comp-cards-wrap" style="display:none;margin-bottom:8px;">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:5px;">Gambar Komponen</div>
+              <div id="ai-comp-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px;"></div>
+            </div>
+            <!-- Exploded View -->
+            <div id="ai-exploded-wrap" style="display:none;margin-bottom:8px;">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a8680;margin-bottom:5px;">Exploded View — AI Generated</div>
+              <div id="ai-exploded-svg" style="background:#f5f4f0;border-radius:8px;padding:8px;overflow:auto;"></div>
+              <div style="display:flex;gap:5px;margin-top:5px;">
+                <button onclick="printAiExploded()" style="flex:1;padding:4px 8px;border:1px solid #e0a0a0;border-radius:6px;background:#fef0f0;color:#8b1a1a;font-size:10px;font-weight:600;cursor:pointer;">🖨️ Print</button>
+                <button onclick="downloadAiExplodedSVG()" style="flex:1;padding:4px 8px;border:1px solid #80c080;border-radius:6px;background:#e8f5e8;color:#1a5a2a;font-size:10px;font-weight:600;cursor:pointer;">💾 SVG</button>
+              </div>
+            </div>
+            <button class="ai-apply-btn" onclick="applyAiResult()">✅ Terapkan ke Kalkulator</button>
+            <div style="font-size:10px;color:#8a8680;text-align:center;margin-top:5px;">Semua field tetap bisa diedit manual</div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 
-  <!-- PRODUCT GRID -->
-  <div class="prod-grid" id="prod-grid">
-    <div class="loading-state"><div class="spinner"></div><div style="margin-top:12px;">Memuat produk...</div></div>
+  <!-- ─── IDENTITAS PRODUK (full width) ─── -->
+  <div style="background:#f5faf4;border:1.5px solid #b8d9b4;border-radius:12px;padding:12px 16px;margin-bottom:12px;position:relative;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+      <span style="font-size:12px;font-weight:700;color:#2d5a27;">🏷️ Identitas Produk</span>
+      <span style="font-size:10px;color:#8a8680;">— cari produk tersimpan atau isi manual</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start;">
+      <!-- Search -->
+      <div style="position:relative;">
+        <input type="text" id="prod-search"
+          placeholder="🔍 Cari produk — ketik nama, SKU, atau kategori..."
+          autocomplete="off"
+          oninput="searchProducts(this.value)"
+          onfocus="searchProducts(this.value)"
+          style="width:100%;padding:8px 32px 8px 12px;border:1.5px solid #b8d9b4;border-radius:8px;font-size:12px;font-family:inherit;background:#fff;">
+        <span onclick="clearProdSearch()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;color:#8a8680;font-size:12px;">✕</span>
+        <!-- Dropdown -->
+        <div id="prod-dropdown"
+          style="display:none;position:absolute;left:0;right:0;top:calc(100%+4px);background:#fff;border:1.5px solid #b8d9b4;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:200;max-height:220px;overflow-y:auto;">
+          <div id="prod-dropdown-inner"></div>
+        </div>
+      </div>
+      <!-- New product button -->
+      <a href="ai-asisten.html" style="white-space:nowrap;padding:8px 12px;background:#2d5a27;color:#fff;border-radius:8px;font-size:11px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+        ➕ Produk Baru
+      </a>
+    </div>
+    <!-- Selected product chip -->
+    <div id="prod-selected" style="display:none;margin-top:8px;background:#eaf3de;border:1px solid #97c459;border-radius:8px;padding:8px 12px;display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span id="prod-sel-sku" style="font-family:monospace;font-size:11px;font-weight:700;background:#fff;padding:2px 7px;border-radius:5px;color:#2d5a27;"></span>
+          <span id="prod-sel-nama" style="font-size:12px;font-weight:600;color:#1a1917;"></span>
+        </div>
+        <button onclick="clearProdSearch()" style="font-size:10px;padding:3px 8px;border:1px solid #97c459;border-radius:5px;background:#fff;cursor:pointer;color:#27500a;font-family:inherit;">✕ Ganti</button>
+      </div>
+      <div id="prod-sel-info" style="font-size:10px;color:#5a8a5a;margin-top:3px;"></div>
+    </div>
+    <!-- Manual SKU/Nama (hidden when product selected) -->
+    <div id="prod-manual" style="margin-top:8px;display:grid;grid-template-columns:1fr 2fr;gap:8px;">
+      <div>
+        <div style="font-size:10px;color:#8a8680;margin-bottom:2px;">SKU / Product ID</div>
+        <input type="text" id="p-sku-calc" placeholder="INFU2586-SM"
+          style="width:100%;padding:5px 9px;border:1.5px solid #d8d5cb;border-radius:6px;font-size:11px;font-family:monospace;background:#fff;">
+      </div>
+      <div>
+        <div style="font-size:10px;color:#8a8680;margin-bottom:2px;">Nama Produk</div>
+        <input type="text" id="p-nama-calc" placeholder="Nama furniture..."
+          style="width:100%;padding:5px 9px;border:1.5px solid #d8d5cb;border-radius:6px;font-size:11px;font-family:inherit;background:#fff;">
+      </div>
+    </div>
+  </div>
+
+  <div class="mgrid">
+    <div class="card">
+      <div class="chdr"><h3>⚙️ Parameter &amp; Konfigurasi</h3></div>
+      <div class="cbody">
+        <div class="csec"><div class="stitle" data-i18n="cfg_type">Tipe & Ukuran</div>
+          <div class="fg"><label data-i18n="cfg_select_type">Pilih Tipe Standar</label><select class="fc" id="subtype-sel"></select></div>
+          <div id="dims-container"></div>
+        </div>
+        <div class="csec"><div class="stitle" data-i18n="cfg_wood">Default Jenis Kayu</div>
+          <div class="fg"><label data-i18n="cfg_wood_label">Kayu Utama (default semua komponen SW)</label>
+            <select class="fc" id="sel-default-wood"></select></div>
+        </div>
+        <div class="csec"><div class="stitle" data-i18n="cfg_params">Parameter Log & Waste</div>
+          <div class="pgroup">
+            <div class="prow"><span class="plbl" data-i18n="cfg_rendemen">Rendemen Log</span>
+              <div style="display:flex;align-items:center;gap:5px">
+                <input type="range" min="20" max="70" value="35" id="rng-rendemen" style="width:75px">
+                <input type="number" class="pinp" min="20" max="70" value="35" id="inp-rendemen"><span style="font-size:11px;color:var(--t3)">%</span>
+              </div></div>
+            <div class="prow"><span class="plbl" data-i18n="cfg_waste">Waste Factor</span>
+              <div style="display:flex;align-items:center;gap:5px">
+                <input type="range" min="5" max="40" value="15" id="rng-waste" style="width:75px">
+                <input type="number" class="pinp" min="5" max="40" value="15" id="inp-waste"><span style="font-size:11px;color:var(--t3)">%</span>
+              </div></div>
+            <div class="prow"><span class="plbl" data-i18n="cfg_std_batang">Std batang</span>
+              <div style="display:flex;align-items:center;gap:3px;font-size:11px">
+                <input type="number" class="pinp" style="width:42px" value="4" id="inp-ba">×
+                <input type="number" class="pinp" style="width:42px" value="6" id="inp-bb">×
+                <input type="number" class="pinp" style="width:50px" value="400" id="inp-blen">cm
+              </div></div>
+          </div></div>
+        <div class="csec"><div class="stitle" data-i18n="cfg_mixed">Mixed Material per Komponen</div>
+          <div id="wood-assign-container"></div></div>
+      </div>
+    </div>
+    <div class="card">
+        <div class="astrip" id="audit-strip"></div>
+        <div class="mgridm" id="metrics"></div>
+        <div class="fstrip" id="formula"></div>
+        <div class="chdr">
+          <div class="tbtns">
+            <button class="tbtn active" onclick="switchTab('cutting')" data-i18n="tab_cutting">✂️ Cutting List</button>
+            <button class="tbtn" onclick="switchTab('volume')" data-i18n="tab_volume">📊 Volume Detail</button>
+            <button class="tbtn" onclick="switchTab('master')" data-i18n="tab_master">📦 Material Master</button>
+            <button class="tbtn" onclick="switchTab('history')" data-i18n="tab_history">🕐 History</button>
+            <button class="tbtn" onclick="switchTab('bom')" data-i18n="tab_bom">🔗 BOM JSON</button>
+          </div>
+          <span id="tbl-meta" style="font-size:11px;color:var(--t3)"></span>
+        </div>
+        <div class="cbody">
+          <div class="tcont active" id="tab-cutting">
+            <div class="twrap">
+              <table><thead><tr>
+                <th style="text-align:left;min-width:155px" data-i18n="tbl_code">Kode / Nama Komponen</th>
+                <th data-i18n="tbl_type">Tipe</th><th style="min-width:118px" data-i18n="tbl_material">Jenis / Material</th>
+                <th>Qty</th><th>P cm</th><th>L cm</th><th>T cm</th>
+                <th>Vol/pcs m³</th><th>Vol Total m³</th><th>Vol Log m³</th>
+              </tr></thead>
+              <tbody id="cl-body"></tbody>
+              <tfoot id="cl-foot"></tfoot></table>
+            </div>
+            <!-- Export / Import Bar -->
+            <div class="ei-bar">
+              <span class="ei-label">📤 Export:</span>
+              <button class="ei-btn csv" onclick="exportCuttingCSV()">📊 CSV</button>
+              <button class="ei-btn pdf" onclick="exportCuttingPDF()" style="color:#791F1F;border-color:#F09595;background:#FCEBEB;">📕 PDF</button>
+              <button class="ei-btn excel" onclick="exportCuttingExcel()">📗 Excel</button>
+              <div class="ei-sep"></div>
+              <span class="ei-label">📥 Import:</span>
+              <button class="ei-btn imp" onclick="openImportCutting()">📂 Upload CSV/Excel</button>
+              <button class="ei-btn tmpl" onclick="downloadCuttingTemplate()">📄 Download Template</button>
+            </div>
+          </div>
+          <div class="tcont" id="tab-volume"><div id="vol-detail"></div></div>
+          <div class="tcont" id="tab-master"><div id="mat-master-content"></div></div>
+          <div class="tcont" id="tab-history">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px">
+              <div style="font-size:12px;color:var(--t2)">Riwayat kalkulasi tersimpan lokal di browser ini</div>
+              <button class="btn" onclick="clearHistory()" style="font-size:11px;color:var(--rd)">🗑 Hapus Semua</button>
+            </div>
+            <div id="hist-content"></div>
+          </div>
+          <div class="tcont" id="tab-bom">
+            <div class="bgrp">
+              <button class="btn pr" onclick="copyBOM()" data-i18n="act_copy_json">📋 Copy JSON</button>
+              <button class="btn" onclick="downloadBOM()" data-i18n="act_dl_json">⬇️ Download .json</button>
+              <button class="btn" onclick="downloadCSV()" data-i18n="act_dl_csv">📄 Export CSV</button>
+              <button class="btn" onclick="saveToHistory()" data-i18n="act_save_hist">💾 Simpan History</button>
+            </div>
+            <div id="bom-preview" class="bombox"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="fleft"><b>Wood Volume Calculator v2.0</b> — Jepara ERP Suite<br>Material Master · Price History · Audit Timestamp · BOM Export · © 2026</div>
+    <div class="fright">
+      <span class="tag g">✅ Offline Ready</span>
+      <span class="tag">Tempat Tidur</span><span class="tag">Lemari</span>
+      <span class="tag">Kursi</span><span class="tag">Sofa</span><span class="tag">Meja</span>
+    </div>
   </div>
 </div>
-
-<!-- DETAIL MODAL -->
-<div class="modal-ov" id="detail-modal" onclick="handleModalClick(event)">
-  <div class="modal">
-    <div class="modal-hdr">
-      <div class="modal-title" id="modal-title">Detail Produk</div>
-      <button class="modal-x" onclick="closeModal()">✕</button>
-    </div>
-    <div class="modal-body" id="modal-body"></div>
-    <div class="modal-foot">
-      <button class="mf-btn" onclick="closeModal()" style="background:#f0efe9;color:#5a5750;">Tutup</button>
-      <button class="mf-btn" id="modal-load-btn" style="background:#2d5a27;color:#fff;">📐 Load ke Kalkulator</button>
-      <button class="mf-btn" id="modal-del-btn" style="background:#fceaea;color:#8b2020;">🗑️ Hapus</button>
-    </div>
-  </div>
-</div>
-
 <div id="toast"></div>
+<script>
+const MAT={};
+const MM=[
+  {id:'SW-001',n:'Jati',np:'Jati (Tectona grandis)',c:'SW',kl:1,rd:35,dn:720,p:18000000,u:'m³',v:1},
+  {id:'SW-002',n:'Sonokeling',np:'Sonokeling (Dalbergia)',c:'SW',kl:1,rd:32,dn:860,p:22000000,u:'m³',v:1},
+  {id:'SW-003',n:'Sono Kembang',np:'Sono Kembang (Pterocarpus)',c:'SW',kl:2,rd:33,dn:800,p:14000000,u:'m³',v:1},
+  {id:'SW-004',n:'Mahoni',np:'Mahoni (Swietenia)',c:'SW',kl:2,rd:38,dn:640,p:7500000,u:'m³',v:1},
+  {id:'SW-005',n:'Mindi',np:'Mindi (Melia azedarach)',c:'SW',kl:2,rd:40,dn:520,p:4500000,u:'m³',v:1},
+  {id:'SW-006',n:'Akasia',np:'Akasia (Acacia mangium)',c:'SW',kl:2,rd:38,dn:680,p:5500000,u:'m³',v:1},
+  {id:'SW-007',n:'Meranti',np:'Meranti (Shorea spp.)',c:'SW',kl:2,rd:40,dn:550,p:5000000,u:'m³',v:1},
+  {id:'SW-008',n:'Kamper',np:'Kamper (Dryobalanops)',c:'SW',kl:2,rd:38,dn:710,p:8000000,u:'m³',v:1},
+  {id:'SW-009',n:'Sengon',np:'Sengon (Paraserianthes)',c:'SW',kl:3,rd:45,dn:320,p:2800000,u:'m³',v:1},
+  {id:'SW-010',n:'Albasia',np:'Albasia / Falcata',c:'SW',kl:3,rd:45,dn:300,p:2500000,u:'m³',v:1},
+  {id:'SW-011',n:'Pinus',np:'Pinus (Pinus merkusii)',c:'SW',kl:3,rd:42,dn:480,p:3200000,u:'m³',v:1},
+  {id:'SW-012',n:'Trembesi',np:'Trembesi (Samanea saman)',c:'SW',kl:3,rd:40,dn:560,p:4000000,u:'m³',v:1},
+  {id:'PW-001',n:'Plywood 18mm',np:'Plywood 18mm (122x244cm)',c:'PW',kl:0,rd:100,dn:600,p:220000,u:'lembar',v:1},
+  {id:'PW-002',n:'Plywood 15mm',np:'Plywood 15mm (122x244cm)',c:'PW',kl:0,rd:100,dn:600,p:190000,u:'lembar',v:1},
+  {id:'PW-003',n:'Plywood 12mm',np:'Plywood 12mm (122x244cm)',c:'PW',kl:0,rd:100,dn:580,p:165000,u:'lembar',v:1},
+  {id:'PW-004',n:'Plywood 9mm',np:'Plywood 9mm (122x244cm)',c:'PW',kl:0,rd:100,dn:560,p:140000,u:'lembar',v:1},
+  {id:'PW-005',n:'MDF 18mm',np:'MDF 18mm (122x244cm)',c:'PW',kl:0,rd:100,dn:720,p:180000,u:'lembar',v:1},
+  {id:'PW-006',n:'HDF/Hardboard',np:'HDF / Hardboard 3mm',c:'PW',kl:0,rd:100,dn:800,p:65000,u:'lembar',v:1},
+  {id:'NW-001',n:'Kaca 5mm',np:'Kaca Bening 5mm',c:'NW',kl:0,rd:100,dn:2500,p:180000,u:'m²',v:0},
+  {id:'NW-002',n:'Kaca 8mm',np:'Kaca Bening 8mm',c:'NW',kl:0,rd:100,dn:2500,p:280000,u:'m²',v:0},
+  {id:'NW-003',n:'Rotan Anyaman',np:'Anyaman Rotan (per m²)',c:'NW',kl:0,rd:100,dn:200,p:145000,u:'m²',v:0},
+  {id:'NW-004',n:'Rotan Batang',np:'Rotan Batang (per meter)',c:'NW',kl:0,rd:100,dn:200,p:12000,u:'meter',v:0},
+  {id:'NW-005',n:'Kain/Fabric',np:'Kain Pelapis / Fabric',c:'NW',kl:0,rd:100,dn:0,p:95000,u:'meter',v:0},
+  {id:'NW-006',n:'Kulit Sintetis',np:'Kulit Sintetis / PU Leather',c:'NW',kl:0,rd:100,dn:0,p:120000,u:'meter',v:0},
+  {id:'NW-007',n:'Kulit Asli',np:'Kulit Asli / Genuine Leather',c:'NW',kl:0,rd:100,dn:0,p:350000,u:'meter',v:0},
+  {id:'NW-008',n:'Besi Hollow',np:'Besi Hollow 4x4cm',c:'NW',kl:0,rd:100,dn:7800,p:85000,u:'meter',v:0},
+  {id:'NW-009',n:'Besi Plat',np:'Besi Plat / Metal Sheet',c:'NW',kl:0,rd:100,dn:7800,p:320000,u:'m²',v:0},
+  {id:'NW-010',n:'Busa Foam',np:'Busa Foam (Seat/Back)',c:'NW',kl:0,rd:100,dn:30,p:85000,u:'lembar',v:0},
+  {id:'TBD',n:'-- Kosong/TBD --',np:'Kosong - Substitusi via BOM',c:'TBD',kl:0,rd:100,dn:0,p:0,u:'-',v:0},
+];
+const CLBL={SW:'Solid Wood',PW:'Plywood/Board',NW:'Non-Wood',TBD:'Kosong/TBD'};
+const CCLR={SW:'#92580a',PW:'#1a4a7a',NW:'#5c2d91',TBD:'#8a8680'};
+const CBG={SW:'#fef3e0',PW:'#e8f0fb',NW:'#f3eafb',TBD:'#f0efe9'};
+function loadPrices(){try{return JSON.parse(localStorage.getItem('wvc_p')||'{}')}catch(e){return{}}}
+function savePrices(o){localStorage.setItem('wvc_p',JSON.stringify(o))}
+function getMat(id){const m=MM.find(x=>x.id===id)||MM[MM.length-1];const p=loadPrices();return{...m,p:p[id]!==undefined?p[id]:m.p}}
+function updatePrice(id,price){const p=loadPrices();p[id]=+price;savePrices(p);const h=loadPH();h.unshift({id,p:+price,ts:new Date().toISOString()});localStorage.setItem('wvc_ph',JSON.stringify(h.slice(0,200)));showToast('💾 Harga tersimpan!');renderMM()}
+function loadPH(){try{return JSON.parse(localStorage.getItem('wvc_ph')||'[]')}catch(e){return[]}}
+function loadCH(){try{return JSON.parse(localStorage.getItem('wvc_ch')||'[]')}catch(e){return[]}}
+function saveCH(e){const h=loadCH();h.unshift(e);localStorage.setItem('wvc_ch',JSON.stringify(h.slice(0,100)))}
+function clearHistory(){if(!confirm('Hapus semua history?'))return;localStorage.removeItem('wvc_ch');renderHist();showToast('🗑 History dihapus')}
+function bedComps({length=197,width=95,h_hb=90,h_fb=60}){const p=4,iW=width-2*p,iL=length-2*p,n=Math.max(5,Math.round((iL-7)/7)+1);return[{id:'KK-01',g:'Kaki',name:'Kaki Headboard',c:'SW',qty:2,P:h_hb,L:p,T:p},{id:'KK-02',g:'Kaki',name:'Kaki Footboard',c:'SW',qty:2,P:h_fb,L:p,T:p},{id:'SR-01',g:'Side Rail',name:'Side Rail Kanan & Kiri',c:'SW',qty:2,P:iL,L:23,T:2.5},{id:'HB-01',g:'Headboard',name:'Top Rail Headboard',c:'SW',qty:1,P:iW,L:8,T:3},{id:'HB-02',g:'Headboard',name:'Mid Rail Headboard',c:'SW',qty:1,P:iW,L:8,T:3},{id:'HB-03',g:'Headboard',name:'Bottom Rail Headboard',c:'SW',qty:1,P:iW,L:8,T:3},{id:'HB-04',g:'Headboard',name:'Panel Atas Headboard',c:'PW',qty:1,P:iW,L:Math.max(12,h_hb-23-24-4),T:1.8},{id:'HB-05',g:'Headboard',name:'Panel Bawah Headboard',c:'PW',qty:1,P:iW,L:12,T:1.8},{id:'FB-01',g:'Footboard',name:'Top Rail Footboard',c:'SW',qty:1,P:iW,L:8,T:3},{id:'FB-02',g:'Footboard',name:'Bottom Rail Footboard',c:'SW',qty:1,P:iW,L:8,T:3},{id:'FB-03',g:'Footboard',name:'Panel Footboard',c:'PW',qty:1,P:iW,L:Math.max(8,h_fb-16-8),T:1.8},{id:'SL-00',g:'Slat System',name:'Slat Ledger Strip',c:'SW',qty:2,P:iL,L:3,T:2},{id:'SL-01',g:'Slat System',name:'Wood Slat (Palang Kasur)',c:'SW',qty:n,P:width-5,L:7,T:1.5}]}
+function lemariComps({width=120,height=200,depth=60,doors=2}){const pt=2.5,iW=Math.round(width-2*pt),sh=Math.max(1,Math.floor(height/70)-1),dW=Math.round(iW/doors)-3,dH=height-10;return[{id:'LM-01',g:'Carcass',name:'Panel Samping',c:'PW',qty:2,P:height,L:depth,T:pt},{id:'LM-02',g:'Carcass',name:'Panel Atas',c:'PW',qty:1,P:iW,L:depth,T:pt},{id:'LM-03',g:'Carcass',name:'Panel Bawah',c:'PW',qty:1,P:iW,L:depth,T:pt},{id:'LM-04',g:'Carcass',name:'Panel Belakang',c:'PW',qty:1,P:height,L:width,T:0.6},{id:'LM-05',g:'Carcass',name:'Rak Tengah (Shelf)',c:'PW',qty:sh,P:iW,L:depth-2,T:pt},{id:'LM-06',g:'Pintu',name:'Daun Pintu',c:'PW',qty:doors,P:dH,L:dW,T:1.8},{id:'LM-07',g:'Pintu',name:'Stile Pintu Vertikal',c:'SW',qty:doors*2,P:dH,L:6,T:3},{id:'LM-08',g:'Pintu',name:'Rail Pintu Atas & Bawah',c:'SW',qty:doors*2,P:dW-12,L:6,T:3},{id:'LM-09',g:'Base Frame',name:'Base Rail Depan & Belakang',c:'SW',qty:2,P:width,L:8,T:4},{id:'LM-10',g:'Base Frame',name:'Base Rail Samping',c:'SW',qty:2,P:depth-8,L:8,T:4},{id:'LM-11',g:'Internal',name:'Hanging Rail',c:'SW',qty:1,P:iW,L:4,T:4},{id:'LM-12',g:'Internal',name:'Laci Drawer (opsional)',c:'PW',qty:2,P:iW-4,L:depth-8,T:1.5}]}
+function kursiComps({width=45,depth=45,h_seat=45,h_back=90}){const sc=Math.max(2,Math.floor((width-8)/15)),slW=Math.round((width-10)/sc);return[{id:'KR-01',g:'Kaki',name:'Kaki Depan',c:'SW',qty:2,P:h_seat,L:4,T:4},{id:'KR-02',g:'Kaki',name:'Kaki Belakang',c:'SW',qty:2,P:h_back,L:4,T:4},{id:'KR-03',g:'Rangka Seat',name:'Front Rail',c:'SW',qty:1,P:width-8,L:6,T:3},{id:'KR-04',g:'Rangka Seat',name:'Back Rail',c:'SW',qty:1,P:width-8,L:6,T:3},{id:'KR-05',g:'Rangka Seat',name:'Side Rail',c:'SW',qty:2,P:depth-8,L:6,T:3},{id:'KR-06',g:'Sandaran',name:'Top Rail Sandaran',c:'SW',qty:1,P:width-8,L:6,T:3},{id:'KR-07',g:'Sandaran',name:'Slat Sandaran',c:'SW',qty:sc,P:Math.max(8,h_back-h_seat-14),L:slW,T:2},{id:'KR-08',g:'Dudukan',name:'Panel Dudukan',c:'SW',qty:1,P:width-6,L:depth-6,T:1.8},{id:'KR-09',g:'Dudukan',name:'Corner Block',c:'SW',qty:4,P:6,L:6,T:6}]}
+function sofaComps({width=90,depth=80,height=85,seats=1}){const aW=15,lH=15,sW=width-2*aW,sc=Math.max(3,Math.floor(sW/18));return[{id:'SF-01',g:'Kaki',name:'Kaki Sofa',c:'SW',qty:4+(seats-1)*2,P:lH,L:7,T:7},{id:'SF-02',g:'Arm Rest',name:'Panel Arm',c:'PW',qty:2,P:height-lH,L:depth,T:1.8},{id:'SF-03',g:'Arm Rest',name:'Top Arm Rest',c:'SW',qty:2,P:depth,L:aW,T:4},{id:'SF-04',g:'Rangka Dudukan',name:'Rail Dudukan Depan & Belakang',c:'SW',qty:2,P:sW-8,L:7,T:4},{id:'SF-05',g:'Rangka Dudukan',name:'Rail Dudukan Samping',c:'SW',qty:2,P:depth-8,L:7,T:4},{id:'SF-06',g:'Rangka Dudukan',name:'Spring Slat',c:'SW',qty:sc,P:depth-8,L:5,T:2},{id:'SF-07',g:'Sandaran',name:'Rail Sandaran Atas & Bawah',c:'SW',qty:2,P:sW-8,L:7,T:4},{id:'SF-08',g:'Sandaran',name:'Panel Sandaran',c:'PW',qty:1,P:sW-8,L:height-lH-18,T:1.8},{id:'SF-09',g:'Sandaran',name:'Slat Sandaran Vertikal',c:'SW',qty:Math.max(3,Math.floor(sW/25)),P:height-lH-18,L:5,T:2}]}
+function mejaComps({length=120,width=75,height=75,top_t=3,legs=4,drawers=0,shelf=0}){const lSz=height<=50?5:(height<=75?6:7),lH=height-top_t,iL=length-2*lSz,iW=width-2*lSz,aH=Math.round(lH*0.25),dW=drawers>0?Math.round((iL-4*(drawers-1))/drawers):0,dH=Math.min(aH-4,16),dD=width-lSz*2-6,r=[];if(top_t>=3){const b=Math.ceil(width/12);r.push({id:'MJ-01',g:'Table Top',name:'Top Panel Solid Glue-up',c:'SW',qty:b,P:length,L:Math.ceil(width/b)+1,T:top_t})}else{r.push({id:'MJ-01',g:'Table Top',name:'Top Panel (Plywood)',c:'PW',qty:1,P:length,L:width,T:top_t});r.push({id:'MJ-02',g:'Table Top',name:'Lipping Samping',c:'SW',qty:2,P:width,L:3,T:top_t});r.push({id:'MJ-03',g:'Table Top',name:'Lipping Depan & Belakang',c:'SW',qty:2,P:length+6,L:3,T:top_t})}r.push({id:'MJ-04',g:'Kaki',name:'Kaki Meja',c:'SW',qty:legs,P:lH,L:lSz,T:lSz});r.push({id:'MJ-05',g:'Apron',name:'Apron Depan & Belakang',c:'SW',qty:2,P:iL,L:aH,T:2.5});r.push({id:'MJ-06',g:'Apron',name:'Apron Samping',c:'SW',qty:2,P:iW,L:aH,T:2.5});r.push({id:'MJ-07',g:'Apron',name:'Corner Block',c:'SW',qty:4,P:6,L:6,T:6});if(height>=70&&legs===4){r.push({id:'MJ-08',g:'Stretcher',name:'H-Stretcher Tengah',c:'SW',qty:1,P:iL,L:5,T:3});r.push({id:'MJ-09',g:'Stretcher',name:'Stretcher Samping',c:'SW',qty:2,P:Math.max(10,iW-10),L:5,T:3})}if(shelf){r.push({id:'MJ-10',g:'Rak Bawah',name:'Panel Rak Bawah',c:'PW',qty:1,P:iL+lSz,L:iW+lSz,T:1.8});r.push({id:'MJ-11',g:'Rak Bawah',name:'Lipping Rak',c:'SW',qty:2,P:iL+lSz,L:3,T:1.8})}if(drawers>0){r.push({id:'MJ-12',g:'Laci',name:'Drawer Front',c:'SW',qty:drawers,P:dW,L:dH+2,T:1.8});r.push({id:'MJ-13',g:'Laci',name:'Drawer Box Kiri & Kanan',c:'PW',qty:drawers*2,P:dD,L:dH,T:1.2});r.push({id:'MJ-14',g:'Laci',name:'Drawer Box Depan & Belakang',c:'PW',qty:drawers*2,P:dW-4,L:dH,T:1.2});r.push({id:'MJ-15',g:'Laci',name:'Drawer Bottom',c:'PW',qty:drawers,P:dD-2,L:dW-4,T:0.6});r.push({id:'MJ-16',g:'Laci',name:'Drawer Rail/Slide Block',c:'SW',qty:drawers*2,P:dD,L:2,T:2})}return r}
+const TMPL={bed:{label:'Tempat Tidur',icon:'🛏️',sub:[{l:'Single 90x200',d:{length:197,width:95,h_hb:90,h_fb:60}},{l:'Double 120x200',d:{length:207,width:127,h_hb:90,h_fb:60}},{l:'Queen 160x200',d:{length:207,width:167,h_hb:90,h_fb:60}},{l:'King 180x200',d:{length:207,width:187,h_hb:100,h_fb:65}},{l:'Custom',d:null}],dims:[{k:'length',l:'Panjang Total (cm)',mn:160,mx:260,st:1},{k:'width',l:'Lebar Total (cm)',mn:80,mx:220,st:1},{k:'h_hb',l:'Tinggi Headboard',mn:60,mx:150,st:1},{k:'h_fb',l:'Tinggi Footboard',mn:40,mx:110,st:1}],gen:bedComps},lemari:{label:'Lemari',icon:'🗄️',sub:[{l:'2 Pintu 120cm',d:{width:120,height:200,depth:60,doors:2}},{l:'3 Pintu 180cm',d:{width:180,height:200,depth:60,doors:3}},{l:'4 Pintu 240cm',d:{width:240,height:200,depth:60,doors:4}},{l:'Custom',d:null}],dims:[{k:'width',l:'Lebar (cm)',mn:80,mx:320,st:1},{k:'height',l:'Tinggi (cm)',mn:150,mx:260,st:1},{k:'depth',l:'Kedalaman (cm)',mn:40,mx:90,st:1},{k:'doors',l:'Jumlah Pintu',mn:1,mx:6,st:1}],gen:lemariComps},kursi:{label:'Kursi',icon:'🪑',sub:[{l:'Kursi Makan 45x45',d:{width:45,depth:45,h_seat:45,h_back:90}},{l:'Arm Chair 60x55',d:{width:60,depth:55,h_seat:45,h_back:95}},{l:'Bar Stool',d:{width:40,depth:40,h_seat:72,h_back:108}},{l:'Bangku Panjang',d:{width:120,depth:35,h_seat:45,h_back:45}},{l:'Custom',d:null}],dims:[{k:'width',l:'Lebar (cm)',mn:30,mx:150,st:1},{k:'depth',l:'Kedalaman (cm)',mn:25,mx:70,st:1},{k:'h_seat',l:'Tinggi Dudukan',mn:35,mx:85,st:1},{k:'h_back',l:'Tinggi Total',mn:40,mx:130,st:1}],gen:kursiComps},sofa:{label:'Sofa',icon:'🛋️',sub:[{l:'1 Seater 90x80',d:{width:90,depth:80,height:85,seats:1}},{l:'2 Seater 160x80',d:{width:160,depth:80,height:85,seats:2}},{l:'3 Seater 220x85',d:{width:220,depth:85,height:90,seats:3}},{l:'L-Shape 300x200',d:{width:300,depth:90,height:90,seats:4}},{l:'Custom',d:null}],dims:[{k:'width',l:'Lebar (cm)',mn:80,mx:360,st:1},{k:'depth',l:'Kedalaman (cm)',mn:60,mx:130,st:1},{k:'height',l:'Tinggi (cm)',mn:60,mx:115,st:1},{k:'seats',l:'Jumlah Seat',mn:1,mx:6,st:1}],gen:sofaComps},meja:{label:'Meja',icon:'🪵',sub:[{l:'Meja Makan 120x75',d:{length:120,width:75,height:75,top_t:3,legs:4,drawers:0,shelf:0}},{l:'Meja Makan 160x80',d:{length:160,width:80,height:75,top_t:3,legs:4,drawers:0,shelf:0}},{l:'Meja Makan 200x90',d:{length:200,width:90,height:75,top_t:3,legs:4,drawers:0,shelf:0}},{l:'Meja Kantor 120x60',d:{length:120,width:60,height:75,top_t:2.5,legs:4,drawers:1,shelf:0}},{l:'Meja Kantor 160x70',d:{length:160,width:70,height:75,top_t:2.5,legs:4,drawers:2,shelf:0}},{l:'Meja Kopi 90x50',d:{length:90,width:50,height:45,top_t:3,legs:4,drawers:0,shelf:1}},{l:'Meja Nakas 50x40',d:{length:50,width:40,height:60,top_t:2,legs:4,drawers:1,shelf:1}},{l:'Custom',d:null}],dims:[{k:'length',l:'Panjang (cm)',mn:40,mx:300,st:1},{k:'width',l:'Lebar (cm)',mn:30,mx:120,st:1},{k:'height',l:'Tinggi (cm)',mn:35,mx:110,st:1},{k:'top_t',l:'Tebal Top (cm)',mn:1.5,mx:6,st:0.5},{k:'legs',l:'Jumlah Kaki',mn:4,mx:6,st:2},{k:'drawers',l:'Jumlah Laci',mn:0,mx:4,st:1},{k:'shelf',l:'Rak Bawah (0/1)',mn:0,mx:1,st:1}],gen:mejaComps}};
+const ST={ftype:'bed',sidx:0,dims:{...TMPL.bed.sub[0].d},rendemen:35,waste:15,ba:4,bb:6,blen:400,dw:'SW-005',mm:{},ref:genRef(),ts:new Date().toISOString(),tab:'cutting'};
+function genRef(){return 'CALC-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,5).toUpperCase()}
+function newRef(){ST.ref=genRef();ST.ts=new Date().toISOString()}
+function f(n,d=4){return(+n).toFixed(d)}
+function fm(n){return 'Rp '+Math.round(n).toLocaleString('id-ID')}
+function fts(iso){if(!iso)return'--';const d=new Date(iso);return d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'})+' '+d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+function calcVol(comps,waste,mm,dw){const bm={};let tot=0;comps.forEach(c=>{const v=c.qty*c.P*c.L*c.T/1e6;tot+=v;let mid=c.c==='SW'?(mm[c.id]||dw):(c.c==='PW'?'PW-001':'TBD');if(!bm[mid])bm[mid]=0;bm[mid]+=v});let tlog=0,tcost=0;const bd=[];Object.entries(bm).forEach(([mid,net])=>{const m=getMat(mid);const ww=net*(1+waste/100);const isSW=m.c==='SW',isPW=m.c==='PW';const log=isSW?ww/(m.rd/100):net;let cost=0;if(isSW)cost=log*m.p;else if(isPW){const sh=Math.ceil(net*(1+waste/100)/2.9768);cost=sh*m.p}tlog+=isSW?log:0;tcost+=cost;bd.push({mid,m,net,ww,log,cost,isSW,isPW})});const sw=comps.filter(c=>c.c==='SW').reduce((s,c)=>s+c.qty*c.P*c.L*c.T/1e6,0);const pw=comps.filter(c=>c.c==='PW').reduce((s,c)=>s+c.qty*c.P*c.L*c.T/1e6,0);return{sw,pw,net:tot,tlog,tcost,bd}}
+function render(){
+  document.getElementById('ts-now').textContent=fts(new Date().toISOString());
+  const tmpl=TMPL[ST.ftype];let comps=[];try{comps=tmpl.gen(ST.dims||{})}catch(e){}
+  const grp={};comps.forEach(c=>{(grp[c.g]=grp[c.g]||[]).push(c)});
+  const vol=calcVol(comps,ST.waste,ST.mm,ST.dw);
+  const tp=comps.reduce((s,c)=>s+c.qty,0);
+  const sb=ST.ba*ST.bb*ST.blen/1e6;
+  const bn=Math.ceil(vol.tlog/sb);
+  const pa=comps.filter(c=>c.c==='PW').reduce((s,c)=>s+c.qty*c.P*c.L/1e4,0);
+  const ps=Math.ceil(pa*(1+ST.waste/100)/2.9768);
+  const dw=getMat(ST.dw);
+  document.getElementById('audit-strip').innerHTML=`<div class="ait">🔖 Ref: <strong>${ST.ref}</strong></div><div class="ait">🕐 <strong>${fts(ST.ts)}</strong></div><div class="ait">🪵 <strong>${dw.n}</strong></div><div class="ait">📐 Rdm: <strong>${ST.rendemen}%</strong></div><div class="ait">♻️ Waste: <strong>${ST.waste}%</strong></div><button onclick="newRef();render();" style="margin-left:auto;padding:3px 10px;border:1px solid var(--b);border-radius:20px;background:var(--s);font-size:10px;cursor:pointer;color:var(--t2)">🔄 Baru</button>`;
+  const mg=document.getElementById('metrics');mg.innerHTML='';
+  [{l:'Volume Bersih',v:f(vol.net,4)+' m³',s:'Net finished size',cls:''},{l:'Solid Wood Net',v:f(vol.sw,4)+' m³',s:'Sebelum rendemen',cls:'warn'},{l:'Vol Log Dibutuhkan',v:f(vol.tlog,4)+' m³',s:'Setelah ÷ rendemen',cls:'hi'},{l:'Est. Batang SW',v:bn+' btg',s:ST.ba+'x'+ST.bb+'x'+ST.blen+'cm',cls:'info'},{l:'Plywood',v:ps+' lembar',s:'122x244cm',cls:'info'},{l:'Est. Biaya Material',v:fm(vol.tcost),s:'SW + Plywood',cls:'pu'}].forEach(m=>{const d=document.createElement('div');d.className='mc '+m.cls;d.innerHTML='<div class="mlbl">'+m.l+'</div><div class="mval">'+m.v+'</div><div class="msub">'+m.s+'</div>';mg.appendChild(d)});
+  document.getElementById('formula').innerHTML='<span class="fstep">Net SW <b>'+f(vol.sw,4)+' m³</b></span><span class="fop">×</span><span class="fpct">(1+'+ST.waste+'%)</span><span class="fop">÷</span><span class="frdm">Rdm '+ST.rendemen+'%</span><span class="fop">=</span><span class="fres">📦 '+f(vol.tlog,4)+' m³ log</span>';
+  document.getElementById('tbl-meta').textContent=comps.length+' komponen · '+tp+' pcs';
+  const tb=document.getElementById('cl-body');tb.innerHTML='';
+  const GC=['#e8f5e9','#fff8e1','#e3f2fd','#fce4ec','#f3e5f5','#e0f2f1'];let gi=0;
+  Object.entries(grp).forEach(([g,gc])=>{
+    const c=GC[gi++%GC.length];const gr=document.createElement('tr');gr.className='grph';
+    gr.innerHTML='<td colspan="10" style="background:'+c+'!important">▸ '+g.toUpperCase()+'</td>';tb.appendChild(gr);
+    gc.forEach(comp=>{
+      const vp=comp.P*comp.L*comp.T/1e6,vt=comp.qty*vp;
+      const isSW=comp.c==='SW',isPW=comp.c==='PW';
+      const mid=isSW?(ST.mm[comp.id]||ST.dw):(isPW?'PW-001':'TBD');
+      const m=getMat(mid);const rdm=isSW?m.rd/100:1;
+      const vl=isSW?vt*(1+ST.waste/100)/rdm:(isPW?vt*(1+ST.waste/100):0);
+      const pc=isSW?'psw':(isPW?'pply':(comp.c==='NW'?'pnw':'ptbd'));
+      const pt=isSW?'SW':(isPW?'PLY':(comp.c==='NW'?'NW':'TBD'));
+      const sel=buildSelHtml(comp.id,comp.c,mid);
+      const tr=document.createElement('tr');
+      tr.innerHTML='<td><span class="tcode">'+comp.id+'</span> <span style="font-size:12px">'+comp.name+'</span></td><td class="tnum"><span class="pill '+pc+'">'+pt+'</span></td><td>'+sel+'</td><td class="tnum"><b>'+comp.qty+'</b></td><td class="tnum">'+comp.P+'</td><td class="tnum">'+comp.L+'</td><td class="tnum">'+comp.T+'</td><td class="tvol">'+f(vp,6)+'</td><td class="tvol">'+f(vt,6)+'</td><td class="tvol b">'+(comp.c==='NW'||comp.c==='TBD'?'—':f(vl,6))+'</td>';
+      tb.appendChild(tr);
+    });
+  });
+  tb.querySelectorAll('.msel').forEach(s=>{s.addEventListener('change',e=>{ST.mm[e.target.dataset.c]=e.target.value;render()})});
+  const tf=document.getElementById('cl-foot');
+  tf.innerHTML='<tr><td colspan="7" style="text-align:right;color:var(--t2)">Total Volume Bersih (Net):</td><td></td><td style="text-align:center;font-family:Courier New;color:var(--ac)">'+f(vol.net,6)+' m³</td><td></td></tr><tr><td colspan="7" style="text-align:right;color:var(--t2)">Total Volume Log Dibutuhkan (SW):</td><td></td><td></td><td style="text-align:center;font-family:Courier New;color:var(--ac);font-size:13px">'+f(vol.tlog,4)+' m³</td></tr>';
+  // Volume Detail
+  const bdH=vol.bd.map(b=>{const bg=CBG[b.m.c]||'#f5f5f5',tc=CCLR[b.m.c]||'#555';return'<div style="background:var(--s);border:1px solid var(--b);border-left:4px solid '+tc+';border-radius:var(--r);padding:10px 12px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><div style="font-size:12px;font-weight:700">'+b.m.np+'</div><span style="font-size:9px;padding:2px 6px;border-radius:20px;font-weight:700;background:'+bg+';color:'+tc+'">'+b.m.id+'</span></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;font-size:11px"><div><div style="color:var(--t3)">Vol Bersih</div><div style="font-weight:700">'+f(b.net,4)+' m³</div></div><div><div style="color:var(--t3)">'+(b.isSW?'Vol Log':'Vol+Waste')+'</div><div style="font-weight:700;color:'+tc+'">'+f(b.isSW?b.log:b.ww,4)+' m³</div></div><div><div style="color:var(--t3)">Est. Biaya</div><div style="font-weight:700">'+(b.cost>0?fm(b.cost):'—')+'</div></div></div>'+(b.isSW?'<div style="font-size:10px;color:var(--t3);margin-top:5px">Rdm: '+b.m.rd+'% · '+fm(b.m.p)+'/m³ · Kls '+b.m.kl+'</div>':'')+'</div>'}).join('');
+  document.getElementById('vol-detail').innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:9px;margin-bottom:14px">'+bdH+'</div><div style="background:var(--acb);border:2px solid var(--ac2);border-radius:var(--rl);padding:13px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ac);margin-bottom:8px">📋 Langkah Perhitungan</div>'+[['1','Vol Bersih (Net)',f(vol.net,4)+' m³','Semua komponen P×L×T'],['2','SW × (1+Waste '+ST.waste+'%)',f(vol.sw*(1+ST.waste/100),4)+' m³','Solid Wood + waste'],['3','÷ Rendemen per Kayu','—','Tiap jenis kayu beda'],['4','= Vol Log Total',f(vol.tlog,4)+' m³','Total log dibeli'],['5','Est. Batang SW',bn+' btg','@ '+ST.ba+'x'+ST.bb+'x'+ST.blen+'cm'],['6','Est. Plywood',ps+' lembar','@ 122x244cm'],['7','Total Biaya',fm(vol.tcost),'Harga per master']].map(([n,l,v,s])=>'<div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;font-size:12px"><span style="min-width:17px;height:17px;background:var(--ac);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700">'+n+'</span><span style="flex:1;color:var(--t2)">'+l+'</span><span style="font-weight:700;color:var(--act)">'+v+'</span><span style="font-size:10px;color:var(--t3);min-width:150px;text-align:right">'+s+'</span></div>').join('')+'</div>';
+  // BOM
+  const bom=buildBOM(comps,vol,tp,bn,ps);
+  document.getElementById('bom-preview').textContent=JSON.stringify(bom,null,2);
+  window._bom=bom;
+  renderMM();renderHist();buildWA(comps);
+}
+function buildSelHtml(cid,cat,cur){
+  var o='';
+  if(cat==='SW'){
+    o+='<optgroup label="-- Solid Wood --">';
+    MM.filter(function(m){return m.c==='SW';}).forEach(function(m){o+='<option value="'+m.id+'"'+(m.id===cur?' selected':'')+'>'+m.n+' (K'+m.kl+')</option>';});
+    o+='</optgroup><optgroup label="-- Plywood/Board --">';
+    MM.filter(function(m){return m.c==='PW';}).forEach(function(m){o+='<option value="'+m.id+'"'+(m.id===cur?' selected':'')+'>'+m.n+'</option>';});
+    o+='</optgroup>';
+  } else if(cat==='PW'){
+    o+='<optgroup label="-- Solid Wood --">';
+    MM.filter(function(m){return m.c==='SW';}).forEach(function(m){o+='<option value="'+m.id+'"'+(m.id===cur?' selected':'')+'>'+m.n+' (K'+m.kl+')</option>';});
+    o+='</optgroup><optgroup label="-- Plywood/Board --">';
+    MM.filter(function(m){return m.c==='PW';}).forEach(function(m){o+='<option value="'+m.id+'"'+(m.id===cur?' selected':'')+'>'+m.n+'</option>';});
+    o+='</optgroup>';
+  } else {
+    o+='<optgroup label="-- Solid Wood --">';
+    MM.filter(function(m){return m.c==='SW';}).forEach(function(m){o+='<option value="'+m.id+'"'+(m.id===cur?' selected':'')+'>'+m.n+' (K'+m.kl+')</option>';});
+    o+='</optgroup><optgroup label="-- Plywood/Board --">';
+    MM.filter(function(m){return m.c==='PW';}).forEach(function(m){o+='<option value="'+m.id+'"'+(m.id===cur?' selected':'')+'>'+m.n+'</option>';});
+    o+='</optgroup><optgroup label="-- Non-Wood --">';
+    MM.filter(function(m){return m.c==='NW';}).forEach(function(m){o+='<option value="'+m.id+'"'+(m.id===cur?' selected':'')+'>'+m.n+'</option>';});
+    o+='</optgroup>';
+  }
+  o+='<option value="TBD"'+(cur==='TBD'?' selected':'')+'>-- Kosong/TBD --</option>';
+  return '<select class="msel" data-c="'+cid+'">'+o+'</select>';
+}
+function buildBOM(comps,vol,tp,bn,ps){const dw=getMat(ST.dw);return{module:'WOOD_CALC_PRO',version:'2.0',ref:ST.ref,timestamp:ST.ts,furniture_type:ST.ftype.toUpperCase(),subtype:TMPL[ST.ftype].sub[ST.sidx].l,params:{dims:ST.dims,waste_pct:ST.waste,rendemen_default_pct:ST.rendemen,default_wood:{id:dw.id,nama:dw.n},batang_std_cm:[ST.ba,ST.bb,ST.blen]},summary:{total_components:comps.length,total_pcs:tp,vol_net_m3:+f(vol.net,6),vol_log_required_m3:+f(vol.tlog,4),plywood_sheets:ps,batang_needed:bn,est_cost_idr:Math.round(vol.tcost)},material_breakdown:vol.bd.map(b=>({material_id:b.mid,material_nama:b.m.n,category:b.m.c,vol_net_m3:+f(b.net,6),vol_log_m3:b.isSW?+f(b.log,4):null,est_cost_idr:b.cost>0?Math.round(b.cost):null})),items:comps.map(c=>{const isSW=c.c==='SW',isPW=c.c==='PW';const mid=isSW?(ST.mm[c.id]||ST.dw):(isPW?'PW-001':'TBD');const m=getMat(mid);const vp=c.P*c.L*c.T/1e6,vt=c.qty*vp;const vl=isSW?vt*(1+ST.waste/100)/(m.rd/100):null;return{code:c.id,group:c.g,name:c.name,material_id:mid,material_nama:m.n,material_cat:m.c,qty:c.qty,P_cm:c.P,L_cm:c.L,T_cm:c.T,vol_per_pcs_m3:+f(vp,6),vol_total_m3:+f(vt,6),vol_log_m3:vl!=null?+f(vl,6):null}})}}
+function renderMM(){const el=document.getElementById('mat-master-content');if(!el)return;let h='';['SW','PW','NW'].forEach(cat=>{const ms=MM.filter(m=>m.c===cat);const clr=CCLR[cat],bg=CBG[cat];h+='<div style="margin-bottom:18px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:'+clr+';margin-bottom:9px;display:flex;align-items:center;gap:7px"><span style="width:10px;height:10px;border-radius:50%;background:'+clr+';display:inline-block"></span>'+CLBL[cat]+' <span style="font-weight:400;font-size:10px;color:var(--t3)">'+ms.length+' item</span></div><div class="mmgrid">';ms.forEach(m=>{const cur=getMat(m.id);const ph=loadPH().filter(p=>p.id===m.id).slice(0,3);h+='<div class="mmcard"><div class="mmchdr"><span class="mmid">'+m.id+'</span><span class="mmname">'+m.n+'</span>'+(m.kl?'<span style="font-size:9px;padding:1px 6px;border-radius:20px;background:'+bg+';color:'+clr+';font-weight:700">Kls '+m.kl+'</span>':'')+'</div><div class="mmmeta"><div>📦 Unit: <b>'+m.u+'</b></div>'+(m.rd<100?'<div>🪵 Rdm: <b>'+m.rd+'%</b></div>':'')+(m.dn?'<div>⚖️ '+m.dn+' kg/m³</div>':'')+'</div><div class="mmpr"><span style="font-size:10px;color:var(--t3)">Harga:</span><input class="mmpinp" type="number" id="pp-'+m.id+'" value="'+cur.p+'" placeholder="Rp"><span style="font-size:10px;color:var(--t3)">/'+m.u+'</span><button class="mmsave" onclick="updatePrice(\''+m.id+'\',document.getElementById(\'pp-'+m.id+'\').value)">💾</button></div>'+(ph.length?'<div style="margin-top:5px;font-size:10px;color:var(--t3)">Hist: '+ph.map(p=>'<span class="phpill">'+fts(p.ts).split(' ')[0]+': '+fm(p.p)+'</span>').join(' ')+'</div>':'')+'</div>'});h+='</div></div>'});el.innerHTML=h}
+function renderHist(){const el=document.getElementById('hist-content');if(!el)return;const h=loadCH();if(!h.length){el.innerHTML='<div style="text-align:center;padding:28px;color:var(--t3);font-size:13px">Belum ada history. Klik "💾 Simpan History" di tab BOM JSON.</div>';return}let html='<div style="overflow-x:auto"><table class="htbl"><thead><tr><th>Ref</th><th>Timestamp</th><th>Furniture</th><th>Subtype</th><th>Vol Log m³</th><th>Est. Biaya</th><th>Kayu Default</th></tr></thead><tbody>';h.forEach(e=>{html+='<tr><td><span class="href">'+e.ref+'</span></td><td><span class="hts">'+fts(e.timestamp)+'</span></td><td>'+e.furniture_type+'</td><td style="font-size:11px">'+(e.subtype||'—')+'</td><td style="font-weight:700;color:var(--ac)">'+(e.summary?.vol_log_required_m3||0).toFixed(4)+' m³</td><td style="font-size:11px">'+(e.summary?.est_cost_idr?fm(e.summary.est_cost_idr):'—')+'</td><td style="font-size:11px">'+(e.params?.default_wood?.nama||'—')+'</td></tr>'});html+='</tbody></table></div>';el.innerHTML=html}
+window.saveToHistory = function(){if(!window._bom)return;saveCH(window._bom);renderHist();showToast('💾 Tersimpan ke History!')}
+function buildWA(comps){
+  var el=document.getElementById('wood-assign-container');
+  if(!el)return;
+  var swComps=comps.filter(function(c){return c.c==='SW';});
+  if(!swComps.length){el.innerHTML='<div style="font-size:11px;color:var(--t3)">Tidak ada komponen SW.</div>';return;}
+
+  // Detect which components have been overridden to non-SW or set to 'none'
+  // Split into: PURE SW group and MIXED group
+  var pureComps=[], mixedComps=[];
+  swComps.forEach(function(c){
+    var assigned = ST.mm[c.id];
+    // If assigned to 'none' or non-SW material -> mixed group
+    if(assigned && (assigned==='none' || MM.find(function(m){return m.id===assigned && m.c!=='SW';}))){
+      mixedComps.push(c);
+    } else {
+      pureComps.push(c);
+    }
+  });
+
+  el.innerHTML='';
+
+  // ── GROUP 1: PURE SOLID WOOD ──────────────────────────────
+  var wrap1=document.createElement('div');
+  wrap1.className='wawrap';
+  wrap1.style.marginBottom='10px';
+  var hdr1=document.createElement('div');
+  hdr1.className='wahdr';
+  hdr1.innerHTML='<span>🪵 Pure Solid Wood</span><span style="font-weight:400;font-size:9px">'+pureComps.length+' komponen</span>';
+  wrap1.appendChild(hdr1);
+
+  if(!pureComps.length){
+    var emptyEl=document.createElement('div');
+    emptyEl.style.cssText='padding:8px 12px;font-size:11px;color:var(--t3);font-style:italic;';
+    emptyEl.textContent='Semua komponen sudah di-mixed';
+    wrap1.appendChild(emptyEl);
+  }
+
+  pureComps.forEach(function(c){
+    var row=document.createElement('div');
+    row.className='warow';
+    var cur=ST.mm[c.id]||ST.dw;
+    
+    var codeEl=document.createElement('span');
+    codeEl.className='wacode';
+    codeEl.textContent=c.id;
+    
+    var nameEl=document.createElement('span');
+    nameEl.className='waname';
+    nameEl.textContent=c.name;
+    
+    var sel=document.createElement('select');
+    sel.className='wasel';
+    // SW options
+    var swGroup=document.createElement('optgroup');
+    swGroup.label='── Solid Wood ──';
+    MM.filter(function(m){return m.c==='SW';}).forEach(function(m){
+      var o=document.createElement('option');
+      o.value=m.id;
+      o.textContent=m.n+(m.kl?' K'+m.kl:'');
+      if(m.id===cur) o.selected=true;
+      swGroup.appendChild(o);
+    });
+    sel.appendChild(swGroup);
+    // None/BOM option
+    var noneOpt=document.createElement('option');
+    noneOpt.value='none';
+    noneOpt.textContent='── None (via BOM) ──';
+    if(cur==='none') noneOpt.selected=true;
+    sel.appendChild(noneOpt);
+    
+    sel.addEventListener('change',function(e){
+      ST.mm[c.id]=e.target.value;
+      render();
+    });
+    row.append(codeEl,nameEl,sel);
+    wrap1.appendChild(row);
+  });
+  el.appendChild(wrap1);
+
+  // ── GROUP 2: MIXED MATERIAL ───────────────────────────────
+  var wrap2=document.createElement('div');
+  wrap2.className='wawrap';
+  var hdr2=document.createElement('div');
+  hdr2.className='wahdr';
+  hdr2.style.background='#f3eafb';
+  hdr2.innerHTML='<span>🔀 Mixed Material</span><span style="font-weight:400;font-size:9px;color:var(--pu,#5c2d91)">'+mixedComps.length+' komponen · akan relate ke BOM</span>';
+  wrap2.appendChild(hdr2);
+
+  if(!mixedComps.length){
+    var emptyEl2=document.createElement('div');
+    emptyEl2.style.cssText='padding:8px 12px;font-size:11px;color:var(--t3);font-style:italic;';
+    emptyEl2.textContent='Belum ada komponen mixed — pilih "None (via BOM)" di atas untuk memindahkan';
+    wrap2.appendChild(emptyEl2);
+  }
+
+  mixedComps.forEach(function(c){
+    var row=document.createElement('div');
+    row.className='warow';
+    row.style.background='#fdf8ff';
+    var cur2=ST.mm[c.id]||'none';
+    
+    var codeEl2=document.createElement('span');
+    codeEl2.className='wacode';
+    codeEl2.style.color='#5c2d91';
+    codeEl2.textContent=c.id;
+    
+    var nameEl2=document.createElement('span');
+    nameEl2.className='waname';
+    nameEl2.textContent=c.name;
+    
+    // BOM badge
+    var bomBadge=document.createElement('span');
+    bomBadge.style.cssText='font-size:9px;padding:2px 6px;border-radius:20px;background:#f3eafb;color:#5c2d91;font-weight:700;white-space:nowrap;';
+    bomBadge.textContent=cur2==='none'?'→ BOM':'Mixed';
+    
+    var sel2=document.createElement('select');
+    sel2.className='wasel';
+    // SW options
+    var swGroup2=document.createElement('optgroup');
+    swGroup2.label='── Solid Wood ──';
+    MM.filter(function(m){return m.c==='SW';}).forEach(function(m){
+      var o=document.createElement('option');
+      o.value=m.id;
+      o.textContent=m.n+(m.kl?' K'+m.kl:'');
+      if(m.id===cur2) o.selected=true;
+      swGroup2.appendChild(o);
+    });
+    sel2.appendChild(swGroup2);
+    // PW options
+    var pwGroup=document.createElement('optgroup');
+    pwGroup.label='── Plywood ──';
+    MM.filter(function(m){return m.c==='PW';}).forEach(function(m){
+      var o=document.createElement('option');
+      o.value=m.id;
+      o.textContent=m.n;
+      if(m.id===cur2) o.selected=true;
+      pwGroup.appendChild(o);
+    });
+    sel2.appendChild(pwGroup);
+    // None option
+    var noneOpt2=document.createElement('option');
+    noneOpt2.value='none';
+    noneOpt2.textContent='── None (via BOM) ──';
+    if(cur2==='none') noneOpt2.selected=true;
+    sel2.appendChild(noneOpt2);
+    
+    sel2.addEventListener('change',function(e){
+      ST.mm[c.id]=e.target.value;
+      render();
+    });
+    row.append(codeEl2,nameEl2,bomBadge,sel2);
+    wrap2.appendChild(row);
+  });
+  el.appendChild(wrap2);
+}
+function buildDWS(){const s=document.getElementById('sel-default-wood');if(!s)return;if(!MM||!MM.length)return;s.innerHTML='';MM.filter(m=>m.c==='SW').forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.n+' — Kls '+m.kl+' (Rdm '+m.rd+'%)';if(m.id===ST.dw)o.selected=true;s.appendChild(o)});s.onchange=e=>{ST.dw=e.target.value;const w=getMat(ST.dw);ST.rendemen=w.rd;document.getElementById('rng-rendemen').value=w.rd;document.getElementById('inp-rendemen').value=w.rd;ST.mm={};newRef();render()}}
+window.switchTab = function(t){ST.tab=t;const ns=['cutting','volume','master','history','bom'];document.querySelectorAll('.tbtn').forEach((b,i)=>b.classList.toggle('active',ns[i]===t));document.querySelectorAll('.tcont').forEach(c=>c.classList.remove('active'));document.getElementById('tab-'+t).classList.add('active')}
+window.showToast = function(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+window.copyBOM = function(){const txt=document.getElementById('bom-preview').textContent;navigator.clipboard.writeText(txt).then(()=>showToast('✅ BOM JSON tersalin!'))}
+window.downloadBOM = function(){const txt=document.getElementById('bom-preview').textContent;const b=new Blob([txt],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='BOM_'+ST.ref+'.json';a.click();showToast('⬇️ File JSON diunduh!')}
+window.downloadCSV = function(){if(!window._bom)return;const d=window._bom;let csv='No,Kode,Grup,Nama,Material ID,Nama Material,Kategori,Qty,P,L,T,Vol/pcs,Vol Total,Vol Log\n';d.items.forEach((c,i)=>{csv+=[i+1,c.code,c.group,'"'+c.name+'"',c.material_id,c.material_nama,c.material_cat,c.qty,c.P_cm,c.L_cm,c.T_cm,c.vol_per_pcs_m3,c.vol_total_m3,c.vol_log_m3??''].join(',')+'\n'});csv+='\n,,,,,,,,,,,,,Ref,'+d.ref+'\n,,,,,,,,,,,,,Timestamp,'+d.timestamp+'\n,,,,,,,,,,,,,Vol Log,'+d.summary.vol_log_required_m3+'\n';const b=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='CuttingList_'+ST.ref+'.csv';a.click();showToast('📄 CSV diunduh!')}
+function buildFTabs(){const c=document.getElementById('ftabs');c.innerHTML='';var FKEYS={'bed':'ft_bed','lemari':'ft_lemari','kursi':'ft_kursi','sofa':'ft_sofa','meja':'ft_meja'};Object.entries(TMPL).forEach(([key,tmpl])=>{const b=document.createElement('button');b.className='ftab'+(ST.ftype===key?' active':'');var label=typeof window._t==='function'?window._t(FKEYS[key]):tmpl.label;b.innerHTML='<span>'+tmpl.icon+'</span>'+label;b.addEventListener('click',()=>{ST.ftype=key;ST.sidx=0;ST.dims={...(TMPL[key].sub[0].d||{})};ST.mm={};newRef();buildFTabs();buildCP();buildDWS();render()});c.appendChild(b)})}
+function buildCP(){const tmpl=TMPL[ST.ftype];const s=document.getElementById('subtype-sel');s.innerHTML='';tmpl.sub.forEach((sub,i)=>{const o=document.createElement('option');o.value=i;o.textContent=sub.l;s.appendChild(o)});s.value=ST.sidx;s.onchange=e=>{ST.sidx=+e.target.value;if(tmpl.sub[ST.sidx].d)ST.dims={...tmpl.sub[ST.sidx].d};ST.mm={};newRef();buildCP();render()};const dc=document.getElementById('dims-container');dc.innerHTML='';const g=document.createElement('div');g.className='dgrid';tmpl.dims.forEach(d=>{const fg=document.createElement('div');fg.className='fg';const l=document.createElement('label');l.textContent=d.l;const i=document.createElement('input');i.type='number';i.className='fc';i.min=d.mn;i.max=d.mx;i.step=d.st;i.value=ST.dims?.[d.k]??0;i.addEventListener('input',e=>{ST.dims={...ST.dims,[d.k]:+e.target.value};newRef();render()});fg.append(l,i);g.appendChild(fg)});dc.appendChild(g)}
+function syncP(rid,nid,sk){const r=document.getElementById(rid),n=document.getElementById(nid);r.addEventListener('input',e=>{n.value=e.target.value;ST[sk]=+e.target.value;render()});n.addEventListener('input',e=>{r.value=e.target.value;ST[sk]=+e.target.value;render()})}
+syncP('rng-rendemen','inp-rendemen','rendemen');syncP('rng-waste','inp-waste','waste');
+['inp-ba','inp-bb','inp-blen'].forEach((id,i)=>{document.getElementById(id).addEventListener('input',e=>{ST[['ba','bb','blen'][i]]=+e.target.value;render()})});
+// Init language toggle - safe load
+(function(){
+  function initLang(){
+    if(typeof buildLangToggle !== 'function') return;
+    var wrap = document.getElementById('lang-toggle-wrap');
+    if(wrap){ var s=document.createElement('span'); s.innerHTML=buildLangToggle(); wrap.replaceWith(s.firstChild); }
+    if(typeof applyLang==='function') applyLang();
+  }
+  // Try immediately, fallback to DOMContentLoaded
+  if(typeof buildLangToggle==='function'){ initLang(); }
+  else { document.addEventListener('DOMContentLoaded', initLang); }
+})();
+buildFTabs();buildCP();buildDWS();render();
+setInterval(()=>{const e=document.getElementById('ts-now');if(e)e.textContent=fts(new Date().toISOString())},30000);
+</script>
 
 <script type="module">
-import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, getDocs, setDoc, updateDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const FC = {apiKey:"AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",authDomain:"gabe-international-hub.firebaseapp.com",projectId:"gabe-international-hub",storageBucket:"gabe-international-hub.firebasestorage.app",messagingSenderId:"115783216069",appId:"1:115783216069:web:62cfabf543b1fbb85bf9ac"};
-const fbApp = getApps().find(a=>a.name==='prd')||initializeApp(FC,'prd');
-const auth  = getAuth(fbApp);
-const db    = getFirestore(fbApp);
+const firebaseConfig = {
+  apiKey: "AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",
+  authDomain: "gabe-international-hub.firebaseapp.com",
+  projectId: "gabe-international-hub",
+  storageBucket: "gabe-international-hub.firebasestorage.app",
+  messagingSenderId: "115783216069",
+  appId: "1:115783216069:web:62cfabf543b1fbb85bf9ac"
+};
 
-// Dev mode
-var stored = sessionStorage.getItem('gabe_user');
-if (!stored) { stored=JSON.stringify({name:'Manampin Girsang',email:'pipin@i-gabe.com',role:'admin'}); sessionStorage.setItem('gabe_user',stored); }
-const CU = JSON.parse(stored||'{}');
-document.getElementById('user-name').textContent = '👤 '+(CU.name||CU.email||'');
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-window.doLogout = async function(){ try{await signOut(auth);}catch(e){} sessionStorage.removeItem('gabe_user'); window.location.href='index.html'; };
-
-// State
-let _all = [], _filtered = [], _activeFilter = '', _searchQ = '', _currentSku = null;
-
-function showToast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
-
-// Demo products seed
-const DEMOS = [
-  {sku:'TSARI-CRD-BP-01',nama:'TSARI Credenza',kategori:'lemari',style:'Modern Minimalis',panjang:172.7,lebar:50.8,tinggi:91.4,kayu:'Oak Solid / Oak Veneer',finishing:'Natural Oil / Matte',ket:'Credenza 4 modul 17 inci. Canvas panel. Metal leg powder coated.',status:'on-progress',
-    komponen:[{code:'CRD-TP',name:'Top Panel (MDF/Veneer)',type:'PW',qty:1,p:172,l:50,t:2},{code:'CRD-BP',name:'Bottom Panel',type:'PW',qty:1,p:172,l:50,t:2},{code:'CRD-SP',name:'Side Panel Kiri & Kanan',type:'SW',qty:2,p:91,l:50,t:4},{code:'CRD-VD',name:'Vertical Divider',type:'SW',qty:3,p:84,l:50,t:4},{code:'CRD-DR',name:'Door Panel Canvas',type:'NW',qty:4,p:40,l:84,t:2},{code:'CRD-SH',name:'Adjustable Shelf',type:'PW',qty:4,p:40,l:46,t:2},{code:'CRD-RR',name:'Rear Rail',type:'SW',qty:1,p:172,l:8,t:4},{code:'CRD-BK',name:'Back Panel',type:'PW',qty:1,p:172,l:91,t:1.8},{code:'CRD-LG',name:'Metal Leg',type:'NW',qty:4,p:17,l:3.8,t:3.8}]},
-  {sku:'INFU2586-SM',nama:'Materazzo Small Arm Chair',kategori:'kursi',style:'Modern Minimalis',panjang:55,lebar:54,tinggi:60,kayu:'Mindi K2',finishing:'Natural Oil / PU Matt',ket:'Arm chair modern. Seat upholstery busa + fabric.',status:'final',
-    komponen:[{code:'KR-01',name:'Kaki Depan',type:'SW',qty:2,p:45,l:10,t:10},{code:'KR-02',name:'Kaki Belakang',type:'SW',qty:2,p:60,l:10,t:10},{code:'KR-03',name:'Seat Rail',type:'SW',qty:4,p:47,l:7,t:4},{code:'KR-06',name:'Arm Rest',type:'SW',qty:2,p:54,l:10,t:4},{code:'KR-07',name:'Back Frame',type:'SW',qty:1,p:55,l:4,t:10},{code:'KR-08',name:'Panel Dudukan',type:'PW',qty:1,p:53,l:51,t:1.8}]},
-  {sku:'MARBLE-COFFE-120',nama:'Marble Coffee Table Round',kategori:'meja',style:'Modern Minimalis',panjang:120,lebar:120,tinggi:30,kayu:'Jati K1',finishing:'Natural Oil',ket:'Coffee table top marble bundar Ø120cm.',status:'draft',
-    komponen:[{code:'TW-01',name:'Top Marble',type:'NW',qty:1,p:120,l:120,t:2,shape:'round',diameter:120},{code:'LK-01',name:'Kaki Panel',type:'SW',qty:4,p:28,l:21.5,t:4},{code:'ST-01',name:'Stretcher',type:'SW',qty:2,p:116,l:8,t:4}]}
+// ── DEMO PRODUCTS (seed if empty) ────────────────────────────────
+const DEMO_PRODUCTS = [
+  {
+    sku:'TSARI-CRD-BP-01', nama:'TSARI Credenza', kategori:'lemari',
+    style:'Modern Minimalis', panjang:172.7, lebar:50.8, tinggi:91.4,
+    kayu:'Oak Solid / Oak Veneer', finishing:'Natural Oil / Matte',
+    ket:'Credenza 4 modul 17 inci. Canvas panel stretched. Metal leg powder coated black.',
+    komponen:[
+      {code:'CRD-TP',name:'Top Panel (MDF/Veneer)',type:'PW',qty:1,p:172,l:50,t:2,shape:'panel_wide'},
+      {code:'CRD-BP',name:'Bottom Panel',type:'PW',qty:1,p:172,l:50,t:2,shape:'panel_wide'},
+      {code:'CRD-SP',name:'Side Panel Kiri & Kanan',type:'SW',qty:2,p:91,l:50,t:4,shape:'panel_tall'},
+      {code:'CRD-VD',name:'Vertical Divider',type:'SW',qty:3,p:84,l:50,t:4,shape:'panel_tall'},
+      {code:'CRD-DR',name:'Door Panel Canvas Insert',type:'NW',qty:4,p:40,l:84,t:2,shape:'panel_tall'},
+      {code:'CRD-SH',name:'Adjustable Shelf',type:'PW',qty:4,p:40,l:46,t:2,shape:'panel_wide'},
+      {code:'CRD-RR',name:'Rear Rail System',type:'SW',qty:1,p:172,l:8,t:4,shape:'rectangular'},
+      {code:'CRD-BK',name:'Back Panel',type:'PW',qty:1,p:172,l:91,t:1.8,shape:'panel_wide'},
+      {code:'CRD-LG',name:'Metal Leg Powder Coated',type:'NW',qty:4,p:17,l:3.8,t:3.8,shape:'rectangular'},
+    ]
+  },
+  {
+    sku:'INFU2586-SM', nama:'Materazzo Small Arm Chair', kategori:'kursi',
+    style:'Modern Minimalis', panjang:55, lebar:54, tinggi:60,
+    kayu:'Mindi K2', finishing:'Natural Oil / PU Matt',
+    ket:'Arm chair modern minimalis. Seat upholstery busa + fabric.',
+    komponen:[
+      {code:'KR-01',name:'Kaki Depan',type:'SW',qty:2,p:45,l:10,t:10,shape:'rectangular'},
+      {code:'KR-02',name:'Kaki Belakang',type:'SW',qty:2,p:60,l:10,t:10,shape:'rectangular'},
+      {code:'KR-03',name:'Seat Rail',type:'SW',qty:4,p:47,l:7,t:4,shape:'rectangular'},
+      {code:'KR-06',name:'Arm Rest',type:'SW',qty:2,p:54,l:10,t:4,shape:'panel_wide'},
+      {code:'KR-07',name:'Back Frame Curve',type:'SW',qty:1,p:55,l:4,t:10,shape:'rectangular'},
+      {code:'KR-08',name:'Panel Dudukan',type:'PW',qty:1,p:53,l:51,t:1.8,shape:'panel_wide'},
+    ]
+  },
+  {
+    sku:'MARBLE-COFFE-120', nama:'Marble Coffee Table Round', kategori:'meja',
+    style:'Modern Minimalis', panjang:120, lebar:120, tinggi:30,
+    kayu:'Jati K1', finishing:'Natural Oil',
+    ket:'Coffee table top marble bundar Diameter 120cm. Kaki solid block Jati.',
+    komponen:[
+      {code:'TW-01',name:'Top Marble Bundar',type:'NW',qty:1,p:120,l:120,t:2,shape:'round',diameter:120},
+      {code:'LK-01',name:'Kaki Panel Depan Kiri',type:'SW',qty:1,p:28,l:21.5,t:4,shape:'panel_tall'},
+      {code:'LK-02',name:'Kaki Panel Depan Kanan',type:'SW',qty:1,p:28,l:21.5,t:4,shape:'panel_tall'},
+      {code:'LK-03',name:'Kaki Panel Belakang Kiri',type:'SW',qty:1,p:28,l:21.5,t:4,shape:'panel_tall'},
+      {code:'LK-04',name:'Kaki Panel Belakang Kanan',type:'SW',qty:1,p:28,l:21.5,t:4,shape:'panel_tall'},
+      {code:'ST-01',name:'Stretcher Sabuk Bawah',type:'SW',qty:2,p:116,l:8,t:4,shape:'rectangular'},
+    ]
+  }
 ];
 
-// Load products
-async function loadProducts() {
+// ── LOAD & SEARCH PRODUCTS ────────────────────────────────────────
+var _calcProducts = [];
+
+async function loadCalcProducts() {
   try {
     var snap = await getDocs(collection(db,'products'));
-    _all = [];
-    snap.forEach(d => _all.push(d.data()));
-    if (_all.length===0) {
-      for (var d of DEMOS) {
-        await setDoc(doc(db,'products',d.sku), Object.assign({},d,{updatedAt:serverTimestamp(),updatedBy:'system'}));
-        _all.push(d);
+    _calcProducts = [];
+    snap.forEach(function(d){ _calcProducts.push(d.data()); });
+
+    // Seed demo products if empty
+    if (_calcProducts.length === 0) {
+      for (var i=0; i<DEMO_PRODUCTS.length; i++) {
+        var p = DEMO_PRODUCTS[i];
+        await setDoc(doc(db,'products',p.sku), Object.assign({},p,{
+          updatedAt: serverTimestamp(), updatedBy: 'system-demo'
+        }));
+        _calcProducts.push(p);
       }
+      console.log('Demo products seeded:', _calcProducts.length);
     }
-    updateCounts();
-    applyFilter();
-  } catch(e) {
-    document.getElementById('prod-grid').innerHTML = '<div class="empty"><div class="empty-icon">❌</div><div class="empty-title">Gagal memuat</div><div class="empty-sub">'+e.message+'</div></div>';
-  }
+
+    // Update search if already open
+    var search = document.getElementById('prod-search');
+    if (search && search.value) searchProductsFn(search.value);
+  } catch(e) { console.log('loadCalcProducts:', e.message); }
 }
 
-function calcVol(komps) {
-  if(!komps||!komps.length) return {net:0,log:0,ply:0};
-  let net=0,log=0,ply=0;
-  komps.forEach(c=>{
-    const p=+(c.p||0),l=+(c.l||0),t=+(c.t||0),q=+(c.qty||1),v=(p/100)*(l/100)*(t/100)*q;
-    if(c.type==='PW') ply++;
-    else if(c.type==='SW'){net+=v;log+=v/0.35;}
-  });
-  return {net:net.toFixed(4),log:log.toFixed(4),ply};
-}
+function searchProductsFn(q) {
+  var dropdown = document.getElementById('prod-dropdown');
+  var inner    = document.getElementById('prod-dropdown-inner');
+  if (!dropdown || !inner) return;
+  q = (q||'').toLowerCase().trim();
 
-function updateCounts() {
-  document.getElementById('s-total').textContent = _all.length;
-  document.getElementById('s-bed').textContent   = _all.filter(p=>p.kategori==='bed').length;
-  document.getElementById('s-lemari').textContent= _all.filter(p=>p.kategori==='lemari').length;
-  document.getElementById('s-kursi').textContent = _all.filter(p=>p.kategori==='kursi').length;
-  document.getElementById('s-meja').textContent  = _all.filter(p=>p.kategori==='meja').length;
-  document.getElementById('cnt-all').textContent    = _all.length;
-  document.getElementById('cnt-bed').textContent    = _all.filter(p=>p.kategori==='bed').length;
-  document.getElementById('cnt-lemari').textContent = _all.filter(p=>p.kategori==='lemari').length;
-  document.getElementById('cnt-kursi').textContent  = _all.filter(p=>p.kategori==='kursi').length;
-  document.getElementById('cnt-sofa').textContent   = _all.filter(p=>p.kategori==='sofa').length;
-  document.getElementById('cnt-meja').textContent   = _all.filter(p=>p.kategori==='meja').length;
-  document.getElementById('stats-row').style.display = 'grid';
-}
+  var results = q
+    ? _calcProducts.filter(function(p){
+        return (p.sku||'').toLowerCase().includes(q)||
+               (p.nama||'').toLowerCase().includes(q)||
+               (p.kategori||'').toLowerCase().includes(q)||
+               (p.kayu||'').toLowerCase().includes(q)||
+               (p.style||'').toLowerCase().includes(q);
+      })
+    : _calcProducts.slice(0,10);
 
-function applyFilter() {
-  const q = _searchQ.toLowerCase().trim();
-  _filtered = _all.filter(p => {
-    const matchCat = !_activeFilter || p.kategori===_activeFilter;
-    const matchQ   = !q ||
-      (p.sku||'').toLowerCase().includes(q) ||
-      (p.nama||'').toLowerCase().includes(q) ||
-      (p.kategori||'').toLowerCase().includes(q) ||
-      (p.kayu||'').toLowerCase().includes(q) ||
-      (p.style||'').toLowerCase().includes(q);
-    return matchCat && matchQ;
-  });
-  renderProducts();
-}
+  var CAT_ICON = {bed:'🛏️',lemari:'🗄️',kursi:'🪑',sofa:'🛋️',meja:'🪵'};
 
-window.renderProducts = function() {
-  const sort = document.getElementById('sort-sel').value;
-  _filtered.sort((a,b)=>{
-    if(sort==='sku')      return (a.sku||'').localeCompare(b.sku||'');
-    if(sort==='nama')     return (a.nama||'').localeCompare(b.nama||'');
-    if(sort==='kategori') return (a.kategori||'').localeCompare(b.kategori||'');
-    const ta=a.updatedAt?.seconds||0, tb=b.updatedAt?.seconds||0;
-    return tb-ta;
-  });
-
-  const cnt = document.getElementById('results-count');
-  cnt.textContent = _filtered.length+' produk ditemukan'+(_searchQ?' untuk "'+_searchQ+'"':'');
-
-  const grid = document.getElementById('prod-grid');
-  if(!_filtered.length){
-    grid.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-title">Produk tidak ditemukan</div><div class="empty-sub">Coba kata kunci lain atau tambah produk baru</div><a href="ai-asisten.html" class="new-btn" style="display:inline-flex;margin:auto;">➕ Tambah Produk Baru</a></div>';
+  if (!results.length) {
+    inner.innerHTML = '<div style="padding:12px;text-align:center;color:#8a8680;font-size:11px;">🔍 Tidak ada produk "'+q+'"<br><span style="font-size:10px;">Simpan produk dulu di AI Asisten</span></div>';
+    dropdown.style.display = 'block';
     return;
   }
 
-  const CAT_ICON = {bed:'🛏️',lemari:'🗄️',kursi:'🪑',sofa:'🛋️',meja:'🪵'};
-  const ST_CLASS = {draft:'st-draft','on-progress':'st-progress',review:'st-review',final:'st-final',invoiced:'st-invoiced'};
-  const ST_LABEL = {draft:'🆕 Draft','on-progress':'⚙️ Progress',review:'🔍 Review',final:'✅ Final',invoiced:'📄 Invoiced'};
-
-  grid.innerHTML = _filtered.map(p => {
-    const vol  = calcVol(p.komponen);
-    const icon = CAT_ICON[p.kategori]||'📦';
-    const stc  = ST_CLASS[p.status||'draft']||'st-draft';
-    const stl  = ST_LABEL[p.status||'draft']||'Draft';
-    const dim  = `${p.panjang||0}×${p.lebar||0}×${p.tinggi||0} cm`;
-    const kc   = (p.komponen||[]).length;
-    const upd  = p.updatedAt ? new Date(p.updatedAt.seconds*1000).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'2-digit'}) : '—';
-
-    return `<div class="prod-card" onclick="showDetail('${p.sku}')">
-      <div class="pc-hdr">
-        <span class="pc-sku">${p.sku}</span>
-        <span class="pc-status ${stc}">${stl}</span>
-      </div>
-      <div class="pc-body">
-        <div class="pc-nama">${icon} ${p.nama||'—'}</div>
-        <div class="pc-dim">📐 ${dim}</div>
-        <div class="pc-tags">
-          <span class="tag tag-kayu">🪵 ${p.kayu||'—'}</span>
-          <span class="tag tag-komp">✂️ ${kc} komponen</span>
-          ${p.finishing?`<span class="tag tag-kat">🎨 ${p.finishing.split('/')[0].trim()}</span>`:''}
-        </div>
-        <div class="pc-stats">
-          <div class="pcs-item"><div class="pcs-val" style="color:#2d5a27;">${vol.net}</div><div class="pcs-lbl">Vol m³</div></div>
-          <div class="pcs-item"><div class="pcs-val" style="color:#1565c0;">${vol.log}</div><div class="pcs-lbl">Log m³</div></div>
-          <div class="pcs-item"><div class="pcs-val" style="color:#6a1b9a;">${vol.ply||'—'}</div><div class="pcs-lbl">Plywood</div></div>
-        </div>
-        <div class="pc-meta">📅 ${upd} · 👤 ${p.updatedBy||'—'}</div>
-      </div>
-      <div class="pc-foot" onclick="event.stopPropagation()">
-        <a class="pc-btn grn" href="app.html?sku=${p.sku}">📐 Kalkulator</a>
-        <a class="pc-btn blu" href="ai-asisten.html?sku=${p.sku}">🤖 Edit AI</a>
-        <button class="pc-btn red" onclick="deleteProduct('${p.sku}')">🗑</button>
-      </div>
-    </div>`;
-  }).join('');
-};
-
-// Detail modal
-window.showDetail = function(sku) {
-  const p = _all.find(x=>x.sku===sku);
-  if(!p) return;
-  _currentSku = sku;
-  const ST_LABEL = {draft:'🆕 Draft','on-progress':'⚙️ On Progress',review:'🔍 Review',final:'✅ Final',invoiced:'📄 Invoiced'};
-  const vol = calcVol(p.komponen);
-  const upd = p.updatedAt ? new Date(p.updatedAt.seconds*1000).toLocaleString('id-ID') : '—';
-  const CAT_ICON = {bed:'🛏️',lemari:'🗄️',kursi:'🪑',sofa:'🛋️',meja:'🪵'};
-
-  document.getElementById('modal-title').innerHTML = `<span style="font-family:monospace;font-size:11px;background:#f0efe9;padding:2px 7px;border-radius:4px;">${p.sku}</span> <span style="margin-left:8px;">${CAT_ICON[p.kategori]||'📦'} ${p.nama||'—'}</span>`;
-
-  const kompRows = (p.komponen||[]).map((c,i) => {
-    const type = (c.type||'SW').toUpperCase();
-    const cls  = type==='PW'?'t-pw':type==='NW'?'t-nw':'t-sw';
-    const vol  = ((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))).toFixed(4);
-    return `<tr>
-      <td style="font-family:monospace;font-size:10px;">${c.code||'C-'+String(i+1).padStart(2,'0')}</td>
-      <td style="font-weight:600;">${c.name||'—'}</td>
-      <td><span class="${cls}">${type}</span></td>
-      <td style="text-align:center;">${c.qty||1}</td>
-      <td style="text-align:right;">${c.p||0}</td>
-      <td style="text-align:right;">${c.l||0}</td>
-      <td style="text-align:right;">${c.t||0}</td>
-      <td style="text-align:right;font-weight:700;color:#2d5a27;">${vol}</td>
-    </tr>`;
+  inner.innerHTML = results.slice(0,8).map(function(p){
+    var icon = CAT_ICON[p.kategori]||'📦';
+    var dim  = (p.panjang||0)+'×'+(p.lebar||0)+'×'+(p.tinggi||0)+' cm';
+    var kc   = (p.komponen||[]).length;
+    return '<div class="prod-srch-item" onclick="window.selectCalcProduct(''+p.sku+'')">'+
+      '<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:.5px solid #e8e6df;cursor:pointer;">'+
+        '<span style="font-size:16px;">'+icon+'</span>'+
+        '<div style="flex:1;min-width:0;">'+
+          '<div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">'+
+            '<span style="font-family:monospace;font-size:10px;font-weight:700;background:#f0efe9;padding:1px 5px;border-radius:4px;color:#1a1917;">'+p.sku+'</span>'+
+            '<span style="font-size:11px;font-weight:600;color:#1a1917;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+( p.nama||'—')+'</span>'+
+          '</div>'+
+          '<div style="font-size:10px;color:#8a8680;margin-top:2px;">'+dim+' · '+(p.kayu||'—')+' · '+kc+' komponen</div>'+
+        '</div>'+
+        '<span style="font-size:11px;color:#8a8680;flex-shrink:0;">›</span>'+
+      '</div>'+
+    '</div>';
   }).join('');
 
-  // Calculate detailed volumes
-  const swComps  = (p.komponen||[]).filter(c=>c.type==='SW'||!c.type);
-  const pwComps  = (p.komponen||[]).filter(c=>c.type==='PW');
-  const nwComps  = (p.komponen||[]).filter(c=>c.type==='NW'||c.type==='MARBLE'||c.type==='METAL');
-  const totNet   = swComps.reduce((s,c)=>s+(+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1)),0);
-  const totLog   = totNet / 0.35;
-  const totPly   = pwComps.reduce((s,c)=>s+(+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1)),0);
+  if(results.length>8){
+    inner.innerHTML+='<div style="padding:6px;text-align:center;font-size:10px;color:#8a8680;background:#f5f4f0;">+'+( results.length-8)+' lainnya...</div>';
+  }
+  dropdown.style.display = 'block';
+}
 
-  document.getElementById('modal-body').innerHTML = `
-    <!-- HEADER INFO -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-      <div style="background:#f5f4f0;border-radius:10px;padding:12px;">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#8a8680;margin-bottom:7px;">Identitas</div>
-        <div style="font-size:12px;display:grid;grid-template-columns:1fr 1fr;gap:5px;">
-          <div><div style="color:#8a8680;font-size:10px;">Kategori</div><b>${CAT_ICON[p.kategori]||''} ${p.kategori||'—'}</b></div>
-          <div><div style="color:#8a8680;font-size:10px;">Status</div><b>${ST_LABEL[p.status||'draft']||'Draft'}</b></div>
-          <div><div style="color:#8a8680;font-size:10px;">Dimensi</div><b>${p.panjang||0}×${p.lebar||0}×${p.tinggi||0} cm</b></div>
-          <div><div style="color:#8a8680;font-size:10px;">Style</div><b>${p.style||'—'}</b></div>
-          <div><div style="color:#8a8680;font-size:10px;">Kayu</div><b>${(p.kayu||'—').split('—')[0].trim()}</b></div>
-          <div><div style="color:#8a8680;font-size:10px;">Finishing</div><b>${(p.finishing||'—').split('/')[0].trim()}</b></div>
-        </div>
-      </div>
-      <!-- VOLUME SUMMARY -->
-      <div style="background:#f5f4f0;border-radius:10px;padding:12px;">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#8a8680;margin-bottom:7px;">Volume Summary</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-          <div style="background:#EAF3DE;border-radius:8px;padding:8px;text-align:center;">
-            <div style="font-size:16px;font-weight:700;color:#27500A;">${totNet.toFixed(4)}</div>
-            <div style="font-size:9px;color:#27500A;">SW Bersih m³</div>
-          </div>
-          <div style="background:#E6F1FB;border-radius:8px;padding:8px;text-align:center;">
-            <div style="font-size:16px;font-weight:700;color:#0C447C;">${totLog.toFixed(4)}</div>
-            <div style="font-size:9px;color:#0C447C;">Log m³ (Rdm 35%)</div>
-          </div>
-          <div style="background:#F3E5F5;border-radius:8px;padding:8px;text-align:center;">
-            <div style="font-size:16px;font-weight:700;color:#6A1B9A;">${totPly.toFixed(4)}</div>
-            <div style="font-size:9px;color:#6A1B9A;">PW Total m³</div>
-          </div>
-          <div style="background:#FFF8E8;border-radius:8px;padding:8px;text-align:center;">
-            <div style="font-size:16px;font-weight:700;color:#B45309;">${(p.komponen||[]).length}</div>
-            <div style="font-size:9px;color:#B45309;">Komponen</div>
-          </div>
-        </div>
-      </div>
-    </div>
+window.searchProducts = searchProductsFn;
 
-    <!-- TABS -->
-    <div style="display:flex;gap:2px;border-bottom:1.5px solid #d8d5cb;margin-bottom:10px;" id="dtabs">
-      <div class="dtab active" onclick="switchDTab('cutting',this)" style="padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;border-radius:8px 8px 0 0;border:1.5px solid #d8d5cb;border-bottom-color:#fff;margin-bottom:-1.5px;background:#fff;">✂️ Cutting List</div>
-      <div class="dtab" onclick="switchDTab('volume',this)" style="padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;border-radius:8px 8px 0 0;color:#8a8680;">📊 Volume CBM</div>
-      <div class="dtab" onclick="switchDTab('bom',this)" style="padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;border-radius:8px 8px 0 0;color:#8a8680;">💰 BOM Reference</div>
-      <div class="dtab" onclick="switchDTab('info',this)" style="padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;border-radius:8px 8px 0 0;color:#8a8680;">📋 Info</div>
-    </div>
+window.selectCalcProduct = function(sku) {
+  var p = _calcProducts.find(function(x){ return x.sku===sku; });
+  if (!p) return;
 
-    <!-- TAB: CUTTING LIST -->
-    <div id="dtab-cutting" class="dtab-content">
-      <div style="overflow-x:auto;">
-        <table class="cut-tbl">
-          <thead><tr><th>Kode</th><th>Nama Komponen</th><th>Tipe</th><th>Qty</th><th>P cm</th><th>L cm</th><th>T cm</th><th>Vol Total m³</th><th>Vol Log m³</th></tr></thead>
-          <tbody>
-            ${(p.komponen||[]).map((c,i)=>{
-              const t=(c.type||'SW').toUpperCase();
-              const cls=t==='PW'?'t-pw':t==='NW'?'t-nw':'t-sw';
-              const vt=((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))).toFixed(4);
-              const vl=t==='SW'?((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))/0.35).toFixed(4):'—';
-              return `<tr><td style="font-family:monospace;font-size:10px;">${c.code||'C-'+String(i+1).padStart(2,'0')}</td><td style="font-weight:600;">${c.name||'—'}</td><td><span class="${cls}">${t}</span></td><td style="text-align:center;">${c.qty||1}</td><td style="text-align:right;">${c.p||0}</td><td style="text-align:right;">${c.l||0}</td><td style="text-align:right;">${c.t||0}</td><td style="text-align:right;font-weight:700;color:#2d5a27;">${vt}</td><td style="text-align:right;color:#e65100;">${vl}</td></tr>`;
-            }).join('')||'<tr><td colspan="9" style="text-align:center;padding:16px;color:#8a8680;">Belum ada komponen</td></tr>'}
-          </tbody>
-          <tfoot>
-            <tr style="background:#f5f4f0;font-weight:700;">
-              <td colspan="7" style="padding:6px 10px;">TOTAL</td>
-              <td style="padding:6px 10px;text-align:right;color:#2d5a27;">${totNet.toFixed(4)}</td>
-              <td style="padding:6px 10px;text-align:right;color:#e65100;">${totLog.toFixed(4)}</td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    </div>
+  // Close dropdown
+  var dd = document.getElementById('prod-dropdown');
+  if(dd) dd.style.display='none';
+  document.getElementById('prod-manual').style.display='none';
 
-    <!-- TAB: VOLUME CBM -->
-    <div id="dtab-volume" class="dtab-content" style="display:none;">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
-        <!-- SW Breakdown -->
-        <div style="background:#f5faf4;border:1.5px solid #b8d9b4;border-radius:10px;padding:12px;">
-          <div style="font-size:11px;font-weight:700;color:#27500A;margin-bottom:8px;">🪵 Solid Wood (SW) — ${swComps.length} komponen</div>
-          ${swComps.map(c=>{
-            const v=((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1)));
-            const vl=v/0.35;
-            return `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:.5px solid #d8d5cb;font-size:11px;"><span style="color:#5a5750;">${c.code||''} ${(c.name||'').slice(0,20)} ×${c.qty||1}</span><span style="font-weight:600;color:#27500A;">${v.toFixed(4)} m³</span></div>`;
-          }).join('')}
-          <div style="margin-top:6px;padding:6px;background:#fff;border-radius:6px;display:flex;justify-content:space-between;">
-            <span style="font-size:11px;font-weight:700;">Total SW Bersih</span>
-            <span style="font-weight:700;color:#27500A;">${totNet.toFixed(4)} m³</span>
-          </div>
-          <div style="padding:4px 6px;display:flex;justify-content:space-between;">
-            <span style="font-size:11px;color:#8a8680;">+ Rendemen Log (÷35%)</span>
-            <span style="font-weight:700;color:#E65100;">${totLog.toFixed(4)} m³</span>
-          </div>
-        </div>
-        <!-- PW + NW -->
-        <div>
-          <div style="background:#E6F1FB;border:1.5px solid #85B7EB;border-radius:10px;padding:12px;margin-bottom:8px;">
-            <div style="font-size:11px;font-weight:700;color:#0C447C;margin-bottom:6px;">🔷 Plywood/Board (PW) — ${pwComps.length} komponen</div>
-            ${pwComps.map(c=>{
-              const v=((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1)));
-              return `<div style="display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:.5px solid #d8d5cb;"><span style="color:#5a5750;">${c.code||''} ${(c.name||'').slice(0,18)} ×${c.qty||1}</span><span style="font-weight:600;color:#0C447C;">${v.toFixed(4)} m³</span></div>`;
-            }).join('')||'<div style="font-size:11px;color:#8a8680;">Tidak ada</div>'}
-            <div style="margin-top:5px;padding:5px;background:#fff;border-radius:5px;display:flex;justify-content:space-between;">
-              <span style="font-size:11px;font-weight:700;">Total PW</span>
-              <span style="font-weight:700;color:#0C447C;">${totPly.toFixed(4)} m³</span>
-            </div>
-          </div>
-          <div style="background:#F3E5F5;border:1.5px solid #CE93D8;border-radius:10px;padding:12px;">
-            <div style="font-size:11px;font-weight:700;color:#6A1B9A;margin-bottom:6px;">🔵 Non-Wood (NW) — ${nwComps.length} komponen</div>
-            ${nwComps.map(c=>`<div style="font-size:11px;padding:3px 0;border-bottom:.5px solid #d8d5cb;color:#5a5750;">${c.code||''} ${(c.name||'').slice(0,25)} ×${c.qty||1}</div>`).join('')||'<div style="font-size:11px;color:#8a8680;">Tidak ada</div>'}
-          </div>
-        </div>
-      </div>
-      <!-- CBM Summary Box -->
-      <div style="background:#1a3a1a;color:#fff;border-radius:10px;padding:12px 16px;">
-        <div style="font-size:11px;font-weight:700;margin-bottom:8px;opacity:.8;">📦 CBM SUMMARY — ${p.nama||'—'}</div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;">
-          <div><div style="font-size:18px;font-weight:700;color:#97C459;">${totNet.toFixed(4)}</div><div style="font-size:9px;opacity:.7;">SW Bersih m³</div></div>
-          <div><div style="font-size:18px;font-weight:700;color:#FAC775;">${totLog.toFixed(4)}</div><div style="font-size:9px;opacity:.7;">Log m³</div></div>
-          <div><div style="font-size:18px;font-weight:700;color:#85B7EB;">${totPly.toFixed(4)}</div><div style="font-size:9px;opacity:.7;">Plywood m³</div></div>
-          <div><div style="font-size:18px;font-weight:700;color:#fff;">${(p.komponen||[]).length}</div><div style="font-size:9px;opacity:.7;">Komponen</div></div>
-        </div>
-      </div>
-    </div>
+  // Show selected chip
+  var sel = document.getElementById('prod-selected');
+  var selSku = document.getElementById('prod-sel-sku');
+  var selNama = document.getElementById('prod-sel-nama');
+  var selInfo = document.getElementById('prod-sel-info');
+  if(selSku)  selSku.textContent  = p.sku;
+  if(selNama) selNama.textContent = p.nama||'—';
+  if(selInfo) selInfo.textContent = '📐 '+(p.panjang||0)+'×'+(p.lebar||0)+'×'+(p.tinggi||0)+' cm · 🪵 '+(p.kayu||'—')+' · ✂️ '+(p.komponen||[]).length+' komponen';
+  if(sel) sel.style.display='block';
 
-    <!-- TAB: BOM REFERENCE -->
-    <div id="dtab-bom" class="dtab-content" style="display:none;">
-      <div style="background:#FEF3C7;border:1.5px solid #F59E0B;border-radius:10px;padding:12px;margin-bottom:10px;">
-        <div style="font-size:12px;font-weight:700;color:#92400E;margin-bottom:4px;">💡 BOM Reference — Panduan Penawaran</div>
-        <div style="font-size:11px;color:#92400E;">Gunakan data ini sebagai referensi BOM untuk produk sejenis. Volume kayu adalah basis perhitungan cost material utama.</div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-        <div style="background:#f5f4f0;border-radius:8px;padding:10px;">
-          <div style="font-size:10px;font-weight:700;color:#8a8680;text-transform:uppercase;margin-bottom:6px;">Material Kayu</div>
-          <div style="font-size:12px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:.5px solid #d8d5cb;"><span>SW Log Volume</span><span style="font-weight:700;color:#E65100;">${totLog.toFixed(4)} m³</span></div>
-          <div style="font-size:12px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:.5px solid #d8d5cb;"><span>Plywood</span><span style="font-weight:700;color:#0C447C;">${totPly.toFixed(4)} m³</span></div>
-          <div style="font-size:12px;display:flex;justify-content:space-between;padding:4px 0;"><span>Jenis Kayu</span><span style="font-weight:700;">${(p.kayu||'—').split('—')[0].trim()}</span></div>
-        </div>
-        <div style="background:#f5f4f0;border-radius:8px;padding:10px;">
-          <div style="font-size:10px;font-weight:700;color:#8a8680;text-transform:uppercase;margin-bottom:6px;">Info Produk</div>
-          <div style="font-size:12px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:.5px solid #d8d5cb;"><span>Dimensi</span><span style="font-weight:700;">${p.panjang||0}×${p.lebar||0}×${p.tinggi||0}</span></div>
-          <div style="font-size:12px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:.5px solid #d8d5cb;"><span>Kategori</span><span style="font-weight:700;">${p.kategori||'—'}</span></div>
-          <div style="font-size:12px;display:flex;justify-content:space-between;padding:4px 0;"><span>Komponen</span><span style="font-weight:700;">${(p.komponen||[]).length} items</span></div>
-        </div>
-      </div>
-      <div style="background:#f5f4f0;border-radius:8px;padding:10px;">
-        <div style="font-size:10px;font-weight:700;color:#8a8680;text-transform:uppercase;margin-bottom:6px;">⊕ Estimasi Cost Material (edit sesuai harga aktual)</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
-          <div style="background:#fff;border-radius:6px;padding:8px;">
-            <div style="font-size:10px;color:#8a8680;margin-bottom:2px;">Harga Kayu /m³</div>
-            <input id="harga-kayu" type="number" value="4500000" style="width:100%;padding:4px 7px;border:1.5px solid #d8d5cb;border-radius:5px;font-size:11px;font-family:inherit;" oninput="calcBomEst()">
-          </div>
-          <div style="background:#fff;border-radius:6px;padding:8px;">
-            <div style="font-size:10px;color:#8a8680;margin-bottom:2px;">Harga PW /lembar</div>
-            <input id="harga-pw" type="number" value="220000" style="width:100%;padding:4px 7px;border:1.5px solid #d8d5cb;border-radius:5px;font-size:11px;font-family:inherit;" oninput="calcBomEst()">
-          </div>
-          <div style="background:#EAF3DE;border-radius:6px;padding:8px;">
-            <div style="font-size:10px;color:#8a8680;margin-bottom:2px;">Est. Cost Material</div>
-            <div id="est-cost" style="font-size:15px;font-weight:700;color:#27500A;">Rp —</div>
-          </div>
-        </div>
-      </div>
-      <div style="margin-top:8px;display:flex;gap:6px;">
-        <button onclick="dupProduct('${p.sku}')" style="flex:1;padding:8px;background:#E6F1FB;border:1.5px solid #85B7EB;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;color:#0C447C;font-family:inherit;">📋 Duplikasi sebagai Template</button>
-        <button onclick="exportBomCSV('${p.sku}')" style="flex:1;padding:8px;background:#EAF3DE;border:1.5px solid #97C459;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;color:#27500A;font-family:inherit;">📊 Export BOM CSV</button>
-      </div>
-    </div>
+  // Fill fields
+  var skuEl  = document.getElementById('p-sku-calc');
+  var namaEl = document.getElementById('p-nama-calc');
+  var srch   = document.getElementById('prod-search');
+  if(skuEl)  skuEl.value  = p.sku;
+  if(namaEl) namaEl.value = p.nama||'';
+  if(srch)   srch.value   = '';
 
-    <!-- TAB: INFO -->
-    <div id="dtab-info" class="dtab-content" style="display:none;">
-      <div style="display:grid;gap:6px;">
-        <div style="background:#f5f4f0;border-radius:8px;padding:10px;font-size:12px;">
-          <div style="font-weight:700;color:#8a8680;font-size:10px;text-transform:uppercase;margin-bottom:6px;">📋 Keterangan</div>
-          <div>${p.ket||'Belum ada keterangan'}</div>
-        </div>
-        <div style="background:#f5f4f0;border-radius:8px;padding:10px;font-size:12px;">
-          <div style="font-weight:700;color:#8a8680;font-size:10px;text-transform:uppercase;margin-bottom:6px;">🕐 Audit Trail</div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:.5px solid #d8d5cb;"><span style="color:#8a8680;">Dibuat/Update</span><span>${upd}</span></div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:.5px solid #d8d5cb;"><span style="color:#8a8680;">Oleh</span><span>${p.updatedBy||'—'}</span></div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:.5px solid #d8d5cb;"><span style="color:#8a8680;">Status</span><span>${ST_LABEL[p.status||'draft']||'Draft'}</span></div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0;"><span style="color:#8a8680;">SKU</span><span style="font-family:monospace;font-weight:700;">${p.sku}</span></div>
-        </div>
-        <div style="background:#f5faf4;border:1.5px solid #b8d9b4;border-radius:8px;padding:10px;">
-          <div style="font-weight:700;color:#27500A;font-size:11px;margin-bottom:6px;">🔗 Produk Serupa (referensi)</div>
-          <div style="font-size:11px;color:#8a8680;">Produk dengan dimensi atau kategori mirip akan ditampilkan di sini untuk referensi BOM.</div>
-          ${_all.filter(x=>x.sku!==p.sku&&x.kategori===p.kategori).slice(0,3).map(x=>`
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:.5px solid #d8d5cb;cursor:pointer;" onclick="showDetail('${x.sku}')">
-              <div><span style="font-family:monospace;font-size:10px;background:#f0efe9;padding:1px 5px;border-radius:4px;">${x.sku}</span> <span style="font-size:11px;font-weight:600;">${x.nama||'—'}</span></div>
-              <span style="font-size:10px;color:#2d5a27;">→</span>
-            </div>`).join('')||'<div style="font-size:11px;color:#8a8680;margin-top:4px;">Belum ada produk sejenis.</div>'}
-        </div>
-      </div>
-    </div>`;
-
-  // Init BOM estimate
-  setTimeout(calcBomEst, 100);
-
-  document.getElementById('modal-load-btn').onclick = () => { window.location.href='app.html?sku='+sku; };
-  document.getElementById('modal-del-btn').onclick  = () => { closeModal(); deleteProduct(sku); };
-  document.getElementById('detail-modal').classList.add('show');
+  showToast('✅ '+p.nama+' dimuat!');
 };
 
-window.closeModal = () => document.getElementById('detail-modal').classList.remove('show');
+window.clearProdSearch = function() {
+  var dd   = document.getElementById('prod-dropdown');
+  var sel  = document.getElementById('prod-selected');
+  var man  = document.getElementById('prod-manual');
+  var srch = document.getElementById('prod-search');
+  if(dd)   dd.style.display   = 'none';
+  if(sel)  sel.style.display  = 'none';
+  if(man)  man.style.display  = 'block';
+  if(srch) srch.value         = '';
+  var skuEl  = document.getElementById('p-sku-calc');
+  var namaEl = document.getElementById('p-nama-calc');
+  if(skuEl)  skuEl.value  = '';
+  if(namaEl) namaEl.value = '';
+};
 
-window.switchDTab = function(tab, el) {
-  document.querySelectorAll('.dtab-content').forEach(c=>c.style.display='none');
-  document.getElementById('dtab-'+tab).style.display='block';
-  document.querySelectorAll('#dtabs .dtab').forEach(b=>{
-    b.style.background='transparent'; b.style.borderColor='transparent';
-    b.style.borderBottomColor='#d8d5cb'; b.style.color='#8a8680';
+// Close dropdown on outside click
+document.addEventListener('click', function(e){
+  var dd  = document.getElementById('prod-dropdown');
+  var inp = document.getElementById('prod-search');
+  if(dd && inp && !dd.contains(e.target) && e.target!==inp) dd.style.display='none';
+});
+
+// Check login
+const stored = sessionStorage.getItem('gabe_user');
+if (!stored) {
+  stored = JSON.stringify({name:'Manampin Girsang', email:'pipin@i-gabe.com', role:'admin'});
+  sessionStorage.setItem('gabe_user', stored);
+}
+{
+  const user = JSON.parse(stored);
+  const roleColors = {admin:'#f0c060',manager:'#60a0f0',operator:'#60c060',viewer:'#c060f0'};
+  const roleEl = document.getElementById('user-role-badge');
+  const nameEl = document.getElementById('user-name-bar');
+  const adminLink = document.getElementById('admin-link');
+
+  if (roleEl) {
+    roleEl.textContent = (user.role||'viewer').toUpperCase();
+    roleEl.style.color = roleColors[user.role] || '#fff';
+  }
+  if (nameEl) nameEl.textContent = '👤 ' + (user.name || user.email);
+  if (adminLink && user.role === 'admin') adminLink.style.display = 'inline';
+    const matLink = document.getElementById('materials-link');
+    if (matLink && (user.role === 'admin' || user.role === 'manager')) matLink.style.display = 'inline';
+    const vndLink = document.getElementById('vendors-link');
+    if (vndLink && (user.role === 'admin' || user.role === 'manager')) vndLink.style.display = 'inline';
+
+  // Role-based restrictions
+  const role = user.role || 'viewer';
+
+  // Viewer — disable all inputs
+  if (role === 'viewer') {
+    document.querySelectorAll('input, select, button:not([onclick="doLogout()"])').forEach(el => {
+      el.disabled = true;
+      el.style.opacity = '0.6';
+      el.style.cursor = 'not-allowed';
+    });
+    // Hide BOM save & export buttons for viewer
+    setTimeout(() => {
+      document.querySelectorAll('.bgrp .btn').forEach(b => {
+        if (!b.textContent.includes('Copy')) b.style.display = 'none';
+      });
+    }, 500);
+  }
+
+  // Operator — hide Material Master price edit
+  if (role === 'operator') {
+    setTimeout(() => {
+      document.querySelectorAll('.mmsave').forEach(b => {
+        b.disabled = true;
+        b.style.opacity = '0.4';
+        b.title = 'Hanya Manager/Admin yang bisa edit harga';
+      });
+    }, 1000);
+  }
+
+  // Update last login
+  onAuthStateChanged(auth, async (fireUser) => {
+    if (fireUser) {
+      try {
+        await updateDoc(doc(db, 'users', fireUser.uid), {
+          lastLogin: serverTimestamp()
+        });
+      } catch(e) {}
+    }
   });
-  el.style.background='#fff'; el.style.borderColor='#d8d5cb';
-  el.style.borderBottomColor='#fff'; el.style.color='#1a1917';
-};
+}
 
-window.calcBomEst = function() {
-  var hk = +(document.getElementById('harga-kayu')?.value||4500000);
-  var hp = +(document.getElementById('harga-pw')?.value||220000);
-  var p  = _all.find(x=>x.sku===_currentSku);
-  if(!p) return;
-  var swComps = (p.komponen||[]).filter(c=>c.type==='SW'||!c.type);
-  var pwComps = (p.komponen||[]).filter(c=>c.type==='PW');
-  var logVol  = swComps.reduce((s,c)=>s+(+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))/0.35,0);
-  var pwSheets= Math.ceil(pwComps.reduce((s,c)=>s+(+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1)),0) / ((1.22*2.44*0.018)));
-  var cost = (logVol * hk) + (Math.max(1,pwSheets) * hp);
-  var el   = document.getElementById('est-cost');
-  if(el) el.textContent = 'Rp '+Math.round(cost).toLocaleString('id-ID');
-};
-
-window.dupProduct = function(sku) {
-  var p = _all.find(x=>x.sku===sku);
-  if(!p) return;
-  var newSku = sku+'-COPY';
-  sessionStorage.setItem('dup_product', JSON.stringify(Object.assign({},p,{sku:newSku,nama:p.nama+' (Copy)',status:'draft'})));
-  showToast('📋 Template disimpan! Buka AI Asisten untuk edit.');
-};
-
-window.exportBomCSV = function(sku) {
-  var p = _all.find(x=>x.sku===sku);
-  if(!p) return;
-  var NL = String.fromCharCode(10);
-  var lines = ['BOM Reference — '+p.nama,'SKU,'+p.sku,'Dimensi,'+(p.panjang||0)+'x'+(p.lebar||0)+'x'+(p.tinggi||0)+' cm','Kayu,'+(p.kayu||'—'),'','Kode,Nama,Tipe,Qty,P cm,L cm,T cm,Vol m3,Vol Log m3'];
-  (p.komponen||[]).forEach(function(c){
-    var v=((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))).toFixed(4);
-    var vl=(c.type==='SW'?((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))/0.35).toFixed(4):'—');
-    lines.push([c.code,'"'+c.name+'"',c.type||'SW',c.qty||1,c.p||0,c.l||0,c.t||0,v,vl].join(','));
-  });
-  var csv = lines.join(NL);
-  var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv'})); a.download='BOM_'+sku+'.csv'; a.click();
-  showToast('📊 BOM CSV diexport!');
-};
-window.handleModalClick = (e) => { if(e.target===document.getElementById('detail-modal')) closeModal(); };
-
-window.deleteProduct = async function(sku) {
-  if(!confirm('Hapus produk '+sku+'?')) return;
-  try {
-    await deleteDoc(doc(db,'products',sku));
-    _all = _all.filter(p=>p.sku!==sku);
-    updateCounts(); applyFilter();
-    showToast('🗑️ Produk '+sku+' dihapus!');
-  } catch(e) { showToast('❌ '+e.message); }
-};
-
-// Search handlers
-window.handleSearch = function(q) {
-  _searchQ = q;
-  var clearBtn = document.getElementById('search-clear');
-  var icon     = document.getElementById('search-icon');
-  clearBtn.style.display = q ? 'block' : 'none';
-  icon.style.display     = q ? 'none'  : 'block';
-  applyFilter();
-};
-
-window.clearSearch = function() {
-  document.getElementById('search-input').value = '';
-  _searchQ = '';
-  document.getElementById('search-clear').style.display = 'none';
-  document.getElementById('search-icon').style.display  = 'block';
-  applyFilter();
-};
-
-window.setFilter = function(cat, el) {
-  _activeFilter = cat;
-  document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  applyFilter();
-};
-
-// Load on start
-loadProducts();
-
-// Handle sku param from URL
-const urlSku = new URLSearchParams(window.location.search).get('sku');
-if(urlSku) setTimeout(()=>showDetail(urlSku), 1200);
+window.doLogout = async function() {
+  try { await signOut(auth); } catch(e) {}
+  sessionStorage.removeItem('gabe_user');
+  window.location.href = 'index.html';
+}
 </script>
 
-</body>
-</html>
+<!-- ═══ SETTINGS MODAL ═══ -->
+<div class="settings-overlay" id="settings-overlay">
+  <div class="settings-modal">
+    <div class="sm-hdr">
+      <h3>⚙️ Pengaturan Aplikasi</h3>
+      <button class="sm-close" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="sm-tabs">
+      <button class="sm-tab active" onclick="switchSmTab('branding')">🏢 Branding</button>
+      <button class="sm-tab" onclick="switchSmTab('theme')">🎨 Tema & Warna</button>
+      <button class="sm-tab" onclick="switchSmTab('company')">📋 Perusahaan</button>
+      <button class="sm-tab" onclick="switchSmTab('defaults')">⚙️ Default Kalkulasi</button>
+    </div>
+    <div class="sm-body">
+
+      <!-- BRANDING TAB -->
+      <div class="sm-tcont active" id="smt-branding">
+        <div class="sm-section">
+          <div class="sm-section-title">Logo Aplikasi</div>
+          <div class="logo-upload-wrap">
+            <div class="logo-preview" id="logo-preview" onclick="document.getElementById('logo-file').click()">
+              🌿
+            </div>
+            <div>
+              <div class="logo-upload-info">
+                Klik logo untuk ganti gambar<br>
+                Format: PNG, JPG, SVG (maks 200KB)<br>
+                Atau masukkan URL gambar di bawah
+              </div>
+              <input type="file" id="logo-file" accept="image/*" style="display:none" onchange="handleLogoUpload(event)">
+              <input type="text" class="sm-fc" id="logo-url" placeholder="https://..." style="margin-top:6px;font-size:11px" oninput="previewLogoUrl(this.value)">
+            </div>
+          </div>
+        </div>
+        <div class="sm-section">
+          <div class="sm-section-title">Nama & Identitas</div>
+          <div class="sm-row">
+            <div class="sm-fg">
+              <label>Nama Aplikasi</label>
+              <input type="text" class="sm-fc" id="s-appname" value="Wood Volume Calculator" placeholder="Nama App">
+            </div>
+            <div class="sm-fg">
+              <label>Tagline / Subtitle</label>
+              <input type="text" class="sm-fc" id="s-tagline" value="Jepara ERP Suite" placeholder="Tagline">
+            </div>
+          </div>
+          <div class="sm-row">
+            <div class="sm-fg">
+              <label>Versi</label>
+              <input type="text" class="sm-fc" id="s-version" value="v2.0" placeholder="v2.0">
+            </div>
+            <div class="sm-fg">
+              <label>Tahun</label>
+              <input type="text" class="sm-fc" id="s-year" value="2026" placeholder="2026">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- THEME TAB -->
+      <div class="sm-tcont" id="smt-theme">
+        <div class="sm-section">
+          <div class="sm-section-title">Preset Tema</div>
+          <div class="preset-grid" id="preset-grid"></div>
+        </div>
+        <div class="sm-section">
+          <div class="sm-section-title">Preview Navbar</div>
+          <div class="preview-bar" id="preview-bar">🌿 GABE INTERNATIONAL HUB — Wood Volume Calculator</div>
+        </div>
+        <div class="sm-section">
+          <div class="sm-section-title">Warna Custom</div>
+          <div class="color-row">
+            <span class="color-label">🎨 Warna Utama (Primary)</span>
+            <input type="color" class="color-inp" id="c-primary" value="#2d5a27" oninput="updateColorHex('primary',this.value)">
+            <input type="text" class="color-hex" id="h-primary" value="#2d5a27" oninput="updateColorPicker('primary',this.value)">
+          </div>
+          <div class="color-row">
+            <span class="color-label">✨ Warna Aksen (Accent)</span>
+            <input type="color" class="color-inp" id="c-accent" value="#3d7a35" oninput="updateColorHex('accent',this.value)">
+            <input type="text" class="color-hex" id="h-accent" value="#3d7a35" oninput="updateColorPicker('accent',this.value)">
+          </div>
+          <div class="color-row">
+            <span class="color-label">📋 Warna Background</span>
+            <input type="color" class="color-inp" id="c-bg" value="#f5f4f0" oninput="updateColorHex('bg',this.value)">
+            <input type="text" class="color-hex" id="h-bg" value="#f5f4f0" oninput="updateColorPicker('bg',this.value)">
+          </div>
+          <div class="color-row">
+            <span class="color-label">🔝 Warna Navbar</span>
+            <input type="color" class="color-inp" id="c-navbar" value="#1a3a1a" oninput="updateColorHex('navbar',this.value)">
+            <input type="text" class="color-hex" id="h-navbar" value="#1a3a1a" oninput="updateColorPicker('navbar',this.value)">
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPANY TAB -->
+      <div class="sm-tcont" id="smt-company">
+        <div class="sm-section">
+          <div class="sm-section-title">Informasi Perusahaan</div>
+          <div class="sm-fg">
+            <label>Nama Perusahaan</label>
+            <input type="text" class="sm-fc" id="s-company" value="PT. Gabe International" placeholder="Nama PT">
+          </div>
+          <div class="sm-fg">
+            <label>Alamat</label>
+            <input type="text" class="sm-fc" id="s-address" value="Jepara, Jawa Tengah, Indonesia" placeholder="Alamat lengkap">
+          </div>
+          <div class="sm-row">
+            <div class="sm-fg">
+              <label>Website</label>
+              <input type="text" class="sm-fc" id="s-website" value="www.gabeart.com" placeholder="website.com">
+            </div>
+            <div class="sm-fg">
+              <label>Email Admin</label>
+              <input type="text" class="sm-fc" id="s-adminemail" value="admin@gabeart.com" placeholder="admin@...">
+            </div>
+          </div>
+          <div class="sm-row">
+            <div class="sm-fg">
+              <label>Telepon</label>
+              <input type="text" class="sm-fc" id="s-phone" value="" placeholder="+62...">
+            </div>
+            <div class="sm-fg">
+              <label>Kota</label>
+              <input type="text" class="sm-fc" id="s-city" value="Jepara" placeholder="Kota">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEFAULTS TAB -->
+      <div class="sm-tcont" id="smt-defaults">
+        <div class="sm-section">
+          <div class="sm-section-title">Default Kalkulasi Kayu</div>
+          <div class="sm-row">
+            <div class="sm-fg">
+              <label>Default Rendemen (%)</label>
+              <input type="number" class="sm-fc" id="s-rendemen" value="35" min="20" max="70">
+            </div>
+            <div class="sm-fg">
+              <label>Default Waste Factor (%)</label>
+              <input type="number" class="sm-fc" id="s-waste" value="15" min="5" max="40">
+            </div>
+          </div>
+          <div class="sm-row">
+            <div class="sm-fg">
+              <label>Default Kayu Utama</label>
+              <select class="sm-fc" id="s-defwood">
+                <option value="SW-005">Mindi — Kelas 2</option>
+                <option value="SW-001">Jati — Kelas 1</option>
+                <option value="SW-004">Mahoni — Kelas 2</option>
+                <option value="SW-006">Akasia — Kelas 2</option>
+                <option value="SW-009">Sengon — Kelas 3</option>
+              </select>
+            </div>
+            <div class="sm-fg">
+              <label>Default Furniture</label>
+              <select class="sm-fc" id="s-deffurniture">
+                <option value="bed">Tempat Tidur</option>
+                <option value="lemari">Lemari</option>
+                <option value="kursi">Kursi</option>
+                <option value="sofa">Sofa</option>
+                <option value="meja">Meja</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="sm-section">
+          <div class="sm-section-title">Format & Satuan</div>
+          <div class="sm-row">
+            <div class="sm-fg">
+              <label>Mata Uang</label>
+              <select class="sm-fc" id="s-currency">
+                <option value="IDR">IDR (Rp)</option>
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+              </select>
+            </div>
+            <div class="sm-fg">
+              <label>Satuan Dimensi</label>
+              <select class="sm-fc" id="s-unit">
+                <option value="cm">Centimeter (cm)</option>
+                <option value="mm">Milimeter (mm)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end sm-body -->
+    <div class="sm-footer">
+      <button onclick="resetSettings()" style="padding:7px 14px;border:1px solid #d8d5cb;border-radius:8px;background:#fff;font-size:12px;cursor:pointer;color:#8a8680;">↺ Reset Default</button>
+      <div style="display:flex;gap:8px;">
+        <button onclick="closeSettings()" style="padding:8px 16px;border:1px solid #d8d5cb;border-radius:8px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;">Batal</button>
+        <button onclick="saveSettings()" style="padding:8px 20px;background:#2d5a27;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;">💾 Simpan Pengaturan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+// ═══ SETTINGS MODAL — Bulletproof Version ═══
+window.showSettingsModal = function() {
+  var o = document.getElementById('settings-overlay');
+  if (!o) { alert('Settings tidak ditemukan!'); return; }
+  o.style.position = 'fixed';
+  o.style.top = '0';
+  o.style.left = '0';
+  o.style.right = '0';
+  o.style.bottom = '0';
+  o.style.background = 'rgba(0,0,0,0.65)';
+  o.style.display = 'flex';
+  o.style.alignItems = 'center';
+  o.style.justifyContent = 'center';
+  o.style.zIndex = '99999';
+  o.style.padding = '16px';
+  if (typeof smBuildPresets === 'function') smBuildPresets();
+  if (typeof smLoadFromStorage === 'function') smLoadFromStorage();
+}
+
+var _logoData = null;
+var PRESETS=[
+  {n:'Jepara 🌿',p:'#2d5a27',a:'#3d7a35',b:'#f5f4f0',nb:'#1a3a1a'},
+  {n:'Ocean 🌊',p:'#1a4a7a',a:'#2060a0',b:'#f0f4f8',nb:'#0d2a4a'},
+  {n:'Sunset 🌅',p:'#92580a',a:'#b87020',b:'#fdf5ec',nb:'#5a3006'},
+  {n:'Royal 👑',p:'#5c2d91',a:'#7a40b0',b:'#f5f0fb',nb:'#3a1a60'},
+  {n:'Carbon ⚫',p:'#2a2a2a',a:'#444444',b:'#f0f0f0',nb:'#111111'},
+  {n:'Rose 🌹',p:'#8b2020',a:'#a83030',b:'#fdf5f5',nb:'#5a1010'},
+  {n:'Teal 🩵',p:'#0f6e6e',a:'#1a9090',b:'#f0f8f8',nb:'#084444'},
+  {n:'Gold ✨',p:'#7a6010',a:'#9a7e20',b:'#fdf8ec',nb:'#4a3a08'},
+  {n:'Sky 💙',p:'#2060c0',a:'#3070d0',b:'#f0f5ff',nb:'#102040'},
+  {n:'Olive 🫒',p:'#5a6a20',a:'#708030',b:'#f5f5ec',nb:'#323a10'},
+];
+
+function smToast(msg) {
+  try { showToast(msg); } catch(e) { alert(msg); }
+}
+
+window.openSettings = function() {
+  try {
+    var overlay = document.getElementById('settings-overlay');
+    if (!overlay) { 
+      document.body.insertAdjacentHTML('beforeend','<div id="settings-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:99999;padding:16px"><p style="background:#fff;padding:20px;border-radius:12px">Overlay tidak ditemukan - refresh halaman</p></div>');
+      return; 
+    }
+    overlay.setAttribute('style','position:fixed!important;top:0!important;left:0!important;right:0!important;bottom:0!important;background:rgba(0,0,0,0.65)!important;display:flex!important;align-items:center!important;justify-content:center!important;z-index:99999!important;padding:16px!important');
+    overlay.classList.add('show');
+    smBuildPresets();
+    smLoadFromStorage();
+    // Role check for save only
+    var user = JSON.parse(sessionStorage.getItem('gabe_user')||'{}');
+    var saveBtn = overlay.querySelector('[onclick="saveSettings()"]');
+    if (saveBtn && user.role !== 'admin' && user.role !== 'manager') {
+      saveBtn.disabled = true;
+      saveBtn.textContent = '🔒 Hanya Admin/Manager';
+      saveBtn.style.opacity = '0.5';
+    }
+  } catch(e) { alert('Error openSettings: ' + e.message); }
+}
+
+window.closeSettings = function() {
+  var overlay = document.getElementById('settings-overlay');
+  if (overlay) { 
+    overlay.style.cssText = 'display:none;';
+    overlay.classList.remove('show'); 
+  }
+}
+
+window.switchSmTab = function(tab) {
+  var tabs = ['branding','theme','company','defaults'];
+  var btns = document.querySelectorAll('.sm-tab');
+  btns.forEach(function(b,i){ b.classList.toggle('active', tabs[i]===tab); });
+  var conts = document.querySelectorAll('.sm-tcont');
+  conts.forEach(function(c){ c.classList.remove('active'); c.style.display='none'; });
+  var el = document.getElementById('smt-'+tab);
+  if (el) { el.classList.add('active'); el.style.display='block'; }
+}
+
+function smBuildPresets() {
+  var grid = document.getElementById('preset-grid');
+  if (!grid || grid.children.length > 0) return;
+  PRESETS.forEach(function(p) {
+    var btn = document.createElement('button');
+    btn.className = 'preset-btn';
+    btn.style.background = p.p;
+    btn.textContent = p.n;
+    btn.onclick = function(){ smApplyPreset(p); };
+    grid.appendChild(btn);
+  });
+}
+
+function smApplyPreset(p) {
+  var map = {primary:p.p, accent:p.a, bg:p.b, navbar:p.nb};
+  Object.keys(map).forEach(function(k) {
+    var ci = document.getElementById('c-'+k);
+    var hi = document.getElementById('h-'+k);
+    if (ci) ci.value = map[k];
+    if (hi) hi.value = map[k];
+  });
+  var bar = document.getElementById('preview-bar');
+  if (bar) bar.style.background = p.nb;
+}
+
+window.updateColorHex = function(key, val) {
+  var hi = document.getElementById('h-'+key);
+  if (hi) hi.value = val;
+  if (key==='navbar') { var bar=document.getElementById('preview-bar'); if(bar) bar.style.background=val; }
+}
+window.updateColorPicker = function(key, val) {
+  if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+    var ci = document.getElementById('c-'+key);
+    if (ci) ci.value = val;
+    if (key==='navbar') { var bar=document.getElementById('preview-bar'); if(bar) bar.style.background=val; }
+  }
+}
+
+window.handleLogoUpload = function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 200*1024) { smToast('⚠️ File terlalu besar! Maks 200KB'); return; }
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    var preview = document.getElementById('logo-preview');
+    if (preview) preview.innerHTML = '<img src="'+ev.target.result+'" style="width:100%;height:100%;object-fit:contain;">';
+    _logoData = ev.target.result;
+    var urlEl = document.getElementById('logo-url');
+    if (urlEl) urlEl.value = '';
+  };
+  reader.readAsDataURL(file);
+}
+
+window.previewLogoUrl = function(url) {
+  var preview = document.getElementById('logo-preview');
+  if (!preview) return;
+  if (!url) { preview.innerHTML = '🌿'; return; }
+  var img = document.createElement('img');
+  img.src = url;
+  img.style.cssText = 'width:100%;height:100%;object-fit:contain;';
+  img.onerror = function(){ preview.innerHTML = '❌'; };
+  preview.innerHTML = '';
+  preview.appendChild(img);
+  _logoData = null;
+}
+function smLoadFromStorage() {
+  try {
+    var saved = localStorage.getItem('gabe_settings');
+    if (!saved) return;
+    var s = JSON.parse(saved);
+    var fields = ['appname','tagline','version','year','company','address','website','adminemail','phone','city','rendemen','waste'];
+    fields.forEach(function(k){ var el=document.getElementById('s-'+k); if(el&&s[k]!==undefined) el.value=s[k]; });
+    var sels = ['defwood','deffurniture','currency'];
+    sels.forEach(function(k){ var el=document.getElementById('s-'+k); if(el&&s[k]) el.value=s[k]; });
+    if (s.colors) {
+      ['primary','accent','bg','navbar'].forEach(function(k){
+        if(!s.colors[k]) return;
+        var ci=document.getElementById('c-'+k); var hi=document.getElementById('h-'+k);
+        if(ci) ci.value=s.colors[k]; if(hi) hi.value=s.colors[k];
+      });
+      var bar=document.getElementById('preview-bar');
+      if(bar&&s.colors.navbar) bar.style.background=s.colors.navbar;
+    }
+    if (s.logoData||s.logoUrl) {
+      var src=s.logoData||s.logoUrl;
+      var preview=document.getElementById('logo-preview');
+      if(preview){var imgL=document.createElement('img');imgL.src=src;imgL.style.cssText='width:100%;height:100%;object-fit:contain;';preview.innerHTML='';preview.appendChild(imgL);}
+      _logoData=s.logoData||null;
+    }
+  } catch(e) { console.log('smLoadFromStorage:', e); }
+}
+
+window.saveSettings = function() {
+  try {
+    var g = function(id){ var el=document.getElementById(id); return el?el.value:''; };
+    var settings = {
+      appname:g('s-appname'), tagline:g('s-tagline'), version:g('s-version'), year:g('s-year'),
+      company:g('s-company'), address:g('s-address'), website:g('s-website'),
+      adminemail:g('s-adminemail'), phone:g('s-phone'), city:g('s-city'),
+      rendemen:+g('s-rendemen'), waste:+g('s-waste'),
+      defwood:g('s-defwood'), deffurniture:g('s-deffurniture'), currency:g('s-currency'),
+      colors:{primary:g('h-primary'),accent:g('h-accent'),bg:g('h-bg'),navbar:g('h-navbar')},
+      logoUrl:g('logo-url')||null, logoData:_logoData||null,
+      updatedAt:new Date().toISOString()
+    };
+    // Save to localStorage first (instant)
+    localStorage.setItem('gabe_settings', JSON.stringify(settings));
+    smApplyToUI(settings);
+    closeSettings();
+    smToast('✅ Pengaturan berhasil disimpan!');
+    // Save to Firebase in background
+    smSaveToFirebase(settings);
+  } catch(e) { alert('Error saveSettings: '+e.message); }
+}
+
+function smSaveToFirebase(settings) {
+  try {
+    import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js").then(function(m){
+      var apps = m.getApps();
+      var app = apps.find(function(a){return a.name==='settings2';});
+      if (!app) app = m.initializeApp({
+        apiKey:"AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",
+        authDomain:"gabe-international-hub.firebaseapp.com",
+        projectId:"gabe-international-hub",
+        storageBucket:"gabe-international-hub.firebasestorage.app",
+        messagingSenderId:"115783216069",
+        appId:"1:115783216069:web:62cfabf543b1fbb85bf9ac"
+      },'settings2');
+      return import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js").then(function(fs){
+        var db = fs.getFirestore(app);
+        return fs.setDoc(fs.doc(db,'settings','app'), settings);
+      });
+    }).then(function(){ console.log('Settings saved to Firebase'); })
+    .catch(function(e){ console.log('Firebase save (non-critical):', e.message); });
+  } catch(e) { console.log('smSaveToFirebase:', e); }
+}
+
+function smApplyToUI(s) {
+  if (!s) return;
+  if (s.colors) {
+    var root = document.documentElement;
+    if (s.colors.primary) root.style.setProperty('--ac', s.colors.primary);
+    if (s.colors.accent)  root.style.setProperty('--ac2', s.colors.accent);
+    if (s.colors.bg)      { root.style.setProperty('--bg', s.colors.bg); document.body.style.background=s.colors.bg; }
+    if (s.colors.navbar) {
+      document.querySelectorAll('.topbar').forEach(function(el){ el.style.background=s.colors.navbar; });
+      var ab=document.getElementById('auth-bar'); if(ab) ab.style.background=s.colors.navbar;
+    }
+  }
+  var bname=document.querySelector('.bname'); if(bname&&s.appname) bname.textContent=s.appname;
+  var bsub=document.querySelector('.bsub'); if(bsub&&s.tagline) bsub.textContent=s.tagline+' — '+(s.version||'v2.0');
+  if (s.logoData||s.logoUrl) {
+    var src=s.logoData||s.logoUrl;
+    document.querySelectorAll('.tlogo').forEach(function(el){
+    var imgT=document.createElement('img');
+    imgT.src=src;
+    imgT.style.cssText='width:26px;height:26px;object-fit:contain;border-radius:4px;';
+    imgT.onerror=function(){ el.textContent='🪵'; };
+    el.innerHTML='';
+    el.appendChild(imgT);
+  });
+  }
+  if (s.rendemen && typeof ST!=='undefined') {
+    ST.rendemen=s.rendemen;
+    var r=document.getElementById('rng-rendemen'); if(r) r.value=s.rendemen;
+    var i=document.getElementById('inp-rendemen'); if(i) i.value=s.rendemen;
+  }
+  if (s.waste && typeof ST!=='undefined') {
+    ST.waste=s.waste;
+    var r=document.getElementById('rng-waste'); if(r) r.value=s.waste;
+    var i=document.getElementById('inp-waste'); if(i) i.value=s.waste;
+  }
+  if (typeof render==='function') render();
+}
+
+window.resetSettings = function() {
+  if (!confirm('Reset semua pengaturan ke default Jepara?')) return;
+  smApplyPreset(PRESETS[0]);
+  var defaults = {appname:'Wood Volume Calculator',tagline:'Jepara ERP Suite',
+    version:'v2.0',company:'PT. Gabe International',
+    address:'Jepara, Jawa Tengah, Indonesia',
+    website:'www.gabeart.com',adminemail:'admin@gabeart.com',rendemen:35,waste:15};
+  Object.keys(defaults).forEach(function(k){
+    var el=document.getElementById('s-'+k); if(el) el.value=defaults[k];
+  });
+  var p=document.getElementById('logo-preview'); if(p) p.innerHTML='🌿';
+  var u=document.getElementById('logo-url'); if(u) u.value='';
+  _logoData=null;
+}
+
+// Auto-apply saved settings on page load
+window.addEventListener('load', function() {
+  try {
+    var saved = localStorage.getItem('gabe_settings');
+    if (saved) smApplyToUI(JSON.parse(saved));
+  } catch(e) {}
+});
+</script>
+
+
+
+<script id="ai-script">
+// ═══ AI ASISTEN ═══════════════════════════════════════════════
+var _aiImgData = null;
+var _aiResult  = null;
+
+// Toggle panel
+window.toggleAiPanel = function() {
+  var body = document.getElementById('ai-body');
+  var arrow = document.getElementById('ai-arrow');
+  var collapsed = body.classList.toggle('collapsed');
+  arrow.textContent = collapsed ? '▼' : '▲';
+};
+
+// ── Dynamic Unlimited Image Upload ────────────────────────────────────
+var _images = []; // [{id, label, data, type:'file'|'url'}]
+var _imgCounter = 0;
+
+var IMG_LABELS = ['Foto Produk','Gambar Teknik','Sketsa','Katalog/Ref','Detail View','Dimension View','Back View','Side View'];
+var IMG_ICONS  = ['📷','📐','✏️','🖼️','🔍','📏','↩️','↔️'];
+
+function renderGallery() {
+  var gallery = document.getElementById('ai-img-gallery');
+  var dropZone = document.getElementById('ai-drop-zone');
+  if (!gallery) return;
+  gallery.innerHTML = '';
+
+  // Show/hide drop zone based on images
+  if (dropZone) {
+    if (_images.length === 0) {
+      dropZone.style.display = 'block';
+      gallery.style.display = 'none';
+    } else {
+      dropZone.style.display = 'none';
+      gallery.style.display = 'grid';
+    }
+  }
+
+  // Render existing images
+  _images.forEach(function(img) {
+    var cell = document.createElement('div');
+    cell.style.cssText = 'position:relative;border-radius:8px;overflow:hidden;border:1.5px solid #2d5a27;background:#eaf3e8;';
+    var imgEl = document.createElement('img');
+    imgEl.src = img.data;
+    imgEl.style.cssText = 'width:100%;height:76px;object-fit:cover;display:block;';
+    imgEl.onerror = function(){ imgEl.style.display='none'; cell.style.background='#fceaea'; };
+    var label = document.createElement('div');
+    label.style.cssText = 'position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);color:#fff;font-size:9px;padding:2px 5px;font-weight:600;';
+    label.textContent = img.icon + ' ' + img.label;
+    var rm = document.createElement('button');
+    rm.textContent = '✕';
+    rm.style.cssText = 'position:absolute;top:3px;right:3px;width:18px;height:18px;background:rgba(139,32,32,.85);color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:11px;line-height:18px;text-align:center;z-index:2;';
+    rm.onclick = (function(id){ return function(e){ e.stopPropagation(); removeImg(id); }; })(img.id);
+    cell.append(imgEl, label, rm);
+    gallery.appendChild(cell);
+  });
+
+  // Update count
+  var countBar = document.getElementById('img-count-bar');
+  var countTxt = document.getElementById('img-count-txt');
+  if (countBar && countTxt) {
+    if (_images.length > 0) {
+      countBar.style.display = 'block';
+      countTxt.textContent = _images.length + ' gambar';
+    } else {
+      countBar.style.display = 'none';
+    }
+  }
+
+  updateAnalyzeBtn();
+}
+
+function removeImg(id) {
+  _images = _images.filter(function(img){ return img.id !== id; });
+  renderGallery();
+}
+
+function addImageData(data, label, icon) {
+  _imgCounter++;
+  _images.push({ id: _imgCounter, data: data, label: label, icon: icon || '🖼️', type: 'file' });
+  renderGallery();
+  document.getElementById('ai-error').classList.remove('show');
+  document.getElementById('ai-result').classList.remove('show');
+}
+
+function updateAnalyzeBtn() {
+  var btn = document.getElementById('ai-btn');
+  if (btn) btn.style.display = _images.length > 0 ? 'block' : 'none';
+}
+
+function getActiveImages() {
+  return _images;
+}
+
+// ── Add slot via file picker ─────────────────────────────────────────
+window.addImgSlot = function() {
+  var inp = document.createElement('input');
+  inp.type = 'file';
+  inp.accept = 'image/*';
+  inp.multiple = true;
+  inp.style.display = 'none';
+  inp.onchange = function(e) {
+    var files = Array.from(e.target.files);
+    files.forEach(function(file, fi) {
+      if (file.size > 10*1024*1024) { showAiError('⚠️ Maks 10MB per gambar!'); return; }
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        var idx = _images.length;
+        var label = IMG_LABELS[idx % IMG_LABELS.length];
+        var icon  = IMG_ICONS[idx % IMG_ICONS.length];
+        addImageData(ev.target.result, label, icon);
+      };
+      reader.readAsDataURL(file);
+    });
+    document.body.removeChild(inp);
+  };
+  document.body.appendChild(inp);
+  inp.click();
+};
+
+// ── Add from URL / Google Photos ─────────────────────────────────────
+window.openGPhotoLink = function() {
+  var wrap = document.getElementById('url-input-wrap');
+  if (wrap) { wrap.style.display = wrap.style.display === 'none' ? 'block' : 'none'; }
+};
+
+window.addImgFromUrl = function() {
+  var inp = document.getElementById('url-img-input');
+  if (!inp || !inp.value.trim()) { showAiError('⚠️ Masukkan URL gambar!'); return; }
+  var url = inp.value.trim();
+  var idx = _images.length;
+  var label = IMG_LABELS[idx % IMG_LABELS.length];
+  var icon  = IMG_ICONS[idx % IMG_ICONS.length];
+
+  // Google Photos: cannot load directly, show guide
+  if (url.includes('photos.app.goo.gl') || url.includes('photos.google.com')) {
+    showAiError('⚠️ Google Photos tidak bisa diakses langsung dari browser (CORS). Solusi: simpan foto ke device lalu klik "➕ Tambah Foto" untuk upload.');
+    return;
+  }
+
+  // Google Drive: convert to direct link
+  if (url.includes('drive.google.com')) {
+    var match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (match) {
+      url = 'https://drive.google.com/uc?export=download&id=' + match[1];
+      label = 'Google Drive';
+      icon = '☁️';
+    }
+  }
+
+  // Fetch image via proxy to avoid CORS — use our own API
+  fetch('/api/fetch-image', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({url: url})
+  }).then(function(r) {
+    if (!r.ok) throw new Error('fetch failed');
+    return r.json();
+  }).then(function(data) {
+    if (data.imageData) {
+      addImageData(data.imageData, label, icon);
+      inp.value = '';
+      document.getElementById('url-input-wrap').style.display = 'none';
+      document.getElementById('ai-error').classList.remove('show');
+      showToast('✅ Gambar dari URL ditambahkan!');
+    }
+  }).catch(function() {
+    // Fallback: try direct as img src
+    _imgCounter++;
+    _images.push({ id: _imgCounter, data: url, label: label, icon: icon, type: 'url' });
+    renderGallery();
+    inp.value = '';
+    document.getElementById('url-input-wrap').style.display = 'none';
+    document.getElementById('ai-error').classList.remove('show');
+    showToast('✅ URL ditambahkan — AI akan akses saat analisis.');
+  });
+};
+
+// Drag & drop on the main zone
+window.handleDropZone = function(e) {
+  e.preventDefault();
+  var dz = document.getElementById('ai-drop-zone');
+  if(dz){ dz.style.borderColor='#b8d9b4'; dz.style.background='#f5faf4'; }
+  var files = Array.from(e.dataTransfer.files).filter(function(f){ return f.type.startsWith('image/'); });
+  files.forEach(function(file) {
+    if (file.size > 10*1024*1024) { showAiError('⚠️ Maks 10MB per gambar!'); return; }
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      var idx = _images.length;
+      addImageData(ev.target.result, IMG_LABELS[idx % IMG_LABELS.length], IMG_ICONS[idx % IMG_ICONS.length]);
+    };
+    reader.readAsDataURL(file);
+  });
+};
+
+// Backward compat
+window.triggerSlot = function(id){ document.getElementById(id) && document.getElementById(id).click(); };
+window.pickSlot = function(e, slot){ var f=e.target.files[0]; if(f){ var r=new FileReader(); r.onload=function(ev){addImageData(ev.target.result,slot,'📷');}; r.readAsDataURL(f); } };
+window.rmSlot = function(e,slot){ e.stopPropagation(); };
+window.handleAiDrop = function(e){ e.preventDefault(); };
+window.handleAiSelect = function(e){ var f=e.target.files[0]; if(f){ var r=new FileReader(); r.onload=function(ev){addImageData(ev.target.result,'Foto Produk','📷');}; r.readAsDataURL(f); } };
+window.removeAiImg = function(){ _images=[]; renderGallery(); };
+
+// Init gallery on load
+renderGallery();
+
+function showAiError(msg) {
+  var el = document.getElementById('ai-error');
+  el.innerHTML = msg;
+  el.classList.add('show');
+  document.getElementById('ai-loading').classList.remove('show');
+}
+
+// ── Main AI Analysis ───────────────────────────────────────────────────
+window.analyzeImage = async function() {
+  // Images checked below after loading state
+
+  var btn = document.getElementById('ai-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Menganalisis...';
+  document.getElementById('ai-loading').classList.add('show');
+  document.getElementById('ai-result').classList.remove('show');
+  document.getElementById('ai-error').classList.remove('show');
+
+  // Use first image as primary for API call
+  var activeImgs = getActiveImages();
+  if (!activeImgs.length) {
+    document.getElementById('ai-loading').classList.remove('show');
+    showAiError('⚠️ Upload minimal 1 gambar dulu!');
+    btn.disabled = false;
+    btn.textContent = '🔍 Analisis dengan AI';
+    return;
+  }
+  var primaryData = activeImgs[0].data;
+  // Handle both base64 and URL types
+  var base64, mimeType;
+  if (primaryData.startsWith('data:')) {
+    base64   = primaryData.split(',')[1];
+    mimeType = primaryData.split(';')[0].split(':')[1] || 'image/jpeg';
+  } else {
+    // URL type - send as url for API to fetch
+    base64   = btoa(primaryData);
+    mimeType = 'image/jpeg';
+  }
+
+
+
+  try {
+    // Try /api/analyze first (Vercel serverless), fallback to direct
+    var apiUrl = '/api/analyze';
+    var useProxy = true;
+
+    // Check if proxy available
+    try {
+      var checkResp = await fetch(apiUrl, {method:'OPTIONS'});
+      if (checkResp.status === 404) useProxy = false;
+    } catch(e) { useProxy = false; }
+
+    var response;
+    if (useProxy) {
+      response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageData: base64, mimeType: mimeType })
+      });
+      var data = await response.json();
+      if (!data.success) throw new Error(data.error || 'Analisis gagal');
+      var result = data.result;
+      _aiResult = result;
+      showAiResult(result);
+    } else {
+      // Direct call (works if CORS allowed / dev mode)
+      response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1024,
+          messages: [{
+            role: 'user',
+            content: [
+              { type: 'image', source: { type: 'base64', media_type: mimeType, data: base64 } },
+              { type: 'text', text: prompt }
+            ]
+          }]
+        })
+      });
+      if (!response.ok) {
+        var errText = await response.text();
+        throw new Error('API tidak tersedia. Upload folder api/ ke GitHub terlebih dahulu. Detail: ' + response.status);
+      }
+      var d2 = await response.json();
+      var rawText = d2.content[0].text;
+      var jsonMatch = rawText.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('Respons AI tidak valid');
+      var result = JSON.parse(jsonMatch[0]);
+      _aiResult = result;
+      showAiResult(result);
+    }
+
+  } catch(e) {
+    var msg = e.message || 'Unknown error';
+    if (msg.includes('404') || msg.includes('api/analyze')) {
+      showAiError('⚠️ API belum aktif. Langkah: 1) Upload folder api/ ke GitHub, 2) Set ANTHROPIC_API_KEY di Vercel Environment Variables, 3) Redeploy.');
+    } else if (msg.includes('CORS') || msg.includes('fetch')) {
+      showAiError('🌐 CORS Error: Upload folder api/ ke GitHub dan set ANTHROPIC_API_KEY di Vercel Settings.');
+    } else {
+      showAiError('❌ ' + msg);
+    }
+    console.error('AI Error:', e);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔍 Analisis dengan AI';
+    document.getElementById('ai-loading').classList.remove('show');
+  }
+};
+
+function buildAiComponentCards(comps) {
+  var wrap = document.getElementById('ai-comp-cards-wrap');
+  var grid = document.getElementById('ai-comp-cards');
+  if (!wrap || !grid) return;
+  if (!comps || !comps.length) { wrap.style.display='none'; return; }
+  grid.innerHTML = '';
+  var TYPE_TAG = {SW:'tag-sw', PW:'tag-pw', NW:'tag-nw', MARBLE:'tag-nw', METAL:'tag-nw'};
+  comps.forEach(function(c, i) {
+    var type = (c.type||'SW').toUpperCase();
+    var code = c.code || ('C-'+String(i+1).padStart(2,'0'));
+    var name = (c.name||'Komponen').slice(0,20);
+    var p = +(c.p||0), l = +(c.l||0), t = +(c.t||0), qty = c.qty||1;
+    var vol = p&&l&&t ? ((p/100)*(l/100)*(t/100)*qty).toFixed(4) : '—';
+    var card = document.createElement('div');
+    card.style.cssText = 'background:var(--bg1);border:1px solid var(--brd);border-radius:8px;overflow:hidden;';
+    var svgIll = buildCompIllustration ? buildCompIllustration(c, i) : '<div style="height:72px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:20px;">'+(type==='PW'?'🔷':type==='NW'?'🔵':'🟫')+'</div>';
+    card.innerHTML =
+      '<div style="height:72px;display:flex;align-items:center;justify-content:center;background:var(--bg2);border-bottom:1px solid var(--brd);">'+svgIll+'</div>'+
+      '<div style="padding:5px 7px;">'+
+        '<div style="font-family:monospace;font-size:9px;color:var(--t3);background:var(--bg2);padding:1px 4px;border-radius:3px;display:inline-block;margin-bottom:2px;">'+code+'</div>'+
+        '<div style="font-weight:700;font-size:10px;line-height:1.3;margin-bottom:1px;">'+name+'</div>'+
+        '<div style="font-size:9px;color:var(--t3);">'+( p||'?')+'×'+(l||'?')+'×'+(t||'?')+' ×'+qty+'</div>'+
+      '</div>'+
+      '<div style="padding:3px 7px 5px;display:flex;justify-content:space-between;border-top:1px solid var(--brd);">'+
+        '<span class="ai-type-tag '+(TYPE_TAG[type]||'tag-sw')+'">'+type+'</span>'+
+        '<span style="font-size:9px;color:var(--t3);">'+vol+' m³</span>'+
+      '</div>';
+    grid.appendChild(card);
+  });
+  wrap.style.display = 'block';
+  // Update tab badge
+  var tab = document.querySelector('[onclick*="komponen"]');
+  if(tab && !tab.querySelector('.comp-badge')) {
+    var badge = document.createElement('span');
+    badge.className = 'comp-badge';
+    badge.style.cssText = 'background:#2d5a27;color:#fff;font-size:9px;padding:1px 5px;border-radius:20px;margin-left:4px;';
+    badge.textContent = comps.length;
+    tab.appendChild(badge);
+  }
+}
+
+function showAiResult(r) {
+  window._aiResult = r;
+  // Map furniture type
+  var typeMap = {
+    bed: '🛏️ Tempat Tidur',
+    lemari: '🗄️ Lemari',
+    kursi: '🪑 Kursi',
+    sofa: '🛋️ Sofa',
+    meja: '🪵 Meja'
+  };
+  var imgTypeMap = {
+    foto_produk: '📷 Foto Produk',
+    sketsa_tangan: '✏️ Sketsa Tangan',
+    blueprint: '📐 Blueprint',
+    gambar_teknik: '📏 Gambar Teknik',
+    katalog: '🖼️ Katalog'
+  };
+
+  document.getElementById('ai-r-type').textContent  = (typeMap[r.furniture_type] || r.furniture_name_id || '—') + (r.style ? ' · ' + r.style : '');
+  document.getElementById('ai-r-size').textContent  = r.size_standard || '—';
+  document.getElementById('ai-r-p').value           = r.dimensions ? (r.dimensions.panjang || 0) : 0;
+  document.getElementById('ai-r-l').value           = r.dimensions ? (r.dimensions.lebar || 0) : 0;
+  document.getElementById('ai-r-t').value           = r.dimensions ? (r.dimensions.tinggi || 0) : 0;
+  document.getElementById('ai-r-wood').textContent  = (r.wood_recommendation || '—') + (r.wood_reason ? ' — ' + r.wood_reason : '');
+
+  // Confidence bar
+  var conf = Math.min(100, Math.max(0, r.confidence || 0));
+  document.getElementById('ai-pct').textContent  = conf + '%';
+  document.getElementById('ai-fill').style.width = conf + '%';
+  document.getElementById('ai-fill').style.background = conf >= 70 ? '#639922' : conf >= 40 ? '#ef9f27' : '#e24b4a';
+
+  // Notes
+  var imgType = imgTypeMap[r.image_type] || '🖼️ Gambar';
+  document.getElementById('ai-notes').innerHTML =
+    '<b>📋 Catatan AI:</b> ' + (r.notes || '—') + '<br>' +
+    '<span style="font-size:10px;color:#8a8680;">Jenis gambar: ' + imgType + '</span>';
+
+  // Components
+  var compsWrap = document.getElementById('ai-comps');
+  var compsTagEl = document.getElementById('ai-comp-tags');
+  if (r.components && r.components.length && compsWrap && compsTagEl) {
+    compsTagEl.innerHTML = '';
+    r.components.forEach(function(c) {
+      var span = document.createElement('span');
+      span.className = 'ai-comp-tag';
+      span.textContent = (c.code ? c.code + ' · ' : '') + c.name + ' x' + (c.qty || 1);
+      compsTagEl.appendChild(span);
+    });
+    compsWrap.style.display = 'block';
+  } else if (compsWrap) {
+    compsWrap.style.display = 'none';
+  }
+
+  document.getElementById('ai-result').classList.add('show');
+  document.getElementById('ai-empty').style.display = 'none';
+  // Generate exploded view + component cards
+  if (r.components && r.components.length) {
+    generateAiExploded(r.components, r);
+    buildAiComponentCards(r.components);
+  }
+}
+
+function buildCompIllustration(c, i) {
+  var p    = +(c.p||0), l = +(c.l||0), t = +(c.t||0);
+  var qty  = c.qty||1;
+  var type = (c.type||'SW').toUpperCase();
+  var name = (c.name||'').toLowerCase();
+  var shape = (c.shape||'').toLowerCase();
+
+  // ── Smart shape detection from component name ──────────────────────
+  var detectedShape = shape;
+  if (!detectedShape || detectedShape === 'rectangular') {
+    // Curved / Rail atas
+    if (/top.?rail|curved|rail.?atas|sandaran.?atas|back.?top|rangka.?atas|bow|arc/.test(name))
+      detectedShape = 'curved_rail';
+    // Round / Bundar
+    else if (/bundar|round|circle|bulat|diameter|ø/.test(name))
+      detectedShape = 'round';
+    // Cane / Rotan / Mesh panel
+    else if (/cane|rotan|anyaman|weave|mesh|rattan|webbing/.test(name))
+      detectedShape = 'cane_panel';
+    // Angled Leg
+    else if (/kaki|leg|foot/.test(name) && /miring|sudut|derajat|angle|angled/.test(name))
+      detectedShape = 'angled_leg';
+    // Regular Leg
+    else if (/kaki.*(depan|belakang|front|rear|back)|^kaki$|front.?leg|rear.?leg|back.?leg/.test(name))
+      detectedShape = 'leg';
+    // Armrest
+    else if (/arm.?rest|armrest|sandaran.?tangan|tangan/.test(name))
+      detectedShape = 'armrest';
+    // Side panel/frame
+    else if (/samping|side|stile|upright|rangka.?samping/.test(name))
+      detectedShape = 'panel_tall';
+    // Seat board
+    else if (/seat|dudukan|alas|bottom|top.?panel|atas|bawah/.test(name) && !/rail|frame/.test(name))
+      detectedShape = 'panel_wide';
+    // Shelf / horizontal panel
+    else if (/shelf|rak|plat|board|panel/.test(name) && p > l)
+      detectedShape = 'panel_wide';
+    // Rail / horizontal bar
+    else if (/rail|stretcher|sabuk|lintel|cross|brace/.test(name))
+      detectedShape = 'plank';
+    // Hardware / joinery / connector
+    else if (/mortise|tenon|dowel|screw|hardware|connector|joinery|fitting|sambungan/.test(name))
+      detectedShape = 'joinery';
+    // Beading / strip
+    else if (/beading|strip|trim|moulding|molding|list/.test(name))
+      detectedShape = 'beading';
+    // Auto-detect from proportions if still unknown
+    else if (p > 0 && l > 0) {
+      if (p > l * 3) detectedShape = 'plank';
+      else if (l > p * 1.8) detectedShape = 'panel_tall';
+      else if (p > l * 1.5) detectedShape = 'panel_wide';
+      else detectedShape = 'plank';
+    } else {
+      detectedShape = 'plank';
+    }
+  }
+
+  // ── Color palette ──────────────────────────────────────────────────
+  var PAL = {
+    SW:     {fill:'#C8A97A', stroke:'#7A5830', bg:'#FAF5EE'},
+    PW:     {fill:'#9EC0DC', stroke:'#1565C0', bg:'#EDF4FB'},
+    NW:     {fill:'#B8A8DC', stroke:'#5E35B1', bg:'#F3EEF9'},
+    MARBLE: {fill:'#CCCCDA', stroke:'#7070A0', bg:'#F4F4F8'},
+    METAL:  {fill:'#909098', stroke:'#404050', bg:'#F0F0F2'}
+  };
+  var col = PAL[type] || PAL.SW;
+  var W = 150, H = 90;
+
+  var svg = '<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'">';
+  svg += '<rect width="'+W+'" height="'+H+'" fill="'+col.bg+'"/>';
+
+  var dimLabel = '';
+
+  switch(detectedShape) {
+
+    case 'curved_rail': {
+      // Curved arc shape like a top rail / back frame
+      var rx = Math.min(62, Math.max(28, (p||80)*0.65));
+      var ry = Math.min(22, Math.max(8, (t||5)*2.5));
+      var cy = 50, cx = 75;
+      svg += '<path d="M'+(cx-rx)+','+cy+' Q'+cx+','+(cy-rx*0.5)+' '+(cx+rx)+','+cy+'" fill="none" stroke="'+col.stroke+'" stroke-width="'+(ry*2)+'" stroke-linecap="round" opacity=".8"/>';
+      svg += '<path d="M'+(cx-rx)+','+cy+' Q'+cx+','+(cy-rx*0.5)+' '+(cx+rx)+','+cy+'" fill="none" stroke="'+col.fill+'" stroke-width="'+(ry*2-3)+'" stroke-linecap="round" opacity=".6"/>';
+      // grain lines
+      for(var g=0;g<3;g++){
+        var gx = cx-rx+rx*g*0.7;
+        svg += '<circle cx="'+Math.round(gx)+'" cy="'+(cy-rx*0.18)+'" r="1" fill="'+col.stroke+'" opacity=".2"/>';
+      }
+      dimLabel = (p||'?')+'×'+( t||'?')+' cm (curved)';
+      break;
+    }
+
+    case 'round': {
+      var diam = c.diameter || p || 60;
+      var rx2 = Math.min(52, Math.max(18, diam*0.42));
+      var ry2 = Math.round(rx2*0.28+3);
+      var td  = Math.min(10, Math.max(3, (t||3)*1.5));
+      svg += '<ellipse cx="75" cy="'+(40+td)+'" rx="'+rx2+'" ry="'+ry2+'" fill="'+col.fill+'" opacity=".5"/>';
+      svg += '<ellipse cx="75" cy="40" rx="'+rx2+'" ry="'+ry2+'" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<ellipse cx="75" cy="40" rx="'+rx2+'" ry="'+ry2+'" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".7"/>';
+      svg += '<ellipse cx="75" cy="40" rx="'+(rx2*.7)+'" ry="'+(ry2*.7)+'" fill="none" stroke="'+col.stroke+'" stroke-width=".4" opacity=".25" stroke-dasharray="3,2"/>';
+      dimLabel = 'Ø'+(c.diameter||p||'?')+' t'+(t||'?')+' cm';
+      break;
+    }
+
+    case 'cane_panel': {
+      // Cane weave pattern - grid dots
+      var cw = Math.min(100, Math.max(40, (p||60)*0.7));
+      var ch = Math.min(55, Math.max(25, (l||40)*0.55));
+      var cx3 = 75, cy3 = 42;
+      var cx4 = cx3-cw/2, cy4 = cy3-ch/2;
+      svg += '<rect x="'+cx4+'" y="'+cy4+'" width="'+cw+'" height="'+ch+'" rx="4" fill="'+col.fill+'" opacity=".2"/>';
+      svg += '<rect x="'+cx4+'" y="'+cy4+'" width="'+cw+'" height="'+ch+'" rx="4" fill="none" stroke="'+col.stroke+'" stroke-width="1" opacity=".6"/>';
+      // Weave grid
+      var cols2 = Math.round(cw/8), rows = Math.round(ch/8);
+      for(var ri=0;ri<rows;ri++){
+        for(var ci2=0;ci2<cols2;ci2++){
+          var gx2 = cx4+4+ci2*8, gy2 = cy4+4+ri*8;
+          if((ri+ci2)%2===0){
+            svg += '<rect x="'+gx2+'" y="'+gy2+'" width="5" height="5" rx="1" fill="'+col.stroke+'" opacity=".2"/>';
+          }
+        }
+      }
+      dimLabel = (p||'?')+'×'+(l||'?')+' cm (NW)';
+      break;
+    }
+
+    case 'angled_leg': {
+      // Angled leg - parallelogram
+      var lh = Math.min(65, Math.max(28, (p||45)*0.72));
+      var lw = Math.min(18, Math.max(8, (t||4)*3));
+      var angle = 12; // degrees tilt
+      var ox = Math.round(lh * Math.tan(angle*Math.PI/180));
+      var bx = 75, by = 75;
+      svg += '<polygon points="'+(bx-lw/2+ox)+','+(by-lh)+' '+(bx+lw/2+ox)+','+(by-lh)+' '+(bx+lw/2)+','+by+' '+(bx-lw/2)+','+by+'" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<polygon points="'+(bx-lw/2+ox)+','+(by-lh)+' '+(bx+lw/2+ox)+','+(by-lh)+' '+(bx+lw/2)+','+by+' '+(bx-lw/2)+','+by+'" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".7"/>';
+      // Grain
+      for(var gl=1;gl<4;gl++){
+        var gy3 = by-lh*gl/4;
+        svg += '<line x1="'+(bx-lw/2+ox*gl/4)+'" y1="'+gy3+'" x2="'+(bx+lw/2+ox*gl/4)+'" y2="'+gy3+'" stroke="'+col.stroke+'" stroke-width=".4" opacity=".15"/>';
+      }
+      svg += '<text x="75" y="82" text-anchor="middle" font-size="8" fill="'+col.stroke+'" opacity=".5">8-10°</text>';
+      dimLabel = (p||'?')+'×'+(l||'?')+'×'+(t||'?')+' cm';
+      break;
+    }
+
+    case 'leg': {
+      // Straight leg - tall rectangle
+      var lh2 = Math.min(65, Math.max(25, (p||45)*0.72));
+      var lw2 = Math.min(20, Math.max(8, (t||4)*3.5));
+      var lx = 75-lw2/2, ly = 75-lh2;
+      svg += '<rect x="'+lx+'" y="'+ly+'" width="'+lw2+'" height="'+lh2+'" rx="2" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<rect x="'+lx+'" y="'+ly+'" width="'+lw2+'" height="'+lh2+'" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".7"/>';
+      for(var gl2=1;gl2<4;gl2++) svg += '<line x1="'+(lx+2)+'" y1="'+(ly+lh2*gl2/4)+'" x2="'+(lx+lw2-2)+'" y2="'+(ly+lh2*gl2/4)+'" stroke="'+col.stroke+'" stroke-width=".35" opacity=".18"/>';
+      dimLabel = (p||'?')+'×'+(l||'?')+'×'+(t||'?')+' cm';
+      break;
+    }
+
+    case 'armrest': {
+      // Armrest - gentle S-curve horizontal
+      var aw = Math.min(110, Math.max(50, (p||55)*0.82));
+      var ah = Math.min(14, Math.max(7, (t||3.5)*2.5));
+      var ax = 75-aw/2, ay = 40-ah/2;
+      svg += '<path d="M'+ax+','+(ay+ah)+' C'+(ax+aw*0.25)+','+(ay+ah*1.3)+' '+(ax+aw*0.75)+','+(ay-ah*0.3)+' '+(ax+aw)+','+(ay+ah)+'" fill="'+col.fill+'" opacity=".7"/>';
+      svg += '<path d="M'+ax+','+ay+' C'+(ax+aw*0.25)+','+(ay-ah*0.3)+' '+(ax+aw*0.75)+','+(ay+ah*1.3)+' '+(ax+aw)+','+ay+'" fill="none" stroke="'+col.stroke+'" stroke-width="'+ah+'" stroke-linecap="round" opacity=".6"/>';
+      dimLabel = (p||'?')+'×'+(l||'?')+' cm';
+      break;
+    }
+
+    case 'panel_tall': {
+      var ph = Math.min(65, Math.max(22, (p||60)*0.58));
+      var pw = Math.min(42, Math.max(12, (l||15)*0.55));
+      var px = 75-pw/2, py = 75-ph;
+      svg += '<rect x="'+(px+2)+'" y="'+(py+2)+'" width="'+pw+'" height="'+ph+'" rx="2" fill="#000" opacity=".06"/>';
+      svg += '<rect x="'+px+'" y="'+py+'" width="'+pw+'" height="'+ph+'" rx="2" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<rect x="'+px+'" y="'+py+'" width="'+pw+'" height="'+ph+'" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".9" opacity=".6"/>';
+      for(var g2=1;g2<4;g2++) svg += '<line x1="'+(px+3)+'" y1="'+(py+ph*g2/4)+'" x2="'+(px+pw-3)+'" y2="'+(py+ph*g2/4)+'" stroke="'+col.stroke+'" stroke-width=".35" opacity=".18"/>';
+      dimLabel = (p||'?')+'×'+(l||'?')+'×'+(t||'?')+' cm';
+      break;
+    }
+
+    case 'panel_wide': {
+      var bw = Math.min(120, Math.max(40, (p||60)*0.75));
+      var bd = Math.min(40, Math.max(14, (l||30)*0.52));
+      var bh = Math.min(12, Math.max(4,  (t||3)*2.8));
+      var bx2 = 75-bw/2, by2 = 42-bd/2, sk = bd*0.4;
+      svg += '<polygon points="'+bx2+','+(by2+bh)+' '+(bx2+bw)+','+(by2+bh)+' '+(bx2+bw+sk)+','+by2+' '+(bx2+sk)+','+by2+'" fill="'+col.fill+'" opacity=".72" stroke="'+col.stroke+'" stroke-width=".7" stroke-linejoin="round"/>';
+      svg += '<rect x="'+bx2+'" y="'+(by2+bh)+'" width="'+bw+'" height="'+bh+'" fill="'+col.fill+'" opacity=".9" stroke="'+col.stroke+'" stroke-width=".7"/>';
+      svg += '<polygon points="'+(bx2+bw)+','+(by2+bh)+' '+(bx2+bw+sk)+','+by2+' '+(bx2+bw+sk)+','+(by2+bh)+' '+(bx2+bw)+','+(by2+bh*2)+'" fill="'+col.fill+'" opacity=".68" stroke="'+col.stroke+'" stroke-width=".7" stroke-linejoin="round"/>';
+      dimLabel = (p||'?')+'×'+(l||'?')+'×'+(t||'?')+' cm';
+      break;
+    }
+
+    case 'joinery': {
+      // Mortise & tenon connector visualization
+      svg += '<rect x="52" y="32" width="46" height="16" rx="2" fill="'+col.fill+'" opacity=".7"/>';
+      svg += '<rect x="52" y="32" width="46" height="16" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".6"/>';
+      // Tenon tab
+      svg += '<rect x="85" y="26" width="13" height="28" rx="2" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<rect x="85" y="26" width="13" height="28" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".8" opacity=".7"/>';
+      svg += '<text x="75" y="75" text-anchor="middle" font-size="8" fill="'+col.stroke+'" opacity=".5">Mortise & Tenon</text>';
+      dimLabel = '×'+(qty)+' pcs';
+      break;
+    }
+
+    case 'beading': {
+      // Thin beading/strip
+      var bew = Math.min(120, Math.max(50, (p||50)*0.78));
+      var beh = Math.min(8, Math.max(3, (t||1.5)*3));
+      svg += '<rect x="'+(75-bew/2)+'" y="'+(42-beh/2)+'" width="'+bew+'" height="'+beh+'" rx="'+( beh/2)+'" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<rect x="'+(75-bew/2)+'" y="'+(42-beh/2)+'" width="'+bew+'" height="'+beh+'" rx="'+( beh/2)+'" fill="none" stroke="'+col.stroke+'" stroke-width=".7" opacity=".6"/>';
+      dimLabel = (p||'?')+'×'+(t||'?')+' cm (strip)';
+      break;
+    }
+
+    default: {
+      // Standard plank
+      var rw = Math.min(128, Math.max(28, (p||80)*0.72));
+      var rt = Math.min(26, Math.max(6,  (t||4)*3.2+5));
+      var rx3 = 75-rw/2, ry3 = 42-rt/2;
+      svg += '<rect x="'+(rx3+2)+'" y="'+(ry3+2)+'" width="'+rw+'" height="'+rt+'" rx="2" fill="#000" opacity=".07"/>';
+      svg += '<rect x="'+rx3+'" y="'+ry3+'" width="'+rw+'" height="'+rt+'" rx="2" fill="'+col.fill+'" opacity=".85"/>';
+      svg += '<rect x="'+rx3+'" y="'+ry3+'" width="'+rw+'" height="'+rt+'" rx="2" fill="none" stroke="'+col.stroke+'" stroke-width=".9" opacity=".6"/>';
+      svg += '<rect x="'+rx3+'" y="'+ry3+'" width="9" height="'+rt+'" rx="2" fill="'+col.stroke+'" opacity=".1"/>';
+      svg += '<rect x="'+(rx3+rw-9)+'" y="'+ry3+'" width="9" height="'+rt+'" rx="2" fill="'+col.stroke+'" opacity=".1"/>';
+      for(var g3=1;g3<5;g3++) svg += '<line x1="'+(rx3+rw*g3/5)+'" y1="'+ry3+'" x2="'+(rx3+rw*g3/5)+'" y2="'+(ry3+rt)+'" stroke="'+col.stroke+'" stroke-width=".35" opacity=".14"/>';
+      dimLabel = (p||'?')+'×'+(l||'?')+'×'+(t||'?')+' cm';
+    }
+  }
+
+  // Dimension label at bottom
+  if (dimLabel) {
+    svg += '<text x="75" y="84" text-anchor="middle" font-size="8.5" fill="'+col.stroke+'" font-weight="600" opacity=".65">'+dimLabel+'</text>';
+  }
+
+  svg += '</svg>';
+  return svg;
+}
+
+>
