@@ -359,12 +359,18 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0efe9;color:#1a191
       </div>
     </div>
 
+    <!-- Found Banner (hidden by default) -->
+    <div id="agent-found-banner" style="display:none;background:#FEF3C7;border-bottom:1px solid #F59E0B;padding:8px 22px;align-items:center;gap:8px;">
+      <span style="font-size:14px;">🔍</span>
+      <span id="agent-found-count" style="font-size:11px;font-weight:600;color:#92400E;"></span>
+    </div>
+
     <!-- Agent Message -->
-    <div style="padding:16px 22px 8px;">
-      <div style="font-size:13px;font-weight:600;color:#1a1917;margin-bottom:4px;">
+    <div style="padding:14px 22px 8px;">
+      <div id="agent-msg" style="font-size:13px;font-weight:600;color:#1a1917;margin-bottom:4px;">
         Produk ini belum ada di database Gabe Hub.
       </div>
-      <div style="font-size:12px;color:#5a5750;line-height:1.6;">
+      <div id="agent-sub-msg" style="font-size:12px;color:#5a5750;line-height:1.6;">
         Apa yang ingin dilakukan dengan gambar ini?
       </div>
     </div>
@@ -967,11 +973,10 @@ function findSimilarProducts(criteria, aiResult) {
       ? 'Diurutkan berdasarkan kemiripan tipe, dimensi & material'
       : 'AI Agent akan membantu...';
 
-  if (matches.length === 0) {
-    // No match — trigger AI Agent
-    const previewUrl = document.getElementById('img-search-preview').src;
-    setTimeout(() => showAgentModal(aiResult, previewUrl), 800);
-  }
+  // Always show agent after image search
+  // Agent content differs: found vs not found
+  const previewUrl = document.getElementById('img-search-preview').src;
+  setTimeout(() => showAgentModal(aiResult, previewUrl, matches.length), 800);
 
   renderImgSearchResults(scored);
 }
@@ -1051,19 +1056,34 @@ function renderImgSearchResults(scored) {
 // ── AI AGENT ──────────────────────────────────────────────────────────
 let _agentData = null; // stores { aiResult, base64, mime, previewUrl }
 
-function showAgentModal(aiResult, previewUrl) {
+function showAgentModal(aiResult, previewUrl, matchCount) {
   _agentData = { aiResult, previewUrl };
-
-  // Fill agent info
   const r = aiResult || {};
-  const name  = r.furniture_name_id || r.furniture_type || 'Furniture';
-  const dims  = r.dimensions ? (r.dimensions.panjang||0)+'×'+(r.dimensions.lebar||0)+'×'+(r.dimensions.tinggi||0)+' cm' : '—';
-  const conf  = r.confidence ? r.confidence+'% confidence · '+( r.image_type||'') : '';
+  const name = r.furniture_name_id || r.furniture_type || 'Furniture';
+  const dims = r.dimensions ? (r.dimensions.panjang||0)+'×'+(r.dimensions.lebar||0)+'×'+(r.dimensions.tinggi||0)+' cm' : '—';
+  const conf = r.confidence ? r.confidence+'% confidence' : '';
+  const mc   = matchCount || 0;
 
-  document.getElementById('agent-thumb').src     = previewUrl || '';
-  document.getElementById('agent-detected').textContent = '🪑 '+name;
+  document.getElementById('agent-thumb').src = previewUrl || '';
+  document.getElementById('agent-detected').textContent = (r.furniture_type==='kursi'?'🪑':r.furniture_type==='meja'?'🪵':r.furniture_type==='lemari'?'🗄️':'📦')+' '+name;
   document.getElementById('agent-dims').textContent     = '📐 '+dims+(r.wood_recommendation?' · 🪵 '+r.wood_recommendation:'');
   document.getElementById('agent-conf').textContent     = conf ? '✅ '+conf : '';
+
+  // Update message based on found/not found
+  const msgEl     = document.getElementById('agent-msg');
+  const subMsgEl  = document.getElementById('agent-sub-msg');
+  const foundBanner = document.getElementById('agent-found-banner');
+
+  if (mc > 0) {
+    if(foundBanner) foundBanner.style.display = 'flex';
+    document.getElementById('agent-found-count').textContent = mc+' produk mirip ditemukan (skor tertinggi: tidak exact match)';
+    if(msgEl)    msgEl.textContent    = 'Produk mirip ditemukan tapi bukan exact match.';
+    if(subMsgEl) subMsgEl.textContent = 'Apakah ini yang Anda cari? Jika tidak, pilih tindakan berikut:';
+  } else {
+    if(foundBanner) foundBanner.style.display = 'none';
+    if(msgEl)    msgEl.textContent    = 'Produk ini belum ada di database Gabe Hub.';
+    if(subMsgEl) subMsgEl.textContent = 'Apa yang ingin dilakukan dengan gambar ini?';
+  }
 
   document.getElementById('agent-modal-ov').style.display = 'flex';
 }
