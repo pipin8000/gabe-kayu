@@ -212,6 +212,26 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .photo-prev:hover{border-color:var(--ac2);}
 .photo-tips{background:var(--s2);border-radius:6px;padding:6px 8px;font-size:10px;color:var(--t3);line-height:1.7;}
 
+/* ── ADDABLE COMBO DROPDOWN ── */
+.combo-wrap{position:relative;}
+.combo-input-row{display:flex;gap:4px;}
+.combo-inp{flex:1;padding:7px 9px;border:1.5px solid var(--b);border-radius:7px 0 0 7px;background:var(--s);color:var(--t);font-size:13px;font-family:inherit;outline:none;}
+.combo-inp:focus{border-color:var(--ac2);}
+.combo-arrow{padding:7px 10px;border:1.5px solid var(--b);border-left:none;border-radius:0 7px 7px 0;background:var(--s2);cursor:pointer;font-size:11px;color:var(--t2);}
+.combo-arrow:hover{background:var(--acb);color:var(--act);}
+.combo-drop{position:absolute;top:100%;left:0;right:0;background:var(--s);border:1.5px solid var(--b);border-radius:7px;margin-top:3px;z-index:300;box-shadow:0 4px 16px rgba(0,0,0,.12);max-height:220px;overflow-y:auto;display:none;}
+.combo-drop.open{display:block;}
+.cd-sect{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);padding:6px 10px 3px;background:var(--s2);}
+.cd-item{padding:7px 10px;font-size:12px;cursor:pointer;color:var(--t2);display:flex;align-items:center;justify-content:space-between;}
+.cd-item:hover{background:var(--acb);color:var(--act);}
+.cd-item .cd-del{font-size:10px;color:transparent;padding:1px 4px;}
+.cd-item:hover .cd-del{color:var(--t3);}
+.cd-item:hover .cd-del:hover{color:var(--rd);}
+.cd-add-row{padding:7px 10px;display:flex;gap:5px;border-top:1px solid var(--b);}
+.cd-add-inp{flex:1;padding:4px 7px;border:1px solid var(--b);border-radius:5px;font-size:12px;outline:none;font-family:inherit;background:var(--s);color:var(--t);}
+.cd-add-inp:focus{border-color:var(--ac2);}
+.cd-add-btn{padding:4px 9px;background:var(--ac);color:#fff;border:none;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;}
+
 /* empty */
 .empty{text-align:center;padding:60px;color:var(--t3);}
 .empty .ei{font-size:44px;opacity:.25;margin-bottom:10px;}
@@ -394,13 +414,22 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
       </div>
       <div class="fg"><label>Nama Produk *</label><input class="fc" id="m-name" placeholder="TSARI Credenza"></div>
       <div class="fg2">
+        <!-- KATEGORI COMBO -->
         <div class="fg"><label>Kategori</label>
-          <select class="fc" id="m-cat">
-            <option value="">— Pilih —</option>
-            <option>🛏️ Tempat Tidur</option><option>🗄️ Lemari</option><option>🪑 Kursi</option>
-            <option>🛋️ Sofa</option><option>🪵 Meja</option><option>📦 Credenza</option>
-            <option>🗃️ Cabinet</option><option>🛁 Buffet</option><option>📦 Lainnya</option>
-          </select>
+          <div class="combo-wrap" id="combo-cat">
+            <div class="combo-input-row">
+              <input class="combo-inp" id="m-cat" placeholder="Pilih atau ketik kategori..." onclick="toggleCombo('cat')" autocomplete="off">
+              <button class="combo-arrow" onclick="toggleCombo('cat')" type="button">▾</button>
+            </div>
+            <div class="combo-drop" id="drop-cat">
+              <div class="cd-sect">Kategori Produk</div>
+              <div id="drop-cat-items"></div>
+              <div class="cd-add-row">
+                <input class="cd-add-inp" id="add-cat-inp" placeholder="Tambah kategori baru..." onkeydown="if(event.key==='Enter')addComboItem('cat')">
+                <button class="cd-add-btn" onclick="addComboItem('cat')" type="button">+ Add</button>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="fg"><label>Style</label><input class="fc" id="m-style" placeholder="Modern Minimalis"></div>
       </div>
@@ -410,11 +439,43 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
         <div class="fg"><label>Tinggi (cm)</label><input class="fc" id="m-t" type="number" placeholder="0"></div>
       </div>
       <div class="fg2">
-        <div class="fg"><label>Kayu / Material</label><input class="fc" id="m-wood" placeholder="Oak Solid, Teak..."></div>
+        <!-- KAYU COMBO -->
+        <div class="fg"><label>Kayu / Material</label>
+          <div class="combo-wrap" id="combo-wood">
+            <div class="combo-input-row">
+              <input class="combo-inp" id="m-wood" placeholder="Pilih atau ketik kayu..." onclick="toggleCombo('wood')" autocomplete="off">
+              <button class="combo-arrow" onclick="toggleCombo('wood')" type="button">▾</button>
+            </div>
+            <div class="combo-drop" id="drop-wood">
+              <div class="cd-sect">Solid Wood</div>
+              <div id="drop-wood-items"></div>
+              <div class="cd-add-row">
+                <input class="cd-add-inp" id="add-wood-inp" placeholder="Tambah jenis kayu baru..." onkeydown="if(event.key==='Enter')addComboItem('wood')">
+                <button class="cd-add-btn" onclick="addComboItem('wood')" type="button">+ Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="fg"><label>Finishing</label><input class="fc" id="m-finish" placeholder="Lacquer, Oil..."></div>
       </div>
       <div class="fg2">
-        <div class="fg"><label>Target Buyer</label><input class="fc" id="m-buyer" placeholder="USA, Europe..."></div>
+        <!-- TARGET BUYER COMBO -->
+        <div class="fg"><label>Target Market / Buyer</label>
+          <div class="combo-wrap" id="combo-buyer">
+            <div class="combo-input-row">
+              <input class="combo-inp" id="m-buyer" placeholder="Pilih region / buyer..." onclick="toggleCombo('buyer')" autocomplete="off">
+              <button class="combo-arrow" onclick="toggleCombo('buyer')" type="button">▾</button>
+            </div>
+            <div class="combo-drop" id="drop-buyer">
+              <div class="cd-sect">Region</div>
+              <div id="drop-buyer-items"></div>
+              <div class="cd-add-row">
+                <input class="cd-add-inp" id="add-buyer-inp" placeholder="Tambah buyer/region baru..." onkeydown="if(event.key==='Enter')addComboItem('buyer')">
+                <button class="cd-add-btn" onclick="addComboItem('buyer')" type="button">+ Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="fg"><label>Est. Harga Jual (Rp)</label><input class="fc" id="m-price" type="number" placeholder="0"></div>
       </div>
       <div class="fg"><label>Keterangan</label><textarea class="fc" id="m-ket" rows="2" style="resize:vertical;"></textarea></div>
@@ -503,7 +564,103 @@ var SLBL = {draft:'📝 Draft',progress:'⚙️ Progress',review:'🔍 Review',f
 var SCSS = {draft:'p-draft',progress:'p-progress',review:'p-review',final:'p-final',invoiced:'p-invoiced',catalog:'p-catalog',done:'p-done'};
 var DEF_CATS = ['🪑 Kursi','🪵 Meja','🗄️ Lemari','🛏️ Tempat Tidur','📦 Credenza','🛁 Buffet','🗃️ Cabinet','🛋️ Sofa'];
 
+// ── COMBO DATA ──
+var COMBO_DATA = {
+  cat: {
+    fixed: ['🛏️ Tempat Tidur','🗄️ Lemari','🪑 Kursi','🛋️ Sofa','🪵 Meja','📦 Credenza','🗃️ Cabinet','🛁 Buffet','📦 Lainnya'],
+    custom: [],
+    lsKey: 'gabe_combo_cat'
+  },
+  wood: {
+    fixed: ['Jati (Tectona grandis)','Sonokeling (Dalbergia)','Mahoni (Swietenia)','Mindi (Melia)','Akasia (Acacia)','Teak Solid','Oak Solid','Walnut','Sengon','Trembesi','MDF','Plywood 18mm'],
+    custom: [],
+    lsKey: 'gabe_combo_wood'
+  },
+  buyer: {
+    fixed: ['🌏 Asia','🇺🇸 USA / Amerika','🇪🇺 Eropa','🇦🇺 Australia','🌍 Afrika','🇯🇵 Jepang','🇰🇷 Korea','🇨🇳 China','🇬🇧 UK','🇩🇪 Jerman','🇳🇱 Belanda','🇫🇷 Perancis','🌎 Amerika Latin','🇦🇪 Middle East'],
+    custom: [],
+    lsKey: 'gabe_combo_buyer'
+  }
+};
+
+function loadComboData(){
+  Object.keys(COMBO_DATA).forEach(function(k){
+    try{ COMBO_DATA[k].custom = JSON.parse(localStorage.getItem(COMBO_DATA[k].lsKey)||'[]'); }catch(e){}
+  });
+}
+
+function renderComboItems(key){
+  var d = COMBO_DATA[key];
+  var el = document.getElementById('drop-'+key+'-items');
+  if(!el) return;
+  var all = d.fixed.concat(d.custom);
+  el.innerHTML = all.map(function(item, i){
+    var isDel = i >= d.fixed.length;
+    var delBtn = isDel ? '<span class="cd-del" onclick="event.stopPropagation();delComboItem(\''+key+'\','+(i-d.fixed.length)+')">✕</span>' : '';
+    var safeItem = item.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return '<div class="cd-item" onclick="selectCombo(\''+key+'\',\''+safeItem+'\');">'
+      + item + delBtn + '</div>';
+  }).join('');
+}
+
+function toggleCombo(key){
+  var drop = document.getElementById('drop-'+key);
+  var isOpen = drop.classList.contains('open');
+  // close all
+  document.querySelectorAll('.combo-drop').forEach(function(d){ d.classList.remove('open'); });
+  if(!isOpen){
+    renderComboItems(key);
+    drop.classList.add('open');
+    // focus add input
+    var addInp = document.getElementById('add-'+key+'-inp');
+    if(addInp) setTimeout(function(){ addInp.focus(); }, 50);
+  }
+}
+
+function selectCombo(key, val){
+  var inp = document.getElementById('m-'+key);
+  if(inp){ inp.value = val; inp.readOnly = key==='cat'; }
+  document.getElementById('drop-'+key).classList.remove('open');
+}
+
+function addComboItem(key){
+  var inp = document.getElementById('add-'+key+'-inp');
+  if(!inp) return;
+  var val = inp.value.trim();
+  if(!val){ inp.focus(); return; }
+  var d = COMBO_DATA[key];
+  var all = d.fixed.concat(d.custom);
+  if(all.some(function(i){ return i.toLowerCase()===val.toLowerCase(); })){
+    toast2('⚠️ "'+val+'" sudah ada!'); return;
+  }
+  d.custom.push(val);
+  localStorage.setItem(d.lsKey, JSON.stringify(d.custom));
+  inp.value = '';
+  renderComboItems(key);
+  selectCombo(key, val);
+  toast2('✅ "'+val+'" ditambahkan!');
+  // also update sidebar cats if it's 'cat'
+  if(key==='cat'){ _cats = d.custom.map(function(c){return {emoji:'📦',name:c.replace(/^[^\s]+\s/,''),label:c};}); renderCatList(); }
+}
+
+function delComboItem(key, idx){
+  var d = COMBO_DATA[key];
+  if(!confirm('Hapus "'+d.custom[idx]+'"?')) return;
+  d.custom.splice(idx, 1);
+  localStorage.setItem(d.lsKey, JSON.stringify(d.custom));
+  renderComboItems(key);
+  toast2('🗑️ Dihapus');
+}
+
+// Close combo on outside click
+document.addEventListener('click', function(e){
+  if(!e.target.closest('.combo-wrap')){
+    document.querySelectorAll('.combo-drop').forEach(function(d){ d.classList.remove('open'); });
+  }
+});
+
 window.onload = function(){
+  loadComboData();
   try{ _cats = JSON.parse(localStorage.getItem('gabe_cats')||'[]'); }catch(e){}
   _all = window.__all;
   renderAll();
@@ -677,12 +834,23 @@ function openDetail(id){
     +'<div class="det-f"><label>Buyer</label><span>'+(p.buyer||'—')+'</span></div>'
     +'<div class="det-f"><label>Harga Jual</label><span style="color:var(--am);font-weight:700;font-size:14px">'+price+'</span></div>'
     +(p.ket?'<div class="det-sect">Keterangan</div><div class="det-note">'+p.ket+'</div>':'')
-    +'</div>'
+    +'</div>';
+  // Draft/Review → aksi khusus
+  var draftHtml='';
+  if(p.status==='draft'||p.status==='review'){
+    draftHtml='<div style="background:#fef3e0;border:1px solid #d4900f;border-radius:7px;padding:8px 10px;margin:0 10px 8px;">'  
+      +'<div style="font-size:10px;font-weight:700;color:#6b3e04;margin-bottom:5px;">🔔 '+SLBL[p.status]+' — Aksi tersedia:</div>'
+      +'<button class="da-btn" style="background:#e8f0fb;border:1.5px solid #7ab8e8;color:#1a4a7a;margin-bottom:4px;" onclick="toCalc(\''+id+'\');">🧮 Kalkulasi Volume Kayu</button>'
+      +'<button class="da-btn" style="background:#f3eafb;border:1.5px solid #b88ae8;color:#5c2d91;" onclick="toAI(\''+id+'\');">🤖 AI Analisa & Rekomendasi</button>'
+      +'</div>';
+  }
+  document.getElementById('det-inner').innerHTML +=
+    draftHtml
     +'<div class="det-acts">'
-    +'<button class="da-btn da-edit" onclick="openEdit(\''+id+'\')">✏️ Edit Produk</button>'
-    +'<button class="da-btn da-calc" onclick="toCalc(\''+id+'\')">🧮 Transfer ke Kalkulator</button>'
-    +'<button class="da-btn da-dup" onclick="dupProd(\''+id+'\')">📋 Duplikat</button>'
-    +'<button class="da-btn da-del" onclick="delProd(\''+id+'\')">🗑️ Hapus</button>'
+    +'<button class="da-btn da-edit" onclick="openEdit(\''+id+'\');">✏️ Edit Produk</button>'
+    +'<button class="da-btn da-calc" onclick="toCalc(\''+id+'\');">🧮 Transfer Kalkulator</button>'
+    +'<button class="da-btn da-dup" onclick="dupProd(\''+id+'\');">📋 Duplikat</button>'
+    +'<button class="da-btn da-del" onclick="delProd(\''+id+'\');">🗑️ Hapus</button>'
     +'</div>';
   document.getElementById('detail').classList.add('show');
   if(_view==='tbl') renderView();
@@ -721,6 +889,10 @@ function openEdit(id){
   document.getElementById('m-price').value=p.price||'';
   document.getElementById('m-ket').value=p.ket||'';
   clearPhoto();
+  // Ensure combo inputs are populated
+  document.getElementById('m-cat').value=p.cat||'';
+  document.getElementById('m-wood').value=p.wood||'';
+  document.getElementById('m-buyer').value=p.buyer||'';
   if(p.photo){document.getElementById('m-photo-data').value=p.photo;if(p.photo.startsWith('http'))document.getElementById('m-photo-url').value=p.photo;setPhotoPreview(p.photo);}
   document.getElementById('prod-modal').classList.add('show');
 }
@@ -759,6 +931,7 @@ function delProd(id){
 }
 
 function toCalc(id){var p=_all.find(function(x){return x.id===id;});if(!p)return;location.href='app.html?sku='+encodeURIComponent(p.sku)+'&product='+encodeURIComponent(p.name);}
+function toAI(id){var p=_all.find(function(x){return x.id===id;});if(!p)return;location.href='ai-asisten.html?sku='+encodeURIComponent(p.sku)+'&product='+encodeURIComponent(p.name)+'&cat='+encodeURIComponent(p.cat||'');}
 
 // ── PHOTO ──
 function setPhotoPreview(src){
