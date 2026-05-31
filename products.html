@@ -468,15 +468,9 @@ window.__all = [
 ];
 
 
-// _all = alias ke window.__all (shared antara script biasa dan module)
-// Setiap kali _all dipanggil, selalu ambil dari window.__all
-var _all;
-Object.defineProperty(window, '_all', {
-  get: function(){ return window.__all; },
-  set: function(v){ window.__all = v; },
-  configurable: true
-});
-_all = window.__all; // initial ref
+// _all — array produk, shared via window.__all
+// Module Firebase akan update window.__all lalu panggil renderAll()
+var _all = window.__all;
 
 var _curGrp = 'pra';
 var _filterQ = '';
@@ -508,6 +502,8 @@ var CAT_ICON = {
 
 // ── RENDER ALL ──
 function renderAll() {
+  // Sync dari window.__all setiap render
+  _all = window.__all || _all;
   updateStats();
   updateGroupCounts();
   renderGrid();
