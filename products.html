@@ -12,121 +12,143 @@
   --am:#92580a;--amb:#fef3e0;--amt:#6b3e04;
   --bl:#1a4a7a;--blb:#e8f0fb;--blt:#102d4e;
   --rd:#8b2020;--rdb:#fceaea;
+  --pu:#5c2d91;--pub:#f3eafb;
   --sh:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
   --r:8px;--rl:12px;--rxl:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--t);font-size:14px;min-height:100vh;}
 
-/* TOPBAR */
-.topbar{background:var(--ac);color:#fff;padding:0 16px;height:36px;display:flex;align-items:center;justify-content:space-between;font-size:12px;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.2);}
-.tb-left{display:flex;align-items:center;gap:10px;}
-.tb-brand{font-size:13px;font-weight:600;opacity:.9;}
-.tb-sub{background:rgba(255,255,255,.15);padding:2px 8px;border-radius:20px;font-size:10px;}
-.tb-right{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
-.tb-link{background:rgba(255,255,255,.15);color:#fff;padding:3px 9px;border-radius:6px;text-decoration:none;font-size:11px;}
-.tb-link:hover{background:rgba(255,255,255,.25);}
-.tb-link.active{background:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.4);}
-.tb-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:3px 9px;border-radius:6px;cursor:pointer;font-size:11px;}
+/* ── TOPBAR (same as materials.html) ── */
+.topbar{background:var(--ac);color:#fff;padding:0 20px;height:48px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.topbar-right{display:flex;align-items:center;gap:8px;}
+.tb-back{color:#fff;text-decoration:none;font-size:12px;opacity:.8;display:flex;align-items:center;gap:4px;}
+.tb-back:hover{opacity:1;}
+.tb-title{font-size:14px;font-weight:700;}
+.tb-sub{font-size:11px;opacity:.7;}
+.tb-nav{display:flex;gap:4px;}
+.tb-nav a{color:rgba(255,255,255,.8);text-decoration:none;font-size:11px;padding:4px 9px;border-radius:6px;transition:background .15s;}
+.tb-nav a:hover{background:rgba(255,255,255,.15);}
+.tb-nav a.active{background:rgba(255,255,255,.25);color:#fff;font-weight:600;}
+.tb-logbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:11px;font-family:inherit;}
 
-/* PAGE HEADER */
-.page-hdr{background:linear-gradient(135deg,#1a3a1a,var(--ac));color:#fff;padding:16px 20px 14px;}
-.page-hdr h1{font-size:20px;font-weight:700;margin-bottom:2px;}
-.page-hdr p{font-size:12px;opacity:.75;}
-
-/* STATS */
-.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:0;background:var(--s);border-bottom:1px solid var(--b);}
-.stat{text-align:center;padding:10px 8px;border-right:1px solid var(--b);}
-.stat:last-child{border-right:none;}
-.stat-val{font-size:22px;font-weight:700;color:var(--ac);}
-.stat-val.amber{color:var(--am);}
-.stat-val.blue{color:var(--bl);}
-.stat-val.red{color:#5c2d91;}
-.stat-lbl{font-size:10px;color:var(--t3);margin-top:1px;text-transform:uppercase;letter-spacing:.04em;}
-
-/* TOOLBAR */
-.toolbar{padding:10px 16px;background:var(--s);border-bottom:1px solid var(--b);display:flex;gap:7px;align-items:center;flex-wrap:wrap;}
-.search-wrap{flex:1;min-width:180px;position:relative;}
-.search-wrap input{width:100%;padding:7px 12px 7px 32px;border:1.5px solid var(--b);border-radius:var(--r);background:var(--s);color:var(--t);font-size:13px;font-family:inherit;outline:none;transition:border-color .2s;}
-.search-wrap input:focus{border-color:var(--ac2);}
-.search-wrap .si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:13px;pointer-events:none;}
-.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border:1.5px solid var(--b);border-radius:var(--r);background:var(--s);color:var(--t);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;}
+/* ── PAGE HEADER ── */
+.page-head{background:var(--s);border-bottom:1px solid var(--b);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.ph-left h1{font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.ph-left p{font-size:12px;color:var(--t3);margin-top:2px;}
+.ph-right{display:flex;gap:7px;align-items:center;}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border:1.5px solid var(--b);border-radius:var(--r);background:var(--s);color:var(--t);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;}
 .btn:hover{background:var(--s2);}
 .btn.pr{background:var(--ac);border-color:var(--ac);color:#fff;}
 .btn.pr:hover{background:var(--ac2);}
-.btn.img-sb{background:var(--acb);border-color:var(--ac2);color:var(--act);}
-.btn.img-sb:hover{background:var(--ac);color:#fff;}
+.btn.sm{padding:5px 10px;font-size:11px;}
 
-/* VIEW TOGGLE */
+/* ── STATS BAR ── */
+.stats-bar{display:flex;background:var(--s);border-bottom:1px solid var(--b);padding:0;}
+.sbar-item{flex:1;padding:12px 16px;border-right:1px solid var(--b);text-align:center;}
+.sbar-item:last-child{border-right:none;}
+.sbar-val{font-size:22px;font-weight:700;color:var(--ac);line-height:1;}
+.sbar-val.am{color:var(--am);}
+.sbar-val.bl{color:var(--bl);}
+.sbar-val.pu{color:var(--pu);}
+.sbar-val.rd{color:var(--rd);}
+.sbar-lbl{font-size:10px;color:var(--t3);margin-top:3px;text-transform:uppercase;letter-spacing:.04em;}
+
+/* ── MAIN LAYOUT: sidebar + content ── */
+.main-wrap{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 130px);}
+
+/* ── SIDEBAR ── */
+.sidebar{background:var(--s);border-right:1px solid var(--b);padding:14px 10px;}
+.sb-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);padding:8px 8px 4px;margin-bottom:2px;}
+.sb-chip{display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:var(--r);cursor:pointer;font-size:12px;color:var(--t2);transition:all .15s;user-select:none;margin-bottom:2px;}
+.sb-chip:hover{background:var(--s2);}
+.sb-chip.active{background:var(--acb);color:var(--act);font-weight:600;}
+.sb-chip .cnt{margin-left:auto;font-size:10px;background:var(--s2);color:var(--t3);padding:1px 7px;border-radius:20px;font-weight:700;}
+.sb-chip.active .cnt{background:rgba(45,90,39,.15);color:var(--act);}
+.sb-div{border:none;border-top:1px solid var(--b);margin:8px 4px;}
+
+/* ── CONTENT ── */
+.content{display:flex;flex-direction:column;}
+
+/* ── TOOLBAR ── */
+.toolbar{background:var(--s);border-bottom:1px solid var(--b);padding:10px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.srch-wrap{flex:1;min-width:180px;position:relative;}
+.srch-wrap input{width:100%;padding:7px 12px 7px 32px;border:1.5px solid var(--b);border-radius:var(--r);font-size:12px;font-family:inherit;color:var(--t);background:var(--s);outline:none;transition:border-color .2s;}
+.srch-wrap input:focus{border-color:var(--ac2);}
+.srch-wrap .si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:13px;pointer-events:none;}
 .view-toggle{display:flex;gap:2px;background:var(--s2);border:1.5px solid var(--b);border-radius:var(--r);padding:3px;}
-.vt{padding:5px 10px;border-radius:5px;border:none;background:transparent;color:var(--t3);font-size:14px;cursor:pointer;transition:all .15s;}
+.vt{width:30px;height:28px;border:none;background:transparent;color:var(--t3);font-size:14px;cursor:pointer;border-radius:5px;transition:all .15s;display:flex;align-items:center;justify-content:center;}
 .vt.on{background:var(--s);color:var(--t);box-shadow:0 1px 3px rgba(0,0,0,.12);}
 
-/* GROUP TABS */
-.grp-tabs{padding:10px 16px 0;background:var(--s2);display:flex;gap:5px;border-bottom:1px solid var(--b);}
-.gtab{padding:8px 16px;border-radius:var(--rl) var(--rl) 0 0;font-size:13px;font-weight:600;cursor:pointer;color:var(--t2);border:1.5px solid transparent;border-bottom:none;transition:all .15s;display:flex;align-items:center;gap:6px;white-space:nowrap;}
-.gtab:hover{background:var(--s);}
-.gtab.active{background:var(--s);border-color:var(--b);color:var(--act);border-bottom-color:var(--s);}
-.gcnt{background:var(--s2);color:var(--t3);font-size:10px;padding:1px 7px;border-radius:20px;font-weight:700;}
-.gtab.active .gcnt{background:var(--acb);color:var(--act);}
+/* ── EXPORT/IMPORT BAR ── */
+.ei-bar{background:var(--s2);border-bottom:1px solid var(--b);padding:7px 16px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.ei-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);}
+.ei-btn{display:inline-flex;align-items:center;gap:3px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid;font-family:inherit;transition:all .15s;}
+.ei-csv{color:#1a5c1a;border-color:#a0d0a0;background:#f0faf0;}
+.ei-csv:hover{background:#d8f0d8;}
+.ei-excel{color:#1a5a2a;border-color:#80c080;background:#e8f5e8;}
+.ei-excel:hover{background:#d0ecd0;}
+.ei-img{color:var(--amt);border-color:#d4900f;background:var(--amb);}
+.ei-img:hover{background:#fde8c0;}
+.ei-sep{width:1px;height:16px;background:var(--b);}
 
-/* PROD AREA */
-.prod-area{padding:14px 16px;}
+/* ── TABLE (List view) ── */
+.tbl-wrap{overflow-x:auto;flex:1;}
+.ptable{width:100%;border-collapse:collapse;font-size:13px;}
+.ptable thead{background:var(--s2);position:sticky;top:0;z-index:1;}
+.ptable th{padding:9px 12px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--t3);border-bottom:1.5px solid var(--b);white-space:nowrap;cursor:pointer;user-select:none;}
+.ptable th:hover{color:var(--t);}
+.ptable td{padding:9px 12px;border-bottom:1px solid var(--b);vertical-align:middle;}
+.ptable tr.prow:hover td{background:var(--acb);cursor:pointer;}
+.ptable tr.prow:last-child td{border-bottom:none;}
+.td-thumb{width:38px;height:38px;border-radius:6px;background:var(--s2);border:1px solid var(--b);display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;flex-shrink:0;}
+.td-thumb img{width:100%;height:100%;object-fit:cover;border-radius:5px;}
+.td-name{font-size:13px;font-weight:700;line-height:1.2;margin-bottom:2px;color:var(--t);}
+.td-sku{font-family:'Courier New',monospace;font-size:10px;color:var(--t3);}
+.td-dim{font-size:11px;color:var(--t2);}
+.td-price{font-size:13px;font-weight:700;color:var(--am);}
+.row-acts{display:flex;gap:4px;opacity:0;transition:opacity .15s;}
+.ptable tr.prow:hover .row-acts{opacity:1;}
+.ra{padding:4px 8px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid;white-space:nowrap;transition:all .15s;font-family:inherit;}
+.ra-view{background:var(--s2);border-color:var(--b);color:var(--t2);}
+.ra-view:hover{background:var(--acb);border-color:var(--ac2);color:var(--act);}
+.ra-edit{background:var(--acb);border-color:var(--ac2);color:var(--act);}
+.ra-edit:hover{background:var(--ac);border-color:var(--ac);color:#fff;}
+.ra-dup{background:var(--blb);border-color:#7ab8e8;color:var(--bl);}
+.ra-dup:hover{background:#c0dcf5;}
+.ra-del{background:var(--rdb);border-color:#e09090;color:var(--rd);}
+.ra-del:hover{background:#f5b0b0;}
 
 /* ── CARD VIEW ── */
-.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:11px;}
+.card-area{padding:14px 16px;}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:11px;}
 .pcard{background:var(--s);border:1.5px solid var(--b);border-radius:var(--rxl);overflow:hidden;transition:all .18s;position:relative;}
-.pcard:hover{border-color:var(--ac2);box-shadow:0 4px 20px rgba(45,90,39,.18);transform:translateY(-2px);}
-.pcard:hover .pc-overlay{opacity:1;}
-.pc-photo{height:145px;background:var(--s2);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
-.pc-photo img{width:100%;height:100%;object-fit:cover;}
-.pc-photo-empty{font-size:38px;opacity:.2;}
-.pc-badge-top{position:absolute;top:8px;left:8px;right:8px;display:flex;justify-content:space-between;align-items:flex-start;}
-.pc-cat-badge{background:rgba(0,0,0,.58);color:#fff;font-size:9px;padding:2px 7px;border-radius:20px;font-weight:600;}
+.pcard:hover{border-color:var(--ac2);box-shadow:0 6px 22px rgba(45,90,39,.18);transform:translateY(-2px);}
+.pc-img{height:145px;background:var(--s2);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.pc-img img{width:100%;height:100%;object-fit:cover;}
+.pc-img-empty{font-size:38px;opacity:.2;}
+.pc-badges{position:absolute;top:8px;left:8px;right:8px;display:flex;justify-content:space-between;}
 .pc-body{padding:10px 12px 8px;}
 .pc-sku{font-family:'Courier New',monospace;font-size:10px;color:var(--t3);background:var(--s2);padding:1px 5px;border-radius:4px;margin-bottom:4px;display:inline-block;}
-.pc-name{font-size:13px;font-weight:700;margin-bottom:3px;line-height:1.3;color:var(--t);}
+.pc-name{font-size:13px;font-weight:700;margin-bottom:3px;line-height:1.3;}
 .pc-dims{font-size:11px;color:var(--t2);margin-bottom:4px;}
-.pc-bottom{display:flex;justify-content:space-between;align-items:center;}
-.pc-price{font-size:11px;font-weight:700;color:var(--am);}
+.pc-foot{display:flex;justify-content:space-between;align-items:center;}
 .pc-vol{font-size:10px;color:var(--t3);}
-
-/* Card hover overlay — action buttons */
-.pc-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(15,30,15,.88));opacity:0;transition:opacity .22s;display:flex;flex-direction:column;justify-content:flex-end;padding:12px;}
-.pc-ov-name{color:#fff;font-size:12px;font-weight:700;margin-bottom:8px;text-shadow:0 1px 3px rgba(0,0,0,.5);}
-.pc-ov-actions{display:flex;gap:5px;}
-.pca{padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:none;transition:all .15s;}
+.pc-price{font-size:12px;font-weight:700;color:var(--am);}
+/* hover overlay */
+.pc-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 25%,rgba(10,25,10,.87));opacity:0;transition:opacity .2s;display:flex;flex-direction:column;justify-content:flex-end;padding:11px;}
+.pcard:hover .pc-overlay{opacity:1;}
+.pc-ov-name{color:#fff;font-size:12px;font-weight:700;margin-bottom:7px;text-shadow:0 1px 3px rgba(0,0,0,.6);}
+.pc-ov-acts{display:flex;gap:5px;flex-wrap:wrap;}
+.pca{padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:none;transition:all .15s;font-family:inherit;}
 .pca:hover{transform:scale(1.06);}
-.pca-view{background:rgba(255,255,255,.92);color:var(--t);}
-.pca-edit{background:var(--acb);color:var(--act);}
-.pca-dup{background:var(--blb);color:var(--blt);}
-.pca-del{background:var(--rdb);color:var(--rd);}
+.pca-v{background:rgba(255,255,255,.92);color:var(--t);}
+.pca-e{background:var(--acb);color:var(--act);}
+.pca-d{background:var(--blb);color:var(--blt);}
+.pca-x{background:var(--rdb);color:var(--rd);}
 
-/* ── LIST VIEW ── */
-.prod-list{background:var(--s);border:1px solid var(--b);border-radius:var(--rl);overflow:hidden;}
-.pl-hdr{display:grid;grid-template-columns:44px 1fr 120px 110px 100px 80px 150px;gap:8px;padding:8px 14px;background:var(--s2);border-bottom:1.5px solid var(--b);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--t3);}
-.pl-row{display:grid;grid-template-columns:44px 1fr 120px 110px 100px 80px 150px;gap:8px;padding:9px 14px;border-bottom:1px solid var(--b);align-items:center;cursor:pointer;transition:background .12s;}
-.pl-row:last-child{border-bottom:none;}
-.pl-row:hover{background:var(--acb);}
-.pl-thumb{width:40px;height:40px;border-radius:7px;background:var(--s2);border:1px solid var(--b);display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;flex-shrink:0;}
-.pl-thumb img{width:100%;height:100%;object-fit:cover;border-radius:6px;}
-.pl-main .pl-name{font-size:13px;font-weight:700;line-height:1.2;margin-bottom:2px;}
-.pl-main .pl-sku{font-family:'Courier New',monospace;font-size:10px;color:var(--t3);}
-.pl-dim{font-size:11px;color:var(--t2);}
-.pl-wood{font-size:11px;color:var(--t2);}
-.pl-price{font-size:12px;font-weight:700;color:var(--am);}
-.pl-acts{display:flex;gap:4px;justify-content:flex-end;}
-.pla{padding:4px 8px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid;white-space:nowrap;transition:all .15s;}
-.pla-view{background:var(--s2);border-color:var(--b);color:var(--t2);}
-.pla-view:hover{background:var(--acb);border-color:var(--ac2);color:var(--act);}
-.pla-edit{background:var(--acb);border-color:var(--ac2);color:var(--act);}
-.pla-edit:hover{background:var(--ac);color:#fff;}
-.pla-dup{background:var(--blb);border-color:#6aabdc;color:var(--bl);}
-.pla-dup:hover{background:#bdd8f5;}
-.pla-del{background:var(--rdb);border-color:#e09090;color:var(--rd);}
-.pla-del:hover{background:#f5b0b0;}
-
-/* STATUS PILLS */
+/* ── STATUS PILLS ── */
 .spill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap;}
 .sp-draft{background:var(--s3);color:var(--t3);}
 .sp-progress{background:var(--amb);color:var(--amt);}
@@ -134,47 +156,44 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .sp-final{background:#e8f5e8;color:#1a5a1a;}
 .sp-catalog{background:var(--acb);color:var(--act);}
 .sp-invoiced{background:#e8f0fb;color:#1a4a7a;}
-.sp-done{background:#f3eafb;color:#5c2d91;}
+.sp-done{background:var(--pub);color:var(--pu);}
 
-/* VIEW DETAIL PANEL */
-.view-panel{display:none;background:var(--s);border:1.5px solid var(--ac2);border-radius:var(--rxl);margin-bottom:14px;overflow:hidden;box-shadow:var(--sh);}
-.view-panel.open{display:block;}
-.vp-hdr{background:linear-gradient(135deg,#1a3a1a,var(--ac));color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;}
-.vp-hdr h3{font-size:14px;font-weight:700;}
-.vp-close{background:rgba(255,255,255,.2);border:none;color:#fff;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:14px;}
-.vp-body{padding:16px 18px;display:grid;grid-template-columns:180px 1fr;gap:16px;}
-.vp-photo{width:180px;height:165px;border-radius:var(--rl);background:var(--s2);border:1px solid var(--b);display:flex;align-items:center;justify-content:center;font-size:44px;overflow:hidden;flex-shrink:0;}
-.vp-photo img{width:100%;height:100%;object-fit:cover;}
-.vp-info{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 14px;}
-.vp-f label{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:2px;}
-.vp-f span{font-size:13px;font-weight:600;color:var(--t);}
-.vp-notes{grid-column:1/-1;background:var(--s2);border-radius:var(--r);padding:8px 11px;font-size:12px;color:var(--t2);}
-.vp-acts{padding:11px 18px;border-top:1px solid var(--b);background:var(--s2);display:flex;gap:7px;flex-wrap:wrap;}
+/* ── DETAIL SIDE PANEL ── */
+.detail-panel{width:0;overflow:hidden;transition:width .25s ease;background:var(--s);border-left:1px solid var(--b);flex-shrink:0;}
+.detail-panel.open{width:320px;}
+.dp-inner{width:320px;height:100%;overflow-y:auto;display:flex;flex-direction:column;}
+.dp-hdr{background:linear-gradient(135deg,#1a3a1a,var(--ac));color:#fff;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.dp-hdr h3{font-size:13px;font-weight:700;flex:1;margin-right:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.dp-close{background:rgba(255,255,255,.2);border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dp-photo{width:100%;height:170px;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:48px;overflow:hidden;flex-shrink:0;}
+.dp-photo img{width:100%;height:100%;object-fit:cover;}
+.dp-body{padding:14px;flex:1;}
+.dp-acts{padding:12px 14px;border-top:1px solid var(--b);background:var(--s2);display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
+.dp-act-btn{width:100%;padding:8px 12px;border-radius:var(--r);font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid;font-family:inherit;display:flex;align-items:center;gap:7px;transition:all .15s;}
+.dp-act-btn:hover{transform:translateX(2px);}
+.dpa-edit{background:var(--acb);border-color:var(--ac2);color:var(--act);}
+.dpa-edit:hover{background:var(--ac);color:#fff;}
+.dpa-calc{background:var(--blb);border-color:#7ab8e8;color:var(--bl);}
+.dpa-calc:hover{background:#c0dcf5;}
+.dpa-dup{background:var(--s2);border-color:var(--b);color:var(--t2);}
+.dpa-dup:hover{background:var(--s3);}
+.dpa-del{background:var(--rdb);border-color:#e09090;color:var(--rd);}
+.dpa-del:hover{background:#f5b0b0;}
+.dp-field{margin-bottom:10px;}
+.dp-field label{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:2px;font-weight:600;}
+.dp-field span{font-size:13px;color:var(--t);font-weight:500;}
+.dp-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin:12px 0 6px;display:flex;align-items:center;gap:5px;}
+.dp-section::after{content:'';flex:1;height:1px;background:var(--b);}
+.dp-note{background:var(--s2);border-radius:var(--r);padding:8px 10px;font-size:11px;color:var(--t2);line-height:1.6;border-left:3px solid var(--ac2);}
 
-/* IMAGE SEARCH PANEL */
-.img-search-panel{background:var(--s);border:1.5px solid var(--ac2);border-radius:var(--rxl);margin:0 0 12px;overflow:hidden;display:none;}
-.img-search-panel.open{display:block;}
-.isp-hdr{background:linear-gradient(135deg,#1a3a1a,var(--ac));color:#fff;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;}
-.isp-hdr h3{font-size:13px;font-weight:600;}
-.isp-close{background:none;border:none;color:rgba(255,255,255,.7);font-size:16px;cursor:pointer;}
-.isp-body{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.isp-drop{border:2px dashed #b8d9b4;border-radius:10px;padding:16px;text-align:center;cursor:pointer;background:#f5faf4;transition:all .2s;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.isp-drop:hover{border-color:var(--ac);background:var(--acb);}
-.isp-preview{display:none;width:100%;max-height:150px;object-fit:contain;border-radius:8px;border:1px solid var(--b);margin-top:8px;}
-.isp-preview.show{display:block;}
-.isp-result-item{display:flex;align-items:center;gap:10px;padding:8px;background:var(--s);border:1px solid var(--b);border-radius:var(--r);margin-bottom:6px;cursor:pointer;transition:all .15s;}
-.isp-result-item:hover{border-color:var(--ac2);background:var(--acb);}
-.isp-match-bar{height:4px;background:var(--b);border-radius:2px;margin-top:3px;}
-.isp-match-fill{height:100%;border-radius:2px;}
-
-/* MODAL */
+/* ── IMAGE SEARCH MODAL ── */
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:none;align-items:center;justify-content:center;padding:16px;}
 .modal-ov.open{display:flex;}
-.modal{background:var(--s);border-radius:var(--rxl);width:100%;max-width:620px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.modal{background:var(--s);border-radius:var(--rxl);width:100%;max-width:640px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);}
 .mhdr{padding:14px 20px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;background:var(--s2);position:sticky;top:0;z-index:2;}
 .mhdr h2{font-size:15px;font-weight:700;}
 .mbody{padding:16px 20px;}
-.mfooter{padding:12px 20px;border-top:1px solid var(--b);display:flex;justify-content:flex-end;gap:8px;background:var(--s2);}
+.mfoot{padding:12px 20px;border-top:1px solid var(--b);display:flex;justify-content:flex-end;gap:8px;background:var(--s2);}
 .mclose{width:28px;height:28px;border:none;background:var(--s3);border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
 .fg{margin-bottom:10px;}
 .fg label{display:block;font-size:11px;font-weight:600;color:var(--t2);margin-bottom:3px;}
@@ -183,157 +202,162 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .fgrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
 
-/* AGENT MODAL */
-.agent-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:600;display:none;align-items:center;justify-content:center;padding:16px;}
-.agent-modal.open{display:flex;}
-.agent-box{background:var(--s);border-radius:var(--rxl);width:100%;max-width:420px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);}
-.agent-hdr{background:linear-gradient(135deg,#1a3a1a,var(--ac));color:#fff;padding:13px 18px;display:flex;align-items:center;gap:10px;}
-.agent-body{padding:16px 18px;}
-.agent-thumb{width:100%;height:110px;object-fit:contain;border-radius:var(--r);border:1px solid var(--b);background:var(--s2);margin-bottom:10px;display:none;}
-.agent-thumb.show{display:block;}
-.agent-found{background:var(--amb);border:1px solid #d4900f;border-radius:var(--r);padding:8px 12px;font-size:12px;color:var(--amt);margin-bottom:10px;display:none;}
-.agent-found.show{display:block;}
-.agent-action-btn{width:100%;padding:10px 14px;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;border:1.5px solid;text-align:left;display:flex;align-items:center;gap:8px;transition:all .15s;margin-bottom:6px;}
-.aa-calc{background:#f0f8f0;border-color:var(--ac2);color:var(--act);}
-.aa-save{background:var(--blb);border-color:#3a7abf;color:#1a3a6a;}
-.aa-dismiss{background:var(--s2);border-color:var(--b);color:var(--t2);}
+/* img search */
+.isp-drop{border:2px dashed #b8d9b4;border-radius:10px;padding:20px;text-align:center;cursor:pointer;background:#f5faf4;transition:all .2s;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.isp-drop:hover{border-color:var(--ac);background:var(--acb);}
+.isp-preview{display:none;width:100%;max-height:150px;object-fit:contain;border-radius:8px;border:1px solid var(--b);margin-top:8px;}
+.isp-preview.show{display:block;}
+.isr-item{display:flex;align-items:center;gap:10px;padding:8px;background:var(--s);border:1px solid var(--b);border-radius:var(--r);margin-bottom:6px;cursor:pointer;transition:all .15s;}
+.isr-item:hover{border-color:var(--ac2);background:var(--acb);}
+.isr-bar{height:4px;background:var(--b);border-radius:2px;margin-top:3px;}
+.isr-fill{height:100%;border-radius:2px;}
 
-/* EMPTY */
-.empty-state{text-align:center;padding:55px 20px;color:var(--t3);}
-.empty-state .ei{font-size:44px;margin-bottom:10px;opacity:.28;}
+/* ── EMPTY ── */
+.empty{text-align:center;padding:55px;color:var(--t3);}
+.empty .ei{font-size:44px;opacity:.28;margin-bottom:10px;}
 
-/* TOAST */
+/* ── TOAST ── */
 #toast{position:fixed;bottom:20px;right:20px;background:var(--ac);color:#fff;padding:9px 16px;border-radius:var(--rl);font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:all .22s;pointer-events:none;z-index:999;}
 #toast.show{opacity:1;transform:translateY(0);}
-.ai-spinner{width:24px;height:24px;border:3px solid var(--b);border-top-color:var(--ac);border-radius:50%;animation:spin .7s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg);}}
+.spin{width:24px;height:24px;border:3px solid var(--b);border-top-color:var(--ac);border-radius:50%;animation:sp .7s linear infinite;margin:0 auto;}
+@keyframes sp{to{transform:rotate(360deg);}}
 
-@media(max-width:768px){
-  .pl-hdr{display:none;}
-  .pl-row{grid-template-columns:40px 1fr auto;}
-  .pl-row>*:nth-child(n+3):not(:last-child){display:none;}
-  .vp-body{grid-template-columns:1fr;}
-  .vp-info{grid-template-columns:1fr 1fr;}
-  .stats-row{grid-template-columns:repeat(3,1fr);}
-  .isp-body{grid-template-columns:1fr;}
+@media(max-width:900px){
+  .main-wrap{grid-template-columns:1fr;}
+  .sidebar{display:none;}
+  .detail-panel.open{width:100%;border-left:none;border-top:1px solid var(--b);}
+}
+@media(max-width:640px){
+  .stats-bar{flex-wrap:wrap;}
+  .sbar-item{min-width:50%;}
   .fgrid,.fgrid3{grid-template-columns:1fr;}
+  .ptable th:nth-child(n+4):not(:last-child){display:none;}
+  .ptable td:nth-child(n+4):not(:last-child){display:none;}
 }
 </style>
 </head>
 <body>
 
+<!-- TOPBAR -->
 <div class="topbar">
-  <div class="tb-left">
-    <span class="tb-brand">🌿 GABE INTERNATIONAL HUB</span>
-    <span class="tb-sub">📦 Master Produk</span>
-  </div>
-  <div class="tb-right">
-    <a href="app.html" class="tb-link">🧮 Kalkulator</a>
-    <a href="materials.html" class="tb-link">🪵 Material</a>
-    <a href="vendors.html" class="tb-link">🏪 Vendor</a>
-    <a href="products.html" class="tb-link active">📦 Produk</a>
-    <a href="bom.html" class="tb-link">📋 BOM</a>
-    <a href="ai-asisten.html" class="tb-link">🤖 AI Asisten</a>
-    <a href="admin.html" class="tb-link">👥 Users</a>
-    <button class="tb-btn" onclick="doLogout()">Keluar</button>
-  </div>
-</div>
-
-<div class="page-hdr">
-  <h1>📦 Master Produk</h1>
-  <p>Database produk furniture PT. Gabe International — Kelola dari Draft hingga Katalog</p>
-</div>
-
-<div class="stats-row">
-  <div class="stat"><div class="stat-val" id="st-total">0</div><div class="stat-lbl">Total Produk</div></div>
-  <div class="stat"><div class="stat-val amber" id="st-pra">0</div><div class="stat-lbl">Pra Produksi</div></div>
-  <div class="stat"><div class="stat-val blue" id="st-prod">0</div><div class="stat-lbl">Produksi</div></div>
-  <div class="stat"><div class="stat-val" id="st-final">0</div><div class="stat-lbl">Final/Katalog</div></div>
-  <div class="stat"><div class="stat-val red" id="st-done">0</div><div class="stat-lbl">Done</div></div>
-</div>
-
-<div class="toolbar">
-  <div class="search-wrap">
-    <span class="si">🔍</span>
-    <input id="prod-search" type="text" placeholder="Cari nama, SKU, kategori, kayu..." oninput="renderGrid()">
-  </div>
-  <button class="btn img-sb" onclick="toggleImgSearch()">📷 Cari via Gambar</button>
-  <button class="btn pr" onclick="openNewProd()">➕ Produk Baru</button>
-  <button class="btn" onclick="exportCSV()">⬇️ Export CSV</button>
-  <div class="view-toggle">
-    <button class="vt on" id="vt-card" onclick="setView('card')" title="Card View">⊞</button>
-    <button class="vt" id="vt-list" onclick="setView('list')" title="List View">☰</button>
-  </div>
-</div>
-
-<!-- IMAGE SEARCH PANEL -->
-<div style="padding:0 16px;">
-<div class="img-search-panel" id="img-search-panel">
-  <div class="isp-hdr">
-    <h3>📷 Image Search — Cari Produk via Foto &nbsp;<span style="font-size:10px;background:rgba(255,255,255,.2);padding:2px 7px;border-radius:20px;">POWERED BY AI</span></h3>
-    <button class="isp-close" onclick="toggleImgSearch()">✕</button>
-  </div>
-  <div class="isp-body">
+  <div class="topbar-left">
+    <a href="app.html" class="tb-back">← Kembali</a>
     <div>
-      <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:6px;">📸 Upload Foto Furniture</div>
-      <div class="isp-drop" id="isp-drop"
-           onclick="document.getElementById('img-file-inp').click()"
-           ondragover="event.preventDefault();this.style.borderColor='#2d5a27'"
-           ondragleave="this.style.borderColor='#b8d9b4'"
-           ondrop="handleImgDrop(event)">
-        <div style="font-size:26px;margin-bottom:4px;">📸</div>
-        <div style="font-size:12px;font-weight:600;color:var(--ac);">Klik atau drag & drop</div>
-        <div style="font-size:10px;color:var(--t3);margin-top:2px;">Foto · Sketsa · Katalog</div>
-      </div>
-      <input type="file" id="img-file-inp" accept="image/*" style="display:none" onchange="handleImgFile(event)">
-      <img id="img-search-preview" class="isp-preview" src="">
-      <div id="img-search-status" style="font-size:11px;color:var(--t3);margin-top:6px;"></div>
-      <div id="img-search-loading" style="display:none;padding:10px;text-align:center;">
-        <div class="ai-spinner" style="margin:0 auto 6px;"></div>
-        <div style="font-size:11px;color:var(--t2);">AI menganalisis...</div>
-      </div>
+      <div class="tb-title">📦 Master Produk</div>
+      <div class="tb-sub">Manajemen Produk Furniture</div>
     </div>
-    <div>
-      <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:6px;">🔍 Hasil Pencarian</div>
-      <div id="img-search-results" style="min-height:80px;">
-        <div style="text-align:center;padding:24px;color:var(--t3);font-size:12px;">
-          <div style="font-size:26px;margin-bottom:6px;">🖼️</div>Upload foto untuk mencari produk mirip
+  </div>
+  <div class="topbar-right">
+    <div class="tb-nav">
+      <a href="app.html">🧮 Kalkulator</a>
+      <a href="materials.html">🪵 Material</a>
+      <a href="vendors.html">🏪 Vendor</a>
+      <a href="products.html" class="active">📦 Produk</a>
+      <a href="bom.html">📋 BOM</a>
+      <a href="ai-asisten.html">🤖 AI Asisten</a>
+      <a href="admin.html">👥 Users</a>
+    </div>
+    <button class="tb-logbtn" onclick="doLogout()">Keluar</button>
+  </div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-head">
+  <div class="ph-left">
+    <h1>📦 Master Produk</h1>
+    <p>Database produk furniture PT. Gabe International — Kelola dari Draft hingga Katalog</p>
+  </div>
+  <div class="ph-right">
+    <button class="btn pr" onclick="openNewProd()">➕ Tambah Produk Baru</button>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="sbar-item"><div class="sbar-val" id="st-total">—</div><div class="sbar-lbl">Total Produk</div></div>
+  <div class="sbar-item"><div class="sbar-val am" id="st-pra">—</div><div class="sbar-lbl">Pra Produksi</div></div>
+  <div class="sbar-item"><div class="sbar-val bl" id="st-prod">—</div><div class="sbar-lbl">Produksi</div></div>
+  <div class="sbar-item"><div class="sbar-val" id="st-cat">—</div><div class="sbar-lbl">Katalog</div></div>
+  <div class="sbar-item"><div class="sbar-val pu" id="st-done">—</div><div class="sbar-lbl">Done</div></div>
+</div>
+
+<!-- MAIN WRAP -->
+<div class="main-wrap" id="main-wrap">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sb-section">Filter Grup</div>
+    <div class="sb-chip active" onclick="sbFilter('all',this)">📦 Semua Produk <span class="cnt" id="sb-all">0</span></div>
+    <div class="sb-chip" onclick="sbFilter('pra',this)">🔨 Pra Produksi <span class="cnt" id="sb-pra">0</span></div>
+    <div class="sb-chip" onclick="sbFilter('produksi',this)">⚙️ Produksi <span class="cnt" id="sb-prod">0</span></div>
+    <div class="sb-chip" onclick="sbFilter('final',this)">🏆 Final & Katalog <span class="cnt" id="sb-fin">0</span></div>
+    <hr class="sb-div">
+    <div class="sb-section">Filter Kategori</div>
+    <div class="sb-chip" onclick="catFilter('',this)">🪑 Semua Kategori</div>
+    <div class="sb-chip" onclick="catFilter('Kursi',this)">🪑 Kursi</div>
+    <div class="sb-chip" onclick="catFilter('Meja',this)">🪵 Meja</div>
+    <div class="sb-chip" onclick="catFilter('Lemari',this)">🗄️ Lemari</div>
+    <div class="sb-chip" onclick="catFilter('Tempat Tidur',this)">🛏️ Tempat Tidur</div>
+    <div class="sb-chip" onclick="catFilter('Credenza',this)">📦 Credenza</div>
+    <div class="sb-chip" onclick="catFilter('Buffet',this)">🛁 Buffet</div>
+    <div class="sb-chip" onclick="catFilter('Cabinet',this)">🗃️ Cabinet</div>
+    <div class="sb-chip" onclick="catFilter('Sofa',this)">🛋️ Sofa</div>
+    <hr class="sb-div">
+    <div class="sb-section">Filter Status</div>
+    <div class="sb-chip" onclick="statusFilter('',this)">Semua Status</div>
+    <div class="sb-chip" onclick="statusFilter('draft',this)">📝 Draft</div>
+    <div class="sb-chip" onclick="statusFilter('progress',this)">⚙️ On Progress</div>
+    <div class="sb-chip" onclick="statusFilter('review',this)">🔍 Review</div>
+    <div class="sb-chip" onclick="statusFilter('final',this)">✅ Final</div>
+    <div class="sb-chip" onclick="statusFilter('catalog',this)">📖 Catalog</div>
+    <div class="sb-chip" onclick="statusFilter('done',this)">🏆 Done</div>
+    <hr class="sb-div">
+    <div class="sb-section">Tools</div>
+    <div class="sb-chip" onclick="openImgSearch()">📷 Cari via Gambar</div>
+    <div class="sb-chip" onclick="exportCSV()">⬇️ Export CSV</div>
+    <div class="sb-chip" onclick="location.href='bom.html'">📋 Buka BOM</div>
+  </div>
+
+  <!-- CONTENT + DETAIL PANEL -->
+  <div style="display:flex;flex:1;overflow:hidden;">
+    <div class="content" style="flex:1;overflow:auto;">
+
+      <!-- TOOLBAR -->
+      <div class="toolbar">
+        <div class="srch-wrap">
+          <span class="si">🔍</span>
+          <input id="prod-search" type="text" placeholder="Cari nama, SKU, kategori, kayu, style..." oninput="renderView()">
+        </div>
+        <div class="view-toggle">
+          <button class="vt on" id="vt-list" onclick="setView('list')" title="List View">☰</button>
+          <button class="vt" id="vt-card" onclick="setView('card')" title="Card View">⊞</button>
         </div>
       </div>
+
+      <!-- EXPORT/IMPORT BAR -->
+      <div class="ei-bar">
+        <span class="ei-lbl">📤 Export:</span>
+        <button class="ei-btn ei-csv" onclick="exportCSV()">📊 CSV</button>
+        <button class="ei-btn ei-excel" onclick="exportExcel()">📗 Excel</button>
+        <div class="ei-sep"></div>
+        <span class="ei-lbl">📥 Cari:</span>
+        <button class="ei-btn ei-img" onclick="openImgSearch()">📷 Cari via Gambar AI</button>
+      </div>
+
+      <!-- VIEW CONTAINER -->
+      <div id="view-container" style="min-height:200px;"></div>
+
+    </div>
+
+    <!-- DETAIL SIDE PANEL -->
+    <div class="detail-panel" id="detail-panel">
+      <div class="dp-inner" id="dp-inner"></div>
     </div>
   </div>
-</div>
-</div>
 
-<!-- GROUP TABS -->
-<div class="grp-tabs">
-  <div class="gtab active" onclick="switchGroup('pra',this)">
-    🔨 Pra Produksi <span class="gcnt" id="gc-pra">0</span>
-  </div>
-  <div class="gtab" onclick="switchGroup('produksi',this)">
-    ⚙️ Produksi <span class="gcnt" id="gc-produksi">0</span>
-  </div>
-  <div class="gtab" onclick="switchGroup('final',this)">
-    🏆 Final & Katalog <span class="gcnt" id="gc-final">0</span>
-  </div>
-</div>
+</div><!-- /main-wrap -->
 
-<div class="prod-area">
-  <!-- VIEW DETAIL PANEL -->
-  <div class="view-panel" id="view-panel">
-    <div class="vp-hdr">
-      <h3 id="vp-title">Detail Produk</h3>
-      <button class="vp-close" onclick="closeViewPanel()">✕</button>
-    </div>
-    <div class="vp-body" id="vp-body"></div>
-    <div class="vp-acts" id="vp-acts"></div>
-  </div>
-
-  <!-- GRID/LIST CONTAINER -->
-  <div id="prod-container"></div>
-</div>
-
-<!-- PRODUCT MODAL -->
+<!-- PRODUCT FORM MODAL -->
 <div class="modal-ov" id="prod-modal">
   <div class="modal">
     <div class="mhdr">
@@ -346,12 +370,9 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
         <div class="fg"><label>SKU / Product ID *</label><input class="fc" id="m-sku" placeholder="TSARI-CRD-BP-01" oninput="this.value=this.value.toUpperCase()"></div>
         <div class="fg"><label>Status</label>
           <select class="fc" id="m-status">
-            <option value="draft">📝 Draft</option>
-            <option value="progress">⚙️ On Progress</option>
-            <option value="review">🔍 Review</option>
-            <option value="final">✅ Final</option>
-            <option value="invoiced">🧾 Invoiced</option>
-            <option value="catalog">📖 Catalog</option>
+            <option value="draft">📝 Draft</option><option value="progress">⚙️ On Progress</option>
+            <option value="review">🔍 Review</option><option value="final">✅ Final</option>
+            <option value="invoiced">🧾 Invoiced</option><option value="catalog">📖 Catalog</option>
             <option value="done">🏆 Done</option>
           </select>
         </div>
@@ -361,9 +382,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
         <div class="fg"><label>Kategori</label>
           <select class="fc" id="m-cat">
             <option value="">— Pilih —</option>
-            <option>🛏️ Tempat Tidur</option><option>🗄️ Lemari</option>
-            <option>🪑 Kursi</option><option>🛋️ Sofa</option>
-            <option>🪵 Meja</option><option>📦 Credenza</option>
+            <option>🛏️ Tempat Tidur</option><option>🗄️ Lemari</option><option>🪑 Kursi</option>
+            <option>🛋️ Sofa</option><option>🪵 Meja</option><option>📦 Credenza</option>
             <option>🗃️ Cabinet</option><option>🛁 Buffet</option><option>📦 Lainnya</option>
           </select>
         </div>
@@ -376,24 +396,23 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
       </div>
       <div class="fgrid">
         <div class="fg"><label>Kayu / Material</label><input class="fc" id="m-wood" placeholder="Oak Solid, Teak..."></div>
-        <div class="fg"><label>Finishing</label><input class="fc" id="m-finish" placeholder="Lacquer, Oil, Wax..."></div>
+        <div class="fg"><label>Finishing</label><input class="fc" id="m-finish" placeholder="Lacquer, Oil..."></div>
       </div>
       <div class="fgrid">
         <div class="fg"><label>Target Market / Buyer</label><input class="fc" id="m-buyer" placeholder="USA, Europe..."></div>
         <div class="fg"><label>Est. Harga Jual (Rp)</label><input class="fc" id="m-price" type="number" placeholder="0"></div>
       </div>
       <div class="fg"><label>Keterangan</label><textarea class="fc" id="m-ket" rows="2" style="resize:vertical;"></textarea></div>
-      <!-- FOTO PRODUK -->
+      <!-- FOTO -->
       <div class="fg">
         <label>📸 Foto Produk</label>
-        <div style="display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:start;">
-          <div id="m-photo-preview"
-            onclick="document.getElementById('m-photo-file').click()"
-            style="width:110px;height:110px;border:2px dashed var(--b);border-radius:var(--rl);background:var(--s2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:border-color .2s;font-size:10px;color:var(--t3);text-align:center;gap:3px;"
+        <div style="display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:start;">
+          <div id="m-photo-preview" onclick="document.getElementById('m-photo-file').click()"
+            style="width:100px;height:100px;border:2px dashed var(--b);border-radius:var(--rl);background:var(--s2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;font-size:10px;color:var(--t3);text-align:center;gap:3px;transition:border-color .2s;"
             onmouseover="this.style.borderColor='var(--ac2)'" onmouseout="this.style.borderColor='var(--b)'">
-            <span style="font-size:26px;">📷</span><span>Klik upload</span>
+            <span style="font-size:24px;">📷</span><span>Klik upload</span>
           </div>
-          <div style="display:flex;flex-direction:column;gap:7px;">
+          <div style="display:flex;flex-direction:column;gap:6px;">
             <input type="file" id="m-photo-file" accept="image/*" style="display:none" onchange="handlePhotoUpload(event)">
             <button type="button" onclick="document.getElementById('m-photo-file').click()"
               style="padding:7px 12px;border:1.5px solid var(--ac2);border-radius:var(--r);background:var(--acb);color:var(--act);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;">
@@ -403,10 +422,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
               <input type="text" id="m-photo-url" class="fc" placeholder="🔗 Paste URL / Google Drive link..." style="padding-right:80px;font-size:12px;" oninput="previewPhotoUrl(this.value)">
               <button type="button" onclick="applyPhotoUrl()" style="position:absolute;right:4px;top:50%;transform:translateY(-50%);padding:4px 10px;background:var(--ac);color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;">Terapkan</button>
             </div>
-            <div style="background:var(--s2);border-radius:var(--r);padding:7px 9px;font-size:10px;color:var(--t3);line-height:1.6;">
-              ✅ URL langsung .jpg/.png<br>
-              ✅ Google Drive → Get link → paste<br>
-              ✅ Google Photos → ⋮ → Copy link
+            <div style="font-size:10px;color:var(--t3);line-height:1.7;background:var(--s2);border-radius:var(--r);padding:6px 9px;">
+              ✅ URL langsung .jpg/.png &nbsp; ✅ Google Drive → Get link → paste<br>✅ Google Photos → ⋮ → Copy link
             </div>
             <button type="button" id="m-photo-clear" onclick="clearPhoto()" style="display:none;padding:4px 10px;border:1px solid var(--rd);border-radius:var(--r);background:var(--rdb);color:var(--rd);font-size:11px;font-weight:600;cursor:pointer;">🗑️ Hapus Foto</button>
           </div>
@@ -414,29 +431,50 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
         <input type="hidden" id="m-photo-data">
       </div>
     </div>
-    <div class="mfooter">
+    <div class="mfoot">
       <button class="btn" onclick="closeModal()">Batal</button>
       <button class="btn pr" onclick="saveProd()">💾 Simpan</button>
     </div>
   </div>
 </div>
 
-<!-- AGENT MODAL -->
-<div class="agent-modal" id="agent-modal">
-  <div class="agent-box">
-    <div class="agent-hdr">
-      <span style="font-size:22px;">🤖</span>
-      <div><div style="font-size:13px;font-weight:700;">AI Agent — Gabe Hub</div><div style="font-size:10px;opacity:.75;">Produk terdeteksi dari gambar</div></div>
+<!-- IMAGE SEARCH MODAL -->
+<div class="modal-ov" id="img-modal">
+  <div class="modal">
+    <div class="mhdr">
+      <h2>📷 Cari Produk via Gambar AI</h2>
+      <button class="mclose" onclick="document.getElementById('img-modal').classList.remove('open')">✕</button>
     </div>
-    <div class="agent-body">
-      <img id="agent-thumb" class="agent-thumb" src="">
-      <div class="agent-found" id="agent-found"></div>
-      <div style="font-size:15px;font-weight:700;margin-bottom:3px;" id="agent-detected">—</div>
-      <div style="font-size:12px;color:var(--t2);margin-bottom:3px;" id="agent-dims">—</div>
-      <div style="font-size:11px;color:var(--t3);margin-bottom:12px;" id="agent-conf"></div>
-      <button class="agent-action-btn aa-calc" onclick="agentToCalc()">🧮 Transfer ke Kalkulator</button>
-      <button class="agent-action-btn aa-save" onclick="agentSave()">💾 Simpan ke Master Produk</button>
-      <button class="agent-action-btn aa-dismiss" onclick="agentDismiss()" style="background:var(--s2);border-color:var(--b);color:var(--t2);">🗑️ Tutup</button>
+    <div class="mbody">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:7px;">📸 Upload Foto</div>
+          <div class="isp-drop" id="isp-drop"
+               onclick="document.getElementById('img-file-inp').click()"
+               ondragover="event.preventDefault();this.style.borderColor='#2d5a27'"
+               ondragleave="this.style.borderColor='#b8d9b4'"
+               ondrop="handleImgDrop(event)">
+            <div style="font-size:28px;margin-bottom:4px;">📸</div>
+            <div style="font-size:12px;font-weight:600;color:var(--ac);">Klik atau drag & drop</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:2px;">Foto · Sketsa · Katalog</div>
+          </div>
+          <input type="file" id="img-file-inp" accept="image/*" style="display:none" onchange="handleImgFile(event)">
+          <img id="img-search-preview" class="isp-preview" src="">
+          <div id="img-search-status" style="font-size:11px;color:var(--t3);margin-top:6px;"></div>
+          <div id="img-search-loading" style="display:none;padding:10px;text-align:center;">
+            <div class="spin" style="margin:0 auto 6px;"></div>
+            <div style="font-size:11px;color:var(--t2);">AI menganalisis...</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:7px;">🔍 Hasil Kemiripan</div>
+          <div id="img-search-results">
+            <div style="text-align:center;padding:30px;color:var(--t3);font-size:12px;">
+              <div style="font-size:28px;margin-bottom:6px;">🖼️</div>Upload foto untuk mencari produk mirip
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -447,551 +485,373 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 // ═══ GABE HUB — MASTER PRODUK ═══
 
 window.__all = [
-  { id:'p1', sku:'TSARI-CRD-BP-01', name:'TSARI Credenza', cat:'📦 Credenza',
-    style:'Modern Minimalis', p:172, l:51, t:91, wood:'Oak Solid / Oak Veneer',
-    finish:'Natural Oil / Matte', buyer:'USA/Europe', price:8500000,
-    ket:'Credenza 4 modul 17 inci. Canvas panel stretched. Metal leg powder coated black.',
-    status:'catalog', photo:'', updatedAt:Date.now()-86400000 },
-  { id:'p2', sku:'INFU2586-SM', name:'Materazzo Small Arm Chair', cat:'🪑 Kursi',
-    style:'Modern Minimalis', p:55, l:54, t:60, wood:'Mindi K2',
-    finish:'Natural Oil / PU Matt', buyer:'USA', price:3200000,
-    ket:'Arm chair modern minimalis. Seat upholstery busa + fabric.',
-    status:'final', photo:'', updatedAt:Date.now()-172800000 },
-  { id:'p3', sku:'MARBLE-COFFE-120', name:'Marble Coffee Table Round', cat:'🪵 Meja',
-    style:'Luxury Modern', p:120, l:120, t:30, wood:'Jati K1 + Marble Top',
-    finish:'Natural Oil', buyer:'Australia', price:12000000,
-    ket:'Coffee table top marble bundar Diameter 120cm. Kaki solid block Jati.',
-    status:'catalog', photo:'', updatedAt:Date.now()-259200000 },
-  { id:'p4', sku:'OSLO-DIN-200', name:'Oslo Dining Table 200cm', cat:'🪵 Meja',
-    style:'Scandinavian', p:200, l:90, t:76, wood:'Oak Solid',
-    finish:'Lacquer Matte', buyer:'Europe', price:18000000,
-    ket:'Meja makan Oslo. Extension available hingga 260cm.',
-    status:'invoiced', photo:'', updatedAt:Date.now()-345600000 },
-  { id:'p5', sku:'JAVA-CAB-TK-180', name:'Java Cabinet Teak 180cm', cat:'🗄️ Lemari',
-    style:'Natural Rustic', p:180, l:45, t:200, wood:'Teak Solid',
-    finish:'Oil Wax', buyer:'Australia/Japan', price:22000000,
-    ket:'Cabinet 3 pintu teak solid. Hardware brass antique.',
-    status:'progress', photo:'', updatedAt:Date.now()-432000000 },
-  { id:'p6', sku:'NORDIC-CHR-WN-02', name:'Nordic Dining Chair', cat:'🪑 Kursi',
-    style:'Scandinavian', p:45, l:52, t:82, wood:'Walnut',
-    finish:'Oil Natural', buyer:'Europe', price:2800000,
-    ket:'Kursi makan Nordic. Set 6 pcs.',
-    status:'review', photo:'', updatedAt:Date.now()-518400000 },
-  { id:'p7', sku:'LOMBOK-BUF-MH-01', name:'Lombok Buffet Mahogany', cat:'🛁 Buffet',
-    style:'Tropical Modern', p:160, l:45, t:85, wood:'Mahogany',
-    finish:'Oil Dark', buyer:'Australia', price:9500000,
-    ket:'Buffet 3 modul. v3.0 setelah revisi buyer. Final approved.',
-    status:'final', photo:'', updatedAt:Date.now()-604800000 },
-  { id:'p8', sku:'BALI-BED-180-K1', name:'Bali King Bed Frame', cat:'🛏️ Tempat Tidur',
-    style:'Tropical Balinese', p:207, l:187, t:120, wood:'Jati K1',
-    finish:'Lacquer Natural', buyer:'USA/Europe', price:35000000,
-    ket:'King bed frame. Headboard ukiran Bali. Termasuk side table 2 pcs.',
-    status:'draft', photo:'', updatedAt:Date.now()-691200000 },
+  {id:'p1',sku:'TSARI-CRD-BP-01',name:'TSARI Credenza',cat:'📦 Credenza',style:'Modern Minimalis',p:172,l:51,t:91,wood:'Oak Solid / Oak Veneer',finish:'Natural Oil / Matte',buyer:'USA/Europe',price:8500000,ket:'Credenza 4 modul 17 inci. Canvas panel stretched. Metal leg powder coated black.',status:'catalog',photo:'',updatedAt:Date.now()-86400000},
+  {id:'p2',sku:'INFU2586-SM',name:'Materazzo Small Arm Chair',cat:'🪑 Kursi',style:'Modern Minimalis',p:55,l:54,t:60,wood:'Mindi K2',finish:'Natural Oil / PU Matt',buyer:'USA',price:3200000,ket:'Arm chair modern minimalis. Seat upholstery busa + fabric.',status:'final',photo:'',updatedAt:Date.now()-172800000},
+  {id:'p3',sku:'MARBLE-COFFE-120',name:'Marble Coffee Table Round',cat:'🪵 Meja',style:'Luxury Modern',p:120,l:120,t:30,wood:'Jati K1 + Marble Top',finish:'Natural Oil',buyer:'Australia',price:12000000,ket:'Coffee table top marble bundar D120cm. Kaki solid Jati.',status:'catalog',photo:'',updatedAt:Date.now()-259200000},
+  {id:'p4',sku:'OSLO-DIN-200',name:'Oslo Dining Table 200cm',cat:'🪵 Meja',style:'Scandinavian',p:200,l:90,t:76,wood:'Oak Solid',finish:'Lacquer Matte',buyer:'Europe',price:18000000,ket:'Meja makan Oslo. Extension available hingga 260cm.',status:'invoiced',photo:'',updatedAt:Date.now()-345600000},
+  {id:'p5',sku:'JAVA-CAB-TK-180',name:'Java Cabinet Teak 180cm',cat:'🗄️ Lemari',style:'Natural Rustic',p:180,l:45,t:200,wood:'Teak Solid',finish:'Oil Wax',buyer:'Australia/Japan',price:22000000,ket:'Cabinet 3 pintu teak solid. Hardware brass antique.',status:'progress',photo:'',updatedAt:Date.now()-432000000},
+  {id:'p6',sku:'NORDIC-CHR-WN-02',name:'Nordic Dining Chair',cat:'🪑 Kursi',style:'Scandinavian',p:45,l:52,t:82,wood:'Walnut',finish:'Oil Natural',buyer:'Europe',price:2800000,ket:'Kursi makan Nordic. Set 6 pcs.',status:'review',photo:'',updatedAt:Date.now()-518400000},
+  {id:'p7',sku:'LOMBOK-BUF-MH-01',name:'Lombok Buffet Mahogany',cat:'🛁 Buffet',style:'Tropical Modern',p:160,l:45,t:85,wood:'Mahogany',finish:'Oil Dark',buyer:'Australia',price:9500000,ket:'Buffet 3 modul. v3.0 setelah revisi buyer.',status:'final',photo:'',updatedAt:Date.now()-604800000},
+  {id:'p8',sku:'BALI-BED-180-K1',name:'Bali King Bed Frame',cat:'🛏️ Tempat Tidur',style:'Tropical Balinese',p:207,l:187,t:120,wood:'Jati K1',finish:'Lacquer Natural',buyer:'USA/Europe',price:35000000,ket:'King bed frame. Headboard ukiran Bali.',status:'draft',photo:'',updatedAt:Date.now()-691200000},
 ];
 
 var _all = window.__all;
-var _curGrp = 'pra';
-var _viewMode = 'card'; // 'card' | 'list'
-var _agentData = {};
+var _viewMode = 'list';
+var _filterGrp = 'all';
+var _filterCat = '';
+var _filterStatus = '';
+var _sortF = 'updatedAt', _sortAsc = false;
+var _curDetailId = null;
 
-var GRP_STATUS = {pra:['draft','progress','review'], produksi:['final','invoiced'], final:['catalog','done']};
+var GRP = {pra:['draft','progress','review'],produksi:['final','invoiced'],final:['catalog','done']};
 var SLBL = {draft:'📝 Draft',progress:'⚙️ Progress',review:'🔍 Review',final:'✅ Final',invoiced:'🧾 Invoiced',catalog:'📖 Catalog',done:'🏆 Done'};
 var SCSS = {draft:'sp-draft',progress:'sp-progress',review:'sp-review',final:'sp-final',invoiced:'sp-invoiced',catalog:'sp-catalog',done:'sp-done'};
 
-// ── INIT ──
-window.onload = function() {
-  _all = window.__all;
-  renderAll();
-};
+window.onload = function(){ _all = window.__all; renderAll(); };
 
-// ── RENDER ALL ──
-function renderAll() {
-  _all = window.__all || _all;
-  updateStats();
-  updateGroupCounts();
-  renderGrid();
-}
+function renderAll(){ _all = window.__all||_all; updateStats(); updateSidebar(); renderView(); }
 
-function updateStats() {
+function updateStats(){
   document.getElementById('st-total').textContent = _all.length;
-  document.getElementById('st-pra').textContent   = _all.filter(function(p){return GRP_STATUS.pra.includes(p.status);}).length;
-  document.getElementById('st-prod').textContent  = _all.filter(function(p){return GRP_STATUS.produksi.includes(p.status);}).length;
-  document.getElementById('st-final').textContent = _all.filter(function(p){return p.status==='catalog';}).length;
-  document.getElementById('st-done').textContent  = _all.filter(function(p){return p.status==='done';}).length;
+  document.getElementById('st-pra').textContent   = _all.filter(p=>GRP.pra.includes(p.status)).length;
+  document.getElementById('st-prod').textContent  = _all.filter(p=>GRP.produksi.includes(p.status)).length;
+  document.getElementById('st-cat').textContent   = _all.filter(p=>p.status==='catalog').length;
+  document.getElementById('st-done').textContent  = _all.filter(p=>p.status==='done').length;
 }
 
-function updateGroupCounts() {
-  Object.keys(GRP_STATUS).forEach(function(g) {
-    var el = document.getElementById('gc-'+g);
-    if (el) el.textContent = _all.filter(function(p){return GRP_STATUS[g].includes(p.status);}).length;
+function updateSidebar(){
+  document.getElementById('sb-all').textContent  = _all.length;
+  document.getElementById('sb-pra').textContent  = _all.filter(p=>GRP.pra.includes(p.status)).length;
+  document.getElementById('sb-prod').textContent = _all.filter(p=>GRP.produksi.includes(p.status)).length;
+  document.getElementById('sb-fin').textContent  = _all.filter(p=>GRP.final.includes(p.status)).length;
+}
+
+function getFiltered(){
+  var q = (document.getElementById('prod-search').value||'').toLowerCase();
+  return _all.filter(function(p){
+    var grpOk = _filterGrp==='all'||(GRP[_filterGrp]&&GRP[_filterGrp].includes(p.status));
+    var catOk = !_filterCat || (p.cat||'').includes(_filterCat);
+    var stOk  = !_filterStatus || p.status===_filterStatus;
+    var qOk   = !q||(p.sku||'').toLowerCase().includes(q)||(p.name||'').toLowerCase().includes(q)
+                   ||(p.cat||'').toLowerCase().includes(q)||(p.wood||'').toLowerCase().includes(q)
+                   ||(p.style||'').toLowerCase().includes(q);
+    return grpOk&&catOk&&stOk&&qOk;
+  }).sort(function(a,b){
+    var va=a[_sortF]||0, vb=b[_sortF]||0;
+    if(typeof va==='string') return _sortAsc?va.localeCompare(vb):vb.localeCompare(va);
+    return _sortAsc?va-vb:vb-va;
   });
 }
 
 // ── VIEW TOGGLE ──
-function setView(v) {
-  _viewMode = v;
-  document.getElementById('vt-card').classList.toggle('on', v==='card');
-  document.getElementById('vt-list').classList.toggle('on', v==='list');
-  closeViewPanel();
-  renderGrid();
+function setView(v){
+  _viewMode=v;
+  document.getElementById('vt-list').classList.toggle('on',v==='list');
+  document.getElementById('vt-card').classList.toggle('on',v==='card');
+  renderView();
 }
 
-// ── GROUP SWITCH ──
-function switchGroup(g, el) {
-  _curGrp = g;
-  document.querySelectorAll('.gtab').forEach(function(t){t.classList.remove('active');});
-  el.classList.add('active');
-  closeViewPanel();
-  renderGrid();
-}
-
-// ── GET FILTERED ──
-function getFiltered() {
-  var q = (document.getElementById('prod-search').value||'').toLowerCase();
-  return _all.filter(function(p) {
-    var inGrp = GRP_STATUS[_curGrp].includes(p.status);
-    var match = !q
-      || (p.sku||'').toLowerCase().includes(q)
-      || (p.name||'').toLowerCase().includes(q)
-      || (p.cat||'').toLowerCase().includes(q)
-      || (p.wood||'').toLowerCase().includes(q)
-      || (p.style||'').toLowerCase().includes(q);
-    return inGrp && match;
-  });
-}
-
-// ── RENDER GRID ──
-function renderGrid() {
-  var rows = getFiltered();
-  var container = document.getElementById('prod-container');
-  if (!rows.length) {
-    container.innerHTML = '<div class="empty-state"><div class="ei">📦</div><p>Tidak ada produk di grup ini</p></div>';
-    return;
-  }
-  if (_viewMode === 'card') renderCardView(rows, container);
-  else renderListView(rows, container);
-}
-
-// ── CARD VIEW ──
-function renderCardView(rows, container) {
-  container.innerHTML = '<div class="prod-grid" id="prod-grid">'
-    + rows.map(function(p) {
-      var catIcon = (p.cat||'📦').split(' ')[0];
-      var volNet  = (p.p&&p.l&&p.t) ? (p.p*p.l*p.t/1e6).toFixed(3)+' m³' : '—';
-      var price   = p.price ? 'Rp '+Math.round(p.price).toLocaleString('id-ID') : '';
-      var photoHtml = p.photo
-        ? '<img src="'+p.photo+'" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">'
-          + '<div class="pc-photo-empty" style="display:none;">'+catIcon+'</div>'
-        : '<div class="pc-photo-empty">'+catIcon+'</div>';
-      return '<div class="pcard" id="card-'+p.id+'">'
-        +'<div class="pc-photo">'+photoHtml
-        +'<div class="pc-badge-top">'
-        +'<span class="spill '+SCSS[p.status]+'">'+SLBL[p.status]+'</span>'
-        +'<span class="pc-cat-badge">'+(p.cat||'').replace(/^[^\s]+\s/,'')||catIcon+'</span>'
-        +'</div></div>'
-        +'<div class="pc-body">'
-        +'<div class="pc-sku">'+p.sku+'</div>'
-        +'<div class="pc-name">'+p.name+'</div>'
-        +'<div class="pc-dims">📐 '+p.p+'×'+p.l+'×'+p.t+' cm'+(p.style?' · '+p.style:'')+'</div>'
-        +'<div class="pc-bottom">'
-        +'<span class="pc-vol">'+volNet+'</span>'
-        +'<span class="pc-price">'+price+'</span>'
-        +'</div></div>'
-        // Hover overlay with 4 action buttons
-        +'<div class="pc-overlay" onclick="viewProd(\''+p.id+'\')">'
-        +'<div class="pc-ov-name">'+p.name+'</div>'
-        +'<div class="pc-ov-actions">'
-        +'<button class="pca pca-view" onclick="event.stopPropagation();viewProd(\''+p.id+'\')">👁️ View</button>'
-        +'<button class="pca pca-edit" onclick="event.stopPropagation();openEdit(\''+p.id+'\')">✏️ Edit</button>'
-        +'<button class="pca pca-dup" onclick="event.stopPropagation();dupProd(\''+p.id+'\')">📋 Dup</button>'
-        +'<button class="pca pca-del" onclick="event.stopPropagation();delProd(\''+p.id+'\')">🗑️</button>'
-        +'</div></div>'
-        +'</div>';
-    }).join('')
-    + '</div>';
+function renderView(){
+  var rows=getFiltered();
+  var vc=document.getElementById('view-container');
+  if(!rows.length){vc.innerHTML='<div class="empty"><div class="ei">📦</div><p>Tidak ada produk ditemukan</p></div>';return;}
+  if(_viewMode==='list') renderListView(rows,vc);
+  else renderCardView(rows,vc);
 }
 
 // ── LIST VIEW ──
-function renderListView(rows, container) {
-  var hdr = '<div class="pl-hdr">'
-    +'<div>Foto</div><div>Produk</div><div>Dimensi</div>'
-    +'<div>Kayu / Material</div><div>Status</div><div>Harga</div><div>Aksi</div>'
-    +'</div>';
-  var rowsHtml = rows.map(function(p) {
-    var catIcon = (p.cat||'📦').split(' ')[0];
-    var price = p.price ? 'Rp '+Math.round(p.price).toLocaleString('id-ID') : '—';
-    var thumbHtml = p.photo
-      ? '<img src="'+p.photo+'" onerror="this.style.display=\'none\'">'
-      : catIcon;
-    return '<div class="pl-row" onclick="viewProd(\''+p.id+'\')">'
-      +'<div class="pl-thumb">'+thumbHtml+'</div>'
-      +'<div class="pl-main">'
-      +'<div class="pl-name">'+p.name+'</div>'
-      +'<div class="pl-sku">'+p.sku+'</div>'
+function renderListView(rows,vc){
+  var thead='<thead><tr>'
+    +'<th style="width:52px;">Foto</th>'
+    +'<th onclick="doSort(\'name\')">Produk ↕</th>'
+    +'<th onclick="doSort(\'status\')">Status ↕</th>'
+    +'<th onclick="doSort(\'p\')">Dimensi ↕</th>'
+    +'<th onclick="doSort(\'wood\')">Kayu ↕</th>'
+    +'<th onclick="doSort(\'price\')">Harga ↕</th>'
+    +'<th>Aksi</th>'
+    +'</tr></thead>';
+  var tbody=rows.map(function(p){
+    var ci=(p.cat||'📦').split(' ')[0];
+    var price=p.price?'Rp '+Math.round(p.price).toLocaleString('id-ID'):'—';
+    var thumbHtml=p.photo
+      ?'<img src="'+p.photo+'" onerror="this.style.display=\'none\'">'
+      :ci;
+    var sel=p.id===_curDetailId?' style="background:var(--acb);"':'';
+    return '<tr class="prow" onclick="openDetail(\''+p.id+'\')"'+sel+'>'
+      +'<td><div class="td-thumb">'+thumbHtml+'</div></td>'
+      +'<td><div class="td-name">'+p.name+'</div><div class="td-sku">'+p.sku+'</div></td>'
+      +'<td><span class="spill '+SCSS[p.status]+'">'+SLBL[p.status]+'</span></td>'
+      +'<td class="td-dim">'+p.p+'×'+p.l+'×'+p.t+' cm</td>'
+      +'<td style="font-size:11px;color:var(--t2);">🪵 '+(p.wood||'—')+'</td>'
+      +'<td class="td-price">'+price+'</td>'
+      +'<td onclick="event.stopPropagation()">'
+      +'<div class="row-acts">'
+      +'<button class="ra ra-view" onclick="openDetail(\''+p.id+'\')">👁️ View</button>'
+      +'<button class="ra ra-edit" onclick="openEdit(\''+p.id+'\')">✏️ Edit</button>'
+      +'<button class="ra ra-dup" onclick="dupProd(\''+p.id+'\')">📋</button>'
+      +'<button class="ra ra-del" onclick="delProd(\''+p.id+'\')">🗑️</button>'
+      +'</div></td></tr>';
+  }).join('');
+  vc.innerHTML='<div class="tbl-wrap"><table class="ptable">'+thead+'<tbody>'+tbody+'</tbody></table></div>';
+}
+
+// ── CARD VIEW ──
+function renderCardView(rows,vc){
+  var cards=rows.map(function(p){
+    var ci=(p.cat||'📦').split(' ')[0];
+    var vol=(p.p&&p.l&&p.t)?(p.p*p.l*p.t/1e6).toFixed(3)+' m³':'—';
+    var price=p.price?'Rp '+Math.round(p.price).toLocaleString('id-ID'):'';
+    var imgHtml=p.photo
+      ?'<img src="'+p.photo+'" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">'
+        +'<div class="pc-img-empty" style="display:none;">'+ci+'</div>'
+      :'<div class="pc-img-empty">'+ci+'</div>';
+    return '<div class="pcard" id="card-'+p.id+'">'
+      +'<div class="pc-img">'+imgHtml
+      +'<div class="pc-badges"><span class="spill '+SCSS[p.status]+'">'+SLBL[p.status]+'</span>'
+      +'<span style="background:rgba(0,0,0,.55);color:#fff;font-size:9px;padding:2px 6px;border-radius:20px;font-weight:600;">'+(p.cat||'').replace(/^[^\s]+\s*/,'')||ci+'</span>'
+      +'</div></div>'
+      +'<div class="pc-body">'
+      +'<div class="pc-sku">'+p.sku+'</div>'
+      +'<div class="pc-name">'+p.name+'</div>'
+      +'<div class="pc-dims">📐 '+p.p+'×'+p.l+'×'+p.t+' cm'+(p.style?' · '+p.style:'')+'</div>'
+      +'<div class="pc-foot"><span class="pc-vol">'+vol+'</span><span class="pc-price">'+price+'</span></div>'
       +'</div>'
-      +'<div class="pl-dim">'+p.p+'×'+p.l+'×'+p.t+' cm</div>'
-      +'<div class="pl-wood">🪵 '+(p.wood||'—')+'</div>'
-      +'<div><span class="spill '+SCSS[p.status]+'">'+SLBL[p.status]+'</span></div>'
-      +'<div class="pl-price">'+price+'</div>'
-      +'<div class="pl-acts" onclick="event.stopPropagation()">'
-      +'<button class="pla pla-view" onclick="viewProd(\''+p.id+'\')">👁️ View</button>'
-      +'<button class="pla pla-edit" onclick="openEdit(\''+p.id+'\')">✏️ Edit</button>'
-      +'<button class="pla pla-dup" onclick="dupProd(\''+p.id+'\')">📋</button>'
-      +'<button class="pla pla-del" onclick="delProd(\''+p.id+'\')">🗑️</button>'
-      +'</div>'
+      +'<div class="pc-overlay" onclick="openDetail(\''+p.id+'\')">'
+      +'<div class="pc-ov-name">'+p.name+'</div>'
+      +'<div class="pc-ov-acts">'
+      +'<button class="pca pca-v" onclick="event.stopPropagation();openDetail(\''+p.id+'\')">👁️ View</button>'
+      +'<button class="pca pca-e" onclick="event.stopPropagation();openEdit(\''+p.id+'\')">✏️ Edit</button>'
+      +'<button class="pca pca-d" onclick="event.stopPropagation();dupProd(\''+p.id+'\')">📋 Dup</button>'
+      +'<button class="pca pca-x" onclick="event.stopPropagation();delProd(\''+p.id+'\')">🗑️</button>'
+      +'</div></div>'
       +'</div>';
   }).join('');
-  container.innerHTML = '<div class="prod-list">'+hdr+rowsHtml+'</div>';
+  vc.innerHTML='<div class="card-area"><div class="card-grid">'+cards+'</div></div>';
 }
 
-// ── VIEW DETAIL PANEL ──
-function viewProd(id) {
-  var p = _all.find(function(x){return x.id===id;});
-  if (!p) return;
-  var catIcon = (p.cat||'📦').split(' ')[0];
-  var volNet  = (p.p&&p.l&&p.t) ? (p.p*p.l*p.t/1e6).toFixed(4)+' m³' : '—';
-  var price   = p.price ? 'Rp '+Math.round(p.price).toLocaleString('id-ID') : '—';
+// ── DETAIL SIDE PANEL ──
+function openDetail(id){
+  var p=_all.find(function(x){return x.id===id;}); if(!p) return;
+  _curDetailId=id;
+  var ci=(p.cat||'📦').split(' ')[0];
+  var vol=(p.p&&p.l&&p.t)?(p.p*p.l*p.t/1e6).toFixed(4)+' m³':'—';
+  var price=p.price?'Rp '+Math.round(p.price).toLocaleString('id-ID'):'—';
+  var photoHtml=p.photo?'<img src="'+p.photo+'" onerror="this.innerHTML=\''+ci+'\'">'
+    :'<span style="font-size:48px;">'+ci+'</span>';
 
-  document.getElementById('vp-title').textContent = '📦 '+p.name;
-
-  var photoHtml = p.photo
-    ? '<img src="'+p.photo+'" onerror="this.innerHTML=\''+catIcon+'\'">'
-    : catIcon;
-
-  document.getElementById('vp-body').innerHTML =
-    '<div class="vp-photo">'+photoHtml+'</div>'
-    +'<div class="vp-info">'
-    +'<div class="vp-f"><label>SKU</label><span style="font-family:monospace;color:var(--bl)">'+p.sku+'</span></div>'
-    +'<div class="vp-f"><label>Status</label><span class="spill '+SCSS[p.status]+'">'+SLBL[p.status]+'</span></div>'
-    +'<div class="vp-f"><label>Kategori</label><span>'+(p.cat||'—')+'</span></div>'
-    +'<div class="vp-f"><label>Dimensi</label><span>'+p.p+' × '+p.l+' × '+p.t+' cm</span></div>'
-    +'<div class="vp-f"><label>Style</label><span>'+(p.style||'—')+'</span></div>'
-    +'<div class="vp-f"><label>Vol. Bersih</label><span style="color:var(--ac);font-weight:700;">'+volNet+'</span></div>'
-    +'<div class="vp-f"><label>Kayu / Material</label><span>'+(p.wood||'—')+'</span></div>'
-    +'<div class="vp-f"><label>Finishing</label><span>'+(p.finish||'—')+'</span></div>'
-    +'<div class="vp-f"><label>Target Buyer</label><span>'+(p.buyer||'—')+'</span></div>'
-    +'<div class="vp-f"><label>Est. Harga Jual</label><span style="color:var(--am);font-weight:700;">'+price+'</span></div>'
-    +(p.ket ? '<div class="vp-notes" style="grid-column:1/-1"><b>📝 Keterangan:</b> '+p.ket+'</div>' : '')
+  document.getElementById('dp-inner').innerHTML=
+    '<div class="dp-hdr"><h3>'+p.name+'</h3><button class="dp-close" onclick="closeDetail()">✕</button></div>'
+    +'<div class="dp-photo">'+photoHtml+'</div>'
+    +'<div class="dp-body">'
+    +'<div class="dp-section">Identitas</div>'
+    +'<div class="dp-field"><label>SKU</label><span style="font-family:monospace;color:var(--bl)">'+p.sku+'</span></div>'
+    +'<div class="dp-field"><label>Nama</label><span>'+p.name+'</span></div>'
+    +'<div class="dp-field"><label>Status</label><span class="spill '+SCSS[p.status]+'">'+SLBL[p.status]+'</span></div>'
+    +'<div class="dp-field"><label>Kategori</label><span>'+(p.cat||'—')+'</span></div>'
+    +'<div class="dp-field"><label>Style</label><span>'+(p.style||'—')+'</span></div>'
+    +'<div class="dp-section">Spesifikasi</div>'
+    +'<div class="dp-field"><label>Dimensi</label><span>'+p.p+' × '+p.l+' × '+p.t+' cm</span></div>'
+    +'<div class="dp-field"><label>Vol. Bersih</label><span style="color:var(--ac);font-weight:700;">'+vol+'</span></div>'
+    +'<div class="dp-field"><label>Kayu / Material</label><span>'+(p.wood||'—')+'</span></div>'
+    +'<div class="dp-field"><label>Finishing</label><span>'+(p.finish||'—')+'</span></div>'
+    +'<div class="dp-section">Bisnis</div>'
+    +'<div class="dp-field"><label>Target Buyer</label><span>'+(p.buyer||'—')+'</span></div>'
+    +'<div class="dp-field"><label>Est. Harga Jual</label><span style="color:var(--am);font-weight:700;font-size:15px;">'+price+'</span></div>'
+    +(p.ket?'<div class="dp-section">Keterangan</div><div class="dp-note">'+p.ket+'</div>':'')
+    +'</div>'
+    +'<div class="dp-acts">'
+    +'<button class="dp-act-btn dpa-edit" onclick="openEdit(\''+id+'\')">✏️ Edit Produk</button>'
+    +'<button class="dp-act-btn dpa-calc" onclick="toCalc(\''+id+'\')">🧮 Transfer ke Kalkulator</button>'
+    +'<button class="dp-act-btn dpa-dup" onclick="dupProd(\''+id+'\')">📋 Duplikat Produk</button>'
+    +'<button class="dp-act-btn dpa-del" onclick="delProd(\''+id+'\')">🗑️ Hapus Produk</button>'
     +'</div>';
 
-  document.getElementById('vp-acts').innerHTML =
-    '<button class="btn pr" onclick="openEdit(\''+p.id+'\')">✏️ Edit Produk</button>'
-    +'<button class="btn" onclick="toCalc(\''+p.id+'\')">🧮 Kalkulasi</button>'
-    +'<button class="btn" onclick="dupProd(\''+p.id+'\')">📋 Duplikat</button>'
-    +'<button class="btn" style="color:var(--rd);border-color:#e08080;" onclick="delProd(\''+p.id+'\')">🗑️ Hapus</button>'
-    +'<button class="btn" onclick="closeViewPanel()" style="margin-left:auto;">✕ Tutup</button>';
-
-  var panel = document.getElementById('view-panel');
-  panel.classList.add('open');
-  panel.scrollIntoView({behavior:'smooth', block:'nearest'});
+  document.getElementById('detail-panel').classList.add('open');
+  if(_viewMode==='list') renderView(); // re-render to highlight selected row
 }
 
-function closeViewPanel() {
-  document.getElementById('view-panel').classList.remove('open');
+function closeDetail(){
+  _curDetailId=null;
+  document.getElementById('detail-panel').classList.remove('open');
+  if(_viewMode==='list') renderView();
 }
 
-// ── NEW PRODUCT ──
-function openNewProd() {
-  document.getElementById('modal-title').textContent = '📦 Produk Baru';
-  document.getElementById('m-id').value = '';
-  ['sku','name','style','wood','finish','buyer','ket'].forEach(function(f){
-    document.getElementById('m-'+f).value = '';
-  });
+// ── FILTERS ──
+function sbFilter(g,el){
+  _filterGrp=g; _filterCat=''; _filterStatus='';
+  document.querySelectorAll('.sb-chip').forEach(function(c){c.classList.remove('active');});
+  el.classList.add('active');
+  renderView();
+}
+function catFilter(c,el){
+  _filterCat=c; _filterGrp='all'; _filterStatus='';
+  document.querySelectorAll('.sb-chip').forEach(function(x){x.classList.remove('active');});
+  el.classList.add('active');
+  renderView();
+}
+function statusFilter(s,el){
+  _filterStatus=s; _filterGrp='all'; _filterCat='';
+  document.querySelectorAll('.sb-chip').forEach(function(x){x.classList.remove('active');});
+  el.classList.add('active');
+  renderView();
+}
+function doSort(f){
+  if(_sortF===f) _sortAsc=!_sortAsc; else{_sortF=f;_sortAsc=true;}
+  renderView();
+}
+
+// ── NEW / EDIT PROD ──
+function openNewProd(){
+  document.getElementById('modal-title').textContent='📦 Produk Baru';
+  document.getElementById('m-id').value='';
+  ['sku','name','style','wood','finish','buyer','ket'].forEach(function(f){document.getElementById('m-'+f).value='';});
   ['p','l','t','price'].forEach(function(f){document.getElementById('m-'+f).value='';});
-  document.getElementById('m-cat').value = '';
-  document.getElementById('m-status').value = 'draft';
+  document.getElementById('m-cat').value=''; document.getElementById('m-status').value='draft';
   clearPhoto();
   document.getElementById('prod-modal').classList.add('open');
 }
-
-function openEdit(id) {
-  var p = _all.find(function(x){return x.id===id;});
-  if (!p) return;
-  document.getElementById('modal-title').textContent = '✏️ Edit: '+p.name;
-  document.getElementById('m-id').value     = id;
-  document.getElementById('m-sku').value    = p.sku||'';
-  document.getElementById('m-name').value   = p.name||'';
-  document.getElementById('m-status').value = p.status||'draft';
-  document.getElementById('m-cat').value    = p.cat||'';
-  document.getElementById('m-style').value  = p.style||'';
-  document.getElementById('m-p').value      = p.p||'';
-  document.getElementById('m-l').value      = p.l||'';
-  document.getElementById('m-t').value      = p.t||'';
-  document.getElementById('m-wood').value   = p.wood||'';
-  document.getElementById('m-finish').value = p.finish||'';
-  document.getElementById('m-buyer').value  = p.buyer||'';
-  document.getElementById('m-price').value  = p.price||'';
-  document.getElementById('m-ket').value    = p.ket||'';
+function openEdit(id){
+  var p=_all.find(function(x){return x.id===id;}); if(!p) return;
+  document.getElementById('modal-title').textContent='✏️ Edit: '+p.name;
+  document.getElementById('m-id').value=id;
+  document.getElementById('m-sku').value=p.sku||'';
+  document.getElementById('m-name').value=p.name||'';
+  document.getElementById('m-status').value=p.status||'draft';
+  document.getElementById('m-cat').value=p.cat||'';
+  document.getElementById('m-style').value=p.style||'';
+  document.getElementById('m-p').value=p.p||'';
+  document.getElementById('m-l').value=p.l||'';
+  document.getElementById('m-t').value=p.t||'';
+  document.getElementById('m-wood').value=p.wood||'';
+  document.getElementById('m-finish').value=p.finish||'';
+  document.getElementById('m-buyer').value=p.buyer||'';
+  document.getElementById('m-price').value=p.price||'';
+  document.getElementById('m-ket').value=p.ket||'';
   clearPhoto();
-  if (p.photo) {
-    document.getElementById('m-photo-data').value = p.photo;
-    if (p.photo.startsWith('http')) document.getElementById('m-photo-url').value = p.photo;
-    setPhotoPreview(p.photo);
-  }
+  if(p.photo){document.getElementById('m-photo-data').value=p.photo;if(p.photo.startsWith('http'))document.getElementById('m-photo-url').value=p.photo;setPhotoPreview(p.photo);}
   document.getElementById('prod-modal').classList.add('open');
 }
+function closeModal(){document.getElementById('prod-modal').classList.remove('open');}
 
-function closeModal() {document.getElementById('prod-modal').classList.remove('open');}
-
-function saveProd() {
-  var eid  = document.getElementById('m-id').value;
-  var sku  = document.getElementById('m-sku').value.trim();
-  var name = document.getElementById('m-name').value.trim();
-  if (!sku||!name) {toast('⚠️ SKU dan Nama wajib!');return;}
-  var data = {
-    sku:sku, name:name,
-    status: document.getElementById('m-status').value,
-    cat:    document.getElementById('m-cat').value,
-    style:  document.getElementById('m-style').value.trim(),
-    p: parseFloat(document.getElementById('m-p').value)||0,
-    l: parseFloat(document.getElementById('m-l').value)||0,
-    t: parseFloat(document.getElementById('m-t').value)||0,
-    wood:   document.getElementById('m-wood').value.trim(),
-    finish: document.getElementById('m-finish').value.trim(),
-    buyer:  document.getElementById('m-buyer').value.trim(),
-    price:  parseFloat(document.getElementById('m-price').value)||0,
-    ket:    document.getElementById('m-ket').value.trim(),
-    photo:  getPhotoValue(),
-    updatedAt: Date.now()
-  };
-  if (eid) {
-    var idx = _all.findIndex(function(x){return x.id===eid;});
-    if (idx>=0){data.id=eid; _all[idx]=data; toast('✅ "'+name+'" diupdate!');}
-  } else {
-    data.id='p-'+Date.now(); _all.unshift(data); toast('✅ "'+name+'" disimpan!');
-  }
-  window.__all = _all;
-  closeModal(); closeViewPanel(); renderAll();
+function saveProd(){
+  var eid=document.getElementById('m-id').value;
+  var sku=document.getElementById('m-sku').value.trim();
+  var name=document.getElementById('m-name').value.trim();
+  if(!sku||!name){toast('⚠️ SKU dan Nama wajib!');return;}
+  var data={sku,name,status:document.getElementById('m-status').value,cat:document.getElementById('m-cat').value,
+    style:document.getElementById('m-style').value.trim(),
+    p:parseFloat(document.getElementById('m-p').value)||0,
+    l:parseFloat(document.getElementById('m-l').value)||0,
+    t:parseFloat(document.getElementById('m-t').value)||0,
+    wood:document.getElementById('m-wood').value.trim(),finish:document.getElementById('m-finish').value.trim(),
+    buyer:document.getElementById('m-buyer').value.trim(),price:parseFloat(document.getElementById('m-price').value)||0,
+    ket:document.getElementById('m-ket').value.trim(),photo:getPhotoValue(),updatedAt:Date.now()};
+  if(eid){var idx=_all.findIndex(function(x){return x.id===eid;});if(idx>=0){data.id=eid;_all[idx]=data;toast('✅ "'+name+'" diupdate!');}}
+  else{data.id='p-'+Date.now();_all.unshift(data);toast('✅ "'+name+'" disimpan!');}
+  window.__all=_all; closeModal(); renderAll();
+  if(_curDetailId===eid) openDetail(eid);
 }
 
-// ── DUPLICATE ──
-function dupProd(id) {
-  var p = _all.find(function(x){return x.id===id;});
-  if (!p) return;
-  var cp = Object.assign({}, p);
-  cp.id = 'dup-'+Date.now();
-  cp.sku = p.sku+'-COPY';
-  cp.name = p.name+' (Copy)';
-  cp.status = 'draft';
-  cp.updatedAt = Date.now();
-  _all.unshift(cp);
-  window.__all = _all;
-  renderAll();
-  toast('📋 "'+p.name+'" diduplikat!');
+function dupProd(id){
+  var p=_all.find(function(x){return x.id===id;}); if(!p) return;
+  var cp=Object.assign({},p,{id:'dup-'+Date.now(),sku:p.sku+'-COPY',name:p.name+' (Copy)',status:'draft',updatedAt:Date.now()});
+  _all.unshift(cp); window.__all=_all; renderAll(); toast('📋 "'+p.name+'" diduplikat!');
 }
 
-// ── DELETE ──
-function delProd(id) {
-  var p = _all.find(function(x){return x.id===id;});
-  if (!confirm('Hapus "'+p.name+'"? Tidak bisa dibatalkan.')) return;
-  _all = _all.filter(function(x){return x.id!==id;});
-  window.__all = _all;
-  closeViewPanel(); renderAll(); toast('🗑️ Produk dihapus');
+function delProd(id){
+  var p=_all.find(function(x){return x.id===id;}); if(!p) return;
+  if(!confirm('Hapus "'+p.name+'"? Tidak bisa dibatalkan.')) return;
+  _all=_all.filter(function(x){return x.id!==id;});
+  window.__all=_all;
+  if(_curDetailId===id) closeDetail();
+  renderAll(); toast('🗑️ Produk dihapus');
 }
 
-// ── TRANSFER TO CALC ──
-function toCalc(id) {
-  var p = _all.find(function(x){return x.id===id;});
-  if (!p) return;
+function toCalc(id){
+  var p=_all.find(function(x){return x.id===id;}); if(!p) return;
   location.href='app.html?sku='+encodeURIComponent(p.sku)+'&product='+encodeURIComponent(p.name);
 }
 
 // ── PHOTO ──
-function setPhotoPreview(src) {
-  var box=document.getElementById('m-photo-preview');
-  var clr=document.getElementById('m-photo-clear');
-  if (src) {
-    box.innerHTML='<img src="'+src+'" style="width:100%;height:100%;object-fit:cover;" onerror="clearPhoto()">';
-    box.style.border='2px solid var(--ac2)';
-    if(clr) clr.style.display='block';
-  } else {
-    box.innerHTML='<span style="font-size:26px;">📷</span><span>Klik upload</span>';
-    box.style.border='2px dashed var(--b)';
-    if(clr) clr.style.display='none';
-    document.getElementById('m-photo-data').value='';
-    document.getElementById('m-photo-url').value='';
-  }
+function setPhotoPreview(src){
+  var b=document.getElementById('m-photo-preview'),cl=document.getElementById('m-photo-clear');
+  if(src){b.innerHTML='<img src="'+src+'" style="width:100%;height:100%;object-fit:cover;" onerror="clearPhoto()">';b.style.border='2px solid var(--ac2)';if(cl)cl.style.display='block';}
+  else{b.innerHTML='<span style="font-size:24px;">📷</span><span>Klik upload</span>';b.style.border='2px dashed var(--b)';if(cl)cl.style.display='none';document.getElementById('m-photo-data').value='';document.getElementById('m-photo-url').value='';}
 }
-
-function handlePhotoUpload(e) {
-  var file=e.target.files[0]; if(!file) return;
-  if(file.size>5*1024*1024){toast('⚠️ Maks 5MB!');return;}
-  var reader=new FileReader();
-  reader.onload=function(ev){
+function handlePhotoUpload(e){
+  var f=e.target.files[0]; if(!f) return;
+  if(f.size>5*1024*1024){toast('⚠️ Maks 5MB!');return;}
+  var r=new FileReader();
+  r.onload=function(ev){
     var img=new Image();
     img.onload=function(){
-      var MAX=800, w=img.width, h=img.height;
+      var MAX=800,w=img.width,h=img.height;
       if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}
-      var cv=document.createElement('canvas');
-      cv.width=w; cv.height=h;
+      var cv=document.createElement('canvas');cv.width=w;cv.height=h;
       cv.getContext('2d').drawImage(img,0,0,w,h);
-      var compressed=cv.toDataURL('image/jpeg',0.78);
-      document.getElementById('m-photo-data').value=compressed;
+      var comp=cv.toDataURL('image/jpeg',.78);
+      document.getElementById('m-photo-data').value=comp;
       document.getElementById('m-photo-url').value='';
-      setPhotoPreview(compressed);
-      toast('✅ Foto diupload! ('+w+'×'+h+'px)');
-    };
-    img.src=ev.target.result;
-  };
-  reader.readAsDataURL(file);
+      setPhotoPreview(comp); toast('✅ Foto diupload! ('+w+'×'+h+'px)');
+    };img.src=ev.target.result;
+  };r.readAsDataURL(f);
 }
-
-function convertToDirectUrl(url) {
-  var m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  if(m) return 'https://drive.google.com/uc?export=view&id='+m[1];
-  return url;
-}
-
-function previewPhotoUrl(url) {
-  if(!url||url.length<8) return;
-  var direct=convertToDirectUrl(url);
-  setPhotoPreview(direct);
-  document.getElementById('m-photo-data').value=direct;
-}
-
-function applyPhotoUrl() {
-  var url=document.getElementById('m-photo-url').value.trim();
-  if(!url){toast('⚠️ Masukkan URL dulu!');return;}
-  var direct=convertToDirectUrl(url);
-  document.getElementById('m-photo-data').value=direct;
-  setPhotoPreview(direct);
-  toast('✅ URL foto diterapkan!');
-}
-
-function clearPhoto() {setPhotoPreview(''); document.getElementById('m-photo-file').value='';}
-function getPhotoValue() {
-  return document.getElementById('m-photo-data').value.trim()
-      || document.getElementById('m-photo-url').value.trim() || '';
-}
+function convertUrl(url){var m=url.match(/\/d\/([a-zA-Z0-9_-]+)/);if(m)return 'https://drive.google.com/uc?export=view&id='+m[1];return url;}
+function previewPhotoUrl(url){if(!url||url.length<8)return;var d=convertUrl(url);setPhotoPreview(d);document.getElementById('m-photo-data').value=d;}
+function applyPhotoUrl(){var url=document.getElementById('m-photo-url').value.trim();if(!url){toast('⚠️ Masukkan URL dulu!');return;}var d=convertUrl(url);document.getElementById('m-photo-data').value=d;setPhotoPreview(d);toast('✅ URL diterapkan!');}
+function clearPhoto(){setPhotoPreview('');document.getElementById('m-photo-file').value='';}
+function getPhotoValue(){return document.getElementById('m-photo-data').value.trim()||document.getElementById('m-photo-url').value.trim()||'';}
 
 // ── IMAGE SEARCH ──
-function toggleImgSearch() {
-  document.getElementById('img-search-panel').classList.toggle('open');
-}
-function handleImgFile(e) {
-  var file=e.target.files[0]; if(!file) return;
-  var reader=new FileReader();
-  reader.onload=function(ev){processImgSearch(ev.target.result);};
-  reader.readAsDataURL(file);
-}
-function handleImgDrop(e) {
-  e.preventDefault();
-  var files=Array.from(e.dataTransfer.files).filter(function(f){return f.type.startsWith('image/');});
-  if(!files.length) return;
-  var reader=new FileReader();
-  reader.onload=function(ev){processImgSearch(ev.target.result);};
-  reader.readAsDataURL(files[0]);
-}
-
-function processImgSearch(dataUrl) {
-  var prev=document.getElementById('img-search-preview');
-  prev.src=dataUrl; prev.classList.add('show');
+function openImgSearch(){document.getElementById('img-modal').classList.add('open');}
+function handleImgFile(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){processImgSearch(ev.target.result);};r.readAsDataURL(f);}
+function handleImgDrop(e){e.preventDefault();var fs=Array.from(e.dataTransfer.files).filter(function(f){return f.type.startsWith('image/');});if(!fs.length)return;var r=new FileReader();r.onload=function(ev){processImgSearch(ev.target.result);};r.readAsDataURL(fs[0]);}
+function processImgSearch(dataUrl){
+  var prev=document.getElementById('img-search-preview');prev.src=dataUrl;prev.classList.add('show');
   document.getElementById('isp-drop').style.display='none';
   document.getElementById('img-search-loading').style.display='block';
   document.getElementById('img-search-results').innerHTML='';
-  var base64=dataUrl.split(',')[1], mime=dataUrl.split(';')[0].split(':')[1]||'image/jpeg';
-  fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageData:base64,mimeType:mime})})
-  .then(function(r){return r.json();})
-  .then(function(d){
-    document.getElementById('img-search-loading').style.display='none';
-    if(d.success&&d.result) renderImgResults(d.result, dataUrl);
-    else renderImgResultsDemo(dataUrl);
-  }).catch(function(){
-    document.getElementById('img-search-loading').style.display='none';
-    renderImgResultsDemo(dataUrl);
-  });
+  var b64=dataUrl.split(',')[1],mime=dataUrl.split(';')[0].split(':')[1]||'image/jpeg';
+  fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageData:b64,mimeType:mime})})
+  .then(function(r){return r.json();}).then(function(d){document.getElementById('img-search-loading').style.display='none';if(d.success&&d.result)renderImgResults(d.result);else renderImgDemo();}).catch(function(){document.getElementById('img-search-loading').style.display='none';renderImgDemo();});
 }
-
-function scoreProduct(p, ai) {
-  var sc=0, ft=(ai&&ai.furniture_type||'').toLowerCase(), cat=(p.cat||'').toLowerCase();
-  if(ft&&cat.includes(ft.replace('bed','tidur').replace('chair','kursi').replace('table','meja'))) sc+=35;
-  if(ai&&ai.wood_recommendation&&(p.wood||'').toLowerCase().includes(ai.wood_recommendation.toLowerCase().split(' ')[0])) sc+=15;
-  return Math.min(97, sc + Math.round(Math.random()*30+20));
-}
-
-function renderImgResults(ai, dataUrl) {
-  var scored=_all.map(function(p){return{p:p,sc:scoreProduct(p,ai)};}).sort(function(a,b){return b.sc-a.sc;});
-  var top=scored.slice(0,4);
+function renderImgResults(ai){
+  var scored=_all.map(function(p){
+    var sc=Math.round(25+Math.random()*40);
+    var ft=(ai.furniture_type||'').toLowerCase(),cat=(p.cat||'').toLowerCase();
+    if(ft&&cat.includes(ft.replace('chair','kursi').replace('table','meja').replace('bed','tidur').replace('cabinet','lemari'))) sc+=30;
+    if(ai.wood_recommendation&&(p.wood||'').toLowerCase().includes(ai.wood_recommendation.toLowerCase().split(' ')[0])) sc+=15;
+    return{p,sc:Math.min(97,sc)};
+  }).sort(function(a,b){return b.sc-a.sc;});
   document.getElementById('img-search-status').textContent='🤖 AI: '+(ai.furniture_name_id||ai.furniture_type||'Furniture')+' terdeteksi';
-  var html=top.map(function(item){
-    var p=item.p,sc=item.sc;
-    var col=sc>=65?'var(--ac)':sc>=40?'var(--am)':'var(--rd)';
-    return '<div class="isp-result-item" onclick="viewProd(\''+p.id+'\')">'
-      +'<div style="font-size:22px;">'+(p.cat||'📦').split(' ')[0]+'</div>'
-      +'<div style="flex:1;"><div style="font-size:12px;font-weight:700;">'+p.name+'</div>'
-      +'<div style="font-size:10px;color:var(--t3);">'+p.sku+' · '+p.p+'×'+p.l+'×'+p.t+'cm</div>'
-      +'<div class="isp-match-bar"><div class="isp-match-fill" style="width:'+sc+'%;background:'+col+';"></div></div></div>'
-      +'<div style="font-size:12px;font-weight:700;color:'+col+';">'+sc+'%</div></div>';
-  }).join('');
-  document.getElementById('img-search-results').innerHTML=html||'<div style="padding:20px;text-align:center;color:var(--t3);">Tidak ada produk mirip</div>';
-  setTimeout(function(){showAgentModal(ai,dataUrl,top.length);},600);
+  renderImgList(scored.slice(0,5));
 }
-
-function renderImgResultsDemo(dataUrl) {
-  var scored=_all.map(function(p){return{p:p,sc:Math.round(25+Math.random()*55)};}).sort(function(a,b){return b.sc-a.sc;});
-  var html=scored.slice(0,4).map(function(item){
-    var p=item.p,sc=item.sc;
-    var col=sc>=65?'var(--ac)':sc>=40?'var(--am)':'var(--rd)';
-    return '<div class="isp-result-item" onclick="viewProd(\''+p.id+'\')">'
-      +'<div style="font-size:22px;">'+(p.cat||'📦').split(' ')[0]+'</div>'
-      +'<div style="flex:1;"><div style="font-size:12px;font-weight:700;">'+p.name+'</div>'
-      +'<div style="font-size:10px;color:var(--t3);">'+p.sku+'</div>'
-      +'<div class="isp-match-bar"><div class="isp-match-fill" style="width:'+sc+'%;background:'+col+';"></div></div></div>'
-      +'<div style="font-size:12px;font-weight:700;color:'+col+';">'+sc+'%</div></div>';
-  }).join('');
+function renderImgDemo(){
+  var scored=_all.map(function(p){return{p,sc:Math.round(20+Math.random()*60)};}).sort(function(a,b){return b.sc-a.sc;});
   document.getElementById('img-search-status').textContent='📋 Demo mode';
-  document.getElementById('img-search-results').innerHTML=html;
+  renderImgList(scored.slice(0,5));
+}
+function renderImgList(list){
+  document.getElementById('img-search-results').innerHTML=list.map(function(item){
+    var p=item.p,sc=item.sc,col=sc>=65?'var(--ac)':sc>=40?'var(--am)':'var(--rd)';
+    return '<div class="isr-item" onclick="openDetail(\''+p.id+'\');document.getElementById(\'img-modal\').classList.remove(\'open\')">'
+      +'<div style="font-size:22px;">'+(p.cat||'📦').split(' ')[0]+'</div>'
+      +'<div style="flex:1;"><div style="font-size:12px;font-weight:700;">'+p.name+'</div>'
+      +'<div style="font-size:10px;color:var(--t3);">'+p.sku+' · '+p.p+'×'+p.l+'×'+p.t+' cm</div>'
+      +'<div class="isr-bar"><div class="isr-fill" style="width:'+sc+'%;background:'+col+';"></div></div></div>'
+      +'<div style="font-size:12px;font-weight:700;color:'+col+';">'+sc+'%</div></div>';
+  }).join('');
 }
 
-// ── AI AGENT ──
-function showAgentModal(ai, previewUrl, matchCount) {
-  _agentData={ai:ai, previewUrl:previewUrl};
-  var r=ai||{}, d=r.dimensions||{};
-  if(previewUrl){var t=document.getElementById('agent-thumb');t.src=previewUrl;t.classList.add('show');}
-  var fe=document.getElementById('agent-found');
-  if(matchCount>0){fe.textContent='🔍 '+matchCount+' produk mirip ditemukan';fe.classList.add('show');}
-  else fe.classList.remove('show');
-  document.getElementById('agent-detected').textContent='🪑 '+(r.furniture_name_id||r.furniture_type||'Furniture');
-  document.getElementById('agent-dims').textContent='📐 '+(d.panjang||0)+'×'+(d.lebar||0)+'×'+(d.tinggi||0)+' cm'+(r.wood_recommendation?' · 🪵 '+r.wood_recommendation:'');
-  document.getElementById('agent-conf').textContent=r.confidence?(r.confidence+'% confidence'):'';
-  document.getElementById('agent-modal').classList.add('open');
-}
-
-function agentToCalc(){var r=_agentData.ai||{},d=r.dimensions||{};location.href='app.html?product='+encodeURIComponent(r.furniture_name_id||r.furniture_type||'')+'&p='+(d.panjang||0)+'&l='+(d.lebar||0)+'&t='+(d.tinggi||0);}
-function agentSave(){
-  var r=_agentData.ai||{},d=r.dimensions||{};
-  document.getElementById('m-id').value='';
-  document.getElementById('m-sku').value='AI-'+Date.now().toString(36).toUpperCase();
-  document.getElementById('m-name').value=r.furniture_name_id||r.furniture_type||'New Product';
-  document.getElementById('m-status').value='draft';
-  document.getElementById('m-p').value=d.panjang||0;
-  document.getElementById('m-l').value=d.lebar||0;
-  document.getElementById('m-t').value=d.tinggi||0;
-  document.getElementById('m-wood').value=r.wood_recommendation||'';
-  document.getElementById('m-ket').value=r.notes||'';
-  document.getElementById('agent-modal').classList.remove('open');
-  document.getElementById('modal-title').textContent='📦 Simpan dari AI Agent';
-  document.getElementById('prod-modal').classList.add('open');
-}
-function agentDismiss(){
-  document.getElementById('agent-modal').classList.remove('open');
-  var prev=document.getElementById('img-search-preview');
-  prev.src=''; prev.classList.remove('show');
-  document.getElementById('isp-drop').style.display='';
-  document.getElementById('img-search-results').innerHTML='<div style="text-align:center;padding:24px;color:var(--t3);font-size:12px;"><div style="font-size:26px;margin-bottom:6px;">🖼️</div>Upload foto untuk mencari produk mirip</div>';
-  document.getElementById('img-search-status').textContent='';
-}
-
-// ── EXPORT CSV ──
+// ── EXPORT ──
 function exportCSV(){
   var rows=[['SKU','Nama','Kategori','Status','Style','P(cm)','L(cm)','T(cm)','Kayu','Finishing','Buyer','Harga','Keterangan']];
   _all.forEach(function(p){rows.push([p.sku,p.name,p.cat,p.status,p.style,p.p,p.l,p.t,p.wood,p.finish,p.buyer,p.price,p.ket]);});
-  var csv=rows.map(function(r){return r.map(function(v){return '"'+(v||'')+'"';}).join(',');}).join('\n');
-  var a=document.createElement('a');
-  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
-  a.download='MasterProduk_'+new Date().toISOString().slice(0,10)+'.csv';
-  a.click(); toast('⬇️ CSV diekspor!');
+  var csv=rows.map(function(r){return r.map(function(v){return'"'+(v||'')+'"';}).join(',');}).join('\n');
+  var a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download='MasterProduk_'+new Date().toISOString().slice(0,10)+'.csv';a.click();toast('⬇️ CSV diekspor!');
 }
+function exportExcel(){toast('📗 Export Excel — coming soon');}
 
 function doLogout(){try{sessionStorage.removeItem('gabe_user');}catch(e){}location.href='index.html';}
 function toast(msg){var el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(function(){el.classList.remove('show');},2500);}
@@ -1002,145 +862,56 @@ function toast(msg){var el=document.getElementById('toast');el.textContent=msg;e
 import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp }
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-
-const FC = {
-  apiKey:'AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA',
-  authDomain:'gabe-international-hub.firebaseapp.com',
-  projectId:'gabe-international-hub',
-  storageBucket:'gabe-international-hub.firebasestorage.app',
-  messagingSenderId:'115783216069',
-  appId:'1:115783216069:web:62cfabf543b1fbb85bf9ac'
-};
-
+const FC={apiKey:'AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA',authDomain:'gabe-international-hub.firebaseapp.com',projectId:'gabe-international-hub',storageBucket:'gabe-international-hub.firebasestorage.app',messagingSenderId:'115783216069',appId:'1:115783216069:web:62cfabf543b1fbb85bf9ac'};
 let _db=null;
-try {
-  const apps=getApps();
-  const fbApp=apps.length?apps[0]:initializeApp(FC);
-  _db=getFirestore(fbApp);
-} catch(e){console.warn('Firebase:',e.message);}
-
-function mapFB(id,d){
-  return {
-    id, sku:d.sku||d.id||'—', name:d.nama||d.name||d.productName||'—',
-    cat:d.kategori||d.cat||'', style:d.style||'',
-    p:parseFloat(d.panjang||d.p||0), l:parseFloat(d.lebar||d.l||0), t:parseFloat(d.tinggi||d.t||0),
-    wood:d.kayu||d.wood||'', finish:d.finishing||d.finish||'',
-    buyer:d.buyer||'', price:parseFloat(d.price||d.harga||0),
-    ket:d.ket||d.keterangan||'', status:d.status||'draft',
-    photo:d.photo||d.photoUrl||d.photoData||'',
-    updatedAt:d.updatedAt?.seconds?d.updatedAt.seconds*1000:Date.now()
-  };
-}
-
-async function loadFromFirebase(){
-  if(!_db) return;
-  try {
-    const snap=await getDocs(collection(_db,'products'));
-    const fbData=[];
-    snap.forEach(d=>fbData.push(mapFB(d.id,d.data())));
-    fbData.sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
-    if(fbData.length>0){
-      window.__all=fbData;
-      renderAll();
-      toast('✅ '+fbData.length+' produk dimuat');
-    } else {
-      showSeedBanner();
-    }
-  } catch(e){console.warn('loadFromFirebase:',e.message);}
-}
-
-function showSeedBanner(){
-  const area=document.querySelector('.prod-area');
-  if(!area||document.getElementById('seed-banner')) return;
-  const b=document.createElement('div');
-  b.id='seed-banner';
-  b.style.cssText='background:var(--amb);border:1px solid #d4900f;border-radius:var(--r);padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;font-size:12px;';
-  b.innerHTML='<span>📦 Firebase kosong — menampilkan demo data. Seed ke Firebase?</span>'
-    +'<button onclick="seedToFirebase()" style="padding:5px 13px;background:var(--ac);color:#fff;border:none;border-radius:var(--r);font-size:12px;font-weight:700;cursor:pointer;">🌱 Seed</button>';
-  area.insertBefore(b,area.firstChild);
-}
-
-window.seedToFirebase=async function(){
-  if(!_db){toast('❌ Firebase tidak tersedia');return;}
-  toast('⏳ Seeding...');
+try{const ap=getApps();const fb=ap.length?ap[0]:initializeApp(FC);_db=getFirestore(fb);}catch(e){console.warn('FB:',e.message);}
+function mapFB(id,d){return{id,sku:d.sku||'—',name:d.nama||d.name||'—',cat:d.kategori||d.cat||'',style:d.style||'',p:parseFloat(d.panjang||d.p||0),l:parseFloat(d.lebar||d.l||0),t:parseFloat(d.tinggi||d.t||0),wood:d.kayu||d.wood||'',finish:d.finishing||d.finish||'',buyer:d.buyer||'',price:parseFloat(d.price||0),ket:d.ket||'',status:d.status||'draft',photo:d.photo||d.photoUrl||'',updatedAt:d.updatedAt?.seconds?d.updatedAt.seconds*1000:Date.now()};}
+async function loadFB(){
+  if(!_db)return;
   try{
-    for(const p of window.__all){
-      const{id,...d}=p;
-      await addDoc(collection(_db,'products'),{
-        sku:d.sku,nama:d.name,name:d.name,kategori:d.cat,
-        style:d.style,panjang:d.p,lebar:d.l,tinggi:d.t,
-        kayu:d.wood,finishing:d.finish,buyer:d.buyer,price:d.price,
-        ket:d.ket,status:d.status,photo:d.photo||'',updatedAt:serverTimestamp()
-      });
-    }
-    document.getElementById('seed-banner')?.remove();
-    toast('✅ '+window.__all.length+' produk di-seed!');
-    setTimeout(()=>loadFromFirebase(),1500);
-  }catch(e){toast('❌ Seed gagal: '+e.message);}
+    const sn=await getDocs(collection(_db,'products'));
+    const fb=[];sn.forEach(d=>fb.push(mapFB(d.id,d.data())));
+    fb.sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+    if(fb.length>0){window.__all=fb;renderAll();toast('✅ '+fb.length+' produk dimuat');}
+    else showSeedBanner();
+  }catch(e){console.warn('loadFB:',e.message);}
+}
+function showSeedBanner(){
+  var area=document.getElementById('view-container');
+  if(!area||document.getElementById('seed-banner'))return;
+  var b=document.createElement('div');b.id='seed-banner';
+  b.style.cssText='background:var(--amb);border:1px solid #d4900f;border-radius:var(--r);padding:10px 14px;margin:12px 16px;display:flex;align-items:center;justify-content:space-between;font-size:12px;';
+  b.innerHTML='<span>📦 Firebase kosong — menampilkan demo data.</span><button onclick="seedFB()" style="padding:5px 13px;background:var(--ac);color:#fff;border:none;border-radius:var(--r);font-size:12px;font-weight:700;cursor:pointer;">🌱 Seed ke Firebase</button>';
+  area.parentNode.insertBefore(b,area);
+}
+window.seedFB=async function(){
+  if(!_db){toast('❌ Firebase tidak tersedia');return;}toast('⏳ Seeding...');
+  try{for(const p of window.__all){const{id,...d}=p;await addDoc(collection(_db,'products'),{sku:d.sku,nama:d.name,name:d.name,kategori:d.cat,style:d.style,panjang:d.p,lebar:d.l,tinggi:d.t,kayu:d.wood,finishing:d.finish,buyer:d.buyer,price:d.price,ket:d.ket,status:d.status,photo:d.photo||'',updatedAt:serverTimestamp()});}
+  document.getElementById('seed-banner')?.remove();toast('✅ Seeded!');setTimeout(()=>loadFB(),1500);}
+  catch(e){toast('❌ '+e.message);}
 };
-
-// Override saveProd → simpan ke Firebase juga
-const _origSave=window.saveProd;
+const _os=window.saveProd;
 window.saveProd=async function(){
-  const eid=document.getElementById('m-id').value;
-  const sku=document.getElementById('m-sku').value.trim();
-  const name=document.getElementById('m-name').value.trim();
+  const eid=document.getElementById('m-id').value,sku=document.getElementById('m-sku').value.trim(),name=document.getElementById('m-name').value.trim();
   if(!sku||!name){toast('⚠️ SKU dan Nama wajib!');return;}
-  const rawPhoto=(typeof getPhotoValue==='function')?getPhotoValue():'';
-  const photo=rawPhoto.startsWith('data:')&&rawPhoto.length>200000?'':rawPhoto;
-  if(rawPhoto.startsWith('data:')&&rawPhoto.length>200000) toast('⚠️ Foto terlalu besar, pakai URL!');
-  const data={
-    sku,nama:name,name,status:document.getElementById('m-status').value,
-    kategori:document.getElementById('m-cat').value,cat:document.getElementById('m-cat').value,
-    style:document.getElementById('m-style').value.trim(),
-    panjang:parseFloat(document.getElementById('m-p').value)||0,
-    lebar:parseFloat(document.getElementById('m-l').value)||0,
-    tinggi:parseFloat(document.getElementById('m-t').value)||0,
-    p:parseFloat(document.getElementById('m-p').value)||0,
-    l:parseFloat(document.getElementById('m-l').value)||0,
-    t:parseFloat(document.getElementById('m-t').value)||0,
-    kayu:document.getElementById('m-wood').value.trim(),
-    wood:document.getElementById('m-wood').value.trim(),
-    finishing:document.getElementById('m-finish').value.trim(),
-    finish:document.getElementById('m-finish').value.trim(),
-    buyer:document.getElementById('m-buyer').value.trim(),
-    price:parseFloat(document.getElementById('m-price').value)||0,
-    ket:document.getElementById('m-ket').value.trim(),
-    photo,photoUrl:photo,updatedAt:serverTimestamp()
-  };
-  try {
-    if(eid&&!eid.startsWith('p')&&!eid.startsWith('dup')){
-      await updateDoc(doc(_db,'products',eid),data);
-      const idx=window.__all.findIndex(x=>x.id===eid);
-      if(idx>=0) window.__all[idx]=mapFB(eid,{...data,updatedAt:{seconds:Date.now()/1000}});
-      toast('✅ "'+name+'" diupdate ke Firebase!');
-    } else {
-      const ref=await addDoc(collection(_db,'products'),data);
-      window.__all.unshift(mapFB(ref.id,{...data,updatedAt:{seconds:Date.now()/1000}}));
-      toast('✅ "'+name+'" disimpan ke Firebase!');
-    }
-  } catch(e){
-    console.warn('Firebase save:',e.message);
-    if(eid){const idx=window.__all.findIndex(x=>x.id===eid);if(idx>=0) window.__all[idx]=mapFB(eid,{...data,updatedAt:{seconds:Date.now()/1000}});else window.__all.unshift(mapFB('local-'+Date.now(),{...data,updatedAt:{seconds:Date.now()/1000}}));}
-    else window.__all.unshift(mapFB('local-'+Date.now(),{...data,updatedAt:{seconds:Date.now()/1000}}));
-    toast('💾 Disimpan lokal (offline)');
-  }
-  document.getElementById('prod-modal').classList.remove('open');
-  closeViewPanel(); renderAll();
+  const rp=(typeof getPhotoValue==='function')?getPhotoValue():'';
+  const photo=rp.startsWith('data:')&&rp.length>200000?'':rp;
+  if(rp.startsWith('data:')&&rp.length>200000)toast('⚠️ Foto terlalu besar — pakai URL Google Drive!');
+  const data={sku,nama:name,name,status:document.getElementById('m-status').value,kategori:document.getElementById('m-cat').value,cat:document.getElementById('m-cat').value,style:document.getElementById('m-style').value.trim(),panjang:parseFloat(document.getElementById('m-p').value)||0,lebar:parseFloat(document.getElementById('m-l').value)||0,tinggi:parseFloat(document.getElementById('m-t').value)||0,p:parseFloat(document.getElementById('m-p').value)||0,l:parseFloat(document.getElementById('m-l').value)||0,t:parseFloat(document.getElementById('m-t').value)||0,kayu:document.getElementById('m-wood').value.trim(),wood:document.getElementById('m-wood').value.trim(),finishing:document.getElementById('m-finish').value.trim(),finish:document.getElementById('m-finish').value.trim(),buyer:document.getElementById('m-buyer').value.trim(),price:parseFloat(document.getElementById('m-price').value)||0,ket:document.getElementById('m-ket').value.trim(),photo,photoUrl:photo,updatedAt:serverTimestamp()};
+  try{
+    if(eid&&!eid.startsWith('p')&&!eid.startsWith('dup')&&!eid.startsWith('local')){await updateDoc(doc(_db,'products',eid),data);const i=window.__all.findIndex(x=>x.id===eid);if(i>=0)window.__all[i]=mapFB(eid,{...data,updatedAt:{seconds:Date.now()/1000}});toast('✅ "'+name+'" diupdate ke Firebase!');}
+    else{const ref=await addDoc(collection(_db,'products'),data);window.__all.unshift(mapFB(ref.id,{...data,updatedAt:{seconds:Date.now()/1000}}));toast('✅ "'+name+'" disimpan ke Firebase!');}
+  }catch(e){console.warn('FB save:',e.message);if(eid){const i=window.__all.findIndex(x=>x.id===eid);if(i>=0)window.__all[i]=mapFB(eid,{...data,updatedAt:{seconds:Date.now()/1000}});else window.__all.unshift(mapFB('local-'+Date.now(),{...data,updatedAt:{seconds:Date.now()/1000}}));}else window.__all.unshift(mapFB('local-'+Date.now(),{...data,updatedAt:{seconds:Date.now()/1000}}));toast('💾 Disimpan lokal');}
+  document.getElementById('prod-modal').classList.remove('open');renderAll();
+  const eid2=document.getElementById('m-id').value;if(_curDetailId)openDetail(_curDetailId);
 };
-
-// Override delProd → hapus dari Firebase
-const _origDel=window.delProd;
+const _od=window.delProd;
 window.delProd=async function(id){
-  const p=window.__all.find(x=>x.id===id);
-  if(!confirm('Hapus "'+p.name+'"? Tidak bisa dibatalkan.')) return;
-  try{if(_db&&!id.startsWith('p')&&!id.startsWith('dup'))await deleteDoc(doc(_db,'products',id));}catch(e){console.warn('Firebase delete:',e.message);}
-  window.__all=window.__all.filter(x=>x.id!==id);
-  closeViewPanel(); renderAll(); toast('🗑️ Produk dihapus');
+  const p=window.__all.find(x=>x.id===id);if(!confirm('Hapus "'+p.name+'"?'))return;
+  try{if(_db&&!id.startsWith('p')&&!id.startsWith('dup')&&!id.startsWith('local'))await deleteDoc(doc(_db,'products',id));}catch(e){console.warn('FB del:',e.message);}
+  window.__all=window.__all.filter(x=>x.id!==id);if(_curDetailId===id)closeDetail();renderAll();toast('🗑️ Dihapus');
 };
-
-loadFromFirebase();
+loadFB();
 </script>
-
 </body>
 </html>
