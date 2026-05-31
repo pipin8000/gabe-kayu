@@ -371,7 +371,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 // ══════════════════════════════════════════════
 
 // ── DEMO DATA ──
-var _all = [
+window._all = window.__all = [
   { id:'p1', sku:'TSARI-CRD-BP-01', name:'TSARI Credenza', cat:'📦 Credenza',
     style:'Modern Minimalis', p:172, l:51, t:91, wood:'Oak Solid / Oak Veneer',
     finish:'Natural Oil / Matte', buyer:'USA/Europe', price:8500000,
@@ -420,6 +420,8 @@ var _all = [
     ket:'King bed frame. Headboard ukiran Bali. Termasuk side table 2 pcs.',
     status:'draft', photo:'', updatedAt: Date.now()-691200000 },
 ];
+var _all = window._all; // alias
+
 
 var _curGrp = 'pra';
 var _filterQ = '';
@@ -856,28 +858,227 @@ function toast(msg) {
   setTimeout(function(){ el.classList.remove('show'); }, 2500);
 }
 
-// ── INIT ──
-window.onload = function() { renderAll(); };
+// ── INIT — tunggu Firebase, fallback ke demo ──
+window.onload = function() {
+  // Tampilkan loading dulu
+  document.getElementById('prod-grid').innerHTML =
+    '<div style="text-align:center;padding:40px;color:var(--t3);">'
+    +'<div style="width:28px;height:28px;border:3px solid var(--b);border-top-color:var(--ac);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px;"></div>'
+    +'Memuat data produk...</div>';
+  // Timeout fallback — kalau Firebase tidak respond dalam 5 detik, pakai demo
+  var _fbLoaded = false;
+  setTimeout(function() {
+    if (!_fbLoaded) { renderAll(); toast('📋 Demo mode — Firebase tidak tersedia'); }
+  }, 5000);
+  window._fbLoadedSetter = function(v) { _fbLoaded = v; };
+};
 </script>
 
-<!-- Firebase (opsional — aktifkan saat config tersedia) -->
-<!-- 
+<!-- Firebase — baca dari collection products (sama dengan app.html) -->
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import {
+  getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc,
+  doc, serverTimestamp, query, orderBy
+} from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const FC = {
-  apiKey: "AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",
-  authDomain: "gabe-international-hub.firebaseapp.com",
-  projectId: "gabe-international-hub",
-  storageBucket: "gabe-international-hub.firebasestorage.app",
-  messagingSenderId: "115783216069",
-  appId: "1:115783216069:web:62cfabf543b1fbb85bf9ac"
+  apiKey:            'AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA',
+  authDomain:        'gabe-international-hub.firebaseapp.com',
+  projectId:         'gabe-international-hub',
+  storageBucket:     'gabe-international-hub.firebasestorage.app',
+  messagingSenderId: '115783216069',
+  appId:             '1:115783216069:web:62cfabf543b1fbb85bf9ac'
 };
-// Uncomment dan hapus demo data di atas saat production
+
+let _db = null;
+
+try {
+  const existing = getApps();
+  const fbApp = existing.length ? existing[0] : initializeApp(FC);
+  _db = getFirestore(fbApp);
+} catch(e) {
+  console.warn('Firebase init:', e.message);
+}
+
+// ── Map field dari app.html → products.html ──
+// app.html simpan: sku, nama, kategori, style, panjang, lebar, tinggi, kayu, finishing, ket, komponen, status
+// products.html pakai: sku, name, cat, style, p, l, t, wood, finish, ket, status
+function mapFromFirebase(id, d) {
+  return {
+    id:       id,
+    sku:      d.sku      || d.id || '—',
+    name:     d.nama     || d.name || d.productName || '—',
+    cat:      d.kategori || d.cat  || '',
+    style:    d.style    || '',
+    p:        parseFloat(d.panjang  || d.p || 0),
+    l:        parseFloat(d.lebar    || d.l || 0),
+    t:        parseFloat(d.tinggi   || d.t || 0),
+    wood:     d.kayu     || d.wood  || '',
+    finish:   d.finishing|| d.finish|| '',
+    buyer:    d.buyer    || '',
+    price:    parseFloat(d.price || d.harga || 0),
+    ket:      d.ket      || d.keterangan || '',
+    status:   d.status   || 'draft',
+    photo:    d.photo    || d.photoUrl || '',
+    updatedAt: d.updatedAt ? (d.updatedAt.seconds ? d.updatedAt.seconds*1000 : Date.now()) : Date.now()
+  };
+}
+
+// ── LOAD dari Firebase ──
+async function loadFromFirebase() {
+  if (!_db) { window._fbLoadedSetter && window._fbLoadedSetter(false); return; }
+  try {
+    const snap = await getDocs(query(collection(_db, 'products'), orderBy('updatedAt', 'desc')));
+    const fbData = [];
+    snap.forEach(d => fbData.push(mapFromFirebase(d.id, d.data())));
+
+    if (fbData.length > 0) {
+      // Ada data di Firebase — ganti demo data
+      window._all = fbData;
+      window._fbLoadedSetter && window._fbLoadedSetter(true);
+      renderAll();
+      toast('✅ '+fbData.length+' produk dimuat dari Firebase');
+    } else {
+      // Firebase kosong — tampilkan demo data + tawarkan seed
+      window._fbLoadedSetter && window._fbLoadedSetter(true);
+      renderAll();
+      showSeedBanner();
+    }
+  } catch(e) {
+    console.warn('loadFromFirebase:', e.message);
+    window._fbLoadedSetter && window._fbLoadedSetter(false);
+    renderAll();
+    toast('⚠️ Offline — menampilkan demo data');
+  }
+}
+
+// ── OVERRIDE saveProd agar juga simpan ke Firebase ──
+const _origSave = window.saveProd;
+window.saveProd = async function() {
+  const eid  = document.getElementById('m-id').value;
+  const sku  = document.getElementById('m-sku').value.trim();
+  const name = document.getElementById('m-name').value.trim();
+  if (!sku || !name) { toast('⚠️ SKU dan Nama wajib diisi!'); return; }
+
+  const data = {
+    sku, nama: name, name,
+    status:   document.getElementById('m-status').value,
+    kategori: document.getElementById('m-cat').value,
+    cat:      document.getElementById('m-cat').value,
+    style:    document.getElementById('m-style').value.trim(),
+    panjang:  parseFloat(document.getElementById('m-p').value)||0,
+    lebar:    parseFloat(document.getElementById('m-l').value)||0,
+    tinggi:   parseFloat(document.getElementById('m-t').value)||0,
+    p: parseFloat(document.getElementById('m-p').value)||0,
+    l: parseFloat(document.getElementById('m-l').value)||0,
+    t: parseFloat(document.getElementById('m-t').value)||0,
+    kayu:     document.getElementById('m-wood').value.trim(),
+    wood:     document.getElementById('m-wood').value.trim(),
+    finishing:document.getElementById('m-finish').value.trim(),
+    finish:   document.getElementById('m-finish').value.trim(),
+    buyer:    document.getElementById('m-buyer').value.trim(),
+    price:    parseFloat(document.getElementById('m-price').value)||0,
+    ket:      document.getElementById('m-ket').value.trim(),
+    updatedAt: serverTimestamp()
+  };
+
+  try {
+    if (eid && eid.length > 10 && !eid.startsWith('p')) {
+      // Update existing Firebase doc
+      await updateDoc(doc(_db, 'products', eid), data);
+      const idx = window._all.findIndex(x => x.id === eid);
+      if (idx >= 0) window._all[idx] = mapFromFirebase(eid, {...data, updatedAt:{seconds:Date.now()/1000}});
+      toast('✅ "'+name+'" diupdate ke Firebase!');
+    } else if (eid) {
+      // Demo item → buat baru di Firebase
+      const ref = await addDoc(collection(_db, 'products'), data);
+      const idx = window._all.findIndex(x => x.id === eid);
+      const newItem = mapFromFirebase(ref.id, {...data, updatedAt:{seconds:Date.now()/1000}});
+      if (idx >= 0) window._all[idx] = newItem; else window._all.unshift(newItem);
+      toast('✅ "'+name+'" disimpan ke Firebase!');
+    } else {
+      // Produk baru
+      const ref = await addDoc(collection(_db, 'products'), data);
+      window._all.unshift(mapFromFirebase(ref.id, {...data, updatedAt:{seconds:Date.now()/1000}}));
+      toast('✅ "'+name+'" disimpan ke Firebase!');
+    }
+  } catch(e) {
+    // Fallback local only
+    console.warn('Firebase save:', e.message);
+    if (eid) {
+      const idx = window._all.findIndex(x => x.id === eid);
+      const saved = mapFromFirebase(eid, {...data, updatedAt:{seconds:Date.now()/1000}});
+      if (idx >= 0) window._all[idx] = saved; else window._all.unshift(saved);
+    } else {
+      window._all.unshift(mapFromFirebase('local-'+Date.now(), {...data, updatedAt:{seconds:Date.now()/1000}}));
+    }
+    toast('💾 Disimpan lokal (offline)');
+  }
+
+  document.getElementById('prod-modal').classList.remove('open');
+  renderAll();
+};
+
+// ── OVERRIDE delProd agar hapus dari Firebase ──
+const _origDel = window.delProd;
+window.delProd = async function(id) {
+  const p = window._all.find(x => x.id === id);
+  if (!confirm('Hapus produk "'+p.name+'"?')) return;
+  try {
+    if (_db && id.length > 10 && !id.startsWith('p')) {
+      await deleteDoc(doc(_db, 'products', id));
+    }
+  } catch(e) { console.warn('Firebase delete:', e.message); }
+  window._all = window._all.filter(x => x.id !== id);
+  renderAll(); toast('🗑️ Produk dihapus');
+};
+
+// ── SEED BANNER ──
+function showSeedBanner() {
+  const area = document.getElementById('prod-area') || document.querySelector('.prod-area');
+  if (!area) return;
+  const banner = document.createElement('div');
+  banner.id = 'seed-banner';
+  banner.style.cssText = 'background:var(--amb);border:1px solid #d4900f;border-radius:var(--r);padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;font-size:13px;';
+  banner.innerHTML = '<span>📦 Firebase kosong — menampilkan <b>8 demo produk</b>. Seed ke Firebase?</span>'
+    +'<button onclick="seedToFirebase()" style="padding:6px 14px;background:var(--ac);color:#fff;border:none;border-radius:var(--r);font-size:12px;font-weight:700;cursor:pointer;">🌱 Seed Demo Data</button>';
+  area.insertBefore(banner, area.firstChild);
+}
+
+// ── SEED demo data ke Firebase ──
+window.seedToFirebase = async function() {
+  if (!_db) { toast('❌ Firebase tidak tersedia'); return; }
+  toast('⏳ Seeding...');
+  try {
+    for (const p of window._all) {
+      const { id, ...data } = p;
+      await addDoc(collection(_db, 'products'), {
+        sku: data.sku, nama: data.name, name: data.name,
+        kategori: data.cat, style: data.style,
+        panjang: data.p, lebar: data.l, tinggi: data.t,
+        kayu: data.wood, finishing: data.finish,
+        buyer: data.buyer, price: data.price, ket: data.ket,
+        status: data.status, updatedAt: serverTimestamp()
+      });
+    }
+    document.getElementById('seed-banner')?.remove();
+    toast('✅ '+window._all.length+' demo produk berhasil di-seed ke Firebase!');
+    setTimeout(() => loadFromFirebase(), 1500);
+  } catch(e) {
+    toast('❌ Seed gagal: '+e.message);
+  }
+};
+
+// ── Expose _all ke window agar semua fungsi bisa akses ──
+Object.defineProperty(window, '_all', {
+  get: function() { return window.__all; },
+  set: function(v) { window.__all = v; }
+});
+
+// ── START ──
+loadFromFirebase();
 </script>
--->
 
 </body>
 </html>
