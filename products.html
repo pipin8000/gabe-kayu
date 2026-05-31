@@ -648,13 +648,30 @@ function setPhotoPreview(src) {
 function handlePhotoUpload(e) {
   var file = e.target.files[0];
   if (!file) return;
-  if (file.size > 2*1024*1024) { toast('⚠️ Foto maks 2MB! Kompres dulu atau pakai URL.'); return; }
+  if (file.size > 5*1024*1024) { toast('⚠️ Foto maks 5MB!'); return; }
+  // Compress gambar via canvas sebelum simpan
   var reader = new FileReader();
   reader.onload = function(ev) {
-    document.getElementById('m-photo-data').value = ev.target.result;
-    document.getElementById('m-photo-url').value  = '';
-    setPhotoPreview(ev.target.result);
-    toast('✅ Foto diupload!');
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      // Max 800px width/height
+      var MAX = 800;
+      var w = img.width, h = img.height;
+      if (w > MAX || h > MAX) {
+        if (w > h) { h = Math.round(h*MAX/w); w = MAX; }
+        else       { w = Math.round(w*MAX/h); h = MAX; }
+      }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      var compressed = canvas.toDataURL('image/jpeg', 0.75);
+      var kb = Math.round(compressed.length * 0.75 / 1024);
+      document.getElementById('m-photo-data').value = compressed;
+      document.getElementById('m-photo-url').value  = '';
+      setPhotoPreview(compressed);
+      toast('✅ Foto diupload! ('+w+'×'+h+'px · ~'+kb+'KB)');
+    };
+    img.src = ev.target.result;
   };
   reader.readAsDataURL(file);
 }
@@ -1042,7 +1059,7 @@ function mapFromFirebase(id, d) {
     price:    parseFloat(d.price || d.harga || 0),
     ket:      d.ket      || d.keterangan || '',
     status:   d.status   || 'draft',
-    photo:    d.photo    || d.photoUrl || '',
+    photo:    d.photo    || d.photoUrl || d.photoData || '',
     updatedAt: d.updatedAt ? (d.updatedAt.seconds ? d.updatedAt.seconds*1000 : Date.now()) : Date.now()
   };
 }
@@ -1051,9 +1068,12 @@ function mapFromFirebase(id, d) {
 async function loadFromFirebase() {
   if (!_db) { window._fbLoadedSetter && window._fbLoadedSetter(false); return; }
   try {
-    const snap = await getDocs(query(collection(_db, 'products'), orderBy('updatedAt', 'desc')));
+    // Tidak pakai orderBy agar tidak crash kalau ada doc tanpa updatedAt
+    const snap = await getDocs(collection(_db, 'products'));
     const fbData = [];
     snap.forEach(d => fbData.push(mapFromFirebase(d.id, d.data())));
+    // Sort manual: terbaru dulu
+    fbData.sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
 
     if (fbData.length > 0) {
       // Ada data di Firebase — ganti demo data
@@ -1083,6 +1103,16 @@ window.saveProd = async function() {
   const name = document.getElementById('m-name').value.trim();
   if (!sku || !name) { toast('⚠️ SKU dan Nama wajib diisi!'); return; }
 
+  // ── Ambil foto — compress base64 kalau > 200KB, pakai URL kalau bisa ──
+  const rawPhoto = (typeof getPhotoValue === 'function') ? getPhotoValue() : '';
+  // Kalau base64 > 200KB, simpan URL-nya saja (bukan data:...) atau kosong
+  const photoToSave = rawPhoto.startsWith('data:')
+    ? (rawPhoto.length > 200000 ? '' : rawPhoto)   // base64 max ~200KB
+    : rawPhoto;                                      // URL: simpan apa adanya
+  if (rawPhoto.startsWith('data:') && rawPhoto.length > 200000) {
+    toast('⚠️ Foto terlalu besar untuk disimpan ke DB. Gunakan URL/Google Drive.');
+  }
+
   const data = {
     sku, nama: name, name,
     status:   document.getElementById('m-status').value,
@@ -1102,6 +1132,8 @@ window.saveProd = async function() {
     buyer:    document.getElementById('m-buyer').value.trim(),
     price:    parseFloat(document.getElementById('m-price').value)||0,
     ket:      document.getElementById('m-ket').value.trim(),
+    photo:    photoToSave,
+    photoUrl: photoToSave,
     updatedAt: serverTimestamp()
   };
 
