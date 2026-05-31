@@ -59,14 +59,33 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .main-wrap{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 130px);}
 
 /* ── SIDEBAR ── */
-.sidebar{background:var(--s);border-right:1px solid var(--b);padding:14px 10px;}
-.sb-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);padding:8px 8px 4px;margin-bottom:2px;}
-.sb-chip{display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:var(--r);cursor:pointer;font-size:12px;color:var(--t2);transition:all .15s;user-select:none;margin-bottom:2px;}
+.sidebar{background:var(--s);border-right:1px solid var(--b);padding:14px 10px;overflow-y:auto;}
+.sb-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);padding:8px 8px 4px;margin-bottom:2px;display:flex;align-items:center;justify-content:space-between;}
+.sb-add-btn{font-size:10px;text-transform:none;letter-spacing:0;color:var(--ac);cursor:pointer;font-weight:700;padding:1px 7px;border-radius:5px;border:1px solid var(--ac2);background:var(--acb);transition:all .15s;white-space:nowrap;}
+.sb-add-btn:hover{background:var(--ac);color:#fff;}
+.sb-chip{display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:var(--r);cursor:pointer;font-size:12px;color:var(--t2);transition:all .15s;user-select:none;margin-bottom:2px;position:relative;}
 .sb-chip:hover{background:var(--s2);}
 .sb-chip.active{background:var(--acb);color:var(--act);font-weight:600;}
 .sb-chip .cnt{margin-left:auto;font-size:10px;background:var(--s2);color:var(--t3);padding:1px 7px;border-radius:20px;font-weight:700;}
 .sb-chip.active .cnt{background:rgba(45,90,39,.15);color:var(--act);}
+.sb-chip .sb-del{font-size:10px;color:transparent;padding:1px 4px;border-radius:3px;cursor:pointer;transition:all .15s;margin-left:2px;}
+.sb-chip:hover .sb-del{color:var(--t3);}
+.sb-chip:hover .sb-del:hover{color:var(--rd);background:var(--rdb);}
 .sb-div{border:none;border-top:1px solid var(--b);margin:8px 4px;}
+/* Add category form */
+.sb-addform{background:var(--acb);border:1.5px solid var(--ac2);border-radius:var(--r);padding:9px 10px;margin-bottom:6px;display:none;}
+.sb-addform.open{display:block;}
+.sb-addform .af-label{font-size:10px;color:var(--act);font-weight:700;margin-bottom:5px;}
+.sb-addform .af-emoji-row{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:6px;}
+.sb-addform .af-ep{font-size:15px;cursor:pointer;padding:2px 4px;border-radius:4px;border:1.5px solid transparent;line-height:1;}
+.sb-addform .af-ep:hover,.sb-addform .af-ep.on{border-color:var(--ac2);background:rgba(255,255,255,.7);}
+.sb-addform input{width:100%;padding:6px 8px;border:1.5px solid var(--b);border-radius:6px;font-size:12px;font-family:inherit;outline:none;background:var(--s);color:var(--t);margin-bottom:7px;}
+.sb-addform input:focus{border-color:var(--ac2);}
+.sb-addform .af-btns{display:flex;gap:5px;}
+.sb-addform .af-btns button{flex:1;padding:5px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:none;font-family:inherit;}
+.af-ok{background:var(--ac);color:#fff;}
+.af-ok:hover{background:var(--ac2);}
+.af-cancel{background:var(--s3);color:var(--t2);}
 
 /* ── CONTENT ── */
 .content{display:flex;flex-direction:column;}
@@ -292,16 +311,36 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
     <div class="sb-chip" onclick="sbFilter('produksi',this)">⚙️ Produksi <span class="cnt" id="sb-prod">0</span></div>
     <div class="sb-chip" onclick="sbFilter('final',this)">🏆 Final & Katalog <span class="cnt" id="sb-fin">0</span></div>
     <hr class="sb-div">
-    <div class="sb-section">Filter Kategori</div>
-    <div class="sb-chip" onclick="catFilter('',this)">🪑 Semua Kategori</div>
-    <div class="sb-chip" onclick="catFilter('Kursi',this)">🪑 Kursi</div>
-    <div class="sb-chip" onclick="catFilter('Meja',this)">🪵 Meja</div>
-    <div class="sb-chip" onclick="catFilter('Lemari',this)">🗄️ Lemari</div>
-    <div class="sb-chip" onclick="catFilter('Tempat Tidur',this)">🛏️ Tempat Tidur</div>
-    <div class="sb-chip" onclick="catFilter('Credenza',this)">📦 Credenza</div>
-    <div class="sb-chip" onclick="catFilter('Buffet',this)">🛁 Buffet</div>
-    <div class="sb-chip" onclick="catFilter('Cabinet',this)">🗃️ Cabinet</div>
-    <div class="sb-chip" onclick="catFilter('Sofa',this)">🛋️ Sofa</div>
+    <div class="sb-section">Filter Kategori <span class="sb-add-btn" onclick="toggleAddCat()">+ Add</span></div>
+    <!-- Add Category Form -->
+    <div class="sb-addform" id="sb-addform">
+      <div class="af-label">➕ Tambah Kategori Baru</div>
+      <div class="af-emoji-row" id="af-emoji-row">
+        <span class="af-ep on" onclick="selEmoji(this)">🪑</span>
+        <span class="af-ep" onclick="selEmoji(this)">🪵</span>
+        <span class="af-ep" onclick="selEmoji(this)">🗄️</span>
+        <span class="af-ep" onclick="selEmoji(this)">🛏️</span>
+        <span class="af-ep" onclick="selEmoji(this)">📦</span>
+        <span class="af-ep" onclick="selEmoji(this)">🛁</span>
+        <span class="af-ep" onclick="selEmoji(this)">🗃️</span>
+        <span class="af-ep" onclick="selEmoji(this)">🛋️</span>
+        <span class="af-ep" onclick="selEmoji(this)">🪞</span>
+        <span class="af-ep" onclick="selEmoji(this)">🖼️</span>
+        <span class="af-ep" onclick="selEmoji(this)">🚪</span>
+        <span class="af-ep" onclick="selEmoji(this)">🪟</span>
+        <span class="af-ep" onclick="selEmoji(this)">🏮</span>
+        <span class="af-ep" onclick="selEmoji(this)">📐</span>
+      </div>
+      <input type="text" id="af-input" placeholder="Nama kategori baru..." onkeydown="if(event.key==='Enter')addNewCat()">
+      <div class="af-btns">
+        <button class="af-cancel" onclick="toggleAddCat()">Batal</button>
+        <button class="af-ok" onclick="addNewCat()">✅ Tambah</button>
+      </div>
+    </div>
+    <!-- Dynamic category list -->
+    <div id="sb-cat-list">
+      <div class="sb-chip active" id="cat-chip-all" onclick="catFilter('',this)">🏷️ Semua Kategori</div>
+    </div>
     <hr class="sb-div">
     <div class="sb-section">Filter Status</div>
     <div class="sb-chip" onclick="statusFilter('',this)">Semua Status</div>
@@ -507,9 +546,108 @@ var GRP = {pra:['draft','progress','review'],produksi:['final','invoiced'],final
 var SLBL = {draft:'📝 Draft',progress:'⚙️ Progress',review:'🔍 Review',final:'✅ Final',invoiced:'🧾 Invoiced',catalog:'📖 Catalog',done:'🏆 Done'};
 var SCSS = {draft:'sp-draft',progress:'sp-progress',review:'sp-review',final:'sp-final',invoiced:'sp-invoiced',catalog:'sp-catalog',done:'sp-done'};
 
-window.onload = function(){ _all = window.__all; renderAll(); };
+// ── CUSTOM CATEGORIES (persisted in localStorage) ──
+var _customCats = [];
+var _selEmoji = '🪑';
 
-function renderAll(){ _all = window.__all||_all; updateStats(); updateSidebar(); renderView(); }
+function loadCustomCats() {
+  try { _customCats = JSON.parse(localStorage.getItem('gabe_prod_cats') || '[]'); } catch(e) { _customCats = []; }
+}
+function saveCustomCats() {
+  localStorage.setItem('gabe_prod_cats', JSON.stringify(_customCats));
+}
+
+// Default categories always shown
+var DEFAULT_CATS = [
+  {emoji:'🏷️', name:'', label:'Semua Kategori', fixed:true},
+  {emoji:'🪑', name:'Kursi', label:'Kursi'},
+  {emoji:'🪵', name:'Meja', label:'Meja'},
+  {emoji:'🗄️', name:'Lemari', label:'Lemari'},
+  {emoji:'🛏️', name:'Tempat Tidur', label:'Tempat Tidur'},
+  {emoji:'📦', name:'Credenza', label:'Credenza'},
+  {emoji:'🛁', name:'Buffet', label:'Buffet'},
+  {emoji:'🗃️', name:'Cabinet', label:'Cabinet'},
+  {emoji:'🛋️', name:'Sofa', label:'Sofa'},
+];
+
+function renderSidebarCats() {
+  var container = document.getElementById('sb-cat-list');
+  if (!container) return;
+  var all = DEFAULT_CATS.concat(_customCats.map(function(c){ return {emoji:c.emoji, name:c.name, label:c.name}; }));
+  container.innerHTML = all.map(function(c, i) {
+    var isActive = _filterCat === c.name ? ' active' : '';
+    var delBtn = (!c.fixed && i >= DEFAULT_CATS.length)
+      ? '<span class="sb-del" onclick="event.stopPropagation();delCustomCat('+( i-DEFAULT_CATS.length)+')">✕</span>'
+      : '';
+    var catName = c.name.replace(/'/g, "\\'");
+    return '<div class="sb-chip'+isActive+'" onclick="catFilter(\''+catName+'\',this)">'
+      + c.emoji + ' ' + c.label
+      + (c.name ? '<span class="cnt">'+_all.filter(function(p){return (p.cat||'').includes(c.name);}).length+'</span>' : '')
+      + delBtn
+      + '</div>';
+  }).join('');
+}
+
+function toggleAddCat() {
+  var f = document.getElementById('sb-addform');
+  f.classList.toggle('open');
+  if (f.classList.contains('open')) {
+    document.getElementById('af-input').focus();
+    document.getElementById('af-input').value = '';
+    _selEmoji = '🪑';
+    document.querySelectorAll('.af-ep').forEach(function(e){ e.classList.remove('on'); });
+    document.querySelector('.af-ep')?.classList.add('on');
+  }
+}
+
+function selEmoji(el) {
+  document.querySelectorAll('.af-ep').forEach(function(e){ e.classList.remove('on'); });
+  el.classList.add('on');
+  _selEmoji = el.textContent.trim();
+}
+
+function addNewCat() {
+  var name = document.getElementById('af-input').value.trim();
+  if (!name) { document.getElementById('af-input').focus(); return; }
+  // Check duplicate
+  var exists = DEFAULT_CATS.concat(_customCats).some(function(c){ return c.name.toLowerCase() === name.toLowerCase(); });
+  if (exists) { toast('⚠️ Kategori "'+name+'" sudah ada!'); return; }
+  _customCats.push({ emoji: _selEmoji, name: name });
+  saveCustomCats();
+  toggleAddCat();
+  renderSidebarCats();
+  toast('✅ Kategori "'+name+'" ditambahkan!');
+}
+
+function delCustomCat(idx) {
+  if (!confirm('Hapus kategori "'+_customCats[idx].name+'"?')) return;
+  var name = _customCats[idx].name;
+  _customCats.splice(idx, 1);
+  saveCustomCats();
+  if (_filterCat === name) { _filterCat = ''; }
+  renderSidebarCats();
+  renderView();
+  toast('🗑️ Kategori dihapus');
+}
+
+window.toggleAddCat = toggleAddCat;
+window.selEmoji = selEmoji;
+window.addNewCat = addNewCat;
+window.delCustomCat = delCustomCat;
+
+window.onload = function() {
+  loadCustomCats();
+  _all = window.__all;
+  renderAll();
+  renderSidebarCats();
+};
+
+function renderAll(){
+  _all = window.__all||_all;
+  updateStats(); updateSidebar();
+  renderSidebarCats();
+  renderView();
+}
 
 function updateStats(){
   document.getElementById('st-total').textContent = _all.length;
@@ -610,7 +748,7 @@ function renderCardView(rows,vc){
       +'<div class="pc-badges"><span class="spill '+SCSS[p.status]+'">'+SLBL[p.status]+'</span>'
       +'<span style="background:rgba(0,0,0,.55);color:#fff;font-size:9px;padding:2px 6px;border-radius:20px;font-weight:600;">'+(p.cat||'').replace(/^[^\s]+\s*/,'')||ci+'</span>'
       +'</div></div>'
-      +'<div class="pc-body">'
+      +'<div class="pc-body" onclick="openDetail(\''+p.id+'\')" style="cursor:pointer;">'
       +'<div class="pc-sku">'+p.sku+'</div>'
       +'<div class="pc-name">'+p.name+'</div>'
       +'<div class="pc-dims">📐 '+p.p+'×'+p.l+'×'+p.t+' cm'+(p.style?' · '+p.style:'')+'</div>'
@@ -687,6 +825,7 @@ function catFilter(c,el){
   _filterCat=c; _filterGrp='all'; _filterStatus='';
   document.querySelectorAll('.sb-chip').forEach(function(x){x.classList.remove('active');});
   el.classList.add('active');
+  renderSidebarCats(); // re-render to update active state
   renderView();
 }
 function statusFilter(s,el){
