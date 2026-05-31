@@ -1002,19 +1002,13 @@ function toast(msg) {
   setTimeout(function(){ el.classList.remove('show'); }, 2500);
 }
 
-// ── INIT — tunggu Firebase, fallback ke demo ──
+// ── INIT — render demo langsung, Firebase replace kalau ada ──
 window.onload = function() {
-  // Tampilkan loading dulu
-  document.getElementById('prod-grid').innerHTML =
-    '<div style="text-align:center;padding:40px;color:var(--t3);">'
-    +'<div style="width:28px;height:28px;border:3px solid var(--b);border-top-color:var(--ac);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px;"></div>'
-    +'Memuat data produk...</div>';
-  // Timeout fallback — kalau Firebase tidak respond dalam 5 detik, pakai demo
-  var _fbLoaded = false;
-  setTimeout(function() {
-    if (!_fbLoaded) { renderAll(); toast('📋 Demo mode — Firebase tidak tersedia'); }
-  }, 5000);
-  window._fbLoadedSetter = function(v) { _fbLoaded = v; };
+  // 1. Render demo data LANGSUNG — tidak tunggu Firebase
+  _all = window.__all;
+  renderAll();
+  // 2. Firebase akan load di background dan replace data kalau ada
+  // (dipanggil dari module script via loadFromFirebase())
 };
 </script>
 
@@ -1071,9 +1065,8 @@ function mapFromFirebase(id, d) {
 
 // ── LOAD dari Firebase ──
 async function loadFromFirebase() {
-  if (!_db) { window._fbLoadedSetter && window._fbLoadedSetter(false); return; }
+  if (!_db) return; // tidak ada Firebase, demo data sudah tampil
   try {
-    // Tidak pakai orderBy agar tidak crash kalau ada doc tanpa updatedAt
     const snap = await getDocs(collection(_db, 'products'));
     const fbData = [];
     snap.forEach(d => fbData.push(mapFromFirebase(d.id, d.data())));
@@ -1081,22 +1074,17 @@ async function loadFromFirebase() {
     fbData.sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
 
     if (fbData.length > 0) {
-      // Ada data di Firebase — ganti demo data
+      // Ada data Firebase — replace demo data
       window.__all = fbData;
-      window._fbLoadedSetter && window._fbLoadedSetter(true);
       renderAll();
-      toast('✅ '+fbData.length+' produk dimuat dari Firebase');
+      toast('✅ '+fbData.length+' produk dimuat');
     } else {
-      // Firebase kosong — tampilkan demo data + tawarkan seed
-      window._fbLoadedSetter && window._fbLoadedSetter(true);
-      renderAll();
+      // Firebase kosong — demo data sudah tampil, tawarkan seed
       showSeedBanner();
     }
   } catch(e) {
     console.warn('loadFromFirebase:', e.message);
-    window._fbLoadedSetter && window._fbLoadedSetter(false);
-    renderAll();
-    toast('⚠️ Offline — menampilkan demo data');
+    // Demo data sudah tampil — tidak perlu action
   }
 }
 
