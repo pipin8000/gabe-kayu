@@ -5,1312 +5,879 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Master Produk — Gabe International Hub</title>
 <style>
+:root{
+  --bg:#f5f4f0;--s:#fff;--s2:#f0efe9;--s3:#e8e6df;--b:#d8d5cb;--b2:#c4c0b2;
+  --t:#1a1917;--t2:#5a5750;--t3:#8a8680;
+  --ac:#2d5a27;--ac2:#3d7a35;--acb:#eaf3e8;--act:#1e4219;
+  --am:#92580a;--amb:#fef3e0;--amt:#6b3e04;
+  --bl:#1a4a7a;--blb:#e8f0fb;
+  --rd:#8b2020;--rdb:#fceaea;
+  --sh:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
+  --r:8px;--rl:12px;--rxl:16px;
+}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0efe9;color:#1a1917;min-height:100vh;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--t);font-size:14px;min-height:100vh;}
 
-/* TOPBAR */
-.topbar{background:#1a3a1a;color:#fff;padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.3);}
-.topbar-brand{display:flex;align-items:center;gap:10px;}
-.back-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:5px 12px;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;}
-.topbar-nav{display:flex;align-items:center;gap:6px;}
-.t-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;text-decoration:none;cursor:pointer;font-family:inherit;}
+/* ── TOPBAR ── */
+.topbar{background:var(--ac);color:#fff;padding:0 16px;height:36px;display:flex;align-items:center;justify-content:space-between;font-size:12px;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.tb-left{display:flex;align-items:center;gap:10px;}
+.tb-brand{font-size:13px;font-weight:600;opacity:.9;}
+.tb-sub{background:rgba(255,255,255,.15);padding:2px 8px;border-radius:20px;font-size:10px;}
+.tb-right{display:flex;align-items:center;gap:6px;}
+.tb-link{background:rgba(255,255,255,.15);color:#fff;padding:3px 9px;border-radius:6px;text-decoration:none;font-size:11px;transition:background .15s;}
+.tb-link:hover{background:rgba(255,255,255,.25);}
+.tb-link.active{background:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.4);}
+.tb-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:3px 9px;border-radius:6px;cursor:pointer;font-size:11px;}
 
-/* SEARCH HERO */
-.hero{background:linear-gradient(135deg,#1a3a1a 0%,#2d5a27 100%);padding:28px 20px 20px;}
-.hero-title{font-size:20px;font-weight:700;color:#fff;margin-bottom:2px;text-align:center;}
-.hero-sub{font-size:12px;color:rgba(255,255,255,.65);margin-bottom:16px;text-align:center;}
-.search-wrap{max-width:600px;margin:0 auto;position:relative;}
-.search-input{width:100%;padding:12px 44px 12px 16px;border:none;border-radius:12px;font-size:13px;font-family:inherit;background:#fff;color:#1a1917;box-shadow:0 4px 16px rgba(0,0,0,.2);}
-.search-input:focus{outline:none;box-shadow:0 4px 20px rgba(0,0,0,.3);}
-.search-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;}
-.search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:15px;cursor:pointer;color:#8a8680;display:none;padding:4px;}
+/* ── PAGE HEADER ── */
+.page-hdr{background:linear-gradient(135deg,#1a3a1a,var(--ac));color:#fff;padding:18px 20px 16px;}
+.page-hdr h1{font-size:20px;font-weight:700;margin-bottom:3px;}
+.page-hdr p{font-size:12px;opacity:.75;}
 
-/* GROUP TABS */
-.group-tabs{display:flex;gap:0;max-width:1300px;margin:16px auto 0;padding:0 16px;}
-.gtab{flex:1;padding:10px 16px;font-size:12px;font-weight:700;cursor:pointer;border:none;border-radius:10px 10px 0 0;background:rgba(255,255,255,.15);color:rgba(255,255,255,.75);font-family:inherit;transition:all .15s;text-align:center;}
-.gtab:hover{background:rgba(255,255,255,.25);color:#fff;}
-.gtab.active{background:#f0efe9;color:#1a1917;}
-.gtab .gcnt{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:18px;border-radius:20px;font-size:10px;padding:0 5px;margin-left:5px;font-weight:700;}
+/* ── STATS ── */
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:14px 20px;background:var(--s);border-bottom:1px solid var(--b);}
+.stat{text-align:center;padding:8px;}
+.stat-val{font-size:22px;font-weight:700;color:var(--ac);}
+.stat-val.amber{color:var(--am);}
+.stat-val.blue{color:var(--bl);}
+.stat-val.red{color:var(--rd);}
+.stat-lbl{font-size:10px;color:var(--t3);margin-top:2px;text-transform:uppercase;letter-spacing:.04em;}
 
-/* MAIN */
-.main{max-width:1300px;margin:0 auto;padding:16px 16px 60px;}
+/* ── TOOLBAR ── */
+.toolbar{padding:12px 20px;background:var(--s);border-bottom:1px solid var(--b);display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.search-wrap{flex:1;min-width:200px;position:relative;}
+.search-wrap input{width:100%;padding:8px 12px 8px 34px;border:1.5px solid var(--b);border-radius:var(--r);background:var(--s);color:var(--t);font-size:13px;font-family:inherit;outline:none;transition:border-color .2s;}
+.search-wrap input:focus{border-color:var(--ac2);}
+.search-wrap .si{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:13px;pointer-events:none;}
+.img-search-btn{padding:7px 13px;background:var(--acb);border:1.5px solid var(--ac2);color:var(--act);border-radius:var(--r);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;}
+.img-search-btn:hover{background:var(--ac);color:#fff;}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border:1.5px solid var(--b);border-radius:var(--r);background:var(--s);color:var(--t);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;}
+.btn:hover{background:var(--s2);}
+.btn.pr{background:var(--ac);border-color:var(--ac);color:#fff;}
+.btn.pr:hover{background:var(--ac2);}
+.btn.sm{padding:5px 10px;font-size:11px;}
 
-/* GROUP SECTIONS */
-.group-section{display:none;}
-.group-section.active{display:block;}
+/* ── GROUP TABS ── */
+.grp-tabs{padding:12px 20px 0;background:var(--s2);display:flex;gap:6px;border-bottom:1px solid var(--b);}
+.gtab{padding:9px 18px;border-radius:var(--rl) var(--rl) 0 0;font-size:13px;font-weight:600;cursor:pointer;color:var(--t2);border:1.5px solid transparent;border-bottom:none;transition:all .15s;display:flex;align-items:center;gap:6px;}
+.gtab:hover{background:var(--s);}
+.gtab.active{background:var(--s);border-color:var(--b);color:var(--act);border-bottom-color:var(--s);}
+.gtab .gcnt{background:var(--s2);color:var(--t3);font-size:10px;padding:1px 7px;border-radius:20px;font-weight:700;}
+.gtab.active .gcnt{background:var(--acb);color:var(--act);}
 
-/* GROUP HEADER */
-.group-hdr{background:#fff;border:1px solid #d8d5cb;border-radius:12px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-.group-hdr-left{display:flex;align-items:center;gap:12px;}
-.group-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;}
-.group-title{font-size:15px;font-weight:700;}
-.group-desc{font-size:11px;color:#8a8680;margin-top:2px;}
-.group-stats{display:flex;gap:12px;flex-wrap:wrap;}
-.gs-item{text-align:center;background:#f5f4f0;border-radius:8px;padding:6px 12px;}
-.gs-val{font-size:16px;font-weight:700;}
-.gs-lbl{font-size:9px;color:#8a8680;text-transform:uppercase;}
+/* ── PRODUCT GRID ── */
+.prod-area{padding:16px 20px;}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;}
 
-/* RESULTS BAR */
-.results-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
-.results-count{font-size:12px;color:#5a5750;}
-.sort-sel{padding:5px 10px;border:1.5px solid #d8d5cb;border-radius:7px;font-size:11px;font-family:inherit;background:#fff;cursor:pointer;}
-.new-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;background:#2d5a27;color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;}
+/* ── PRODUCT CARD ── */
+.pcard{background:var(--s);border:1.5px solid var(--b);border-radius:var(--rxl);overflow:hidden;transition:all .18s;cursor:pointer;}
+.pcard:hover{border-color:var(--ac2);box-shadow:0 4px 18px rgba(45,90,39,.15);transform:translateY(-2px);}
+.pcard.sel{border-color:var(--ac);box-shadow:0 0 0 3px rgba(45,90,39,.15);}
+.pc-photo{height:150px;background:var(--s2);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.pc-photo img{width:100%;height:100%;object-fit:cover;}
+.pc-photo-empty{font-size:40px;opacity:.25;}
+.pc-status{position:absolute;top:8px;left:8px;}
+.pc-cat{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.55);color:#fff;font-size:9px;padding:2px 6px;border-radius:20px;font-weight:600;}
+.spill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;}
+.sp-draft{background:var(--s3);color:var(--t3);}
+.sp-progress{background:var(--amb);color:var(--amt);}
+.sp-review{background:var(--blb);color:var(--bl);}
+.sp-final{background:#e8f5e8;color:#1a5a1a;}
+.sp-catalog{background:var(--acb);color:var(--act);}
+.sp-invoiced{background:#e8f0fb;color:#1a4a7a;}
+.sp-done{background:#f3eafb;color:#5c2d91;}
+.pc-body{padding:11px 13px;}
+.pc-sku{font-family:'Courier New',monospace;font-size:10px;color:var(--t3);background:var(--s2);padding:1px 5px;border-radius:4px;margin-bottom:4px;display:inline-block;}
+.pc-name{font-size:13px;font-weight:700;margin-bottom:3px;line-height:1.3;}
+.pc-dims{font-size:11px;color:var(--t2);margin-bottom:6px;}
+.pc-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.pc-vol{font-size:11px;color:var(--t3);}
+.pc-vol b{color:var(--ac);font-size:12px;}
+.pc-footer{padding:8px 13px;border-top:1px solid var(--b);background:var(--s2);display:flex;gap:5px;}
+.pc-act{flex:1;padding:5px 0;text-align:center;border:1px solid var(--b);border-radius:6px;background:var(--s);font-size:11px;font-weight:600;cursor:pointer;color:var(--t2);transition:all .15s;}
+.pc-act:hover{background:var(--acb);border-color:var(--ac2);color:var(--act);}
+.pc-act.danger:hover{background:var(--rdb);border-color:var(--rd);color:var(--rd);}
 
-/* PRODUCT GRID */
-.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;}
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:60px 20px;color:var(--t3);}
+.empty-state .ei{font-size:48px;margin-bottom:12px;opacity:.3;}
+.empty-state p{font-size:14px;}
 
-/* PRODUCT CARD */
-.prod-card{background:#fff;border:1px solid #d8d5cb;border-radius:12px;overflow:hidden;cursor:pointer;transition:all .2s;}
-.prod-card:hover{box-shadow:0 6px 20px rgba(0,0,0,.1);transform:translateY(-2px);}
+/* ── IMAGE SEARCH PANEL ── */
+.img-search-panel{background:var(--s);border:1.5px solid var(--ac2);border-radius:var(--rxl);margin:0 20px 14px;overflow:hidden;display:none;}
+.img-search-panel.open{display:block;}
+.isp-hdr{background:linear-gradient(135deg,#1a3a1a,var(--ac));color:#fff;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;}
+.isp-hdr h3{font-size:13px;font-weight:600;display:flex;align-items:center;gap:7px;}
+.isp-close{background:none;border:none;color:rgba(255,255,255,.7);font-size:16px;cursor:pointer;}
+.isp-body{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.isp-drop{border:2px dashed #b8d9b4;border-radius:10px;padding:18px;text-align:center;cursor:pointer;background:#f5faf4;transition:all .2s;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.isp-drop:hover{border-color:var(--ac);background:var(--acb);}
+.isp-drop .idi{font-size:28px;margin-bottom:5px;}
+.isp-preview{display:none;width:100%;max-height:160px;object-fit:contain;border-radius:8px;border:1px solid var(--b);}
+.isp-preview.show{display:block;}
+.isp-result{background:var(--s2);border-radius:var(--r);padding:12px;font-size:12px;}
+.isp-result-item{display:flex;align-items:center;gap:10px;padding:8px;background:var(--s);border:1px solid var(--b);border-radius:var(--r);margin-bottom:6px;cursor:pointer;transition:all .15s;}
+.isp-result-item:hover{border-color:var(--ac2);background:var(--acb);}
+.isp-match-bar{height:4px;background:var(--b);border-radius:2px;margin-top:3px;}
+.isp-match-fill{height:100%;border-radius:2px;background:var(--ac);}
 
-/* CARD IMAGE */
-.card-img{height:160px;background:#f5f4f0;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;}
-.card-img img{width:100%;height:100%;object-fit:cover;}
-.card-img-placeholder{font-size:42px;opacity:.2;}
-.card-img-overlay{position:absolute;top:8px;right:8px;display:flex;gap:4px;}
-.pc-status{font-size:9px;padding:3px 8px;border-radius:20px;font-weight:700;backdrop-filter:blur(4px);}
-.cat-badge{position:absolute;top:8px;left:8px;font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(0,0,0,.5);color:#fff;backdrop-filter:blur(4px);}
+/* ── DETAIL MODAL ── */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:none;align-items:center;justify-content:center;padding:16px;}
+.modal-ov.open{display:flex;}
+.modal{background:var(--s);border-radius:var(--rxl);width:100%;max-width:620px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.mhdr{padding:16px 20px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;background:var(--s2);position:sticky;top:0;}
+.mhdr h2{font-size:15px;font-weight:700;}
+.mbody{padding:18px 20px;}
+.mfooter{padding:14px 20px;border-top:1px solid var(--b);display:flex;justify-content:flex-end;gap:8px;background:var(--s2);}
+.mclose{width:28px;height:28px;border:none;background:var(--s3);border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.fg{margin-bottom:10px;}
+.fg label{display:block;font-size:11px;font-weight:600;color:var(--t2);margin-bottom:3px;}
+.fc{width:100%;padding:8px 10px;border:1.5px solid var(--b);border-radius:var(--r);background:var(--s);color:var(--t);font-size:13px;font-family:inherit;outline:none;}
+.fc:focus{border-color:var(--ac2);box-shadow:0 0 0 3px rgba(45,90,39,.1);}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fgrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
 
-/* CARD BODY */
-.card-body{padding:10px 12px;}
-.card-sku{font-family:monospace;font-size:10px;color:#8a8680;background:#f5f4f0;padding:1px 6px;border-radius:4px;display:inline-block;margin-bottom:4px;}
-.card-nama{font-size:13px;font-weight:700;color:#1a1917;margin-bottom:3px;line-height:1.3;}
-.card-dim{font-size:10px;color:#8a8680;margin-bottom:6px;}
-.card-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;}
-.tag{font-size:9px;padding:1px 6px;border-radius:20px;}
-.tag-sw{background:#eaf3de;color:#27500a;}
-.tag-pw{background:#e3f2fd;color:#0c447c;}
-.tag-nw{background:#f3e5f5;color:#3c3489;}
-.card-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;padding:6px;background:#f5f4f0;border-radius:7px;}
-.cs-item{text-align:center;}
-.cs-val{font-size:11px;font-weight:700;}
-.cs-lbl{font-size:8px;color:#8a8680;text-transform:uppercase;}
+/* ── AGENT MODAL ── */
+.agent-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:600;display:none;align-items:center;justify-content:center;padding:16px;}
+.agent-modal.open{display:flex;}
+.agent-box{background:var(--s);border-radius:var(--rxl);width:100%;max-width:440px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.agent-hdr{background:linear-gradient(135deg,#1a3a1a,var(--ac));color:#fff;padding:14px 18px;display:flex;align-items:center;gap:10px;}
+.agent-hdr .ai{font-size:24px;}
+.agent-hdr h3{font-size:14px;font-weight:700;}
+.agent-body{padding:16px 18px;}
+.agent-thumb{width:100%;height:120px;object-fit:contain;border-radius:var(--r);border:1px solid var(--b);background:var(--s2);margin-bottom:12px;display:none;}
+.agent-thumb.show{display:block;}
+.agent-detected{font-size:15px;font-weight:700;margin-bottom:3px;}
+.agent-dims{font-size:12px;color:var(--t2);margin-bottom:4px;}
+.agent-conf{font-size:11px;color:var(--t3);margin-bottom:14px;}
+.agent-found{background:var(--amb);border:1px solid #d4900f;border-radius:var(--r);padding:8px 12px;font-size:12px;color:var(--amt);margin-bottom:12px;display:none;}
+.agent-found.show{display:block;}
+.agent-actions{display:flex;flex-direction:column;gap:7px;}
+.agent-action-btn{width:100%;padding:11px 14px;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;border:1.5px solid;text-align:left;display:flex;align-items:center;gap:9px;transition:all .15s;}
+.aa-calc{background:#f0f8f0;border-color:var(--ac2);color:var(--act);}
+.aa-calc:hover{background:var(--acb);}
+.aa-save{background:var(--blb);border-color:#3a7abf;color:#1a3a6a;}
+.aa-save:hover{background:#d0e4f8;}
+.aa-dismiss{background:var(--s2);border-color:var(--b);color:var(--t2);}
+.aa-dismiss:hover{background:var(--s3);}
 
-/* CARD FOOTER */
-.card-foot{padding:8px 12px;border-top:1px solid #e8e6df;display:flex;gap:5px;}
-.cf-btn{flex:1;padding:5px;border-radius:7px;font-size:10px;font-weight:700;cursor:pointer;border:1.5px solid;font-family:inherit;text-align:center;text-decoration:none;display:block;}
-.cf-btn.grn{background:#eaf3de;border-color:#97c459;color:#27500a;}
-.cf-btn.blu{background:#e6f1fb;border-color:#85b7eb;color:#0c447c;}
-.cf-btn.pur{background:#f3e5f5;border-color:#ce93d8;color:#6a1b9a;}
-.cf-btn.red{background:#fceaea;border-color:#f5c2c2;color:#8b2020;}
+/* ── AI LOADING ── */
+.ai-spinner{width:24px;height:24px;border:3px solid var(--b);border-top-color:var(--ac);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-/* STATUS COLORS */
-.st-draft{background:rgba(241,245,249,.9);color:#334155;}
-.st-progress{background:rgba(254,243,199,.9);color:#92400e;}
-.st-review{background:rgba(219,234,254,.9);color:#1e3a8a;}
-.st-final{background:rgba(220,252,231,.9);color:#14532d;}
-.st-invoiced{background:rgba(237,233,254,.9);color:#4c1d95;}
-.st-catalog{background:rgba(255,237,213,.9);color:#9a3412;}
-
-/* EMPTY STATE */
-.empty{grid-column:1/-1;text-align:center;padding:50px 20px;}
-.empty-icon{font-size:48px;opacity:.25;margin-bottom:10px;}
-.empty-title{font-size:14px;font-weight:700;color:#5a5750;margin-bottom:4px;}
-.empty-sub{font-size:12px;color:#8a8680;}
-
-/* DETAIL MODAL */
-.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:500;padding:16px;}
-.modal-ov.show{display:flex;}
-.modal{background:#fff;width:100%;max-width:820px;max-height:90vh;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.3);}
-.modal-hdr{flex-shrink:0;position:relative;}
-.modal-hero{width:100%;height:200px;object-fit:cover;display:none;}
-.modal-hdr-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#f5f4f0;border-bottom:1px solid #d8d5cb;}
-.modal-x{width:28px;height:28px;border:none;background:#e8e6df;border-radius:50%;cursor:pointer;font-size:13px;flex-shrink:0;}
-.modal-body{padding:16px;overflow-y:auto;flex:1;}
-.modal-foot{padding:10px 16px;border-top:1px solid #d8d5cb;display:flex;gap:8px;justify-content:flex-end;background:#fafaf8;flex-shrink:0;}
-.mf-btn{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none;font-family:inherit;}
-
-/* TABS */
-
-.dtab{padding:7px 14px;font-size:11px;font-weight:600;cursor:pointer;border-radius:8px 8px 0 0;border:1.5px solid transparent;color:#a09888;border-bottom:none;margin-bottom:-1.5px;transition:all .15s;}
-.dtab:hover{color:#5a5750;}
-.dtab.active{background:#fff;border-color:#d8d5cb;border-bottom-color:#fff;color:#1a1917;}
-.dtabs{display:flex;gap:2px;border-bottom:1.5px solid #d8d5cb;margin-bottom:14px;}
-.dtab-content{display:none;}
-.dtab-content.active{display:block;}
-
-/* CUTTING TABLE */
-.cut-tbl{width:100%;border-collapse:collapse;font-size:11px;}
-.cut-tbl th{padding:6px 8px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;color:#8a8680;border-bottom:1.5px solid #d8d5cb;background:#f5f4f0;}
-.cut-tbl td{padding:5px 8px;border-bottom:.5px solid #e8e6df;}
-.cut-tbl tr:hover td{background:#f5f4f0;}
-
-/* TOAST */
-#toast{position:fixed;bottom:20px;right:20px;background:#2d5a27;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:all .22s;z-index:999;pointer-events:none;}
+/* ── TOAST ── */
+#toast{position:fixed;bottom:20px;right:20px;background:var(--ac);color:#fff;padding:9px 16px;border-radius:var(--rl);font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:all .22s;pointer-events:none;z-index:999;}
 #toast.show{opacity:1;transform:translateY(0);}
-.spinner{display:inline-block;width:24px;height:24px;border:3px solid #d8d5cb;border-top-color:#2d5a27;border-radius:50%;animation:spin .7s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* Image search match card highlight */
-.prod-card.img-match{border:2px solid #2d5a27;box-shadow:0 0 0 3px rgba(45,90,39,.15);}
-.match-score{position:absolute;bottom:8px;right:8px;background:#2d5a27;color:#fff;
-  font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;}
-.no-match{grid-column:1/-1;text-align:center;padding:40px 20px;}
-
-/* Pulse animation for image search button when active */
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(45,90,39,.4);}50%{box-shadow:0 0 0 6px rgba(45,90,39,0);}}
-.img-search-active{animation:pulse 1.5s infinite;}
 
 @media(max-width:640px){
-  .prod-grid{grid-template-columns:1fr 1fr;}
-  .group-tabs{gap:4px;}
-  .gtab{font-size:10px;padding:8px 8px;}
+  .stats-row{grid-template-columns:repeat(3,1fr);}
+  .isp-body{grid-template-columns:1fr;}
+  .fgrid,.fgrid3{grid-template-columns:1fr;}
+  .grp-tabs{overflow-x:auto;flex-wrap:nowrap;}
+  .gtab{white-space:nowrap;}
 }
 </style>
 </head>
 <body>
 
 <!-- TOPBAR -->
-<nav class="topbar">
-  <div class="topbar-brand">
-    <a href="app.html" class="back-btn">← Kalkulator</a>
-    <div style="font-size:14px;font-weight:700;">📦 Master Produk</div>
+<div class="topbar">
+  <div class="tb-left">
+    <span class="tb-brand">🌿 GABE INTERNATIONAL HUB</span>
+    <span class="tb-sub">📦 Master Produk</span>
   </div>
-  <div class="topbar-nav">
-    <span id="user-name" style="font-size:11px;opacity:.7;margin-right:4px;"></span>
-    <a href="ai-asisten.html" class="t-btn">🤖 AI Asisten</a>
-    <a href="materials.html" class="t-btn">🪵 Material</a>
-    <a href="vendors.html" class="t-btn">🏪 Vendor</a>
-    <button class="t-btn" onclick="doLogout()">Keluar</button>
+  <div class="tb-right">
+    <a href="app.html"      class="tb-link">🧮 Kalkulator</a>
+    <a href="materials.html" class="tb-link">🪵 Material</a>
+    <a href="vendors.html"  class="tb-link">🏪 Vendor</a>
+    <a href="products.html" class="tb-link active">📦 Produk</a>
+    <a href="bom.html"      class="tb-link">📋 BOM</a>
+    <a href="ai-asisten.html" class="tb-link">🤖 AI Asisten</a>
+    <a href="admin.html"    class="tb-link">👥 Users</a>
+    <button class="tb-btn" onclick="doLogout()">Keluar</button>
   </div>
-</nav>
+</div>
 
-<!-- SEARCH HERO -->
-<div class="hero">
-  <div class="hero-title">📦 Master Produk Gabe International</div>
-  <div class="hero-sub">Kelola semua produk dari pra-produksi hingga siap katalog</div>
+<!-- PAGE HEADER -->
+<div class="page-hdr">
+  <h1>📦 Master Produk</h1>
+  <p>Database produk furniture PT. Gabe International — Kelola dari Draft hingga Katalog</p>
+</div>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat"><div class="stat-val" id="st-total">0</div><div class="stat-lbl">Total Produk</div></div>
+  <div class="stat"><div class="stat-val amber" id="st-pra">0</div><div class="stat-lbl">Pra Produksi</div></div>
+  <div class="stat"><div class="stat-val blue" id="st-prod">0</div><div class="stat-lbl">Produksi</div></div>
+  <div class="stat"><div class="stat-val" id="st-final">0</div><div class="stat-lbl">Final/Katalog</div></div>
+  <div class="stat"><div class="stat-val red" id="st-done">0</div><div class="stat-lbl">Done</div></div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
   <div class="search-wrap">
-    <input type="text" class="search-input" id="search-input"
-      placeholder="🔍  Cari nama produk, SKU, kategori, atau jenis kayu..."
-      oninput="handleSearch(this.value)" autocomplete="off"
-      style="padding-right:90px;">
-    <button class="search-clear" id="search-clear" onclick="clearSearch()" style="right:52px;">✕</button>
-    <span class="search-icon" id="search-icon" style="right:52px;">🔍</span>
-    <!-- Image Search Button -->
-    <button id="img-search-btn" onclick="openImgSearch()"
-      title="Cari dengan foto/gambar"
-      style="position:absolute;right:8px;top:50%;transform:translateY(-50%);
-             background:#2d5a27;border:none;border-radius:8px;
-             width:36px;height:36px;cursor:pointer;display:flex;
-             align-items:center;justify-content:center;font-size:17px;
-             transition:all .2s;">
-      📷
-    </button>
-    <input type="file" id="img-search-input" accept="image/*"
-      style="display:none" onchange="handleImgSearch(event)">
+    <span class="si">🔍</span>
+    <input id="prod-search" type="text" placeholder="Cari nama, SKU, kategori, kayu..." oninput="filterProds()">
   </div>
+  <button class="img-search-btn" onclick="toggleImgSearch()">📷 Cari via Gambar</button>
+  <button class="btn pr" onclick="openNewProd()">➕ Produk Baru</button>
+  <button class="btn" onclick="exportCSV()">⬇️ Export CSV</button>
+</div>
 
-  <!-- Image Search Result Bar (hidden by default) -->
-  <div id="img-search-bar" style="display:none;max-width:600px;margin:8px auto 0;">
-    <div style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
-                border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
-      <img id="img-search-preview" style="width:40px;height:40px;object-fit:cover;
-           border-radius:6px;flex-shrink:0;">
-      <div style="flex:1;min-width:0;">
-        <div id="img-search-status" style="font-size:11px;color:#fff;font-weight:600;">
-          🔍 Menganalisis gambar...
-        </div>
-        <div id="img-search-detail" style="font-size:10px;color:rgba(255,255,255,.7);margin-top:1px;"></div>
+<!-- IMAGE SEARCH PANEL -->
+<div class="img-search-panel" id="img-search-panel">
+  <div class="isp-hdr">
+    <h3>📷 Image Search — Cari Produk via Foto <span style="font-size:10px;background:rgba(255,255,255,.2);padding:2px 7px;border-radius:20px;">POWERED BY AI</span></h3>
+    <button class="isp-close" onclick="toggleImgSearch()">✕</button>
+  </div>
+  <div class="isp-body">
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:7px;">📸 Upload Foto Furniture</div>
+      <div class="isp-drop" id="isp-drop"
+           onclick="document.getElementById('img-file-inp').click()"
+           ondragover="event.preventDefault();this.style.borderColor='#2d5a27'"
+           ondragleave="this.style.borderColor='#b8d9b4'"
+           ondrop="handleImgDrop(event)">
+        <div class="idi">📸</div>
+        <div style="font-size:12px;font-weight:600;color:var(--ac);">Klik atau drag & drop</div>
+        <div style="font-size:11px;color:var(--t3);margin-top:3px;">Foto · Sketsa · Katalog</div>
       </div>
-      <button onclick="clearImgSearch()"
-        style="background:rgba(255,255,255,.2);border:none;border-radius:6px;
-               color:#fff;padding:3px 8px;cursor:pointer;font-size:11px;flex-shrink:0;">
-        ✕ Hapus
-      </button>
+      <input type="file" id="img-file-inp" accept="image/*" style="display:none" onchange="handleImgFile(event)">
+      <img id="img-search-preview" class="isp-preview" src="">
+      <div id="img-search-status" style="font-size:11px;color:var(--t3);margin-top:7px;min-height:16px;"></div>
+      <div id="img-search-loading" style="display:none;padding:10px;text-align:center;">
+        <div class="ai-spinner" style="margin:0 auto 6px;"></div>
+        <div style="font-size:11px;color:var(--t2);">AI menganalisis gambar...</div>
+      </div>
     </div>
-  </div>
-
-  <!-- GROUP TABS in hero -->
-  <div class="group-tabs">
-    <button class="gtab active" onclick="switchGroup('pra',this)">
-      🔨 Pra Produksi
-      <span class="gcnt" style="background:rgba(255,255,255,.3);color:#fff;" id="cnt-pra">0</span>
-    </button>
-    <button class="gtab" onclick="switchGroup('produksi',this)">
-      ⚙️ Produksi
-      <span class="gcnt" style="background:rgba(255,255,255,.3);color:#fff;" id="cnt-prod">0</span>
-    </button>
-    <button class="gtab" onclick="switchGroup('final',this)">
-      ✅ Final & Katalog
-      <span class="gcnt" style="background:rgba(255,255,255,.3);color:#fff;" id="cnt-final">0</span>
-    </button>
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:7px;">🔍 Hasil Pencarian</div>
+      <div id="img-search-results">
+        <div style="text-align:center;padding:28px;color:var(--t3);font-size:12px;">
+          <div style="font-size:28px;margin-bottom:8px;">🖼️</div>
+          Upload foto untuk mencari produk mirip
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- MAIN CONTENT -->
-<div class="main">
-
-  <!-- GROUP 1: PRA PRODUKSI -->
-  <div class="group-section active" id="grp-pra">
-    <div class="group-hdr">
-      <div class="group-hdr-left">
-        <div class="group-icon" style="background:#FEF3C7;">🔨</div>
-        <div>
-          <div class="group-title">Grup 1 — Pra Produksi</div>
-          <div class="group-desc">Draft & On Progress · BOM sedang dibuat · Estimasi cost untuk penawaran</div>
-        </div>
-      </div>
-      <div class="group-stats">
-        <div class="gs-item"><div class="gs-val" id="gs-draft" style="color:#334155;">0</div><div class="gs-lbl">Draft</div></div>
-        <div class="gs-item"><div class="gs-val" id="gs-progress" style="color:#92400e;">0</div><div class="gs-lbl">On Progress</div></div>
-        <div class="gs-item"><div class="gs-val" id="gs-review" style="color:#1e3a8a;">0</div><div class="gs-lbl">Review</div></div>
-      </div>
-    </div>
-    <div class="results-bar">
-      <span class="results-count" id="rc-pra">—</span>
-      <div style="display:flex;gap:6px;align-items:center;">
-        <select class="sort-sel" onchange="renderAll()"><option value="updated">Terbaru</option><option value="sku">SKU A-Z</option><option value="nama">Nama A-Z</option></select>
-        <a href="ai-asisten.html" class="new-btn">➕ Produk Baru</a>
-      </div>
-    </div>
-    <div class="prod-grid" id="grid-pra"></div>
+<!-- GROUP TABS -->
+<div class="grp-tabs">
+  <div class="gtab active" id="gtab-pra"      onclick="switchGroup('pra',this)">
+    🔨 Pra Produksi <span class="gcnt" id="gc-pra">0</span>
   </div>
-
-  <!-- GROUP 2: PRODUKSI -->
-  <div class="group-section" id="grp-produksi">
-    <div class="group-hdr">
-      <div class="group-hdr-left">
-        <div class="group-icon" style="background:#DCFCE7;">⚙️</div>
-        <div>
-          <div class="group-title">Grup 2 — Produksi</div>
-          <div class="group-desc">Final · PI sudah dikirim · Harga locked · Sedang diproduksi</div>
-        </div>
-      </div>
-      <div class="group-stats">
-        <div class="gs-item"><div class="gs-val" id="gs-final" style="color:#14532d;">0</div><div class="gs-lbl">Final</div></div>
-        <div class="gs-item"><div class="gs-val" id="gs-invoiced" style="color:#4c1d95;">0</div><div class="gs-lbl">Invoiced</div></div>
-      </div>
-    </div>
-    <div class="results-bar">
-      <span class="results-count" id="rc-prod">—</span>
-      <select class="sort-sel" onchange="renderAll()"><option value="updated">Terbaru</option><option value="sku">SKU A-Z</option><option value="nama">Nama A-Z</option></select>
-    </div>
-    <div class="prod-grid" id="grid-produksi"></div>
+  <div class="gtab" id="gtab-produksi"  onclick="switchGroup('produksi',this)">
+    ⚙️ Produksi <span class="gcnt" id="gc-produksi">0</span>
   </div>
-
-  <!-- GROUP 3: FINAL & KATALOG -->
-  <div class="group-section" id="grp-final">
-    <div class="group-hdr">
-      <div class="group-hdr-left">
-        <div class="group-icon" style="background:#FDE68A;">🏆</div>
-        <div>
-          <div class="group-title">Grup 3 — Final & Siap Katalog</div>
-          <div class="group-desc">Produk selesai diproduksi · QC passed · Siap masuk modul Katalog</div>
-        </div>
-      </div>
-      <div class="group-stats">
-        <div class="gs-item"><div class="gs-val" id="gs-catalog" style="color:#9a3412;">0</div><div class="gs-lbl">Siap Katalog</div></div>
-        <div class="gs-item"><div class="gs-val" id="gs-all" style="color:#1a1917;">0</div><div class="gs-lbl">Total Semua</div></div>
-      </div>
-    </div>
-    <div style="background:#FFF8E1;border:1.5px solid #FFC107;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#B45309;">
-      🚀 <b>Coming Soon:</b> Modul Katalog akan hadir di Phase berikutnya — produk di grup ini akan tampil di katalog digital Gabe International untuk calon buyer.
-    </div>
-    <div class="results-bar">
-      <span class="results-count" id="rc-final">—</span>
-      <select class="sort-sel" onchange="renderAll()"><option value="updated">Terbaru</option><option value="sku">SKU A-Z</option><option value="nama">Nama A-Z</option></select>
-    </div>
-    <div class="prod-grid" id="grid-final"></div>
+  <div class="gtab" id="gtab-final"     onclick="switchGroup('final',this)">
+    🏆 Final & Katalog <span class="gcnt" id="gc-final">0</span>
   </div>
-
 </div>
 
-<!-- DETAIL MODAL -->
-<div class="modal-ov" id="detail-modal" onclick="if(event.target===this)closeModal()">
+<!-- PRODUCT GRID -->
+<div class="prod-area">
+  <div id="prod-grid" class="prod-grid"></div>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-ov" id="prod-modal">
   <div class="modal">
-    <div class="modal-hdr">
-      <img id="modal-hero" class="modal-hero" onerror="this.style.display='none'">
-      <div class="modal-hdr-bar" style="padding:12px 16px;background:#fff;">
-        <div id="modal-title" style="font-size:13px;font-weight:700;display:flex;align-items:center;flex-wrap:wrap;gap:6px;"></div>
-        <button class="modal-x" onclick="closeModal()" style="background:#f5f4f0;border:1px solid #e8e6df;">✕</button>
-      </div>
+    <div class="mhdr">
+      <h2 id="modal-title">📦 Produk Baru</h2>
+      <button class="mclose" onclick="closeModal()">✕</button>
     </div>
-    <div class="modal-body" id="modal-body"></div>
-    <div class="modal-foot" style="padding:12px 18px;gap:8px;border-top:1px solid #e8e6df;">
-      <button class="mf-btn" onclick="closeModal()" style="background:#f5f4f0;color:#5a5750;border:1.5px solid #d8d5cb;">Tutup</button>
-      <div style="flex:1;"></div>
-      <button class="mf-btn" id="modal-del-btn" style="background:#fff;color:#8b2020;border:1.5px solid #f5c2c2;">🗑️ Hapus</button>
-      <button class="mf-btn" id="modal-ai-btn" style="background:#e6f1fb;color:#0c447c;border:1.5px solid #85b7eb;">🤖 Edit AI</button>
-      <button class="mf-btn" id="modal-calc-btn" style="background:#2d5a27;color:#fff;border:none;">📐 Kalkulator</button>
+    <div class="mbody">
+      <input type="hidden" id="m-id">
+      <div class="fgrid">
+        <div class="fg"><label>SKU / Product ID *</label><input class="fc" id="m-sku" placeholder="TSARI-CRD-BP-01" oninput="this.value=this.value.toUpperCase()"></div>
+        <div class="fg"><label>Status</label>
+          <select class="fc" id="m-status">
+            <option value="draft">📝 Draft</option>
+            <option value="progress">⚙️ On Progress</option>
+            <option value="review">🔍 Review</option>
+            <option value="final">✅ Final</option>
+            <option value="invoiced">🧾 Invoiced</option>
+            <option value="catalog">📖 Catalog</option>
+            <option value="done">🏆 Done</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label>Nama Produk *</label><input class="fc" id="m-name" placeholder="TSARI Credenza"></div>
+      <div class="fgrid">
+        <div class="fg"><label>Kategori</label>
+          <select class="fc" id="m-cat">
+            <option value="">— Pilih —</option>
+            <option>🛏️ Tempat Tidur</option><option>🗄️ Lemari</option>
+            <option>🪑 Kursi</option><option>🛋️ Sofa</option>
+            <option>🪵 Meja</option><option>📦 Credenza</option>
+            <option>🗃️ Cabinet</option><option>🛁 Buffet</option><option>📦 Lainnya</option>
+          </select>
+        </div>
+        <div class="fg"><label>Style / Desain</label><input class="fc" id="m-style" placeholder="Modern Minimalis"></div>
+      </div>
+      <div class="fgrid3">
+        <div class="fg"><label>Panjang (cm)</label><input class="fc" id="m-p" type="number" placeholder="0"></div>
+        <div class="fg"><label>Lebar (cm)</label><input class="fc" id="m-l" type="number" placeholder="0"></div>
+        <div class="fg"><label>Tinggi (cm)</label><input class="fc" id="m-t" type="number" placeholder="0"></div>
+      </div>
+      <div class="fgrid">
+        <div class="fg"><label>Kayu / Material</label><input class="fc" id="m-wood" placeholder="Oak Solid, Teak, Mindi..."></div>
+        <div class="fg"><label>Finishing</label><input class="fc" id="m-finish" placeholder="Lacquer, Oil, Wax..."></div>
+      </div>
+      <div class="fgrid">
+        <div class="fg"><label>Target Market / Buyer</label><input class="fc" id="m-buyer" placeholder="USA, Europe, Australia..."></div>
+        <div class="fg"><label>Est. Harga Jual (Rp)</label><input class="fc" id="m-price" type="number" placeholder="0"></div>
+      </div>
+      <div class="fg"><label>Keterangan</label><textarea class="fc" id="m-ket" rows="2" style="resize:vertical;" placeholder="Deskripsi singkat, referensi buyer, instruksi khusus..."></textarea></div>
+    </div>
+    <div class="mfooter">
+      <button class="btn" onclick="closeModal()">Batal</button>
+      <button class="btn pr" onclick="saveProd()">💾 Simpan</button>
     </div>
   </div>
 </div>
 
-<!-- AI AGENT MODAL — muncul saat tidak ada hasil -->
-<div id="agent-modal-ov" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:600;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:#fff;border-radius:20px;width:100%;max-width:460px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.35);">
-
-    <!-- Agent Header -->
-    <div style="background:linear-gradient(135deg,#1a3a1a 0%,#2d5a27 100%);padding:20px 22px;">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-        <div style="width:42px;height:42px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🤖</div>
-        <div>
-          <div style="font-size:14px;font-weight:700;color:#fff;">AI Agent — Gabe Hub</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.7);">Produk tidak ditemukan di sistem</div>
-        </div>
-      </div>
-      <!-- Detected info -->
-      <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:10px 12px;">
-        <div style="display:flex;gap:10px;align-items:center;">
-          <img id="agent-thumb" style="width:52px;height:52px;object-fit:cover;border-radius:8px;flex-shrink:0;background:#f5f4f0;">
-          <div>
-            <div id="agent-detected" style="font-size:12px;font-weight:700;color:#fff;margin-bottom:2px;">—</div>
-            <div id="agent-dims" style="font-size:10px;color:rgba(255,255,255,.7);"></div>
-            <div id="agent-conf" style="font-size:10px;color:rgba(151,196,89,.9);margin-top:1px;"></div>
-          </div>
-        </div>
+<!-- AGENT MODAL -->
+<div class="agent-modal" id="agent-modal">
+  <div class="agent-box">
+    <div class="agent-hdr">
+      <span class="ai">🤖</span>
+      <div>
+        <h3>AI Agent — Gabe Hub</h3>
+        <div style="font-size:10px;opacity:.75;">Produk terdeteksi dari gambar</div>
       </div>
     </div>
-
-    <!-- Found Banner (hidden by default) -->
-    <div id="agent-found-banner" style="display:none;background:#FEF3C7;border-bottom:1px solid #F59E0B;padding:8px 22px;align-items:center;gap:8px;">
-      <span style="font-size:14px;">🔍</span>
-      <span id="agent-found-count" style="font-size:11px;font-weight:600;color:#92400E;"></span>
-    </div>
-
-    <!-- Agent Message -->
-    <div style="padding:14px 22px 8px;">
-      <div id="agent-msg" style="font-size:13px;font-weight:600;color:#1a1917;margin-bottom:4px;">
-        Produk ini belum ada di database Gabe Hub.
+    <div class="agent-body">
+      <img id="agent-thumb" class="agent-thumb" src="">
+      <div class="agent-found" id="agent-found"></div>
+      <div class="agent-detected" id="agent-detected">—</div>
+      <div class="agent-dims" id="agent-dims">—</div>
+      <div class="agent-conf" id="agent-conf"></div>
+      <div class="agent-actions">
+        <button class="agent-action-btn aa-calc" onclick="agentToCalc()">🧮 Transfer ke Kalkulator</button>
+        <button class="agent-action-btn aa-save" onclick="agentSave()">💾 Simpan ke Master Produk</button>
+        <button class="agent-action-btn aa-dismiss" onclick="agentDismiss()">🗑️ Tutup / Batalkan</button>
       </div>
-      <div id="agent-sub-msg" style="font-size:12px;color:#5a5750;line-height:1.6;">
-        Apa yang ingin dilakukan dengan gambar ini?
-      </div>
-    </div>
-
-    <!-- Action Options -->
-    <div style="padding:8px 22px 20px;display:flex;flex-direction:column;gap:8px;">
-
-      <!-- Option 1: Transfer ke Kalkulator -->
-      <button onclick="agentAction('calculator')"
-        style="display:flex;align-items:center;gap:12px;padding:12px 14px;
-               background:#f5faf4;border:1.5px solid #b8d9b4;border-radius:12px;
-               cursor:pointer;font-family:inherit;text-align:left;width:100%;
-               transition:all .15s;"
-        onmouseover="this.style.background='#eaf3de';this.style.borderColor='#97c459'"
-        onmouseout="this.style.background='#f5faf4';this.style.borderColor='#b8d9b4'">
-        <div style="width:38px;height:38px;background:#eaf3de;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📐</div>
-        <div>
-          <div style="font-size:12px;font-weight:700;color:#27500a;">Transfer ke Kalkulator</div>
-          <div style="font-size:10px;color:#5a8a5a;margin-top:1px;">Hitung volume kayu & buat cutting list baru berdasarkan gambar ini</div>
-        </div>
-        <span style="margin-left:auto;color:#97c459;font-size:16px;">›</span>
-      </button>
-
-      <!-- Option 2: Simpan ke Arsip GabeHub -->
-      <button onclick="agentAction('archive')"
-        style="display:flex;align-items:center;gap:12px;padding:12px 14px;
-               background:#f5f4ff;border:1.5px solid #c4b5fd;border-radius:12px;
-               cursor:pointer;font-family:inherit;text-align:left;width:100%;
-               transition:all .15s;"
-        onmouseover="this.style.background='#ede9fe';this.style.borderColor='#a78bfa'"
-        onmouseout="this.style.background='#f5f4ff';this.style.borderColor='#c4b5fd'">
-        <div style="width:38px;height:38px;background:#ede9fe;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📁</div>
-        <div>
-          <div style="font-size:12px;font-weight:700;color:#4c1d95;">Simpan ke Arsip GabeHub</div>
-          <div style="font-size:10px;color:#7c3aed;margin-top:1px;">Simpan sebagai produk Draft baru — bisa diproses nanti di AI Asisten</div>
-        </div>
-        <span style="margin-left:auto;color:#a78bfa;font-size:16px;">›</span>
-      </button>
-
-      <!-- Option 3: Analisis Detail di AI Asisten -->
-      <button onclick="agentAction('ai')"
-        style="display:flex;align-items:center;gap:12px;padding:12px 14px;
-               background:#FEF3C7;border:1.5px solid #F59E0B;border-radius:12px;
-               cursor:pointer;font-family:inherit;text-align:left;width:100%;
-               transition:all .15s;"
-        onmouseover="this.style.background='#fde68a';this.style.borderColor='#d97706'"
-        onmouseout="this.style.background='#FEF3C7';this.style.borderColor='#F59E0B'">
-        <div style="width:38px;height:38px;background:#fde68a;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">🤖</div>
-        <div>
-          <div style="font-size:12px;font-weight:700;color:#92400e;">Analisis Detail di AI Asisten</div>
-          <div style="font-size:10px;color:#b45309;margin-top:1px;">Buka AI Asisten dengan gambar ini untuk analisis komponen & exploded view</div>
-        </div>
-        <span style="margin-left:auto;color:#F59E0B;font-size:16px;">›</span>
-      </button>
-
-      <!-- Option 4: Delete / Hapus -->
-      <button onclick="agentAction('delete')"
-        style="display:flex;align-items:center;gap:12px;padding:10px 14px;
-               background:#fff;border:1.5px solid #e8e6df;border-radius:12px;
-               cursor:pointer;font-family:inherit;text-align:left;width:100%;
-               transition:all .15s;"
-        onmouseover="this.style.background='#fceaea';this.style.borderColor='#f5c2c2'"
-        onmouseout="this.style.background='#fff';this.style.borderColor='#e8e6df'">
-        <div style="width:38px;height:38px;background:#fceaea;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">🗑️</div>
-        <div>
-          <div style="font-size:12px;font-weight:700;color:#8b2020;">Hapus / Batalkan</div>
-          <div style="font-size:10px;color:#b45309;margin-top:1px;">Tutup dan batalkan pencarian gambar ini</div>
-        </div>
-        <span style="margin-left:auto;color:#f5c2c2;font-size:16px;">›</span>
-      </button>
-
     </div>
   </div>
 </div>
 
 <div id="toast"></div>
 
-<script type="module">
-import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<script>
+// ══════════════════════════════════════════════
+//  GABE HUB — MASTER PRODUK
+// ══════════════════════════════════════════════
 
-const FC = {apiKey:"AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",authDomain:"gabe-international-hub.firebaseapp.com",projectId:"gabe-international-hub",storageBucket:"gabe-international-hub.firebasestorage.app",messagingSenderId:"115783216069",appId:"1:115783216069:web:62cfabf543b1fbb85bf9ac"};
-const fbApp = getApps().find(a=>a.name==='prd')||initializeApp(FC,'prd');
-const auth  = getAuth(fbApp);
-const db    = getFirestore(fbApp);
+// ── DEMO DATA ──
+var _all = [
+  { id:'p1', sku:'TSARI-CRD-BP-01', name:'TSARI Credenza', cat:'📦 Credenza',
+    style:'Modern Minimalis', p:172, l:51, t:91, wood:'Oak Solid / Oak Veneer',
+    finish:'Natural Oil / Matte', buyer:'USA/Europe', price:8500000,
+    ket:'Credenza 4 modul 17 inci. Canvas panel stretched. Metal leg powder coated black.',
+    status:'catalog', photo:'', updatedAt: Date.now()-86400000 },
 
-// Dev mode
-let stored = sessionStorage.getItem('gabe_user');
-if (!stored) { stored=JSON.stringify({name:'Manampin Girsang',email:'pipin@i-gabe.com',role:'admin'}); sessionStorage.setItem('gabe_user',stored); }
-const CU = JSON.parse(stored||'{}');
-document.getElementById('user-name').textContent = '👤 '+(CU.name||'');
+  { id:'p2', sku:'INFU2586-SM', name:'Materazzo Small Arm Chair', cat:'🪑 Kursi',
+    style:'Modern Minimalis', p:55, l:54, t:60, wood:'Mindi K2',
+    finish:'Natural Oil / PU Matt', buyer:'USA', price:3200000,
+    ket:'Arm chair modern minimalis. Seat upholstery busa + fabric.',
+    status:'final', photo:'', updatedAt: Date.now()-172800000 },
 
-window.doLogout = async () => { try{await signOut(auth);}catch(e){} sessionStorage.removeItem('gabe_user'); window.location.href='index.html'; };
+  { id:'p3', sku:'MARBLE-COFFE-120', name:'Marble Coffee Table Round', cat:'🪵 Meja',
+    style:'Luxury Modern', p:120, l:120, t:30, wood:'Jati K1 + Marble Top',
+    finish:'Natural Oil', buyer:'Australia', price:12000000,
+    ket:'Coffee table top marble bundar Diameter 120cm. Kaki solid block Jati.',
+    status:'catalog', photo:'', updatedAt: Date.now()-259200000 },
 
-function showToast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+  { id:'p4', sku:'OSLO-DIN-200', name:'Oslo Dining Table 200cm', cat:'🪵 Meja',
+    style:'Scandinavian', p:200, l:90, t:76, wood:'Oak Solid',
+    finish:'Lacquer Matte', buyer:'Europe', price:18000000,
+    ket:'Meja makan Oslo. Extension available hingga 260cm.',
+    status:'invoiced', photo:'', updatedAt: Date.now()-345600000 },
 
-// ── STATE ─────────────────────────────────────────────────────────────
-let _all = [], _q = '', _currentSku = null, _activeGroup = 'pra';
+  { id:'p5', sku:'JAVA-CAB-TK-180', name:'Java Cabinet Teak 180cm', cat:'🗄️ Lemari',
+    style:'Natural Rustic', p:180, l:45, t:200, wood:'Teak Solid',
+    finish:'Oil Wax', buyer:'Australia/Japan', price:22000000,
+    ket:'Cabinet 3 pintu teak solid. Hardware brass antique.',
+    status:'progress', photo:'', updatedAt: Date.now()-432000000 },
 
-// GROUP MAPPING
-const GRP_STATUS = {
-  pra:      ['draft','on-progress','review'],
-  produksi: ['final','invoiced'],
-  final:    ['catalog','done','completed']
-};
-const CAT_ICON   = {bed:'🛏️',lemari:'🗄️',kursi:'🪑',sofa:'🛋️',meja:'🪵'};
-const ST_LABEL   = {draft:'🆕 Draft','on-progress':'⚙️ Progress',review:'🔍 Review',final:'✅ Final',invoiced:'📄 Invoiced',catalog:'🏆 Katalog',done:'✅ Done'};
-const ST_CLASS   = {draft:'st-draft','on-progress':'st-progress',review:'st-review',final:'st-final',invoiced:'st-invoiced',catalog:'st-catalog',done:'st-final'};
+  { id:'p6', sku:'NORDIC-CHR-WN-02', name:'Nordic Dining Chair', cat:'🪑 Kursi',
+    style:'Scandinavian', p:45, l:52, t:82, wood:'Walnut',
+    finish:'Oil Natural', buyer:'Europe', price:2800000,
+    ket:'Kursi makan Nordic. Set 6 pcs. Sold as set.',
+    status:'review', photo:'', updatedAt: Date.now()-518400000 },
 
-// DEMO PRODUCTS
-const DEMOS = [
-  {sku:'TSARI-CRD-BP-01',nama:'TSARI Credenza',kategori:'lemari',style:'Modern Minimalis',panjang:172.7,lebar:50.8,tinggi:91.4,kayu:'Oak Solid / Oak Veneer',finishing:'Natural Oil / Matte',status:'on-progress',ket:'Credenza 4 modul 17 inci. Canvas panel stretched. Metal leg powder coated black.',
-   komponen:[{code:'CRD-TP',name:'Top Panel',type:'PW',qty:1,p:172,l:50,t:2},{code:'CRD-BP',name:'Bottom Panel',type:'PW',qty:1,p:172,l:50,t:2},{code:'CRD-SP',name:'Side Panel',type:'SW',qty:2,p:91,l:50,t:4},{code:'CRD-VD',name:'Vertical Divider',type:'SW',qty:3,p:84,l:50,t:4},{code:'CRD-DR',name:'Door Panel Canvas',type:'NW',qty:4,p:40,l:84,t:2},{code:'CRD-SH',name:'Shelf',type:'PW',qty:4,p:40,l:46,t:2},{code:'CRD-RR',name:'Rear Rail',type:'SW',qty:1,p:172,l:8,t:4},{code:'CRD-BK',name:'Back Panel',type:'PW',qty:1,p:172,l:91,t:1.8},{code:'CRD-LG',name:'Metal Leg',type:'NW',qty:4,p:17,l:3.8,t:3.8}]},
-  {sku:'INFU2586-SM',nama:'Materazzo Small Arm Chair',kategori:'kursi',style:'Modern Minimalis',panjang:55,lebar:54,tinggi:60,kayu:'Mindi K2',finishing:'Natural Oil / PU Matt',status:'final',ket:'Arm chair modern minimalis. Seat upholstery busa + fabric.',
-   komponen:[{code:'KR-01',name:'Kaki Depan',type:'SW',qty:2,p:45,l:10,t:10},{code:'KR-02',name:'Kaki Belakang',type:'SW',qty:2,p:60,l:10,t:10},{code:'KR-03',name:'Seat Rail',type:'SW',qty:4,p:47,l:7,t:4},{code:'KR-06',name:'Arm Rest',type:'SW',qty:2,p:54,l:10,t:4},{code:'KR-07',name:'Back Frame',type:'SW',qty:1,p:55,l:4,t:10},{code:'KR-08',name:'Panel Dudukan',type:'PW',qty:1,p:53,l:51,t:1.8}]},
-  {sku:'MARBLE-COFFE-120',nama:'Marble Coffee Table Round',kategori:'meja',style:'Modern Minimalis',panjang:120,lebar:120,tinggi:30,kayu:'Jati K1',finishing:'Natural Oil',status:'catalog',ket:'Coffee table top marble bundar Ø120cm. Kaki solid Jati.',
-   komponen:[{code:'TW-01',name:'Top Marble',type:'NW',qty:1,p:120,l:120,t:2,shape:'round',diameter:120},{code:'LK-01',name:'Kaki Panel',type:'SW',qty:4,p:28,l:21.5,t:4},{code:'ST-01',name:'Stretcher',type:'SW',qty:2,p:116,l:8,t:4}]}
+  { id:'p7', sku:'LOMBOK-BUF-MH-01', name:'Lombok Buffet Mahogany', cat:'🛁 Buffet',
+    style:'Tropical Modern', p:160, l:45, t:85, wood:'Mahogany',
+    finish:'Oil Dark', buyer:'Australia', price:9500000,
+    ket:'Buffet 3 modul. v3.0 setelah revisi buyer. Final approved.',
+    status:'final', photo:'', updatedAt: Date.now()-604800000 },
+
+  { id:'p8', sku:'BALI-BED-180-K1', name:'Bali King Bed Frame', cat:'🛏️ Tempat Tidur',
+    style:'Tropical Balinese', p:207, l:187, t:120, wood:'Jati K1',
+    finish:'Lacquer Natural', buyer:'USA/Europe', price:35000000,
+    ket:'King bed frame. Headboard ukiran Bali. Termasuk side table 2 pcs.',
+    status:'draft', photo:'', updatedAt: Date.now()-691200000 },
 ];
 
-function calcVol(k) {
-  if(!k||!k.length) return {net:0,log:0,ply:0};
-  let n=0,l=0,pl=0;
-  k.forEach(c=>{const v=(+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1)); if(c.type==='PW') pl++; else if(c.type==='SW'){n+=v;l+=v/0.35;}});
-  return {net:n.toFixed(4),log:l.toFixed(4),ply:pl};
-}
+var _curGrp = 'pra';
+var _filterQ = '';
+var _agentData = {};
 
-// ── LOAD ──────────────────────────────────────────────────────────────
-async function load() {
-  try {
-    const snap = await getDocs(collection(db,'products'));
-    _all = []; snap.forEach(d=>_all.push(d.data()));
-    if (!_all.length) {
-      for (const d of DEMOS) await setDoc(doc(db,'products',d.sku),Object.assign({},d,{updatedAt:serverTimestamp(),updatedBy:'system'}));
-      DEMOS.forEach(d=>_all.push(d));
-    }
-    updateCounts(); renderAll();
-  } catch(e) {
-    ['pra','produksi','final'].forEach(g=>{ document.getElementById('grid-'+g).innerHTML='<div class="empty"><div class="empty-icon">❌</div><div class="empty-title">Gagal memuat</div><div class="empty-sub">'+e.message+'</div></div>'; });
-  }
-}
-
-function updateCounts() {
-  const statusOf = s => GRP_STATUS.pra.includes(s)?'pra': GRP_STATUS.produksi.includes(s)?'produksi':'final';
-  const grpCnt = (g) => _all.filter(p=>statusOf(p.status||'draft')===g).length;
-  document.getElementById('cnt-pra').textContent   = grpCnt('pra');
-  document.getElementById('cnt-prod').textContent  = grpCnt('produksi');
-  document.getElementById('cnt-final').textContent = grpCnt('final');
-  document.getElementById('gs-draft').textContent    = _all.filter(p=>p.status==='draft'||!p.status).length;
-  document.getElementById('gs-progress').textContent = _all.filter(p=>p.status==='on-progress').length;
-  document.getElementById('gs-review').textContent   = _all.filter(p=>p.status==='review').length;
-  document.getElementById('gs-final').textContent    = _all.filter(p=>p.status==='final').length;
-  document.getElementById('gs-invoiced').textContent = _all.filter(p=>p.status==='invoiced').length;
-  document.getElementById('gs-catalog').textContent  = _all.filter(p=>p.status==='catalog'||p.status==='done').length;
-  document.getElementById('gs-all').textContent      = _all.length;
-}
-
-// ── RENDER ────────────────────────────────────────────────────────────
-window.renderAll = function() {
-  const q = _q.toLowerCase();
-  const sortVal = document.querySelector('.sort-sel').value;
-  const sort = (arr) => arr.slice().sort((a,b)=>{
-    if(sortVal==='sku')  return (a.sku||'').localeCompare(b.sku||'');
-    if(sortVal==='nama') return (a.nama||'').localeCompare(b.nama||'');
-    return (b.updatedAt?.seconds||0)-(a.updatedAt?.seconds||0);
-  });
-  const filter = (arr) => q ? arr.filter(p=>(p.sku||'').toLowerCase().includes(q)||(p.nama||'').toLowerCase().includes(q)||(p.kategori||'').toLowerCase().includes(q)||(p.kayu||'').toLowerCase().includes(q)) : arr;
-
-  ['pra','produksi','final'].forEach(grp => {
-    const statuses = GRP_STATUS[grp];
-    const items = sort(filter(_all.filter(p=>statuses.includes(p.status||'draft'))));
-    const grid = document.getElementById('grid-'+grp);
-    const rcEl = document.getElementById('rc-'+({'pra':'pra','produksi':'prod','final':'final'}[grp]));
-    rcEl.textContent = items.length+' produk'+(q?' untuk "'+_q+'"':'');
-
-    if (!items.length) {
-      grid.innerHTML = '<div class="empty"><div class="empty-icon">'+(grp==='pra'?'🔨':grp==='produksi'?'⚙️':'🏆')+'</div><div class="empty-title">Belum ada produk</div><div class="empty-sub">'+( q?'Coba kata kunci lain':grp==='pra'?'Tambah produk baru via AI Asisten':'Ubah status produk dari grup sebelumnya')+'</div></div>';
-      return;
-    }
-    grid.innerHTML = items.map(p=>renderCard(p)).join('');
-  });
+// ── STATUS → GROUP mapping ──
+var GRP_STATUS = {
+  pra:      ['draft','progress','review'],
+  produksi: ['final','invoiced'],
+  final:    ['catalog','done']
 };
 
-function renderCard(p) {
-  const vol  = calcVol(p.komponen);
-  const st   = p.status||'draft';
-  const stl  = ST_LABEL[st]||'Draft';
-  const stc  = ST_CLASS[st]||'st-draft';
-  const icon = CAT_ICON[p.kategori]||'📦';
-  const dim  = `${p.panjang||0}×${p.lebar||0}×${p.tinggi||0} cm`;
-  const kc   = (p.komponen||[]).length;
-  const upd  = p.updatedAt ? new Date(p.updatedAt.seconds*1000).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'2-digit'}) : '—';
+// ── STATUS DISPLAY ──
+var SLBL = {
+  draft:'📝 Draft', progress:'⚙️ Progress', review:'🔍 Review',
+  final:'✅ Final', invoiced:'🧾 Invoiced',
+  catalog:'📖 Catalog', done:'🏆 Done'
+};
+var SCSS = {
+  draft:'sp-draft', progress:'sp-progress', review:'sp-review',
+  final:'sp-final', invoiced:'sp-invoiced',
+  catalog:'sp-catalog', done:'sp-done'
+};
+var CAT_ICON = {
+  '🛏️ Tempat Tidur':'🛏️','🗄️ Lemari':'🗄️','🪑 Kursi':'🪑',
+  '🛋️ Sofa':'🛋️','🪵 Meja':'🪵','📦 Credenza':'📦',
+  '🗃️ Cabinet':'🗃️','🛁 Buffet':'🛁','📦 Lainnya':'📦'
+};
 
-  const imgHtml = p.thumbnail
-    ? `<img src="${p.thumbnail}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" onerror="this.parentNode.innerHTML='<div class=card-img-placeholder>${icon}</div>'">`
-    : `<div class="card-img-placeholder">${icon}</div>`;
-
-  return `<div class="prod-card" onclick="showDetail('${p.sku}')">
-    <div class="card-img">
-      ${imgHtml}
-      <div class="card-img-overlay"><span class="pc-status ${stc}">${stl}</span></div>
-      <span class="cat-badge">${icon} ${p.kategori||'—'}</span>
-    </div>
-    <div class="card-body">
-      <div class="card-sku">${p.sku}</div>
-      <div class="card-nama">${p.nama||'—'}</div>
-      <div class="card-dim">📐 ${dim}</div>
-      <div class="card-tags">
-        <span class="tag tag-sw" style="background:#faf5ee;color:#7a5830;">🪵 ${(p.kayu||'—').split('/')[0].trim()}</span>
-        <span class="tag tag-sw">✂️ ${kc} komp</span>
-      </div>
-      <div class="card-stats">
-        <div class="cs-item"><div class="cs-val" style="color:#2d5a27;">${vol.net}</div><div class="cs-lbl">Vol m³</div></div>
-        <div class="cs-item"><div class="cs-val" style="color:#1565c0;">${vol.log}</div><div class="cs-lbl">Log m³</div></div>
-        <div class="cs-item"><div class="cs-val" style="color:#8a8680;">${upd}</div><div class="cs-lbl">Update</div></div>
-      </div>
-    </div>
-    <div class="card-foot" onclick="event.stopPropagation()">
-      <a class="cf-btn grn" href="app.html?sku=${p.sku}">📐 Kalk</a>
-      <a class="cf-btn blu" href="ai-asisten.html?sku=${p.sku}">🤖 Edit</a>
-      <button class="cf-btn red" onclick="deleteProduct('${p.sku}')">🗑</button>
-    </div>
-  </div>`;
+// ── RENDER ALL ──
+function renderAll() {
+  updateStats();
+  updateGroupCounts();
+  renderGrid();
 }
 
-// ── DETAIL MODAL ──────────────────────────────────────────────────────
-window.showDetail = function(sku) {
-  const p = _all.find(x=>x.sku===sku); if(!p) return;
-  _currentSku = sku;
-  const vol  = calcVol(p.komponen);
-  const st   = p.status||'draft';
-  const upd  = p.updatedAt ? new Date(p.updatedAt.seconds*1000).toLocaleString('id-ID') : '—';
-  const icon = CAT_ICON[p.kategori]||'📦';
-  const swC  = (p.komponen||[]).filter(c=>c.type==='SW'||!c.type);
-  const pwC  = (p.komponen||[]).filter(c=>c.type==='PW');
-  const nwC  = (p.komponen||[]).filter(c=>c.type!=='SW'&&c.type!=='PW'&&c.type);
+function updateStats() {
+  document.getElementById('st-total').textContent = _all.length;
+  document.getElementById('st-pra').textContent   = _all.filter(p => GRP_STATUS.pra.includes(p.status)).length;
+  document.getElementById('st-prod').textContent  = _all.filter(p => GRP_STATUS.produksi.includes(p.status)).length;
+  document.getElementById('st-final').textContent = _all.filter(p => p.status === 'catalog').length;
+  document.getElementById('st-done').textContent  = _all.filter(p => p.status === 'done').length;
+}
 
-  // Hero image
-  const heroEl = document.getElementById('modal-hero');
-  if(p.thumbnail){ heroEl.src=p.thumbnail; heroEl.style.display='block'; }
-  else { heroEl.style.display='none'; }
+function updateGroupCounts() {
+  Object.keys(GRP_STATUS).forEach(function(g) {
+    var cnt = _all.filter(function(p){ return GRP_STATUS[g].includes(p.status); }).length;
+    document.getElementById('gc-'+g).textContent = cnt;
+  });
+}
 
-  document.getElementById('modal-title').innerHTML =
-    `<span style="font-family:monospace;font-size:10px;background:#f0efe9;padding:1px 6px;border-radius:4px;">${p.sku}</span>
-     <span style="margin-left:8px;font-size:13px;">${icon} ${p.nama||'—'}</span>
-     <span style="margin-left:6px;" class="pc-status ${ST_CLASS[st]||'st-draft'}">${ST_LABEL[st]||'Draft'}</span>`;
+function renderGrid() {
+  var q = _filterQ.toLowerCase();
+  var rows = _all.filter(function(p) {
+    var inGrp = GRP_STATUS[_curGrp].includes(p.status);
+    var match = !q
+      || (p.sku||'').toLowerCase().includes(q)
+      || (p.name||'').toLowerCase().includes(q)
+      || (p.cat||'').toLowerCase().includes(q)
+      || (p.wood||'').toLowerCase().includes(q)
+      || (p.style||'').toLowerCase().includes(q);
+    return inGrp && match;
+  });
 
-  // Status change
-  const statusOpts = ['draft','on-progress','review','final','invoiced','catalog']
-    .map(s=>`<option value="${s}" ${s===st?'selected':''}>${ST_LABEL[s]||s}</option>`).join('');
+  var grid = document.getElementById('prod-grid');
+  if (!rows.length) {
+    grid.innerHTML = '<div class="empty-state"><div class="ei">📦</div><p>Tidak ada produk di grup ini</p></div>';
+    return;
+  }
 
-  // Cutting table rows
-  const kompRows = (p.komponen||[]).map((c,i)=>{
-    const t=(c.type||'SW').toUpperCase();
-    const cls=t==='PW'?'t-pw':t==='NW'?'t-nw':'t-sw';
-    const vt=((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))).toFixed(4);
-    const vl=t==='SW'?((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))/0.35).toFixed(4):'—';
-    return `<tr><td style="font-family:monospace;font-size:10px;">${c.code||'C-'+String(i+1).padStart(2,'0')}</td>
-      <td style="font-weight:600;">${c.name||'—'}</td>
-      <td><span class="${cls}" style="font-size:9px;padding:1px 5px;border-radius:20px;">${t}</span></td>
-      <td style="text-align:center;">${c.qty||1}</td>
-      <td style="text-align:right;">${c.p||0}</td><td style="text-align:right;">${c.l||0}</td><td style="text-align:right;">${c.t||0}</td>
-      <td style="text-align:right;font-weight:700;color:#2d5a27;">${vt}</td>
-      <td style="text-align:right;color:#e65100;">${vl}</td></tr>`;
+  grid.innerHTML = rows.map(function(p) {
+    var catIcon = (p.cat||'').split(' ')[0] || '📦';
+    var volNet  = p.p && p.l && p.t ? (p.p * p.l * p.t / 1e6).toFixed(4) : '—';
+    var price   = p.price ? 'Rp '+Math.round(p.price).toLocaleString('id-ID') : '—';
+    var photoHtml = p.photo
+      ? '<img src="'+p.photo+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentNode.innerHTML=\'<div class=pc-photo-empty>\'+(\''+catIcon+'\')+\'</div>\'">'
+      : '<div class="pc-photo-empty">'+catIcon+'</div>';
+    return '<div class="pcard" id="card-'+p.id+'">'
+      +'<div class="pc-photo">'+photoHtml
+      +'<div class="pc-status"><span class="spill '+SCSS[p.status]+'">'+SLBL[p.status]+'</span></div>'
+      +'<div class="pc-cat">'+(p.cat||'')+'</div>'
+      +'</div>'
+      +'<div class="pc-body">'
+      +'<div class="pc-sku">'+p.sku+'</div>'
+      +'<div class="pc-name">'+p.name+'</div>'
+      +'<div class="pc-dims">📐 '+p.p+'×'+p.l+'×'+p.t+' cm '+(p.style?'· '+p.style:'')+'</div>'
+      +'<div class="pc-meta">'
+      +'<div class="pc-vol">Vol: <b>'+volNet+' m³</b></div>'
+      +'<div style="font-size:11px;color:var(--am);font-weight:600;">'+price+'</div>'
+      +'</div>'
+      +'<div style="font-size:11px;color:var(--t3);">🪵 '+(p.wood||'—')+'</div>'
+      +'</div>'
+      +'<div class="pc-footer">'
+      +'<button class="pc-act" onclick="openEdit(\''+p.id+'\')">✏️ Edit</button>'
+      +'<button class="pc-act" onclick="toCalc(\''+p.id+'\')">🧮 Kalkulasi</button>'
+      +'<button class="pc-act danger" onclick="delProd(\''+p.id+'\')">🗑️</button>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+
+// ── GROUP SWITCH ──
+function switchGroup(g, el) {
+  _curGrp = g;
+  document.querySelectorAll('.gtab').forEach(function(t){ t.classList.remove('active'); });
+  el.classList.add('active');
+  renderGrid();
+}
+
+// ── FILTER ──
+function filterProds() {
+  _filterQ = document.getElementById('prod-search').value;
+  renderGrid();
+}
+
+// ── NEW PRODUCT ──
+function openNewProd() {
+  document.getElementById('modal-title').textContent = '📦 Produk Baru';
+  document.getElementById('m-id').value = '';
+  ['sku','name','style','wood','finish','buyer','ket'].forEach(function(f){ document.getElementById('m-'+f).value = ''; });
+  ['p','l','t','price'].forEach(function(f){ document.getElementById('m-'+f).value = ''; });
+  document.getElementById('m-cat').value = '';
+  document.getElementById('m-status').value = 'draft';
+  document.getElementById('prod-modal').classList.add('open');
+}
+
+function openEdit(id) {
+  var p = _all.find(function(x){ return x.id === id; });
+  if (!p) return;
+  document.getElementById('modal-title').textContent = '✏️ Edit: '+p.name;
+  document.getElementById('m-id').value     = id;
+  document.getElementById('m-sku').value    = p.sku||'';
+  document.getElementById('m-name').value   = p.name||'';
+  document.getElementById('m-status').value = p.status||'draft';
+  document.getElementById('m-cat').value    = p.cat||'';
+  document.getElementById('m-style').value  = p.style||'';
+  document.getElementById('m-p').value      = p.p||'';
+  document.getElementById('m-l').value      = p.l||'';
+  document.getElementById('m-t').value      = p.t||'';
+  document.getElementById('m-wood').value   = p.wood||'';
+  document.getElementById('m-finish').value = p.finish||'';
+  document.getElementById('m-buyer').value  = p.buyer||'';
+  document.getElementById('m-price').value  = p.price||'';
+  document.getElementById('m-ket').value    = p.ket||'';
+  document.getElementById('prod-modal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('prod-modal').classList.remove('open'); }
+
+function saveProd() {
+  var eid  = document.getElementById('m-id').value;
+  var sku  = document.getElementById('m-sku').value.trim();
+  var name = document.getElementById('m-name').value.trim();
+  if (!sku || !name) { toast('⚠️ SKU dan Nama wajib diisi!'); return; }
+
+  var data = {
+    sku: sku, name: name,
+    status: document.getElementById('m-status').value,
+    cat:    document.getElementById('m-cat').value,
+    style:  document.getElementById('m-style').value.trim(),
+    p:      parseFloat(document.getElementById('m-p').value)||0,
+    l:      parseFloat(document.getElementById('m-l').value)||0,
+    t:      parseFloat(document.getElementById('m-t').value)||0,
+    wood:   document.getElementById('m-wood').value.trim(),
+    finish: document.getElementById('m-finish').value.trim(),
+    buyer:  document.getElementById('m-buyer').value.trim(),
+    price:  parseFloat(document.getElementById('m-price').value)||0,
+    ket:    document.getElementById('m-ket').value.trim(),
+    updatedAt: Date.now()
+  };
+
+  if (eid) {
+    var idx = _all.findIndex(function(x){ return x.id === eid; });
+    if (idx >= 0) {
+      data.id    = eid;
+      data.photo = _all[idx].photo || '';
+      _all[idx]  = data;
+      toast('✅ Produk "'+name+'" diupdate!');
+    }
+  } else {
+    data.id    = 'p-'+Date.now();
+    data.photo = '';
+    _all.unshift(data);
+    toast('✅ Produk "'+name+'" disimpan!');
+  }
+
+  closeModal(); renderAll();
+}
+
+function delProd(id) {
+  var p = _all.find(function(x){ return x.id === id; });
+  if (!confirm('Hapus produk "'+p.name+'"?')) return;
+  _all = _all.filter(function(x){ return x.id !== id; });
+  renderAll(); toast('🗑️ Produk dihapus');
+}
+
+// ── TRANSFER TO CALC ──
+function toCalc(id) {
+  var p = _all.find(function(x){ return x.id === id; });
+  if (!p) return;
+  var q = 'sku='+encodeURIComponent(p.sku)+'&product='+encodeURIComponent(p.name);
+  location.href = 'app.html?'+q;
+}
+
+// ── IMAGE SEARCH ──
+function toggleImgSearch() {
+  document.getElementById('img-search-panel').classList.toggle('open');
+}
+
+function handleImgFile(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 10*1024*1024) { toast('⚠️ Maks 10MB!'); return; }
+  var reader = new FileReader();
+  reader.onload = function(ev) { processImgSearch(ev.target.result); };
+  reader.readAsDataURL(file);
+}
+
+function handleImgDrop(e) {
+  e.preventDefault();
+  document.getElementById('isp-drop').style.borderColor = '#b8d9b4';
+  var files = Array.from(e.dataTransfer.files).filter(function(f){ return f.type.startsWith('image/'); });
+  if (!files.length) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) { processImgSearch(ev.target.result); };
+  reader.readAsDataURL(files[0]);
+}
+
+function processImgSearch(dataUrl) {
+  // Show preview
+  var prev = document.getElementById('img-search-preview');
+  prev.src = dataUrl;
+  prev.classList.add('show');
+  document.getElementById('isp-drop').style.display = 'none';
+
+  // Show loading
+  document.getElementById('img-search-loading').style.display = 'block';
+  document.getElementById('img-search-results').innerHTML = '';
+  document.getElementById('img-search-status').textContent = '';
+
+  // Call AI via API
+  var base64 = dataUrl.split(',')[1];
+  var mime   = dataUrl.split(';')[0].split(':')[1] || 'image/jpeg';
+
+  fetch('/api/analyze', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({imageData: base64, mimeType: mime})
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    document.getElementById('img-search-loading').style.display = 'none';
+    if (data.success && data.result) {
+      renderImgSearchResults(data.result, dataUrl);
+    } else {
+      // Fallback: demo scoring tanpa AI
+      renderImgSearchResultsDemo(dataUrl);
+    }
+  })
+  .catch(function() {
+    document.getElementById('img-search-loading').style.display = 'none';
+    // Fallback demo mode
+    renderImgSearchResultsDemo(dataUrl);
+  });
+}
+
+function scoreProduct(p, aiResult) {
+  var score = 0;
+  if (!aiResult) return Math.random() * 40 + 20;
+  var ft = (aiResult.furniture_type||'').toLowerCase();
+  var cat = (p.cat||'').toLowerCase();
+  if (ft === 'kursi' && cat.includes('kursi')) score += 40;
+  else if (ft === 'meja' && cat.includes('meja')) score += 40;
+  else if (ft === 'lemari' && (cat.includes('lemari')||cat.includes('cabinet'))) score += 40;
+  else if (ft === 'bed' && cat.includes('tidur')) score += 40;
+  else if (ft && cat.includes(ft)) score += 30;
+
+  if (aiResult.wood_recommendation) {
+    var w = aiResult.wood_recommendation.toLowerCase();
+    if ((p.wood||'').toLowerCase().includes(w.split(' ')[0])) score += 20;
+  }
+  if (aiResult.dimensions) {
+    var dp = aiResult.dimensions.panjang||0, dl = aiResult.dimensions.lebar||0, dt = aiResult.dimensions.tinggi||0;
+    var diffP = Math.abs(p.p-dp)/Math.max(dp,1);
+    var diffL = Math.abs(p.l-dl)/Math.max(dl,1);
+    var diffT = Math.abs(p.t-dt)/Math.max(dt,1);
+    var avgDiff = (diffP+diffL+diffT)/3;
+    score += Math.max(0, 25-Math.round(avgDiff*50));
+  }
+  return Math.min(98, score + Math.round(Math.random()*10));
+}
+
+function renderImgSearchResults(aiResult, dataUrl) {
+  var scored = _all.map(function(p) {
+    return { p: p, score: scoreProduct(p, aiResult) };
+  }).sort(function(a,b){ return b.score-a.score; });
+
+  var top = scored.slice(0,4);
+  var status = document.getElementById('img-search-status');
+  status.innerHTML = '🤖 AI: '+( aiResult.furniture_name_id||aiResult.furniture_type||'Furniture')+' terdeteksi · '+top.length+' produk mirip ditemukan';
+
+  var html = top.map(function(item) {
+    var p = item.p, sc = item.score;
+    var col = sc>=70?'var(--ac)':sc>=40?'var(--am)':'var(--rd)';
+    return '<div class="isp-result-item" onclick="openEdit(\''+p.id+'\')">'
+      +'<div style="font-size:24px;">'+(p.cat||'📦').split(' ')[0]+'</div>'
+      +'<div style="flex:1;">'
+      +'<div style="font-size:12px;font-weight:700;">'+p.name+'</div>'
+      +'<div style="font-size:10px;color:var(--t3);">'+p.sku+' · '+p.p+'×'+p.l+'×'+p.t+' cm</div>'
+      +'<div class="isp-match-bar"><div class="isp-match-fill" style="width:'+sc+'%;background:'+col+'"></div></div>'
+      +'</div>'
+      +'<div style="font-size:12px;font-weight:700;color:'+col+';">'+sc+'%</div>'
+      +'</div>';
   }).join('');
 
-  document.getElementById('modal-body').innerHTML = `
-    <!-- ── TOP INFO ROW ─────────────────────────────────────────── -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+  document.getElementById('img-search-results').innerHTML = html || '<div style="text-align:center;padding:20px;color:var(--t3);">Tidak ada produk mirip ditemukan</div>';
 
-      <!-- LEFT: Identitas -->
-      <div style="background:#f8f7f4;border-radius:12px;padding:14px 16px;">
-        <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a09888;margin-bottom:10px;">Identitas Produk</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <div>
-            <div style="font-size:10px;color:#a09888;margin-bottom:2px;">Kategori</div>
-            <div style="font-size:13px;font-weight:600;">${icon} ${p.kategori||'—'}</div>
-          </div>
-          <div>
-            <div style="font-size:10px;color:#a09888;margin-bottom:2px;">Status</div>
-            <select onchange="changeStatus('${sku}',this.value)"
-              style="font-size:11px;padding:3px 8px;border:1.5px solid #d8d5cb;border-radius:7px;font-family:inherit;background:#fff;font-weight:600;color:#1a1917;cursor:pointer;">
-              ${statusOpts}
-            </select>
-          </div>
-          <div>
-            <div style="font-size:10px;color:#a09888;margin-bottom:2px;">Dimensi</div>
-            <div style="font-size:13px;font-weight:700;color:#1a1917;">${p.panjang||0}×${p.lebar||0}×${p.tinggi||0} <span style="font-size:10px;font-weight:400;color:#8a8680;">cm</span></div>
-          </div>
-          <div>
-            <div style="font-size:10px;color:#a09888;margin-bottom:2px;">Style</div>
-            <div style="font-size:12px;font-weight:600;">${p.style||'—'}</div>
-          </div>
-          <div>
-            <div style="font-size:10px;color:#a09888;margin-bottom:2px;">Kayu</div>
-            <div style="font-size:12px;font-weight:600;color:#7a5830;">🪵 ${(p.kayu||'—').split('/')[0].trim()}</div>
-          </div>
-          <div>
-            <div style="font-size:10px;color:#a09888;margin-bottom:2px;">Finishing</div>
-            <div style="font-size:12px;font-weight:600;">${(p.finishing||'—').split('/')[0].trim()||'—'}</div>
-          </div>
-        </div>
-        ${p.ket?`<div style="margin-top:10px;padding:8px 10px;background:#fff;border-radius:8px;font-size:11px;color:#5a5750;line-height:1.5;border:1px solid #e8e6df;">📝 ${p.ket}</div>`:''}
-        <div style="margin-top:8px;font-size:10px;color:#b0a898;">🕐 ${upd} · 👤 ${p.updatedBy||'—'}</div>
-      </div>
-
-      <!-- RIGHT: Volume Summary -->
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <!-- Vol Bersih -->
-        <div style="background:linear-gradient(135deg,#eaf3de 0%,#d4edbc 100%);border-radius:12px;padding:12px 14px;flex:1;">
-          <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#5a8a3a;margin-bottom:4px;">🪵 Solid Wood</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-            <div>
-              <div style="font-size:20px;font-weight:800;color:#27500a;line-height:1;">${vol.net}</div>
-              <div style="font-size:9px;color:#5a8a3a;margin-top:1px;">Bersih m³</div>
-            </div>
-            <div>
-              <div style="font-size:20px;font-weight:800;color:#e65100;line-height:1;">${vol.log}</div>
-              <div style="font-size:9px;color:#8a5030;margin-top:1px;">Log m³ (÷35%)</div>
-            </div>
-          </div>
-        </div>
-        <!-- PW + NW counts -->
-        <div style="background:#1a3a1a;border-radius:12px;padding:10px 14px;">
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center;">
-            <div>
-              <div style="font-size:18px;font-weight:700;color:#97c459;">${swC.length}</div>
-              <div style="font-size:9px;color:rgba(255,255,255,.5);text-transform:uppercase;">SW komp</div>
-            </div>
-            <div>
-              <div style="font-size:18px;font-weight:700;color:#85b7eb;">${pwC.length}</div>
-              <div style="font-size:9px;color:rgba(255,255,255,.5);text-transform:uppercase;">PW komp</div>
-            </div>
-            <div>
-              <div style="font-size:18px;font-weight:700;color:#ce93d8;">${nwC.length}</div>
-              <div style="font-size:9px;color:rgba(255,255,255,.5);text-transform:uppercase;">NW komp</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── TABS ───────────────────────────────────────────────────── -->
-    <div class="dtabs" id="dtabs">
-      <div class="dtab active" onclick="switchDTab('cutting',this)">✂️ Cutting List <span style="background:#e8e6df;font-size:9px;padding:1px 5px;border-radius:10px;margin-left:3px;">${(p.komponen||[]).length}</span></div>
-      <div class="dtab" onclick="switchDTab('volume',this)">📊 Volume CBM</div>
-      <div class="dtab" onclick="switchDTab('bom',this)">💰 BOM Ref</div>
-      <div class="dtab" onclick="switchDTab('similar',this)">🔗 Mirip</div>
-    </div>
-
-    <!-- ── TAB: CUTTING LIST ──────────────────────────────────────── -->
-    <div class="dtab-content active" id="dtab-cutting">
-      <div style="overflow-x:auto;border-radius:8px;border:1px solid #e8e6df;">
-        <table class="cut-tbl" style="border-radius:8px;overflow:hidden;">
-          <thead>
-            <tr style="background:#f5f4f0;">
-              <th style="width:80px;">Kode</th>
-              <th>Nama Komponen</th>
-              <th style="width:44px;text-align:center;">Tipe</th>
-              <th style="width:36px;text-align:center;">Qty</th>
-              <th style="width:50px;text-align:right;">P cm</th>
-              <th style="width:50px;text-align:right;">L cm</th>
-              <th style="width:50px;text-align:right;">T cm</th>
-              <th style="width:72px;text-align:right;">Vol m³</th>
-              <th style="width:72px;text-align:right;">Log m³</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${(p.komponen||[]).map((c,i)=>{
-              const t=(c.type||'SW').toUpperCase();
-              const tcls=t==='PW'?'background:#e3f2fd;color:#0c447c':t==='NW'?'background:#f3e5f5;color:#6a1b9a':'background:#eaf3de;color:#27500a';
-              const vt=((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))).toFixed(4);
-              const vl=t==='SW'&&+(c.p||0)>0?((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))/0.35).toFixed(4):'—';
-              const noDim = !(+(c.p||0)) && !(+(c.l||0)) && !(+(c.t||0));
-              return `<tr style="${noDim?'background:#fffbf0;':''}">
-                <td style="font-family:monospace;font-size:10px;font-weight:700;color:#5a5750;">${c.code||'C-'+String(i+1).padStart(2,'0')}</td>
-                <td style="font-weight:600;">${c.name||'—'}${noDim?'<span style="font-size:9px;color:#f59e0b;margin-left:4px;">⚠️ isi dimensi</span>':''}</td>
-                <td style="text-align:center;"><span style="font-size:9px;padding:2px 6px;border-radius:20px;font-weight:700;${tcls}">${t}</span></td>
-                <td style="text-align:center;color:#5a5750;">${c.qty||1}</td>
-                <td style="text-align:right;${+(c.p||0)?'':'color:#d8d5cb;'}">${+(c.p||0)||'—'}</td>
-                <td style="text-align:right;${+(c.l||0)?'':'color:#d8d5cb;'}">${+(c.l||0)||'—'}</td>
-                <td style="text-align:right;${+(c.t||0)?'':'color:#d8d5cb;'}">${+(c.t||0)||'—'}</td>
-                <td style="text-align:right;font-weight:700;color:${+(vt)>0?'#27500a':'#d8d5cb'};">${+(vt)>0?vt:'—'}</td>
-                <td style="text-align:right;color:${vl!=='—'?'#e65100':'#d8d5cb'};">${vl}</td>
-              </tr>`;
-            }).join('')||'<tr><td colspan="9" style="text-align:center;padding:20px;color:#a09888;">Belum ada komponen</td></tr>'}
-          </tbody>
-          <tfoot>
-            <tr style="background:#1a3a1a;color:#fff;">
-              <td colspan="7" style="padding:8px 10px;font-weight:700;font-size:11px;">TOTAL</td>
-              <td style="padding:8px 10px;text-align:right;font-weight:700;color:#97c459;">${vol.net}</td>
-              <td style="padding:8px 10px;text-align:right;font-weight:700;color:#fac775;">${vol.log}</td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-      ${+(vol.net)===0 ? `<div style="margin-top:8px;padding:8px 12px;background:#FEF3C7;border-radius:8px;font-size:11px;color:#92400E;display:flex;align-items:center;gap:6px;">⚠️ Dimensi komponen belum diisi. Klik <b>Edit AI</b> untuk input dimensi lengkap di AI Asisten.</div>` : ''}
-    </div>
-
-    <!-- ── TAB: VOLUME CBM ────────────────────────────────────────── -->
-    <div class="dtab-content" id="dtab-volume">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <div style="background:#f5faf4;border:1px solid #b8d9b4;border-radius:10px;padding:12px;">
-          <div style="font-size:10px;font-weight:700;color:#2d5a27;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em;">🪵 Solid Wood — ${swC.length} item</div>
-          ${swC.map(c=>{const v=((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1)));
-            return `<div style="display:flex;justify-content:space-between;font-size:11px;padding:4px 0;border-bottom:.5px solid #d8d5cb;">
-              <span style="color:#5a5750;">${c.code} ${(c.name||'').slice(0,16)} ×${c.qty||1}</span>
-              <b style="color:${v>0?'#27500a':'#d8d5cb'}">${v>0?v.toFixed(4):'—'}</b>
-            </div>`;}).join('')}
-          <div style="margin-top:8px;padding:7px 10px;background:#fff;border-radius:7px;display:flex;justify-content:space-between;font-weight:700;">
-            <span style="font-size:11px;">Log Total (÷35%)</span>
-            <span style="color:#e65100;">${vol.log} m³</span>
-          </div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div style="background:#e3f2fd;border:1px solid #90caf9;border-radius:10px;padding:12px;">
-            <div style="font-size:10px;font-weight:700;color:#0c447c;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;">🔷 Plywood — ${pwC.length} item</div>
-            ${pwC.length?pwC.map(c=>{const v=((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1)));return`<div style="font-size:11px;padding:3px 0;border-bottom:.5px solid #bbdefb;display:flex;justify-content:space-between;"><span style="color:#5a5750;">${c.code} ×${c.qty||1}</span><b style="color:#0c447c;">${v.toFixed(4)}</b></div>`;}).join(''):'<div style="font-size:11px;color:#90caf9;">Tidak ada PW</div>'}
-          </div>
-          <div style="background:#f3e5f5;border:1px solid #ce93d8;border-radius:10px;padding:12px;flex:1;">
-            <div style="font-size:10px;font-weight:700;color:#6a1b9a;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;">🔵 Non-Wood — ${nwC.length} item</div>
-            ${nwC.length?nwC.map(c=>`<div style="font-size:11px;padding:3px 0;border-bottom:.5px solid #e1bee7;color:#5a5750;">${c.code} ${(c.name||'').slice(0,20)} ×${c.qty||1}</div>`).join(''):'<div style="font-size:11px;color:#ce93d8;">Tidak ada NW</div>'}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── TAB: BOM REFERENCE ─────────────────────────────────────── -->
-    <div class="dtab-content" id="dtab-bom">
-      <div style="background:#FEF3C7;border:1.5px solid #F59E0B;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:11px;color:#92400E;line-height:1.5;">
-        💡 Gunakan sebagai referensi BOM untuk produk sejenis. Volume kayu = basis perhitungan cost material utama untuk penawaran ke buyer.
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">
-        <div style="background:#f5f4f0;border-radius:10px;padding:10px 12px;text-align:center;">
-          <div style="font-size:9px;color:#a09888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">SW Log Volume</div>
-          <div style="font-size:20px;font-weight:800;color:#e65100;">${vol.log}</div>
-          <div style="font-size:9px;color:#a09888;">m³</div>
-        </div>
-        <div style="background:#f5f4f0;border-radius:10px;padding:10px 12px;text-align:center;">
-          <div style="font-size:9px;color:#a09888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Plywood</div>
-          <div style="font-size:20px;font-weight:800;color:#0c447c;">${vol.ply}</div>
-          <div style="font-size:9px;color:#a09888;">lembar</div>
-        </div>
-        <div style="background:#f5f4f0;border-radius:10px;padding:10px 12px;text-align:center;">
-          <div style="font-size:9px;color:#a09888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Komponen</div>
-          <div style="font-size:20px;font-weight:800;color:#1a1917;">${(p.komponen||[]).length}</div>
-          <div style="font-size:9px;color:#a09888;">item</div>
-        </div>
-      </div>
-      <div style="background:#f5f4f0;border-radius:10px;padding:12px;margin-bottom:10px;">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#a09888;margin-bottom:8px;">Estimasi Cost Material</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:end;">
-          <div style="background:#fff;border-radius:8px;padding:8px;">
-            <div style="font-size:10px;color:#a09888;margin-bottom:3px;">Harga Kayu /m³</div>
-            <input id="hk" type="number" value="4500000" style="width:100%;padding:4px 8px;border:1.5px solid #d8d5cb;border-radius:6px;font-size:12px;font-family:inherit;font-weight:600;" oninput="calcEst()">
-          </div>
-          <div style="background:#fff;border-radius:8px;padding:8px;">
-            <div style="font-size:10px;color:#a09888;margin-bottom:3px;">Plywood /lbr</div>
-            <input id="hp" type="number" value="220000" style="width:100%;padding:4px 8px;border:1.5px solid #d8d5cb;border-radius:6px;font-size:12px;font-family:inherit;font-weight:600;" oninput="calcEst()">
-          </div>
-          <div style="background:#eaf3de;border-radius:8px;padding:8px;">
-            <div style="font-size:10px;color:#5a8a3a;margin-bottom:3px;">Est. Material</div>
-            <div id="est-cost" style="font-size:16px;font-weight:800;color:#27500a;">—</div>
-          </div>
-        </div>
-      </div>
-      <button onclick="exportBomCSV('${sku}')" style="width:100%;padding:9px;background:#eaf3de;border:1.5px solid #97c459;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;color:#27500a;font-family:inherit;">📊 Export BOM CSV</button>
-    </div>
-
-    <!-- ── TAB: PRODUK MIRIP ──────────────────────────────────────── -->
-    <div class="dtab-content" id="dtab-similar">
-      <div style="font-size:11px;color:#a09888;margin-bottom:10px;">Produk kategori sama — gunakan sebagai referensi BOM :</div>
-      ${_all.filter(x=>x.sku!==sku&&x.kategori===p.kategori).slice(0,4).map(x=>{
-        const xv=calcVol(x.komponen);
-        const ximg=x.thumbnail?`<img src="${x.thumbnail}" style="width:54px;height:46px;object-fit:cover;border-radius:8px;flex-shrink:0;">`:
-          `<div style="width:54px;height:46px;background:#f5f4f0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">${CAT_ICON[x.kategori]||'📦'}</div>`;
-        return `<div onclick="showDetail('${x.sku}')" style="display:flex;align-items:center;gap:10px;padding:10px;background:#f5f4f0;border-radius:10px;margin-bottom:6px;cursor:pointer;border:1px solid transparent;transition:all .15s;" onmouseover="this.style.borderColor='#b8d9b4';this.style.background='#f5faf4'" onmouseout="this.style.borderColor='transparent';this.style.background='#f5f4f0'">
-          ${ximg}
-          <div style="flex:1;min-width:0;">
-            <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;">
-              <span style="font-family:monospace;font-size:10px;background:#fff;padding:1px 5px;border-radius:4px;color:#5a5750;">${x.sku}</span>
-            </div>
-            <div style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${x.nama||'—'}</div>
-            <div style="font-size:10px;color:#a09888;">${x.panjang||0}×${x.lebar||0}×${x.tinggi||0} cm · Log: ${xv.log} m³ · ${(x.komponen||[]).length} komp</div>
-          </div>
-          <span style="color:#b8d9b4;font-size:18px;">›</span>
-        </div>`;
-      }).join('')||'<div style="padding:24px;text-align:center;color:#a09888;font-size:12px;background:#f5f4f0;border-radius:10px;">Belum ada produk sejenis lainnya di sistem.</div>'}
-    </div>`;
-
-  document.getElementById('modal-calc-btn').onclick   document.getElementById('modal-calc-btn').onclick = ()=>window.location.href='app.html?sku='+sku;
-  document.getElementById('modal-ai-btn').onclick   = ()=>window.location.href='ai-asisten.html?sku='+sku;
-  document.getElementById('modal-del-btn').onclick  = ()=>{closeModal();deleteProduct(sku);};
-  document.getElementById('detail-modal').classList.add('show');
-  setTimeout(calcEst, 100);
-};
-
-window.closeModal  = ()=>document.getElementById('detail-modal').classList.remove('show');
-window.switchGroup = (g, el) => {
-  _activeGroup = g;
-  document.querySelectorAll('.gtab').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.group-section').forEach(s=>s.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('grp-'+g).classList.add('active');
-};
-window.switchDTab = (tab, el) => {
-  document.querySelectorAll('.dtab-content').forEach(c=>c.classList.remove('active'));
-  document.querySelectorAll('#dtabs .dtab').forEach(b=>b.classList.remove('active'));
-  document.getElementById('dtab-'+tab).classList.add('active');
-  el.classList.add('active');
-};
-window.handleSearch = q => { _q=q; document.getElementById('search-clear').style.display=q?'block':'none'; document.getElementById('search-icon').style.display=q?'none':'block'; renderAll(); };
-window.clearSearch  = () => { document.getElementById('search-input').value=''; _q=''; document.getElementById('search-clear').style.display='none'; document.getElementById('search-icon').style.display='block'; renderAll(); };
-window.calcEst = () => {
-  const p=_all.find(x=>x.sku===_currentSku); if(!p) return;
-  const hk=+(document.getElementById('hk')?.value||4500000);
-  const hp=+(document.getElementById('hp')?.value||220000);
-  const sw=(p.komponen||[]).filter(c=>c.type==='SW'||!c.type);
-  const pw=(p.komponen||[]).filter(c=>c.type==='PW');
-  const logVol=sw.reduce((s,c)=>s+(+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))/0.35,0);
-  const pwSh=Math.max(1,Math.ceil(pw.reduce((s,c)=>s+(+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1)),0)/0.054));
-  const cost=logVol*hk+pwSh*hp;
-  const el=document.getElementById('est-cost');
-  if(el) el.textContent='Rp '+Math.round(cost).toLocaleString('id-ID');
-};
-window.changeStatus = async (sku, newStatus) => {
-  const p = _all.find(x=>x.sku===sku); if(!p) return;
-  try {
-    await setDoc(doc(db,'products',sku),Object.assign({},p,{status:newStatus,updatedAt:serverTimestamp()}));
-    p.status = newStatus;
-    updateCounts(); renderAll();
-    showToast('✅ Status '+sku+' → '+ST_LABEL[newStatus]);
-  } catch(e) { showToast('❌ '+e.message); }
-};
-window.deleteProduct = async sku => {
-  if(!confirm('Hapus produk '+sku+'?')) return;
-  try { await deleteDoc(doc(db,'products',sku)); _all=_all.filter(p=>p.sku!==sku); updateCounts(); renderAll(); showToast('🗑️ '+sku+' dihapus!'); }
-  catch(e) { showToast('❌ '+e.message); }
-};
-window.exportBomCSV = sku => {
-  const p=_all.find(x=>x.sku===sku); if(!p) return;
-  const NL=String.fromCharCode(10);
-  const lines=['BOM Reference — '+p.nama,'SKU,'+p.sku,'Dimensi,'+(p.panjang||0)+'x'+(p.lebar||0)+'x'+(p.tinggi||0),'Kayu,'+p.kayu,'','Kode,Nama,Tipe,Qty,P cm,L cm,T cm,Vol m3,Log m3'];
-  (p.komponen||[]).forEach(c=>{const v=((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))).toFixed(4);const vl=c.type==='SW'?((+(c.p||0)/100)*(+(c.l||0)/100)*(+(c.t||0)/100)*(+(c.qty||1))/0.35).toFixed(4):'—';lines.push([c.code,'"'+c.name+'"',c.type||'SW',c.qty||1,c.p||0,c.l||0,c.t||0,v,vl].join(','));});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['\uFEFF'+lines.join(NL)],{type:'text/csv'})); a.download='BOM_'+sku+'.csv'; a.click();
-  showToast('📊 BOM CSV exported!');
-};
-
-// ── IMAGE SEARCH ──────────────────────────────────────────────────────
-let _imgSearchActive = false;
-let _imgSearchResults = [];
-
-window.openImgSearch = function() {
-  document.getElementById('img-search-input').click();
-};
-
-window.handleImgSearch = async function(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  // Show preview
-  const reader = new FileReader();
-  reader.onload = async function(ev) {
-    const base64data = ev.target.result;
-
-    // Show preview in bar
-    document.getElementById('img-search-preview').src = base64data;
-    document.getElementById('img-search-bar').style.display = 'block';
-    document.getElementById('img-search-status').textContent = '🤖 AI sedang menganalisis gambar...';
-    document.getElementById('img-search-detail').textContent = 'Mendeteksi tipe furniture & karakteristik...';
-    document.getElementById('img-search-btn').classList.add('img-search-active');
-
-    try {
-      // Call Claude AI to analyze the image
-      const base64 = base64data.split(',')[1];
-      const mime   = base64data.split(';')[0].split(':')[1] || 'image/jpeg';
-
-      const resp = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({
-          imageData: base64,
-          mimeType:  mime,
-          imageCount: 1,
-          searchMode: true  // tell API we want search-focused response
-        })
-      });
-
-      if (!resp.ok) throw new Error('API error '+resp.status);
-      const data = await resp.json();
-      const r    = data.result;
-
-      if (!r) throw new Error('Tidak ada hasil analisis');
-
-      // Extract search criteria from AI result
-      const criteria = {
-        furniture_type: r.furniture_type || '',
-        style:          r.style || '',
-        panjang:        r.dimensions?.panjang || 0,
-        lebar:          r.dimensions?.lebar   || 0,
-        tinggi:         r.dimensions?.tinggi  || 0,
-        kayu:           r.wood_recommendation || '',
-        shape:          r.dimensions?.shape   || 'rectangular'
-      };
-
-      document.getElementById('img-search-status').textContent =
-        '✅ Terdeteksi: ' + (r.furniture_name_id || r.furniture_type || 'Furniture');
-      document.getElementById('img-search-detail').textContent =
-        (criteria.panjang?criteria.panjang+'×'+criteria.lebar+'×'+criteria.tinggi+' cm · ':'') +
-        (criteria.style||'') + (r.confidence?' · '+r.confidence+'% confidence':'');
-
-      // Find matching products in Firebase
-      findSimilarProducts(criteria, r);
-
-    } catch(err) {
-      console.log('Image search error:', err);
-      // Fallback: search by detected furniture type from filename
-      document.getElementById('img-search-status').textContent = '⚠️ Coba pencarian manual...';
-      document.getElementById('img-search-detail').textContent = err.message;
-
-      // Still try to filter by what we can detect from filename
-      const fname = file.name.toLowerCase();
-      let keyword = '';
-      if(/chair|kursi/.test(fname))  keyword = 'kursi';
-      if(/table|meja/.test(fname))   keyword = 'meja';
-      if(/bed|tidur/.test(fname))    keyword = 'bed';
-      if(/sofa/.test(fname))         keyword = 'sofa';
-      if(/lemari|cabinet/.test(fname)) keyword = 'lemari';
-
-      if (keyword) {
-        handleSearch(keyword);
-        document.getElementById('search-input').value = keyword;
-      }
-    }
-    document.getElementById('img-search-btn').classList.remove('img-search-active');
-  };
-  reader.readAsDataURL(file);
-  // Reset input for re-use
-  e.target.value = '';
-};
-
-function findSimilarProducts(criteria, aiResult) {
-  if (!_all.length) return;
-
-  // Score each product for similarity
-  const scored = _all.map(p => {
-    let score = 0;
-    const maxScore = 100;
-
-    // 1. Furniture type match (40 pts)
-    if (criteria.furniture_type && p.kategori) {
-      const typeMap = {meja:'meja',table:'meja',bed:'bed',tidur:'bed',chair:'kursi',kursi:'kursi',sofa:'sofa',lemari:'lemari',cabinet:'lemari',credenza:'lemari'};
-      const mapped = typeMap[criteria.furniture_type] || criteria.furniture_type;
-      if (p.kategori === mapped) score += 40;
-      else if (p.kategori === criteria.furniture_type) score += 40;
-    }
-
-    // 2. Style match (20 pts)
-    if (criteria.style && p.style) {
-      const ps = p.style.toLowerCase(), cs = criteria.style.toLowerCase();
-      if (ps.includes(cs) || cs.includes(ps)) score += 20;
-      else if (ps.split(/[\s,\/]+/).some(w=>cs.includes(w))) score += 10;
-    }
-
-    // 3. Dimension similarity (25 pts)
-    if (criteria.panjang > 0 && p.panjang > 0) {
-      const diffPct = Math.abs(p.panjang - criteria.panjang) / criteria.panjang;
-      if (diffPct < 0.1) score += 10;      // within 10%
-      else if (diffPct < 0.25) score += 6; // within 25%
-      else if (diffPct < 0.5) score += 3;  // within 50%
-    }
-    if (criteria.tinggi > 0 && p.tinggi > 0) {
-      const diffPct = Math.abs(p.tinggi - criteria.tinggi) / criteria.tinggi;
-      if (diffPct < 0.1) score += 10;
-      else if (diffPct < 0.25) score += 6;
-      else if (diffPct < 0.5) score += 3;
-    }
-    if (criteria.lebar > 0 && p.lebar > 0) {
-      const diffPct = Math.abs(p.lebar - criteria.lebar) / criteria.lebar;
-      if (diffPct < 0.1) score += 5;
-      else if (diffPct < 0.25) score += 3;
-    }
-
-    // 4. Wood type match (15 pts)
-    if (criteria.kayu && p.kayu) {
-      const pk = p.kayu.toLowerCase(), ck = criteria.kayu.toLowerCase();
-      if (pk.includes(ck.split(' ')[0]) || ck.includes(pk.split(' ')[0])) score += 15;
-    }
-
-    return { product: p, score: Math.min(100, score) };
-  });
-
-  // Sort by score
-  scored.sort((a,b) => b.score - a.score);
-
-  // Show only products with score > 0
-  const matches = scored.filter(s => s.score > 0);
-  const noMatch = scored.filter(s => s.score === 0);
-
-  _imgSearchActive = true;
-  _imgSearchResults = matches.map(m => ({sku: m.product.sku, score: m.score}));
-
-  // Update status
-  document.getElementById('img-search-status').textContent =
-    matches.length > 0
-      ? '✅ Ditemukan '+matches.length+' produk mirip'
-      : '🔍 Tidak ada produk serupa di sistem';
-  document.getElementById('img-search-detail').textContent =
-    matches.length > 0
-      ? 'Diurutkan berdasarkan kemiripan tipe, dimensi & material'
-      : 'AI Agent akan membantu...';
-
-  // Always show agent after image search
-  // Agent content differs: found vs not found
-  const previewUrl = document.getElementById('img-search-preview').src;
-  setTimeout(() => showAgentModal(aiResult, previewUrl, matches.length), 800);
-
-  renderImgSearchResults(scored);
+  // Show AI Agent
+  setTimeout(function() {
+    showAgentModal(aiResult, dataUrl, top.length);
+  }, 700);
 }
 
-function renderImgSearchResults(scored) {
-  // Show all 3 groups with image search ranking
-  const matches = scored.filter(s => s.score > 0);
-  const nomatches = scored.filter(s => s.score === 0);
+function renderImgSearchResultsDemo(dataUrl) {
+  // Demo: score random tapi realistis
+  var scored = _all.map(function(p) {
+    return { p: p, score: Math.round(30 + Math.random()*55) };
+  }).sort(function(a,b){ return b.score-a.score; });
 
-  // Temporarily override _all ordering
-  const sortedAll = [
-    ...matches.map(m => m.product),
-    ...nomatches.map(m => m.product)
-  ];
+  var top = scored.slice(0,4);
+  document.getElementById('img-search-status').textContent = '📋 Demo mode — '+top.length+' produk ditampilkan';
 
-  // Re-render with scores
-  ['pra','produksi','final'].forEach(grp => {
-    const statuses = GRP_STATUS[grp];
-    const grpItems = sortedAll.filter(p => statuses.includes(p.status||'draft'));
-    const grid = document.getElementById('grid-'+grp);
+  var html = top.map(function(item) {
+    var p = item.p, sc = item.score;
+    var col = sc>=70?'var(--ac)':sc>=40?'var(--am)':'var(--rd)';
+    return '<div class="isp-result-item" onclick="openEdit(\''+p.id+'\')">'
+      +'<div style="font-size:24px;">'+(p.cat||'📦').split(' ')[0]+'</div>'
+      +'<div style="flex:1;">'
+      +'<div style="font-size:12px;font-weight:700;">'+p.name+'</div>'
+      +'<div style="font-size:10px;color:var(--t3);">'+p.sku+' · '+p.p+'×'+p.l+'×'+p.t+' cm</div>'
+      +'<div class="isp-match-bar"><div class="isp-match-fill" style="width:'+sc+'%;background:'+col+'"></div></div>'
+      +'</div>'
+      +'<div style="font-size:12px;font-weight:700;color:'+col+';">'+sc+'%</div>'
+      +'</div>';
+  }).join('');
 
-    if (!grpItems.length) {
-      grid.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-sub">Tidak ada produk</div></div>';
-      return;
-    }
-
-    grid.innerHTML = grpItems.map(p => {
-      const scoreEntry = scored.find(s => s.product.sku === p.sku);
-      const score = scoreEntry ? scoreEntry.score : 0;
-      const vol  = calcVol(p.komponen);
-      const st   = p.status||'draft';
-      const icon = CAT_ICON[p.kategori]||'📦';
-      const dim  = `${p.panjang||0}×${p.lebar||0}×${p.tinggi||0} cm`;
-      const kc   = (p.komponen||[]).length;
-      const upd  = p.updatedAt ? new Date(p.updatedAt.seconds*1000).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'2-digit'}) : '—';
-
-      const scoreBar = score > 0 ? `
-        <div style="padding:4px 10px;background:${score>=70?'#eaf3de':score>=40?'#fff8e1':'#f5f4f0'};border-top:1px solid #e8e6df;display:flex;align-items:center;gap:6px;">
-          <div style="flex:1;height:4px;background:#e8e6df;border-radius:2px;overflow:hidden;">
-            <div style="width:${score}%;height:100%;background:${score>=70?'#2d5a27':score>=40?'#f59e0b':'#d8d5cb'};border-radius:2px;"></div>
-          </div>
-          <span style="font-size:9px;font-weight:700;color:${score>=70?'#27500a':score>=40?'#92400e':'#8a8680'};">${score}% mirip</span>
-        </div>` : '';
-
-      const imgHtml = p.thumbnail
-        ? `<img src="${p.thumbnail}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">`
-        : `<div class="card-img-placeholder">${icon}</div>`;
-
-      return `<div class="prod-card${score>0?' img-match':''}" onclick="showDetail('${p.sku}')" style="${score>=70?'border-color:#2d5a27;':score>=40?'border-color:#f59e0b;':'opacity:.65;'}">
-        <div class="card-img">
-          ${imgHtml}
-          <div class="card-img-overlay"><span class="pc-status ${ST_CLASS[st]||'st-draft'}">${ST_LABEL[st]||'Draft'}</span></div>
-          <span class="cat-badge">${icon} ${p.kategori||'—'}</span>
-          ${score>0?`<span class="match-score">${score}% ≈</span>`:''}
-        </div>
-        <div class="card-body">
-          <div class="card-sku">${p.sku}</div>
-          <div class="card-nama">${p.nama||'—'}</div>
-          <div class="card-dim">📐 ${dim}</div>
-          <div class="card-stats">
-            <div class="cs-item"><div class="cs-val" style="color:#2d5a27;">${vol.net}</div><div class="cs-lbl">Vol m³</div></div>
-            <div class="cs-item"><div class="cs-val" style="color:#1565c0;">${vol.log}</div><div class="cs-lbl">Log m³</div></div>
-            <div class="cs-item"><div class="cs-val" style="color:#8a8680;">${kc}</div><div class="cs-lbl">Komp</div></div>
-          </div>
-        </div>
-        ${scoreBar}
-        <div class="card-foot" onclick="event.stopPropagation()">
-          <a class="cf-btn grn" href="app.html?sku=${p.sku}">📐 Kalk</a>
-          <a class="cf-btn blu" href="ai-asisten.html?sku=${p.sku}">🤖 Edit</a>
-          <button class="cf-btn red" onclick="deleteProduct('${p.sku}')">🗑</button>
-        </div>
-      </div>`;
-    }).join('');
-  });
+  document.getElementById('img-search-results').innerHTML = html;
 }
 
-// ── AI AGENT ──────────────────────────────────────────────────────────
-let _agentData = null; // stores { aiResult, base64, mime, previewUrl }
-
+// ── AI AGENT ──
 function showAgentModal(aiResult, previewUrl, matchCount) {
-  _agentData = { aiResult, previewUrl };
-  const r = aiResult || {};
-  const name = r.furniture_name_id || r.furniture_type || 'Furniture';
-  const dims = r.dimensions ? (r.dimensions.panjang||0)+'×'+(r.dimensions.lebar||0)+'×'+(r.dimensions.tinggi||0)+' cm' : '—';
-  const conf = r.confidence ? r.confidence+'% confidence' : '';
-  const mc   = matchCount || 0;
+  _agentData = { aiResult: aiResult, previewUrl: previewUrl };
+  var r = aiResult || {};
+  var name = r.furniture_name_id || r.furniture_type || 'Furniture';
+  var dims = r.dimensions ? (r.dimensions.panjang||0)+'×'+(r.dimensions.lebar||0)+'×'+(r.dimensions.tinggi||0)+' cm' : '—';
+  var conf = r.confidence ? r.confidence+'% confidence' : '';
 
-  document.getElementById('agent-thumb').src = previewUrl || '';
-  document.getElementById('agent-detected').textContent = (r.furniture_type==='kursi'?'🪑':r.furniture_type==='meja'?'🪵':r.furniture_type==='lemari'?'🗄️':'📦')+' '+name;
-  document.getElementById('agent-dims').textContent     = '📐 '+dims+(r.wood_recommendation?' · 🪵 '+r.wood_recommendation:'');
-  document.getElementById('agent-conf').textContent     = conf ? '✅ '+conf : '';
+  var thumb = document.getElementById('agent-thumb');
+  if (previewUrl) { thumb.src = previewUrl; thumb.classList.add('show'); }
+  else { thumb.classList.remove('show'); }
 
-  // Update message based on found/not found
-  const msgEl     = document.getElementById('agent-msg');
-  const subMsgEl  = document.getElementById('agent-sub-msg');
-  const foundBanner = document.getElementById('agent-found-banner');
-
-  if (mc > 0) {
-    if(foundBanner) foundBanner.style.display = 'flex';
-    document.getElementById('agent-found-count').textContent = mc+' produk mirip ditemukan (skor tertinggi: tidak exact match)';
-    if(msgEl)    msgEl.textContent    = 'Produk mirip ditemukan tapi bukan exact match.';
-    if(subMsgEl) subMsgEl.textContent = 'Apakah ini yang Anda cari? Jika tidak, pilih tindakan berikut:';
+  var foundEl = document.getElementById('agent-found');
+  if (matchCount > 0) {
+    foundEl.textContent = '🔍 '+matchCount+' produk mirip ditemukan di sistem';
+    foundEl.classList.add('show');
   } else {
-    if(foundBanner) foundBanner.style.display = 'none';
-    if(msgEl)    msgEl.textContent    = 'Produk ini belum ada di database Gabe Hub.';
-    if(subMsgEl) subMsgEl.textContent = 'Apa yang ingin dilakukan dengan gambar ini?';
+    foundEl.classList.remove('show');
   }
 
-  document.getElementById('agent-modal-ov').style.display = 'flex';
+  document.getElementById('agent-detected').textContent = '🪑 '+name;
+  document.getElementById('agent-dims').textContent = '📐 '+dims+(r.wood_recommendation?' · 🪵 '+r.wood_recommendation:'');
+  document.getElementById('agent-conf').textContent = conf ? '✅ '+conf : '';
+  document.getElementById('agent-modal').classList.add('open');
 }
 
-window.agentAction = async function(action) {
-  const modal = document.getElementById('agent-modal-ov');
-  const r     = _agentData?.aiResult || {};
-  const prev  = _agentData?.previewUrl || '';
+function agentToCalc() {
+  var r = _agentData.aiResult || {};
+  var d = r.dimensions || {};
+  var q = 'product='+encodeURIComponent(r.furniture_name_id||r.furniture_type||'')
+        + '&p='+(d.panjang||0)+'&l='+(d.lebar||0)+'&t='+(d.tinggi||0);
+  location.href = 'app.html?'+q;
+}
 
-  switch(action) {
+function agentSave() {
+  var r = _agentData.aiResult || {};
+  var d = r.dimensions || {};
+  document.getElementById('m-id').value = '';
+  document.getElementById('m-sku').value = 'AI-'+Date.now().toString(36).toUpperCase();
+  document.getElementById('m-name').value = r.furniture_name_id || r.furniture_type || 'New Product';
+  document.getElementById('m-status').value = 'draft';
+  document.getElementById('m-p').value = d.panjang||0;
+  document.getElementById('m-l').value = d.lebar||0;
+  document.getElementById('m-t').value = d.tinggi||0;
+  document.getElementById('m-wood').value = r.wood_recommendation||'';
+  document.getElementById('m-ket').value = r.notes||'';
+  document.getElementById('agent-modal').classList.remove('open');
+  document.getElementById('modal-title').textContent = '📦 Simpan dari AI Agent';
+  document.getElementById('prod-modal').classList.add('open');
+}
 
-    case 'calculator': {
-      // Save image to sessionStorage and redirect to app.html
-      const info = {
-        from:      'image-search',
-        nama:      r.furniture_name_id || r.furniture_type || '',
-        kategori:  r.furniture_type || 'meja',
-        panjang:   r.dimensions?.panjang || 0,
-        lebar:     r.dimensions?.lebar   || 0,
-        tinggi:    r.dimensions?.tinggi  || 0,
-        kayu:      r.wood_recommendation || '',
-        style:     r.style || '',
-        thumbnail: prev
-      };
-      sessionStorage.setItem('calc_prefill', JSON.stringify(info));
-      showToast('📐 Membuka Kalkulator...');
-      setTimeout(() => window.location.href='app.html', 600);
-      break;
-    }
+function agentDismiss() {
+  document.getElementById('agent-modal').classList.remove('open');
+  // Reset image search
+  var prev = document.getElementById('img-search-preview');
+  prev.src = ''; prev.classList.remove('show');
+  document.getElementById('isp-drop').style.display = '';
+  document.getElementById('img-search-results').innerHTML = '<div style="text-align:center;padding:28px;color:var(--t3);font-size:12px;"><div style="font-size:28px;margin-bottom:8px;">🖼️</div>Upload foto untuk mencari produk mirip</div>';
+  document.getElementById('img-search-status').textContent = '';
+}
 
-    case 'archive': {
-      // Save as Draft product in Firebase
-      const sku = 'ARSIP-'+Date.now();
-      const product = {
-        sku:       sku,
-        nama:      r.furniture_name_id || r.furniture_type || 'Produk Baru',
-        kategori:  r.furniture_type   || 'meja',
-        style:     r.style            || '',
-        panjang:   r.dimensions?.panjang || 0,
-        lebar:     r.dimensions?.lebar   || 0,
-        tinggi:    r.dimensions?.tinggi  || 0,
-        kayu:      r.wood_recommendation || '',
-        finishing: '',
-        status:    'draft',
-        ket:       'Disimpan dari image search · Confidence: '+(r.confidence||0)+'%',
-        thumbnail: prev,
-        komponen:  (r.components||[]).map((c,i)=>({
-          code:  c.code || 'C-'+String(i+1).padStart(2,'0'),
-          name:  c.name || 'Komponen '+(i+1),
-          type:  c.type || 'SW',
-          qty:   c.qty  || 1,
-          p:     c.p    || 0,
-          l:     c.l    || 0,
-          t:     c.t    || 0,
-          shape: c.shape|| 'rectangular'
-        })),
-        updatedAt:  null,
-        updatedBy:  'image-search-agent'
-      };
-      try {
-        await setDoc(doc(db,'products',sku), Object.assign({},product,{updatedAt:serverTimestamp()}));
-        _all.push(product);
-        updateCounts(); renderAll();
-        modal.style.display = 'none';
-        clearImgSearch();
-        showToast('📁 Disimpan ke arsip sebagai '+sku);
-        // Switch to Pra Produksi tab where it was saved
-        const praBtn = document.querySelector('.gtab');
-        if(praBtn) switchGroup('pra', praBtn);
-      } catch(e) {
-        showToast('❌ Gagal simpan: '+e.message);
-      }
-      break;
-    }
+// ── EXPORT CSV ──
+function exportCSV() {
+  var rows = [['SKU','Nama','Kategori','Status','Style','P(cm)','L(cm)','T(cm)','Kayu','Finishing','Buyer','Harga','Keterangan']];
+  _all.forEach(function(p) {
+    rows.push([p.sku,p.name,p.cat,p.status,p.style,p.p,p.l,p.t,p.wood,p.finish,p.buyer,p.price,p.ket]);
+  });
+  var csv = rows.map(function(r){ return r.map(function(v){ return '"'+(v||'')+'"'; }).join(','); }).join('\n');
+  var a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download = 'MasterProduk_GabeHub_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click(); toast('⬇️ CSV diekspor!');
+}
 
-    case 'ai': {
-      // Store image data in sessionStorage and redirect to ai-asisten
-      sessionStorage.setItem('ai_prefill_image', prev);
-      sessionStorage.setItem('ai_prefill_result', JSON.stringify(r));
-      showToast('🤖 Membuka AI Asisten...');
-      setTimeout(() => window.location.href='ai-asisten.html', 600);
-      break;
-    }
+// ── LOGOUT ──
+function doLogout() {
+  try { sessionStorage.removeItem('gabe_user'); } catch(e) {}
+  location.href = 'index.html';
+}
 
-    case 'delete': {
-      modal.style.display = 'none';
-      clearImgSearch();
-      showToast('🗑️ Pencarian gambar dibatalkan');
-      break;
-    }
-  }
-};
+// ── TOAST ──
+function toast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(function(){ el.classList.remove('show'); }, 2500);
+}
 
-// Close agent modal on overlay click
-document.getElementById('agent-modal-ov').addEventListener('click', function(e){
-  if(e.target === this) { this.style.display='none'; clearImgSearch(); }
-});
-
-window.clearImgSearch = function() {
-  _imgSearchActive = false;
-  _imgSearchResults = [];
-  document.getElementById('img-search-bar').style.display = 'none';
-  document.getElementById('img-search-btn').classList.remove('img-search-active');
-  // Reset to normal render
-  renderAll();
-  showToast('🔄 Pencarian gambar dibersihkan');
-};
-
-// ── IMAGE SEARCH END ───────────────────────────────────────────────────
-
-// Init
-load();
-const urlSku = new URLSearchParams(window.location.search).get('sku');
-if(urlSku) setTimeout(()=>{ const p=_all.find(x=>x.sku===urlSku); if(p){ const st=p.status||'draft'; const grp=GRP_STATUS.pra.includes(st)?'pra':GRP_STATUS.produksi.includes(st)?'produksi':'final'; const btn=document.querySelector(`.gtab[onclick*="${grp}"]`); if(btn) switchGroup(grp,btn); showDetail(urlSku); } },1200);
+// ── INIT ──
+window.onload = function() { renderAll(); };
 </script>
+
+<!-- Firebase (opsional — aktifkan saat config tersedia) -->
+<!-- 
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const FC = {
+  apiKey: "AIzaSyCRqMpIYBBMZUVZx4v-C7kjMB6BUO6YcyA",
+  authDomain: "gabe-international-hub.firebaseapp.com",
+  projectId: "gabe-international-hub",
+  storageBucket: "gabe-international-hub.firebasestorage.app",
+  messagingSenderId: "115783216069",
+  appId: "1:115783216069:web:62cfabf543b1fbb85bf9ac"
+};
+// Uncomment dan hapus demo data di atas saat production
+</script>
+-->
+
 </body>
 </html>
